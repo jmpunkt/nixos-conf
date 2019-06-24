@@ -1,0 +1,16 @@
+
+
+/*
+    diesel_cli =
+         ((import ./diesel.nix).diesel).override {
+            default = false;
+            postgres = true;
+            
+       
+        };
+     rust = self.pkgs.rust;
+              crateOverrides = super.defaultCrateOverrides // {
+                diesel = attrs: { buildInputs = with super.pkgs; [ postgresql_11 ]; };
+            };
+            
+*/ 

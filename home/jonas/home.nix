@@ -27,7 +27,7 @@
   programs.git = {
     enable = true;
     userName = "Jonas Meurer";
-    userEmail = "jmpunkt@outlook.de";
+    userEmail = "jmpunkt@outlook.com";
     signing = {
       key = "4D78720A4358CC504F3EB45B26CDFB2E4DB6B136";
       signByDefault = true;

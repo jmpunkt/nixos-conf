@@ -1,12 +1,14 @@
 
-# Clone repository
+# Bootstrap
+
+## Clone repository
 
 ```bash
-> cd /etx/nixos
-> git clone https://github.com/jmpunkt/nixos-conf
+cd /etx/nixos
+git clone https://github.com/jmpunkt/nixos-conf
 ```
 
-# Setup NixOS
+## Setup NixOS
 
 Create the file _/etc/nixos/configuration.nix_ with the following content and
 then build the system.
@@ -23,12 +25,12 @@ then build the system.
 
 Build the system
 ```bash
-> nixos-rebuild switch
+nixos-rebuild switch
 ```
 
-# Setup Home-Manager
+## Setup Home-Manager
 
 ```bash
-> ln -s /etc/nixos/home/$USER $HOME/.config/nixpkgs
-> home-manger switch
+ln -s /etc/nixos/home/$USER $HOME/.config/nixpkgs
+home-manger switch
 ```

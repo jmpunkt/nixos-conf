@@ -1,0 +1,3 @@
+[submodule "overlays/30-mozilla"]
+	path = overlays/30-mozilla
+	url = https://github.com/mozilla/nixpkgs-mozilla

@@ -76,20 +76,6 @@ rec {
 
 
 # end
-# assert_matches-1.3.0
-
-  crates.assert_matches."1.3.0" = deps: { features?(features_.assert_matches."1.3.0" deps {}) }: buildRustCrate {
-    crateName = "assert_matches";
-    version = "1.3.0";
-    authors = [ "Murarth <murarth@gmail.com>" ];
-    sha256 = "1qlmdjv0x878lk557x3s26l4mnnaxhgb94fzms3zj8hrglp0a6hw";
-  };
-  features_.assert_matches."1.3.0" = deps: f: updateFeatures f (rec {
-    assert_matches."1.3.0".default = (f.assert_matches."1.3.0".default or true);
-  }) [];
-
-
-# end
 # atty-0.2.11
 
   crates.atty."0.2.11" = deps: { features?(features_.atty."0.2.11" deps {}) }: buildRustCrate {
@@ -320,58 +306,6 @@ rec {
 
 
 # end
-# base64-0.9.3
-
-  crates.base64."0.9.3" = deps: { features?(features_.base64."0.9.3" deps {}) }: buildRustCrate {
-    crateName = "base64";
-    version = "0.9.3";
-    authors = [ "Alice Maz <alice@alicemaz.com>" "Marshall Pierce <marshall@mpierce.org>" ];
-    sha256 = "11hhz8ln4zbpn2h2gm9fbbb9j254wrd4fpmddlyah2rrnqsmmqkd";
-    dependencies = mapFeatures features ([
-      (crates."byteorder"."${deps."base64"."0.9.3"."byteorder"}" deps)
-      (crates."safemem"."${deps."base64"."0.9.3"."safemem"}" deps)
-    ]);
-  };
-  features_.base64."0.9.3" = deps: f: updateFeatures f (rec {
-    base64."0.9.3".default = (f.base64."0.9.3".default or true);
-    byteorder."${deps.base64."0.9.3".byteorder}".default = true;
-    safemem."${deps.base64."0.9.3".safemem}".default = true;
-  }) [
-    (features_.byteorder."${deps."base64"."0.9.3"."byteorder"}" deps)
-    (features_.safemem."${deps."base64"."0.9.3"."safemem"}" deps)
-  ];
-
-
-# end
-# bcrypt-0.1.6
-
-  crates.bcrypt."0.1.6" = deps: { features?(features_.bcrypt."0.1.6" deps {}) }: buildRustCrate {
-    crateName = "bcrypt";
-    version = "0.1.6";
-    authors = [ "Vincent Prouillet <vincent@wearewizards.io>" ];
-    sha256 = "0qm63gmj27669h4j475abss9ac7hm5m4mbl7909ziy6bcr6vk7zh";
-    dependencies = mapFeatures features ([
-      (crates."base64"."${deps."bcrypt"."0.1.6"."base64"}" deps)
-      (crates."lazy_static"."${deps."bcrypt"."0.1.6"."lazy_static"}" deps)
-      (crates."rand"."${deps."bcrypt"."0.1.6"."rand"}" deps)
-      (crates."rust_crypto"."${deps."bcrypt"."0.1.6"."rust_crypto"}" deps)
-    ]);
-  };
-  features_.bcrypt."0.1.6" = deps: f: updateFeatures f (rec {
-    base64."${deps.bcrypt."0.1.6".base64}".default = true;
-    bcrypt."0.1.6".default = (f.bcrypt."0.1.6".default or true);
-    lazy_static."${deps.bcrypt."0.1.6".lazy_static}".default = true;
-    rand."${deps.bcrypt."0.1.6".rand}".default = true;
-    rust_crypto."${deps.bcrypt."0.1.6".rust_crypto}".default = true;
-  }) [
-    (features_.base64."${deps."bcrypt"."0.1.6"."base64"}" deps)
-    (features_.lazy_static."${deps."bcrypt"."0.1.6"."lazy_static"}" deps)
-    (features_.rand."${deps."bcrypt"."0.1.6"."rand"}" deps)
-    (features_.rust_crypto."${deps."bcrypt"."0.1.6"."rust_crypto"}" deps)
-  ];
-
-
-# end
 # bigdecimal-0.1.0
 
   crates.bigdecimal."0.1.0" = deps: { features?(features_.bigdecimal."0.1.0" deps {}) }: buildRustCrate {
@@ -473,39 +407,42 @@ rec {
 
 
 # end
-# chrono-0.4.6
+# chrono-0.4.7
 
-  crates.chrono."0.4.6" = deps: { features?(features_.chrono."0.4.6" deps {}) }: buildRustCrate {
+  crates.chrono."0.4.7" = deps: { features?(features_.chrono."0.4.7" deps {}) }: buildRustCrate {
     crateName = "chrono";
-    version = "0.4.6";
+    version = "0.4.7";
     authors = [ "Kang Seonghoon <public+rust@mearie.org>" "Brandon W Maister <quodlibetor@gmail.com>" ];
-    sha256 = "0cxgqgf4lknsii1k806dpmzapi2zccjpa350ns5wpb568mij096x";
+    sha256 = "1f5r3h2vyr8g42fncp0g55qzaq2cxkchd59sjdlda1bl7m4wxnb5";
     dependencies = mapFeatures features ([
-      (crates."num_integer"."${deps."chrono"."0.4.6"."num_integer"}" deps)
-      (crates."num_traits"."${deps."chrono"."0.4.6"."num_traits"}" deps)
+      (crates."libc"."${deps."chrono"."0.4.7"."libc"}" deps)
+      (crates."num_integer"."${deps."chrono"."0.4.7"."num_integer"}" deps)
+      (crates."num_traits"."${deps."chrono"."0.4.7"."num_traits"}" deps)
     ]
-      ++ (if features.chrono."0.4.6".time or false then [ (crates.time."${deps."chrono"."0.4.6".time}" deps) ] else []));
-    features = mkFeatures (features."chrono"."0.4.6" or {});
+      ++ (if features.chrono."0.4.7".time or false then [ (crates.time."${deps."chrono"."0.4.7".time}" deps) ] else []));
+    features = mkFeatures (features."chrono"."0.4.7" or {});
   };
-  features_.chrono."0.4.6" = deps: f: updateFeatures f (rec {
+  features_.chrono."0.4.7" = deps: f: updateFeatures f (rec {
     chrono = fold recursiveUpdate {} [
-      { "0.4.6".clock =
-        (f.chrono."0.4.6".clock or false) ||
-        (f.chrono."0.4.6".default or false) ||
-        (chrono."0.4.6"."default" or false); }
-      { "0.4.6".default = (f.chrono."0.4.6".default or true); }
-      { "0.4.6".time =
-        (f.chrono."0.4.6".time or false) ||
-        (f.chrono."0.4.6".clock or false) ||
-        (chrono."0.4.6"."clock" or false); }
+      { "0.4.7".clock =
+        (f.chrono."0.4.7".clock or false) ||
+        (f.chrono."0.4.7".default or false) ||
+        (chrono."0.4.7"."default" or false); }
+      { "0.4.7".default = (f.chrono."0.4.7".default or true); }
+      { "0.4.7".time =
+        (f.chrono."0.4.7".time or false) ||
+        (f.chrono."0.4.7".clock or false) ||
+        (chrono."0.4.7"."clock" or false); }
     ];
-    num_integer."${deps.chrono."0.4.6".num_integer}".default = (f.num_integer."${deps.chrono."0.4.6".num_integer}".default or false);
-    num_traits."${deps.chrono."0.4.6".num_traits}".default = (f.num_traits."${deps.chrono."0.4.6".num_traits}".default or false);
-    time."${deps.chrono."0.4.6".time}".default = true;
+    libc."${deps.chrono."0.4.7".libc}".default = (f.libc."${deps.chrono."0.4.7".libc}".default or false);
+    num_integer."${deps.chrono."0.4.7".num_integer}".default = (f.num_integer."${deps.chrono."0.4.7".num_integer}".default or false);
+    num_traits."${deps.chrono."0.4.7".num_traits}".default = (f.num_traits."${deps.chrono."0.4.7".num_traits}".default or false);
+    time."${deps.chrono."0.4.7".time}".default = true;
   }) [
-    (features_.num_integer."${deps."chrono"."0.4.6"."num_integer"}" deps)
-    (features_.num_traits."${deps."chrono"."0.4.6"."num_traits"}" deps)
-    (features_.time."${deps."chrono"."0.4.6"."time"}" deps)
+    (features_.libc."${deps."chrono"."0.4.7"."libc"}" deps)
+    (features_.num_integer."${deps."chrono"."0.4.7"."num_integer"}" deps)
+    (features_.num_traits."${deps."chrono"."0.4.7"."num_traits"}" deps)
+    (features_.time."${deps."chrono"."0.4.7"."time"}" deps)
   ];
 
 
@@ -692,22 +629,22 @@ rec {
     chrono."${deps.diesel."1.4.2".chrono}".default = true;
     diesel = fold recursiveUpdate {} [
       { "1.4.2"."128-column-tables" =
-        (f.diesel."1.4.2".128-column-tables or false) ||
-        (f.diesel."1.4.2".x128-column-tables or false) ||
+        (f.diesel."1.4.2"."128-column-tables" or false) ||
+        (f.diesel."1.4.2"."x128-column-tables" or false) ||
         (diesel."1.4.2"."x128-column-tables" or false); }
       { "1.4.2"."32-column-tables" =
-        (f.diesel."1.4.2".32-column-tables or false) ||
-        (f.diesel."1.4.2".64-column-tables or false) ||
+        (f.diesel."1.4.2"."32-column-tables" or false) ||
+        (f.diesel."1.4.2"."64-column-tables" or false) ||
         (diesel."1.4.2"."64-column-tables" or false) ||
         (f.diesel."1.4.2".default or false) ||
         (diesel."1.4.2"."default" or false) ||
         (f.diesel."1.4.2".large-tables or false) ||
         (diesel."1.4.2"."large-tables" or false) ||
-        (f.diesel."1.4.2".x32-column-tables or false) ||
+        (f.diesel."1.4.2"."x32-column-tables" or false) ||
         (diesel."1.4.2"."x32-column-tables" or false); }
-      { "1.4.2".64-column-tables =
-        (f.diesel."1.4.2".64-column-tables or false) ||
-        (f.diesel."1.4.2".128-column-tables or false) ||
+      { "1.4.2"."64-column-tables" =
+        (f.diesel."1.4.2"."64-column-tables" or false) ||
+        (f.diesel."1.4.2"."128-column-tables" or false) ||
         (diesel."1.4.2"."128-column-tables" or false) ||
         (f.diesel."1.4.2".huge-tables or false) ||
         (diesel."1.4.2"."huge-tables" or false) ||
@@ -858,6 +795,124 @@ rec {
 
 
 # end
+# diesel_cli-1.4.0
+
+  crates.diesel_cli."1.4.0" = deps: { features?(features_.diesel_cli."1.4.0" deps {}) }: buildRustCrate {
+    crateName = "diesel_cli";
+    version = "1.4.0";
+    authors = [ "Sean Griffin <sean@seantheprogrammer.com>" ];
+    sha256 = "00wa6jsdvkfp4csj92plfcymav9hgwv6zkj1cpl1l1w78n1xldbl";
+    crateBin =
+      [{  name = "diesel";  path = "src/main.rs"; }];
+    dependencies = mapFeatures features ([
+      (crates."chrono"."${deps."diesel_cli"."1.4.0"."chrono"}" deps)
+      (crates."clap"."${deps."diesel_cli"."1.4.0"."clap"}" deps)
+      (crates."diesel"."${deps."diesel_cli"."1.4.0"."diesel"}" deps)
+      (crates."dotenv"."${deps."diesel_cli"."1.4.0"."dotenv"}" deps)
+      (crates."migrations_internals"."${deps."diesel_cli"."1.4.0"."migrations_internals"}" deps)
+      (crates."serde"."${deps."diesel_cli"."1.4.0"."serde"}" deps)
+      (crates."tempfile"."${deps."diesel_cli"."1.4.0"."tempfile"}" deps)
+      (crates."toml"."${deps."diesel_cli"."1.4.0"."toml"}" deps)
+    ]
+      ++ (if features.diesel_cli."1.4.0".barrel or false then [ (crates.barrel."${deps."diesel_cli"."1.4.0".barrel}" deps) ] else [])
+      ++ (if features.diesel_cli."1.4.0".libsqlite3-sys or false then [ (crates.libsqlite3_sys."${deps."diesel_cli"."1.4.0".libsqlite3_sys}" deps) ] else [])
+      ++ (if features.diesel_cli."1.4.0".url or false then [ (crates.url."${deps."diesel_cli"."1.4.0".url}" deps) ] else []));
+    features = mkFeatures (features."diesel_cli"."1.4.0" or {});
+  };
+  features_.diesel_cli."1.4.0" = deps: f: updateFeatures f (rec {
+    barrel = fold recursiveUpdate {} [
+      { "${deps.diesel_cli."1.4.0".barrel}"."diesel-filled" = true; }
+      { "${deps.diesel_cli."1.4.0".barrel}".default = true; }
+    ];
+    chrono."${deps.diesel_cli."1.4.0".chrono}".default = true;
+    clap."${deps.diesel_cli."1.4.0".clap}".default = true;
+    diesel = fold recursiveUpdate {} [
+      { "${deps.diesel_cli."1.4.0".diesel}"."mysql" =
+        (f.diesel."${deps.diesel_cli."1.4.0".diesel}"."mysql" or false) ||
+        (diesel_cli."1.4.0"."mysql" or false) ||
+        (f."diesel_cli"."1.4.0"."mysql" or false); }
+      { "${deps.diesel_cli."1.4.0".diesel}"."postgres" =
+        (f.diesel."${deps.diesel_cli."1.4.0".diesel}"."postgres" or false) ||
+        (diesel_cli."1.4.0"."postgres" or false) ||
+        (f."diesel_cli"."1.4.0"."postgres" or false); }
+      { "${deps.diesel_cli."1.4.0".diesel}"."sqlite" =
+        (f.diesel."${deps.diesel_cli."1.4.0".diesel}"."sqlite" or false) ||
+        (diesel_cli."1.4.0"."sqlite" or false) ||
+        (f."diesel_cli"."1.4.0"."sqlite" or false); }
+      { "${deps.diesel_cli."1.4.0".diesel}".default = (f.diesel."${deps.diesel_cli."1.4.0".diesel}".default or false); }
+    ];
+    diesel_cli = fold recursiveUpdate {} [
+      { "1.4.0".barrel =
+        (f.diesel_cli."1.4.0".barrel or false) ||
+        (f.diesel_cli."1.4.0".barrel-migrations or false) ||
+        (diesel_cli."1.4.0"."barrel-migrations" or false); }
+      { "1.4.0".default = (f.diesel_cli."1.4.0".default or true); }
+      { "1.4.0".mysql =
+        (f.diesel_cli."1.4.0".mysql or false) ||
+        (f.diesel_cli."1.4.0".default or false) ||
+        (diesel_cli."1.4.0"."default" or false); }
+      { "1.4.0".postgres =
+        (f.diesel_cli."1.4.0".postgres or false) ||
+        (f.diesel_cli."1.4.0".default or false) ||
+        (diesel_cli."1.4.0"."default" or false); }
+      { "1.4.0".sqlite =
+        (f.diesel_cli."1.4.0".sqlite or false) ||
+        (f.diesel_cli."1.4.0".default or false) ||
+        (diesel_cli."1.4.0"."default" or false) ||
+        (f.diesel_cli."1.4.0".sqlite-bundled or false) ||
+        (diesel_cli."1.4.0"."sqlite-bundled" or false); }
+      { "1.4.0".url =
+        (f.diesel_cli."1.4.0".url or false) ||
+        (f.diesel_cli."1.4.0".mysql or false) ||
+        (diesel_cli."1.4.0"."mysql" or false) ||
+        (f.diesel_cli."1.4.0".postgres or false) ||
+        (diesel_cli."1.4.0"."postgres" or false); }
+      { "1.4.0".uses_information_schema =
+        (f.diesel_cli."1.4.0".uses_information_schema or false) ||
+        (f.diesel_cli."1.4.0".mysql or false) ||
+        (diesel_cli."1.4.0"."mysql" or false) ||
+        (f.diesel_cli."1.4.0".postgres or false) ||
+        (diesel_cli."1.4.0"."postgres" or false); }
+    ];
+    dotenv."${deps.diesel_cli."1.4.0".dotenv}".default = true;
+    libsqlite3_sys = fold recursiveUpdate {} [
+      { "${deps.diesel_cli."1.4.0".libsqlite3_sys}"."bundled" =
+        (f.libsqlite3_sys."${deps.diesel_cli."1.4.0".libsqlite3_sys}"."bundled" or false) ||
+        (diesel_cli."1.4.0"."sqlite-bundled" or false) ||
+        (f."diesel_cli"."1.4.0"."sqlite-bundled" or false); }
+      { "${deps.diesel_cli."1.4.0".libsqlite3_sys}"."min_sqlite_version_3_7_16" = true; }
+      { "${deps.diesel_cli."1.4.0".libsqlite3_sys}".default = true; }
+    ];
+    migrations_internals = fold recursiveUpdate {} [
+      { "${deps.diesel_cli."1.4.0".migrations_internals}"."barrel" =
+        (f.migrations_internals."${deps.diesel_cli."1.4.0".migrations_internals}"."barrel" or false) ||
+        (diesel_cli."1.4.0"."barrel-migrations" or false) ||
+        (f."diesel_cli"."1.4.0"."barrel-migrations" or false); }
+      { "${deps.diesel_cli."1.4.0".migrations_internals}".default = true; }
+    ];
+    serde = fold recursiveUpdate {} [
+      { "${deps.diesel_cli."1.4.0".serde}"."derive" = true; }
+      { "${deps.diesel_cli."1.4.0".serde}".default = true; }
+    ];
+    tempfile."${deps.diesel_cli."1.4.0".tempfile}".default = true;
+    toml."${deps.diesel_cli."1.4.0".toml}".default = true;
+    url."${deps.diesel_cli."1.4.0".url}".default = true;
+  }) [
+    (features_.barrel."${deps."diesel_cli"."1.4.0"."barrel"}" deps)
+    (features_.chrono."${deps."diesel_cli"."1.4.0"."chrono"}" deps)
+    (features_.clap."${deps."diesel_cli"."1.4.0"."clap"}" deps)
+    (features_.diesel."${deps."diesel_cli"."1.4.0"."diesel"}" deps)
+    (features_.dotenv."${deps."diesel_cli"."1.4.0"."dotenv"}" deps)
+    (features_.libsqlite3_sys."${deps."diesel_cli"."1.4.0"."libsqlite3_sys"}" deps)
+    (features_.migrations_internals."${deps."diesel_cli"."1.4.0"."migrations_internals"}" deps)
+    (features_.serde."${deps."diesel_cli"."1.4.0"."serde"}" deps)
+    (features_.tempfile."${deps."diesel_cli"."1.4.0"."tempfile"}" deps)
+    (features_.toml."${deps."diesel_cli"."1.4.0"."toml"}" deps)
+    (features_.url."${deps."diesel_cli"."1.4.0"."url"}" deps)
+  ];
+
+
+# end
 # diesel_derives-1.4.0
 
   crates.diesel_derives."1.4.0" = deps: { features?(features_.diesel_derives."1.4.0" deps {}) }: buildRustCrate {
@@ -892,55 +947,6 @@ rec {
     (features_.proc_macro2."${deps."diesel_derives"."1.4.0"."proc_macro2"}" deps)
     (features_.quote."${deps."diesel_derives"."1.4.0"."quote"}" deps)
     (features_.syn."${deps."diesel_derives"."1.4.0"."syn"}" deps)
-  ];
-
-
-# end
-# diesel_infer_schema-1.4.0
-
-  crates.diesel_infer_schema."1.4.0" = deps: { features?(features_.diesel_infer_schema."1.4.0" deps {}) }: buildRustCrate {
-    crateName = "diesel_infer_schema";
-    version = "1.4.0";
-    authors = [ "Sean Griffin <sean@seantheprogrammer.com>" ];
-    sha256 = "1kr0dmp9f0rf7d8bqj8vv9a40r6b1gqis3i0x4gkyk1xyvicibi7";
-    dependencies = mapFeatures features ([
-      (crates."infer_schema_macros"."${deps."diesel_infer_schema"."1.4.0"."infer_schema_macros"}" deps)
-    ]);
-    features = mkFeatures (features."diesel_infer_schema"."1.4.0" or {});
-  };
-  features_.diesel_infer_schema."1.4.0" = deps: f: updateFeatures f (rec {
-    diesel_infer_schema = fold recursiveUpdate {} [
-      { "1.4.0".clippy =
-        (f.diesel_infer_schema."1.4.0".clippy or false) ||
-        (f.diesel_infer_schema."1.4.0".lint or false) ||
-        (diesel_infer_schema."1.4.0"."lint" or false); }
-      { "1.4.0".default = (f.diesel_infer_schema."1.4.0".default or true); }
-      { "1.4.0".dotenv_macro =
-        (f.diesel_infer_schema."1.4.0".dotenv_macro or false) ||
-        (f.diesel_infer_schema."1.4.0".default or false) ||
-        (diesel_infer_schema."1.4.0"."default" or false); }
-    ];
-    infer_schema_macros = fold recursiveUpdate {} [
-      { "${deps.diesel_infer_schema."1.4.0".infer_schema_macros}"."dotenv" =
-        (f.infer_schema_macros."${deps.diesel_infer_schema."1.4.0".infer_schema_macros}"."dotenv" or false) ||
-        (diesel_infer_schema."1.4.0"."dotenv_macro" or false) ||
-        (f."diesel_infer_schema"."1.4.0"."dotenv_macro" or false); }
-      { "${deps.diesel_infer_schema."1.4.0".infer_schema_macros}"."mysql" =
-        (f.infer_schema_macros."${deps.diesel_infer_schema."1.4.0".infer_schema_macros}"."mysql" or false) ||
-        (diesel_infer_schema."1.4.0"."mysql" or false) ||
-        (f."diesel_infer_schema"."1.4.0"."mysql" or false); }
-      { "${deps.diesel_infer_schema."1.4.0".infer_schema_macros}"."postgres" =
-        (f.infer_schema_macros."${deps.diesel_infer_schema."1.4.0".infer_schema_macros}"."postgres" or false) ||
-        (diesel_infer_schema."1.4.0"."postgres" or false) ||
-        (f."diesel_infer_schema"."1.4.0"."postgres" or false); }
-      { "${deps.diesel_infer_schema."1.4.0".infer_schema_macros}"."sqlite" =
-        (f.infer_schema_macros."${deps.diesel_infer_schema."1.4.0".infer_schema_macros}"."sqlite" or false) ||
-        (diesel_infer_schema."1.4.0"."sqlite" or false) ||
-        (f."diesel_infer_schema"."1.4.0"."sqlite" or false); }
-      { "${deps.diesel_infer_schema."1.4.0".infer_schema_macros}".default = (f.infer_schema_macros."${deps.diesel_infer_schema."1.4.0".infer_schema_macros}".default or false); }
-    ];
-  }) [
-    (features_.infer_schema_macros."${deps."diesel_infer_schema"."1.4.0"."infer_schema_macros"}" deps)
   ];
 
 
@@ -1109,29 +1115,6 @@ rec {
 
 
 # end
-# gcc-0.3.55
-
-  crates.gcc."0.3.55" = deps: { features?(features_.gcc."0.3.55" deps {}) }: buildRustCrate {
-    crateName = "gcc";
-    version = "0.3.55";
-    authors = [ "Alex Crichton <alex@alexcrichton.com>" ];
-    sha256 = "18qxv3hjdhp7pfcvbm2hvyicpgmk7xw8aii1l7fla8cxxbcrg2nz";
-    dependencies = mapFeatures features ([
-]);
-    features = mkFeatures (features."gcc"."0.3.55" or {});
-  };
-  features_.gcc."0.3.55" = deps: f: updateFeatures f (rec {
-    gcc = fold recursiveUpdate {} [
-      { "0.3.55".default = (f.gcc."0.3.55".default or true); }
-      { "0.3.55".rayon =
-        (f.gcc."0.3.55".rayon or false) ||
-        (f.gcc."0.3.55".parallel or false) ||
-        (gcc."0.3.55"."parallel" or false); }
-    ];
-  }) [];
-
-
-# end
 # heck-0.3.1
 
   crates.heck."0.3.1" = deps: { features?(features_.heck."0.3.1" deps {}) }: buildRustCrate {
@@ -1174,111 +1157,6 @@ rec {
     (features_.matches."${deps."idna"."0.1.5"."matches"}" deps)
     (features_.unicode_bidi."${deps."idna"."0.1.5"."unicode_bidi"}" deps)
     (features_.unicode_normalization."${deps."idna"."0.1.5"."unicode_normalization"}" deps)
-  ];
-
-
-# end
-# infer_schema_internals-1.4.0
-
-  crates.infer_schema_internals."1.4.0" = deps: { features?(features_.infer_schema_internals."1.4.0" deps {}) }: buildRustCrate {
-    crateName = "infer_schema_internals";
-    version = "1.4.0";
-    authors = [ "Sean Griffin <sean@seantheprogrammer.com>" ];
-    sha256 = "0kwz70wbbdwf6k8b29iswzcxf3r579rxi83xyw6wnqidj91ja2jp";
-    dependencies = mapFeatures features ([
-      (crates."diesel"."${deps."infer_schema_internals"."1.4.0"."diesel"}" deps)
-    ]);
-    features = mkFeatures (features."infer_schema_internals"."1.4.0" or {});
-  };
-  features_.infer_schema_internals."1.4.0" = deps: f: updateFeatures f (rec {
-    diesel = fold recursiveUpdate {} [
-      { "${deps.infer_schema_internals."1.4.0".diesel}"."mysql" =
-        (f.diesel."${deps.infer_schema_internals."1.4.0".diesel}"."mysql" or false) ||
-        (infer_schema_internals."1.4.0"."mysql" or false) ||
-        (f."infer_schema_internals"."1.4.0"."mysql" or false); }
-      { "${deps.infer_schema_internals."1.4.0".diesel}"."postgres" =
-        (f.diesel."${deps.infer_schema_internals."1.4.0".diesel}"."postgres" or false) ||
-        (infer_schema_internals."1.4.0"."postgres" or false) ||
-        (f."infer_schema_internals"."1.4.0"."postgres" or false); }
-      { "${deps.infer_schema_internals."1.4.0".diesel}"."sqlite" =
-        (f.diesel."${deps.infer_schema_internals."1.4.0".diesel}"."sqlite" or false) ||
-        (infer_schema_internals."1.4.0"."sqlite" or false) ||
-        (f."infer_schema_internals"."1.4.0"."sqlite" or false); }
-      { "${deps.infer_schema_internals."1.4.0".diesel}".default = (f.diesel."${deps.infer_schema_internals."1.4.0".diesel}".default or false); }
-    ];
-    infer_schema_internals = fold recursiveUpdate {} [
-      { "1.4.0".clippy =
-        (f.infer_schema_internals."1.4.0".clippy or false) ||
-        (f.infer_schema_internals."1.4.0".lint or false) ||
-        (infer_schema_internals."1.4.0"."lint" or false); }
-      { "1.4.0".default = (f.infer_schema_internals."1.4.0".default or true); }
-      { "1.4.0".uses_information_schema =
-        (f.infer_schema_internals."1.4.0".uses_information_schema or false) ||
-        (f.infer_schema_internals."1.4.0".mysql or false) ||
-        (infer_schema_internals."1.4.0"."mysql" or false) ||
-        (f.infer_schema_internals."1.4.0".postgres or false) ||
-        (infer_schema_internals."1.4.0"."postgres" or false); }
-    ];
-  }) [
-    (features_.diesel."${deps."infer_schema_internals"."1.4.0"."diesel"}" deps)
-  ];
-
-
-# end
-# infer_schema_macros-1.4.0
-
-  crates.infer_schema_macros."1.4.0" = deps: { features?(features_.infer_schema_macros."1.4.0" deps {}) }: buildRustCrate {
-    crateName = "infer_schema_macros";
-    version = "1.4.0";
-    authors = [ "Sean Griffin <sean@seantheprogrammer.com>" ];
-    sha256 = "0pi3xpcppa9c2miqfnvs79p7kkyx0f197babng2xc8j6parhkgkw";
-    procMacro = true;
-    dependencies = mapFeatures features ([
-      (crates."infer_schema_internals"."${deps."infer_schema_macros"."1.4.0"."infer_schema_internals"}" deps)
-      (crates."quote"."${deps."infer_schema_macros"."1.4.0"."quote"}" deps)
-      (crates."syn"."${deps."infer_schema_macros"."1.4.0"."syn"}" deps)
-    ]
-      ++ (if features.infer_schema_macros."1.4.0".dotenv or false then [ (crates.dotenv."${deps."infer_schema_macros"."1.4.0".dotenv}" deps) ] else []));
-    features = mkFeatures (features."infer_schema_macros"."1.4.0" or {});
-  };
-  features_.infer_schema_macros."1.4.0" = deps: f: updateFeatures f (rec {
-    dotenv."${deps.infer_schema_macros."1.4.0".dotenv}".default = (f.dotenv."${deps.infer_schema_macros."1.4.0".dotenv}".default or false);
-    infer_schema_internals = fold recursiveUpdate {} [
-      { "${deps.infer_schema_macros."1.4.0".infer_schema_internals}"."mysql" =
-        (f.infer_schema_internals."${deps.infer_schema_macros."1.4.0".infer_schema_internals}"."mysql" or false) ||
-        (infer_schema_macros."1.4.0"."mysql" or false) ||
-        (f."infer_schema_macros"."1.4.0"."mysql" or false); }
-      { "${deps.infer_schema_macros."1.4.0".infer_schema_internals}"."postgres" =
-        (f.infer_schema_internals."${deps.infer_schema_macros."1.4.0".infer_schema_internals}"."postgres" or false) ||
-        (infer_schema_macros."1.4.0"."postgres" or false) ||
-        (f."infer_schema_macros"."1.4.0"."postgres" or false); }
-      { "${deps.infer_schema_macros."1.4.0".infer_schema_internals}"."sqlite" =
-        (f.infer_schema_internals."${deps.infer_schema_macros."1.4.0".infer_schema_internals}"."sqlite" or false) ||
-        (infer_schema_macros."1.4.0"."sqlite" or false) ||
-        (f."infer_schema_macros"."1.4.0"."sqlite" or false); }
-      { "${deps.infer_schema_macros."1.4.0".infer_schema_internals}".default = (f.infer_schema_internals."${deps.infer_schema_macros."1.4.0".infer_schema_internals}".default or false); }
-    ];
-    infer_schema_macros = fold recursiveUpdate {} [
-      { "1.4.0".clippy =
-        (f.infer_schema_macros."1.4.0".clippy or false) ||
-        (f.infer_schema_macros."1.4.0".lint or false) ||
-        (infer_schema_macros."1.4.0"."lint" or false); }
-      { "1.4.0".default = (f.infer_schema_macros."1.4.0".default or true); }
-      { "1.4.0".dotenv =
-        (f.infer_schema_macros."1.4.0".dotenv or false) ||
-        (f.infer_schema_macros."1.4.0".default or false) ||
-        (infer_schema_macros."1.4.0"."default" or false); }
-    ];
-    quote."${deps.infer_schema_macros."1.4.0".quote}".default = true;
-    syn = fold recursiveUpdate {} [
-      { "${deps.infer_schema_macros."1.4.0".syn}"."aster" = true; }
-      { "${deps.infer_schema_macros."1.4.0".syn}".default = true; }
-    ];
-  }) [
-    (features_.dotenv."${deps."infer_schema_macros"."1.4.0"."dotenv"}" deps)
-    (features_.infer_schema_internals."${deps."infer_schema_macros"."1.4.0"."infer_schema_internals"}" deps)
-    (features_.quote."${deps."infer_schema_macros"."1.4.0"."quote"}" deps)
-    (features_.syn."${deps."infer_schema_macros"."1.4.0"."syn"}" deps)
   ];
 
 
@@ -2949,44 +2827,6 @@ rec {
 
 
 # end
-# rust-crypto-0.2.36
-
-  crates.rust_crypto."0.2.36" = deps: { features?(features_.rust_crypto."0.2.36" deps {}) }: buildRustCrate {
-    crateName = "rust-crypto";
-    version = "0.2.36";
-    authors = [ "The Rust-Crypto Project Developers" ];
-    sha256 = "1hm79xjmkyl20bx4b8ns77xbrm8wqklhqnci54n93zr6wiq3ddgi";
-    libName = "crypto";
-    build = "build.rs";
-    dependencies = mapFeatures features ([
-      (crates."libc"."${deps."rust_crypto"."0.2.36"."libc"}" deps)
-      (crates."rand"."${deps."rust_crypto"."0.2.36"."rand"}" deps)
-      (crates."rustc_serialize"."${deps."rust_crypto"."0.2.36"."rustc_serialize"}" deps)
-      (crates."time"."${deps."rust_crypto"."0.2.36"."time"}" deps)
-    ]);
-
-    buildDependencies = mapFeatures features ([
-      (crates."gcc"."${deps."rust_crypto"."0.2.36"."gcc"}" deps)
-    ]);
-    features = mkFeatures (features."rust_crypto"."0.2.36" or {});
-  };
-  features_.rust_crypto."0.2.36" = deps: f: updateFeatures f (rec {
-    gcc."${deps.rust_crypto."0.2.36".gcc}".default = true;
-    libc."${deps.rust_crypto."0.2.36".libc}".default = true;
-    rand."${deps.rust_crypto."0.2.36".rand}".default = true;
-    rust_crypto."0.2.36".default = (f.rust_crypto."0.2.36".default or true);
-    rustc_serialize."${deps.rust_crypto."0.2.36".rustc_serialize}".default = true;
-    time."${deps.rust_crypto."0.2.36".time}".default = true;
-  }) [
-    (features_.libc."${deps."rust_crypto"."0.2.36"."libc"}" deps)
-    (features_.rand."${deps."rust_crypto"."0.2.36"."rand"}" deps)
-    (features_.rustc_serialize."${deps."rust_crypto"."0.2.36"."rustc_serialize"}" deps)
-    (features_.time."${deps."rust_crypto"."0.2.36"."time"}" deps)
-    (features_.gcc."${deps."rust_crypto"."0.2.36"."gcc"}" deps)
-  ];
-
-
-# end
 # rustc-demangle-0.1.15
 
   crates.rustc_demangle."0.1.15" = deps: { features?(features_.rustc_demangle."0.1.15" deps {}) }: buildRustCrate {
@@ -3010,20 +2850,6 @@ rec {
         (rustc_demangle."0.1.15"."rustc-dep-of-std" or false); }
       { "0.1.15".default = (f.rustc_demangle."0.1.15".default or true); }
     ];
-  }) [];
-
-
-# end
-# rustc-serialize-0.3.24
-
-  crates.rustc_serialize."0.3.24" = deps: { features?(features_.rustc_serialize."0.3.24" deps {}) }: buildRustCrate {
-    crateName = "rustc-serialize";
-    version = "0.3.24";
-    authors = [ "The Rust Project Developers" ];
-    sha256 = "0rfk6p66mqkd3g36l0ddlv2rvnp1mp3lrq5frq9zz5cbnz5pmmxn";
-  };
-  features_.rustc_serialize."0.3.24" = deps: f: updateFeatures f (rec {
-    rustc_serialize."0.3.24".default = (f.rustc_serialize."0.3.24".default or true);
   }) [];
 
 
@@ -3062,27 +2888,6 @@ rec {
   };
   features_.ryu."0.2.8" = deps: f: updateFeatures f (rec {
     ryu."0.2.8".default = (f.ryu."0.2.8".default or true);
-  }) [];
-
-
-# end
-# safemem-0.3.0
-
-  crates.safemem."0.3.0" = deps: { features?(features_.safemem."0.3.0" deps {}) }: buildRustCrate {
-    crateName = "safemem";
-    version = "0.3.0";
-    authors = [ "Austin Bonander <austin.bonander@gmail.com>" ];
-    sha256 = "0pr39b468d05f6m7m4alsngmj5p7an8df21apsxbi57k0lmwrr18";
-    features = mkFeatures (features."safemem"."0.3.0" or {});
-  };
-  features_.safemem."0.3.0" = deps: f: updateFeatures f (rec {
-    safemem = fold recursiveUpdate {} [
-      { "0.3.0".default = (f.safemem."0.3.0".default or true); }
-      { "0.3.0".std =
-        (f.safemem."0.3.0".std or false) ||
-        (f.safemem."0.3.0".default or false) ||
-        (safemem."0.3.0"."default" or false); }
-    ];
   }) [];
 
 
@@ -3308,56 +3113,6 @@ rec {
 
 
 # end
-# structopt-0.1.7
-
-  crates.structopt."0.1.7" = deps: { features?(features_.structopt."0.1.7" deps {}) }: buildRustCrate {
-    crateName = "structopt";
-    version = "0.1.7";
-    authors = [ "Guillaume Pinot <texitoi@texitoi.eu>" ];
-    sha256 = "0ri9z9da990fybdibzwi96i3gy48fw00m79pyqk6hb06bvg6g7k2";
-    dependencies = mapFeatures features ([
-      (crates."clap"."${deps."structopt"."0.1.7"."clap"}" deps)
-    ]);
-  };
-  features_.structopt."0.1.7" = deps: f: updateFeatures f (rec {
-    clap = fold recursiveUpdate {} [
-      { "${deps.structopt."0.1.7".clap}"."default" =
-        (f.clap."${deps.structopt."0.1.7".clap}"."default" or false) ||
-        (structopt."0.1.7"."default" or false) ||
-        (f."structopt"."0.1.7"."default" or false); }
-      { "${deps.structopt."0.1.7".clap}".default = (f.clap."${deps.structopt."0.1.7".clap}".default or false); }
-    ];
-    structopt."0.1.7".default = (f.structopt."0.1.7".default or true);
-  }) [
-    (features_.clap."${deps."structopt"."0.1.7"."clap"}" deps)
-  ];
-
-
-# end
-# structopt-derive-0.1.6
-
-  crates.structopt_derive."0.1.6" = deps: { features?(features_.structopt_derive."0.1.6" deps {}) }: buildRustCrate {
-    crateName = "structopt-derive";
-    version = "0.1.6";
-    authors = [ "Guillaume Pinot <texitoi@texitoi.eu>" ];
-    sha256 = "0jmym5m7x8h5pcsjk2pizkx50q4a7jpv9m8yvf0bjh9d57cnfak4";
-    procMacro = true;
-    dependencies = mapFeatures features ([
-      (crates."quote"."${deps."structopt_derive"."0.1.6"."quote"}" deps)
-      (crates."syn"."${deps."structopt_derive"."0.1.6"."syn"}" deps)
-    ]);
-  };
-  features_.structopt_derive."0.1.6" = deps: f: updateFeatures f (rec {
-    quote."${deps.structopt_derive."0.1.6".quote}".default = true;
-    structopt_derive."0.1.6".default = (f.structopt_derive."0.1.6".default or true);
-    syn."${deps.structopt_derive."0.1.6".syn}".default = true;
-  }) [
-    (features_.quote."${deps."structopt_derive"."0.1.6"."quote"}" deps)
-    (features_.syn."${deps."structopt_derive"."0.1.6"."syn"}" deps)
-  ];
-
-
-# end
 # syn-0.11.11
 
   crates.syn."0.11.11" = deps: { features?(features_.syn."0.11.11" deps {}) }: buildRustCrate {
@@ -3511,44 +3266,6 @@ rec {
   }) [
     (features_.rand."${deps."tempdir"."0.3.7"."rand"}" deps)
     (features_.remove_dir_all."${deps."tempdir"."0.3.7"."remove_dir_all"}" deps)
-  ];
-
-
-# end
-# tempfile-2.2.0
-
-  crates.tempfile."2.2.0" = deps: { features?(features_.tempfile."2.2.0" deps {}) }: buildRustCrate {
-    crateName = "tempfile";
-    version = "2.2.0";
-    authors = [ "Steven Allen <steven@stebalien.com>" ];
-    sha256 = "1z3l901ipvi0s0mdppw4lwfa77ydb22rfnf6y9sh0pifj7ah5drf";
-    dependencies = mapFeatures features ([
-      (crates."rand"."${deps."tempfile"."2.2.0"."rand"}" deps)
-    ])
-      ++ (if kernel == "redox" then mapFeatures features ([
-      (crates."redox_syscall"."${deps."tempfile"."2.2.0"."redox_syscall"}" deps)
-    ]) else [])
-      ++ (if (kernel == "linux" || kernel == "darwin") then mapFeatures features ([
-      (crates."libc"."${deps."tempfile"."2.2.0"."libc"}" deps)
-    ]) else [])
-      ++ (if kernel == "windows" then mapFeatures features ([
-      (crates."kernel32_sys"."${deps."tempfile"."2.2.0"."kernel32_sys"}" deps)
-      (crates."winapi"."${deps."tempfile"."2.2.0"."winapi"}" deps)
-    ]) else []);
-  };
-  features_.tempfile."2.2.0" = deps: f: updateFeatures f (rec {
-    kernel32_sys."${deps.tempfile."2.2.0".kernel32_sys}".default = true;
-    libc."${deps.tempfile."2.2.0".libc}".default = true;
-    rand."${deps.tempfile."2.2.0".rand}".default = true;
-    redox_syscall."${deps.tempfile."2.2.0".redox_syscall}".default = true;
-    tempfile."2.2.0".default = (f.tempfile."2.2.0".default or true);
-    winapi."${deps.tempfile."2.2.0".winapi}".default = true;
-  }) [
-    (features_.rand."${deps."tempfile"."2.2.0"."rand"}" deps)
-    (features_.redox_syscall."${deps."tempfile"."2.2.0"."redox_syscall"}" deps)
-    (features_.libc."${deps."tempfile"."2.2.0"."libc"}" deps)
-    (features_.kernel32_sys."${deps."tempfile"."2.2.0"."kernel32_sys"}" deps)
-    (features_.winapi."${deps."tempfile"."2.2.0"."winapi"}" deps)
   ];
 
 

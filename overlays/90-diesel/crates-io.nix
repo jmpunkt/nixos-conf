@@ -827,10 +827,7 @@ rec {
     chrono."${deps.diesel_cli."1.4.0".chrono}".default = true;
     clap."${deps.diesel_cli."1.4.0".clap}".default = true;
     diesel = fold recursiveUpdate {} [
-      { "${deps.diesel_cli."1.4.0".diesel}"."mysql" =
-        (f.diesel."${deps.diesel_cli."1.4.0".diesel}"."mysql" or false) ||
-        (diesel_cli."1.4.0"."mysql" or false) ||
-        (f."diesel_cli"."1.4.0"."mysql" or false); }
+      { "${deps.diesel_cli."1.4.0".diesel}"."mysql" = false; }
       { "${deps.diesel_cli."1.4.0".diesel}"."postgres" =
         (f.diesel."${deps.diesel_cli."1.4.0".diesel}"."postgres" or false) ||
         (diesel_cli."1.4.0"."postgres" or false) ||
@@ -847,10 +844,7 @@ rec {
         (f.diesel_cli."1.4.0".barrel-migrations or false) ||
         (diesel_cli."1.4.0"."barrel-migrations" or false); }
       { "1.4.0".default = (f.diesel_cli."1.4.0".default or true); }
-      { "1.4.0".mysql =
-        (f.diesel_cli."1.4.0".mysql or false) ||
-        (f.diesel_cli."1.4.0".default or false) ||
-        (diesel_cli."1.4.0"."default" or false); }
+      { "1.4.0".mysql = false; }
       { "1.4.0".postgres =
         (f.diesel_cli."1.4.0".postgres or false) ||
         (f.diesel_cli."1.4.0".default or false) ||

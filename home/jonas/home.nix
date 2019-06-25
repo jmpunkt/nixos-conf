@@ -16,9 +16,14 @@
 
   home.packages = with pkgs; [
     python
-    nodejs
     binutils-unwrapped
     nixify
+
+    # coc-nvim dependencies
+    nodejs
+    ctags
+    python37Packages.python-language-server
+    rustToolchain # overlays/40-toolchains.nix
   ];
 
   xdg.configFile."alacritty/alacritty.yml".text = builtins.readFile ./alacritty/alacritty.yml;

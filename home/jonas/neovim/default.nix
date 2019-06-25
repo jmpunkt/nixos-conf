@@ -1,6 +1,8 @@
 { pkgs, stdenv, ... }:
 
 {
+  xdg.configFile."nvim/coc-settings.json".text = builtins.readFile ./coc-settings.json;
+
   programs.neovim = {
     enable = true;
 

@@ -1,0 +1,6 @@
+{
+    "rust-client.updateOnStartup" : false,
+    "rust-client.disableRustup": true,
+    "python.jediEnabled": true,
+    "python.autoUpdateLanguageServer": false
+}

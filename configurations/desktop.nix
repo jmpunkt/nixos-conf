@@ -12,17 +12,15 @@
     thunderbird
     firefox
     dbeaver
-
     keepassxc
-
-    texlive.combined.scheme-medium
-    rustup
 
     discord
     steam
 
     tdesktop
     pencil
+
+    texlive.combined.scheme-medium
   ];
 
   services.printing.enable = true;

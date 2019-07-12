@@ -15,14 +15,13 @@
   };
 
   home.packages = with pkgs; [
-    python
     binutils-unwrapped
     nixify
 
     # coc-nvim dependencies
     nodejs
     ctags
-    python37Packages.python-language-server
+    pythonToolchain # overlays/40-toolchains.nix
     rustToolchain # overlays/40-toolchains.nix
   ];
 

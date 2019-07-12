@@ -1,6 +1,8 @@
 {
     "rust-client.updateOnStartup" : false,
     "rust-client.disableRustup": true,
-    "python.jediEnabled": true,
-    "python.autoUpdateLanguageServer": false
+    "python.autoUpdateLanguageServer": false,
+    "python.pythonPath": "python3",
+    "python.disableInstallationCheck": true,
+    "python.jediEnabled": true
 }

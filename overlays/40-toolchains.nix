@@ -9,4 +9,15 @@ self: super:
       "rustfmt-preview"
     ];
   };
+
+  pythonToolchain = (super.python37.withPackages(ps: with ps; [
+    python-language-server
+    pyls-black
+    pyls-isort
+    pyls-mypy
+    numpy
+    scipy
+    pandas
+    mccabe
+  ]));
 }

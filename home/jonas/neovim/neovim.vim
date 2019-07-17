@@ -2,7 +2,7 @@ filetype plugin indent on
 syntax enable
 
 "" coc
-let g:coc_global_extensions = [ "coc-rls", "coc-json", "coc-yaml", "coc-python", "coc-html", "coc-vimtex" ]
+" let g:coc_global_extensions = [ "coc-rls", "coc-json", "coc-yaml", "coc-python", "coc-html", "coc-vimtex" ]
 
 "" vimtex
 let g:vimtex_indent_enabled = 0

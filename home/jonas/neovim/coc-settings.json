@@ -1,8 +1,14 @@
 {
+    "coc.preferences.extensionUpdateCheck": "never",
     "rust-client.updateOnStartup" : false,
     "rust-client.disableRustup": true,
     "python.autoUpdateLanguageServer": false,
     "python.pythonPath": "python3",
+    "python.analysis.diagnosticEnabled": false,
+    "python.analysis.disabled": true,
+    "python.jediEnabled": true,
     "python.disableInstallationCheck": true,
-    "python.jediEnabled": true
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.pylamaEnabled": true
 }

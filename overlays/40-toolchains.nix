@@ -11,13 +11,18 @@ self: super:
   };
 
   pythonToolchain = (super.python37.withPackages(ps: with ps; [
-    python-language-server
-    pyls-black
-    pyls-isort
-    pyls-mypy
+    mccabe
+    mypy
+    pylama
+    black
+    isort
+    pycodestyle
+    pyflakes
+    yapf
+    jedi
+
     numpy
     scipy
     pandas
-    mccabe
   ]));
 }

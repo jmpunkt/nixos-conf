@@ -11,6 +11,7 @@
     configure = {
       customRC = builtins.readFile ./neovim.vim;
       plug.plugins = with pkgs.vimPlugins; [
+        fzfWrapper
         fzf-vim
         vim-polyglot
         vimtex

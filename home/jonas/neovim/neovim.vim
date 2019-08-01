@@ -1,9 +1,6 @@
 filetype plugin indent on
 syntax enable
 
-"" coc
-" let g:coc_global_extensions = [ "coc-rls", "coc-json", "coc-yaml", "coc-python", "coc-html", "coc-vimtex" ]
-
 "" vimtex
 let g:vimtex_indent_enabled = 0
 let g:vimtex_imaps_enabled = 0
@@ -28,6 +25,11 @@ let g:vimtex_compiler_latexmk = {
             \   '-halt-on-error',
             \ ],
             \}
+
+"" Airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 
 "" QuickScope
 let g:qs_highlight_on_keys = ['f', 'F']

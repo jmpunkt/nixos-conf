@@ -17,6 +17,7 @@
   home.packages = with pkgs; [
     binutils-unwrapped
     nixify
+    fzf
 
     # coc-nvim dependencies
     yarn

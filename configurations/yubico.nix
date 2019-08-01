@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  programs.ssh.startAgent = false;
+
   environment.systemPackages = with pkgs; [
     yubikey-manager-qt
     yubikey-personalization

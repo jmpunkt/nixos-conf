@@ -29,6 +29,9 @@
 
   xdg.configFile."alacritty/alacritty.yml".text = builtins.readFile ./alacritty/alacritty.yml;
 
+  home.file.".ssh/id_rsa.pub".text = builtins.readFile ./ssh/yubikey.pub;
+  home.file.".ssh/config".text = builtins.readFile ./ssh/config;
+
   programs.git = {
     enable = true;
     userName = "Jonas Meurer";

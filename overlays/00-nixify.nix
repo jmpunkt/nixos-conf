@@ -16,7 +16,6 @@ self: super:
       ];
       }
       EOF
-        ${EDITOR:-vim} default.nix
       fi
   '';
 }

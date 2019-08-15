@@ -19,15 +19,27 @@
     nixify
     fzf
 
+    supermacs
+    ccls
+    haskellPackages.haskell-lsp
+    nodePackages.vscode-css-languageserver-bin
+    nodePackages.vscode-html-languageserver-bin
+    nodePackages.typescript-language-server
+    nodePackages.typescript
+    pythonToolchain # overlays/40-toolchains.nix
+    rustToolchain # overlays/40-toolchains.nix
+
     # coc-nvim dependencies
     yarn
     nodejs
     ctags
-    pythonToolchain # overlays/40-toolchains.nix
-    rustToolchain # overlays/40-toolchains.nix
   ];
 
   xdg.configFile."alacritty/alacritty.yml".text = builtins.readFile ./alacritty/alacritty.yml;
+  home.file.".emacs.d" = {
+    source = ./emacs;
+    recursive = true;
+  };
 
   home.file.".ssh/id_rsa.pub".text = builtins.readFile ./ssh/yubikey.pub;
   home.file.".ssh/config".text = builtins.readFile ./ssh/config;

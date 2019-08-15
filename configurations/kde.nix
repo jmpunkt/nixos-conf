@@ -9,7 +9,6 @@
     okular
     libreoffice-fresh
     krita
-    inkscape
     kate
     gwenview
     kdeApplications.spectacle

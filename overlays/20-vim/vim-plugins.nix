@@ -1,4 +1,4 @@
-{ stdenv, fetchzip, fetchgit, vimUtils, fetchFromGitHub, yarn2nix, coc-plugins, ... }:
+{ stdenv, fetchzip, fetchgit, vimUtils, fetchFromGitHub, yarn2nix, nodePackages, ... }:
 
 {
   coc-nvim = vimUtils.buildVimPlugin rec {
@@ -15,37 +15,37 @@
   coc-rls = vimUtils.buildVimPlugin rec {
     pname = "coc-rls";
     version = "2019-06-19";
-    src = "${coc-plugins.coc-rls}/lib/node_modules/${pname}";
+    src = "${nodePackages.coc-rls}/lib/node_modules/${pname}";
   };
 
   coc-yaml = vimUtils.buildVimPlugin rec {
     pname = "coc-yaml";
     version = "2019-06-20";
-    src = "${coc-plugins.coc-yaml}/lib/node_modules/${pname}";
+    src = "${nodePackages.coc-yaml}/lib/node_modules/${pname}";
   };
 
   coc-vimtex = vimUtils.buildVimPlugin rec {
     pname = "coc-vimtex";
     version = "2019-06-20";
-    src = "${coc-plugins.coc-vimtex}/lib/node_modules/${pname}";
+    src = "${nodePackages.coc-vimtex}/lib/node_modules/${pname}";
  };
 
   coc-css = vimUtils.buildVimPlugin rec {
     pname = "coc-css";
     version = "2019-06-25";
-    src = "${coc-plugins.coc-css}/lib/node_modules/${pname}";
+    src = "${nodePackages.coc-css}/lib/node_modules/${pname}";
   };
 
   coc-json = vimUtils.buildVimPlugin rec {
     pname = "coc-json";
     version = "2019-06-21";
-    src = "${coc-plugins.coc-json}/lib/node_modules/${pname}";
+    src = "${nodePackages.coc-json}/lib/node_modules/${pname}";
   };
 
   coc-python = vimUtils.buildVimPlugin rec {
     pname = "coc-python";
     version = "2019-06-28";
-    src = "${coc-plugins.coc-python}/lib/node_modules/${pname}";
+    src = "${nodePackages.coc-python}/lib/node_modules/${pname}";
   };
 
   lexima = vimUtils.buildVimPlugin {

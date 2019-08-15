@@ -31,6 +31,6 @@ nixos-rebuild switch
 ## Setup Home-Manager
 
 ```bash
-ln -s /etc/nixos/home/$USER $HOME/.config/nixpkgs
+ln -s /etc/nixos/nixos-conf/home/$USER $HOME/.config/nixpkgs
 home-manger switch
 ```

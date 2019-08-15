@@ -16,6 +16,12 @@ self: super:
   };
 
   pythonToolchain = (super.python37.withPackages(ps: with ps; [
+    python-language-server
+    pyls-black
+    pyls-mypy
+    jedi
+    epc
+
     mccabe
     mypy
     pylama
@@ -24,7 +30,6 @@ self: super:
     pycodestyle
     pyflakes
     yapf
-    jedi
 
     numpy
     scipy

@@ -1,4 +1,4 @@
-;;; hydra-core.el --- Configuration for core hydra binds
+;;; init-hydra.el --- Configuration for core hydra binds
 ;;; Commentary:
 
 ;;; Code:
@@ -158,5 +158,5 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (global-set-key (kbd "C-x p") 'hydra-smartparens/body)
 
-(provide 'hydra-core)
-;;; hydra-core.el ends here
+(provide 'init-hydra)
+;;; init-hydra.el ends here

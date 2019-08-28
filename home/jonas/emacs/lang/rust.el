@@ -9,6 +9,7 @@
   (rust-mode . smartparens-mode))
 
 (use-package flycheck-rust
+  :after flycheck
   :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (provide 'rust)

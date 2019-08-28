@@ -10,9 +10,6 @@
   (python-mode . lsp)
   (python-mode . smartparens-mode)
 
-  :init
-  (setq-default indent-tabs-mode nil)
-
   :config
   (setq python-indent-offset 4))
 

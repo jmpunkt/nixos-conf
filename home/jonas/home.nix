@@ -22,8 +22,6 @@
     supermacs
     ccls
     haskellPackages.haskell-lsp
-    nodePackages.vscode-css-languageserver-bin
-    nodePackages.vscode-html-languageserver-bin
     nodePackages.typescript-language-server
     nodePackages.typescript
     pythonToolchain # overlays/40-toolchains.nix

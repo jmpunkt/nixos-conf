@@ -1,13 +1,12 @@
 [
-    "vscode-css-languageserver-bin",
-    "vscode-html-languageserver-bin",
-    "typescript-language-server",
-    "@elm-tooling/elm-language-server",
+  "typescript-language-server",
+  "@elm-tooling/elm-language-server",
+  "tslint",
 
-    "coc-python",
-    "coc-vimtex",
-    "coc-rls",
-    "coc-json",
-    "coc-yaml",
-    "coc-css"
+  "coc-python",
+  "coc-vimtex",
+  "coc-rls",
+  "coc-json",
+  "coc-yaml",
+  "coc-css"
 ]

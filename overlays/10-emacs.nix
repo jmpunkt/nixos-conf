@@ -5,8 +5,17 @@ super: self:
     evil
     use-package
     smartparens
+    which-key
 
     direnv
+
+    magit
+    evil-magit
+
+    projectile
+
+    treemacs
+    treemacs-projectile
 
     hydra
     org-ref
@@ -36,6 +45,7 @@ super: self:
     company-math
     company-emoji
     company-jedi
+    company-web
     company-quickhelp
     company-irony
     company-auctex
@@ -62,8 +72,8 @@ super: self:
     lua-mode
     haskell-mode
     web-mode
-    typescript-mode
     js2-mode
+    tide
   ])++ (with epkgs.elpaPackages; [
     undo-tree
     auctex

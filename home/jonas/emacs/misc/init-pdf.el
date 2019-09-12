@@ -1,57 +1,46 @@
-;;; pdf.el --- Configuration for PDF files
+;;; init-pdf.el --- Configuration for PDF files
 ;;; Commentary:
 
 ;;; Code:
 
 (use-package pdf-tools
-  :ensure t
   :after hydra
+  :hook
+  (pdf-view-mode . (lambda ()
+                     (pdf-misc-size-indication-minor-mode)
+                     (pdf-links-minor-mode)
+                     (pdf-isearch-minor-mode)
+                     (cua-mode 0)))
+  :bind
+  ((:map pdf-view-mode-map
+         ("/" . hydra-pdftools/body)
+         ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
+         ("g"  . pdf-view-first-page)
+         ("G"  . pdf-view-last-page)
+         ("l"  . image-forward-hscroll)
+         ("h"  . image-backward-hscroll)
+         ("j"  . pdf-view-next-page)
+         ("k"  . pdf-view-previous-page)
+         ("e"  . pdf-view-goto-page)
+         ("u"  . pdf-view-revert-buffer)
+         ("al" . pdf-annot-list-annotations)
+         ("ad" . pdf-annot-delete)
+         ("aa" . pdf-annot-attachment-dired)
+         ("am" . pdf-annot-add-markup-annotation)
+         ("at" . pdf-annot-add-text-annotation)
+         ("y"  . pdf-view-kill-ring-save)
+         ("i"  . pdf-misc-display-metadata)
+         ("s"  . pdf-occur)
+         ("b"  . pdf-view-set-slice-from-bounding-box)
+         ("r"  . pdf-view-reset-slice)))
   :config
-
-  ;; Install what need to be installed !
   (pdf-tools-install t t t)
-  ;; open pdfs scaled to fit page
   (setq-default pdf-view-display-size 'fit-page)
-  ;; automatically annotate highlights
-  (setq pdf-annot-activate-created-annotations t)
+  (setq pdf-annot-activate-created-annotations t
+        pdf-view-resize-factor 1.1)
   ;; use normal isearch
   (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-  ;; more fine-grained zooming
-  (setq pdf-view-resize-factor 1.1)
-
-  ;;
-  (add-hook 'pdf-view-mode-hook
-            (lambda ()
-              (pdf-misc-size-indication-minor-mode)
-              (pdf-links-minor-mode)
-              (pdf-isearch-minor-mode)
-              (cua-mode 0)
-              ))
-
   (add-to-list 'auto-mode-alist (cons "\\.pdf$" 'pdf-view-mode))
-
-  ;; Keys
-  (bind-keys :map pdf-view-mode-map
-             ("/" . hydra-pdftools/body)
-             ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
-             ("g"  . pdf-view-first-page)
-             ("G"  . pdf-view-last-page)
-             ("l"  . image-forward-hscroll)
-             ("h"  . image-backward-hscroll)
-             ("j"  . pdf-view-next-page)
-             ("k"  . pdf-view-previous-page)
-             ("e"  . pdf-view-goto-page)
-             ("u"  . pdf-view-revert-buffer)
-             ("al" . pdf-annot-list-annotations)
-             ("ad" . pdf-annot-delete)
-             ("aa" . pdf-annot-attachment-dired)
-             ("am" . pdf-annot-add-markup-annotation)
-             ("at" . pdf-annot-add-text-annotation)
-             ("y"  . pdf-view-kill-ring-save)
-             ("i"  . pdf-misc-display-metadata)
-             ("s"  . pdf-occur)
-             ("b"  . pdf-view-set-slice-from-bounding-box)
-             ("r"  . pdf-view-reset-slice))
 
   (defhydra hydra-pdftools (:color blue :hint nil)
     "
@@ -102,5 +91,5 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
           ("l" image-forward-hscroll :color red)
           ("h" image-backward-hscroll :color red)))
 
-(provide 'pdf)
-;;; pdf.el ends here
+(provide 'init-pdf)
+;;; init-pdf.el ends here

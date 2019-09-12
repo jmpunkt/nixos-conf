@@ -2,53 +2,50 @@
 ;;; Commentary:
 
 ;;; Code:
-(require 'all-the-icons)
-(setq inhibit-compacting-font-caches t)
-(require 'doom-themes)
-(doom-themes-treemacs-config)
-(require 'doom-modeline)
-(setq doom-modeline-icon t)
+(use-package all-the-icons
+  :init (setq inhibit-compacting-font-caches t))
 
-(setq-default tab-width 4)
-(setq-default indent-tabs-mode nil)
-(setq-default show-paren-delay 0)
-(setq-default show-trailing-whitespace t)
-(setq indent-line-function 'insert-tab)
+(use-package doom-themes
+  :init (doom-themes-treemacs-config))
 
-(setq make-backup-files nil)
-(setq auto-save-default nil)
-(setq column-number-mode t)
+(use-package doom-modeline
+  :init
+  (setq doom-modeline-icon t
+        doom-modeline-lsp t))
 
-(show-paren-mode 1)
-(global-linum-mode t)
-(global-hl-line-mode +1)
-(global-prettify-symbols-mode t)
+(use-package emacs
+  :init
+  (setq-default tab-width 4)
+  (setq-default indent-tabs-mode nil)
+  (setq-default show-paren-delay 0)
+  (setq-default show-trailing-whitespace t)
+  (setq indent-line-function 'insert-tab)
 
-(toggle-scroll-bar -1)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
+  (setq make-backup-files nil)
+  (setq auto-save-default nil)
+  (setq column-number-mode t)
 
-(global-eldoc-mode -1)
-(defvar eldoc-in-minibuffer-mode nil)
+  (show-paren-mode 1)
+  (global-linum-mode t)
+  (global-hl-line-mode +1)
+  (global-prettify-symbols-mode t)
 
-(global-set-key [f1] 'shell)
+  (toggle-scroll-bar -1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
 
-(custom-set-faces
-;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "IBM Plex Mono" :foundry "IBM " :slant normal :weight normal :height 113 :width normal)))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("1c082c9b84449e54af757bcae23617d11f563fc9f33a832a8a2813c4d7dfb652" default))))
+  (global-eldoc-mode -1)
+  (defvar eldoc-in-minibuffer-mode nil)
 
-(load-theme 'doom-vibrant)
+  (global-set-key [f1] 'shell)
 
+  (custom-set-faces
+   '(default ((t (:family "IBM Plex Mono" :foundry "IBM " :slant normal :weight normal :height 113 :width normal)))))
+  (custom-set-variables
+   '(custom-safe-themes
+     (quote
+      ("1c082c9b84449e54af757bcae23617d11f563fc9f33a832a8a2813c4d7dfb652" default))))
+
+  (load-theme 'doom-vibrant))
 (provide 'globals)
 ;;; globals.el ends here

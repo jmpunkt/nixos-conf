@@ -2,11 +2,10 @@
 ;;; Commentary:
 
 ;; Code:
-(use-package lua-mode
-  :ensure t)
+(use-package lua-mode)
 
 (use-package company-lua
-  :ensure t)
+  :after (company))
 
 (provide 'lua)
 ;;; lua.el ends here

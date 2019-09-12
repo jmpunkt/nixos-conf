@@ -4,20 +4,27 @@
 ;;; Code:
 
 (use-package markdown-mode
-  :ensure t
-  :mode ("\\.md$")
-  :config
-  (defhydra dh-hydra-markdown-mode (:hint nil)
+  :after (flyspell hydra)
+  :mode
+  ("INSTALL\\'"
+   "CONTRIBUTORS\\'"
+   "LICENSE\\'"
+   "README\\'"
+   "\\.markdown\\'"
+   "\\.md\\'")
+  :hook (markdown-mode . flyspell-mode)
+  :bind (:map markdown-mode-map
+              ([f6] . hydra-markdown-mode/body))
+  :init
+  (defhydra hydra-markdown-mode (:hint nil)
     "
-    Formatting        C-c C-s    _s_: bold          _e_: italic     _b_: blockquote   _p_: pre-formatted    _c_: code
-
-    Headings          C-c C-t    _h_: automatic     _1_: h1         _2_: h2           _3_: h3               _4_: h4
-
-    Lists             C-c C-x    _m_: insert item
-
-    Demote/Promote    C-c C-x    _l_: promote       _r_: demote     _u_: move up      _d_: move down
-
-    Links, footnotes  C-c C-a    _L_: link          _U_: uri        _F_: footnote     _W_: wiki-link      _R_: reference
+   Formatting^^           Headings^^         References^^       Other
+-------------------------------------------------------------------------------------
+   [_s_] bold             [_h_] automatic    [_L_] link         [_m_] insert item
+   [_e_] italic           [_1_] h1           [_U_] uri          [_l_] promote
+   [_b_] blockquote       [_2_] h2           [_F_] footnote     [_r_] demote
+   [_p_] pre-formatted    [_3_] h3           [_W_] wiki-link    [_u_] move up
+   [_c_] code             [_4_] h4           [_R_] reference    [_d_] move down
     "
     ("s" markdown-insert-bold)
     ("e" markdown-insert-italic)
@@ -42,12 +49,9 @@
     ("U" markdown-insert-uri :color blue)
     ("F" markdown-insert-footnote :color blue)
     ("W" markdown-insert-wiki-link :color blue)
-    ("R" markdown-insert-reference-link-dwim :color blue)
-    )
-  (global-set-key [f9] 'dh-hydra-markdown-mode/body))
+    ("R" markdown-insert-reference-link-dwim :color blue)))
 
 (use-package markdown-mode+
-  :ensure t
   :after markdown-mode
   :defer t)
 

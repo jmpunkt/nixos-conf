@@ -4,9 +4,8 @@
 ;;; Code:
 
 (use-package tex-site
-  :ensure auctex
   :defer t
-  :after (tex latex)
+  :after (auctex tex latex)
   :config
 
   ;; Spelling
@@ -133,25 +132,21 @@
 ;; (setq TeX-auto-global (format "%s/auctex/style" generated-basedir))
 
 (use-package company-auctex
-  :ensure t
   :hook
   (latex-mode . (company-auctex-init)))
 
 
 (use-package company-bibtex
-  :ensure t
   :hook
   (latex-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-bibtex))))
   (org-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-bibtex)))))
 
 (use-package company-reftex
-  :ensure t
   :hook
   (latex-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-reftex-labels company-reftex-citations))))
   (org-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-reftex-labels company-reftex-citations)))))
 
 (use-package company-math
-  :ensure t
   :hook
   (latex-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-math-symbols-unicode))))
   (org-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-math-symbols-unicode)))))
@@ -171,7 +166,6 @@
   )
 
 (use-package auctex-latexmk
-  :ensure t
   :config
   (setq auctex-latexmk-inherit-TeX-PDF-mode t)
   (auctex-latexmk-setup))
@@ -232,7 +226,6 @@
         reftex-cite-cleanup-optional-args t))
 
 (use-package latex-math-preview
-  :ensure t
   :config
   (autoload 'LaTeX-preview-setup "preview")
   (setq preview-scale-function 1.2)

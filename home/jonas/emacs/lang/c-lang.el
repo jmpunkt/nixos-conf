@@ -3,14 +3,11 @@
 
 ;;; Code:
 (use-package irony
-  :ensure t
-  :hook
-  (c-mode . irony-mode)
-  (objc-mode . irony-mode)
-  (c++-mode .irony-mode))
+  :hook ((c-mode . irony-mode)
+         (objc-mode . irony-mode)
+         (c++-mode .irony-mode)))
 
 (use-package flycheck-irony
-  :ensure t
   :after (flycheck irony)
   :defer t)
 

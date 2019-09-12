@@ -2,6 +2,7 @@
 {
   imports = [
     ./neovim/default.nix
+    ./latex.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -15,17 +16,24 @@
   };
 
   home.packages = with pkgs; [
-    binutils-unwrapped
     nixify
-    fzf
+    binutils-unwrapped
+    steam
 
+    # <START - emacs
     supermacs
+    languagetool
+    # nixfmt
     ccls
     haskellPackages.haskell-lsp
     nodePackages.typescript-language-server
     nodePackages.typescript
     pythonToolchain # overlays/40-toolchains.nix
     rustToolchain # overlays/40-toolchains.nix
+    discount
+    # >END - emacs
+
+    diesel_cli
 
     # coc-nvim dependencies
     yarn

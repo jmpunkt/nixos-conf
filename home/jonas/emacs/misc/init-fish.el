@@ -1,4 +1,4 @@
-;;; fish.el --- Configuration for C/C++ developement environment
+;;; init-fish.el --- Configuration for Fish shell
 ;;; Commentary:
 
 ;;; Code:
@@ -6,4 +6,4 @@
   :mode "\\.fish\\'")
 
 (provide 'fish)
-;;; fish.el ends here
+;;; init-fish.el ends here

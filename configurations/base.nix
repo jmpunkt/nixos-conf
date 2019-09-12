@@ -17,6 +17,11 @@
     ntfs3g
     gcc
     gnumake
+    home-manager
+    direnv
+    tokei
+    fzf
+    hyperfine
   ];
 
   programs.mtr.enable = true;

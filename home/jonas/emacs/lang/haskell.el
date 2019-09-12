@@ -4,11 +4,12 @@
 ;;; Code:
 
 (use-package haskell-mode
-  :hook
-  (haskell-mode . lsp)
-  (haskell-mode . smartparens-mode))
+  :after (lsp smartparens)
+  :hook ((haskell-mode . lsp)
+         (haskell-mode . smartparens-mode)))
 
 (use-package flycheck-haskell
+  :after (flycheck)
   :hook (haskell-mode . flycheck-haskell-setup))
 
 (provide 'haskell)

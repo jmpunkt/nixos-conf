@@ -3,7 +3,7 @@
 
 ;;; Code:
 (use-package elm-mode
-  :ensure t
+  :after company
   :config
   (setq elm-format-on-save t)
   (add-to-list 'company-backends 'company-elm))

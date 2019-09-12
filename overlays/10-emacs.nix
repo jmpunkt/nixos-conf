@@ -6,8 +6,19 @@ super: self:
     use-package
     smartparens
     which-key
+    ripgrep
 
+    org-ref
+    org-noter
+    ivy-bibtex
+    pdf-tools
+    biblio
+    biblio-core
+    parsebib
     direnv
+    academic-phrases
+    interleave
+    langtool
 
     magit
     evil-magit
@@ -18,7 +29,6 @@ super: self:
     treemacs-projectile
 
     hydra
-    org-ref
 
     yasnippet
     yasnippet-snippets
@@ -33,10 +43,12 @@ super: self:
 
     flycheck
     flycheck-irony
+    flycheck-package
     flycheck-rust
 
     ivy
     counsel
+    counsel-projectile
     flyspell-correct-ivy
 
     company
@@ -65,15 +77,16 @@ super: self:
     markdown-mode
     markdown-mode-plus
     pandoc-mode
-
     irony
     rust-mode
+    graphql-mode
     elm-mode
     lua-mode
     haskell-mode
     web-mode
     js2-mode
     tide
+    meson-mode
   ])++ (with epkgs.elpaPackages; [
     undo-tree
     auctex

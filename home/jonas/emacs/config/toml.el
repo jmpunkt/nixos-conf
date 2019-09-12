@@ -3,9 +3,7 @@
 
 ;;; Code:
 (use-package toml-mode
-  :ensure t
-  :mode
-  ("\\.toml$"))
+  :mode ("\\.toml$"))
 
 (provide 'toml)
 ;;; toml.el ends here

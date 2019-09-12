@@ -3,10 +3,7 @@
 {
   environment.systemPackages = with pkgs; [
     alacritty
-    home-manager
-    tokei
     cryptsetup
-    direnv
     gnupg
     feh
     thunderbird
@@ -15,12 +12,8 @@
     keepassxc
 
     discord
-    steam
-
     tdesktop
     pencil
-
-    texlive.combined.scheme-medium
   ];
 
   services.printing.enable = true;
@@ -42,12 +35,7 @@
     roboto-slab
 
     # Emacs Icons
-    # material-design-icons
-    # weather-icons
-    # font-awesome_5
     emacs-all-the-icons-fonts
-    # file-icons
-    # octicons
   ];
 
   services.redshift = {

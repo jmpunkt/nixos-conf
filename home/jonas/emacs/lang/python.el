@@ -3,8 +3,8 @@
 
 ;;; Code:
 (use-package python
-  :mode
-  ("\\.py\\'" . python-mode)
+  :after (lsp smartparens)
+  :mode ("\\.py\\'" . python-mode)
 
   :hook
   (python-mode . lsp)

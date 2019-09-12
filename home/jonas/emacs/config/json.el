@@ -3,9 +3,7 @@
 
 ;;; Code:
 (use-package json-mode
-  :ensure t
-  :mode
-  ("\\.json$"))
+  :mode "\\.json$")
 
 (provide 'json)
 ;;; json.el ends here

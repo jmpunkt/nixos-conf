@@ -10,7 +10,6 @@
 
 (load-file "~/.emacs.d/core.el")
 (load-file "~/.emacs.d/globals.el")
-(load-file "~/.emacs.d/init-hydra.el")
 
 (defun load-directory (dir)
   (let ((load-it (lambda (f)

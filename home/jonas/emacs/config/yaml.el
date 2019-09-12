@@ -3,8 +3,7 @@
 
 ;;; Code:
 (use-package yaml-mode
-  :ensure t
-  :mode (".yaml$"))
+  :mode ("\\.yaml$" "\\.yml$"))
 
 (provide 'yaml)
 ;;; yaml.el ends here

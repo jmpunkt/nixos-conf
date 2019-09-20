@@ -28,6 +28,7 @@ let
         l3packages
         l3kernel
         hyperref
+        capt-of
         wrapfig
         xkeyval;
 

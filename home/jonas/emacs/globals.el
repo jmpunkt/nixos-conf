@@ -37,7 +37,7 @@
   (global-eldoc-mode -1)
   (defvar eldoc-in-minibuffer-mode nil)
 
-  (global-set-key [f1] 'shell)
+  (global-set-key [f1] 'eshell)
 
   (custom-set-faces
    '(default ((t (:family "IBM Plex Mono" :foundry "IBM " :slant normal :weight normal :height 113 :width normal)))))

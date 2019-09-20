@@ -42,8 +42,7 @@
     ("S" projectile-save-project-buffers)))
 
 (use-package company
-  :hook ((prog-mode . company-mode)
-         (emacs-lisp-mode . (lambda ()
+  :hook ((emacs-lisp-mode . (lambda ()
                               (add-to-list
                                (make-local-variable 'company-backends)
                                '(company-elisp)))))
@@ -56,8 +55,11 @@
   (setq company-idle-delay 0.2
         company-minimum-prefix-length 1
         company-show-numbers t
-        company-tooltip-limit 20
-        company-backends '((company-files)))
+        company-tooltip-align-annotations t
+        company-tooltip-limit 20)
+
+  (add-to-list 'company-backends 'company-dabbrev-code)
+  (add-to-list 'company-backends 'company-files)
   (global-company-mode t))
 
 (use-package company-quickhelp

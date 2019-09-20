@@ -4,7 +4,7 @@
 ;;; Code:
 
 (use-package haskell-mode
-  :after (lsp smartparens)
+  :after (lsp-mode smartparens)
   :hook ((haskell-mode . lsp)
          (haskell-mode . smartparens-mode)))
 

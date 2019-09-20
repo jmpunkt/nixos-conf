@@ -37,6 +37,9 @@
         lsp-log-io nil
         lsp-auto-guess-root t
         lsp-eldoc-render-all nil
+        lsp-eldoc-prefer-signature-help nil
+        lsp-eldoc-enable-hover nil
+        lsp-eldoc-enable-signature-help nil
         lsp-highlight-symbol-at-point nil
         lsp-document-sync-method 'incremental
         lsp-enable-snipped t

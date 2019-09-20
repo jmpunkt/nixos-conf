@@ -4,7 +4,7 @@
 ;;; Code:
 
 (use-package rust-mode
-  :after (lsp smartparens)
+  :after (lsp-mode smartparens)
   :hook ((rust-mode . lsp)
          (rust-mode . smartparens-mode)))
 

@@ -1,4 +1,4 @@
-{ stdenv, fetchzip, fetchgit, vimUtils, fetchFromGitHub, yarn2nix, nodePackages, ... }:
+{ stdenv, fetchzip, fetchgit, vimUtils, fetchFromGitHub, nodePackages, ... }:
 
 {
   coc-nvim = vimUtils.buildVimPlugin rec {

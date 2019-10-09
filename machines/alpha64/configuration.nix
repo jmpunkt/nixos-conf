@@ -27,5 +27,5 @@
   services.xserver.libinput.enable = true;
   services.xserver.libinput.accelProfile = "flat";
 
-  system.stateVersion = "19.03";
+  system.stateVersion = "19.09";
 }

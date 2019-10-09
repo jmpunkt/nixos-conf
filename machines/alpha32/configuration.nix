@@ -34,5 +34,5 @@
   services.xserver.libinput.naturalScrolling = true;
   services.xserver.libinput.tapping = true;
 
-  system.stateVersion = "19.03";
+  system.stateVersion = "19.09";
 }

@@ -7,9 +7,12 @@ super: self:
     smartparens
     which-key
     ripgrep
+    hydra
+    outshine
 
     org-ref
     org-noter
+    toc-org
     ivy-bibtex
     pdf-tools
     biblio
@@ -28,8 +31,6 @@ super: self:
     treemacs
     treemacs-projectile
 
-    hydra
-
     yasnippet
     yasnippet-snippets
 
@@ -43,7 +44,6 @@ super: self:
 
     flycheck
     flycheck-irony
-    flycheck-package
     flycheck-rust
 
     ivy
@@ -71,7 +71,6 @@ super: self:
     toml-mode
     yaml-mode
     json-mode
-
     fish-mode
     nix-mode
     markdown-mode

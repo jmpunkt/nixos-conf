@@ -30,8 +30,8 @@ let
         hyperref
         capt-of
         wrapfig
+        tabu
         xkeyval;
-
     };
 in
 {

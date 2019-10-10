@@ -321,9 +321,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Language Server (LSP)
 (use-package lsp-mode
   :after hydra
-  ;; :bind (:map lsp-mode-map
-  ;;             ([f6] . hydra-lsp/body))
-  :bind (:map global-map
+  :bind (:map lsp-mode-map
               ([f6] . hydra-lsp/body))
   :init
   (defhydra hydra-lsp (:exit t :hint nil)

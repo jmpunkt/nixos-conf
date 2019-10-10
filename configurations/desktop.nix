@@ -38,9 +38,10 @@
     emacs-all-the-icons-fonts
   ];
 
-  services.redshift = {
-    enable = true;
-    latitude = "50.110";
-    longitude = "8.682";
+  location = {
+    latitude = 50.110;
+    longitude = 8.682;
   };
+
+  services.redshift.enable = true;
 }

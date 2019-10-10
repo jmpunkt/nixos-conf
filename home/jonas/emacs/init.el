@@ -735,7 +735,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
         web-mode-code-indent-offset 2
         web-mode-css-indent-offset 2
 
-        web-mode-enable-auto-pairing t
+        web-mode-enable-auto-pairing nil
+        web-mode-enable-auto-quoting nil
         web-mode-enable-auto-expanding t
         web-mode-enable-css-colorization t)
   :config

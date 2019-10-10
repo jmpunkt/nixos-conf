@@ -17,6 +17,7 @@
   :init (doom-themes-treemacs-config))
 
 (use-package doom-modeline
+  :hook (after-init . doom-modeline-mode)
   :init
   (setq doom-modeline-icon t
         doom-modeline-lsp t))
@@ -51,7 +52,7 @@
   (custom-set-variables
    '(custom-safe-themes
      (quote
-      ("1c082c9b84449e54af757bcae23617d11f563fc9f33a832a8a2813c4d7dfb652" default))))
+      ("43c808b039893c885bdeec885b4f7572141bd9392da7f0bd8d8346e02b2ec8da" "1c082c9b84449e54af757bcae23617d11f563fc9f33a832a8a2813c4d7dfb652" default))))
   (custom-set-faces
    '(default ((t (:family "IBM Plex Mono" :foundry "IBM " :slant normal :weight normal :height 113 :width normal)))))
 
@@ -295,6 +296,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :bind (:map global-map
         ([f8] . treemacs)
         ("C-c f" . treemacs-select-window))
+  :hook (treemacs-mode . (lambda () (linum-mode 0)))
   :config
   (setq treemacs-follow-after-init t
         treemacs-width 35

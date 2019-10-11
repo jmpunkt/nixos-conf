@@ -465,8 +465,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;; * Git
 
 (use-package magit
+  :bind (:map magit-mode-map
+              ("C-o" . magit-open-repo))
   :config
-  ;; Ignore recent commit
   (setq magit-status-sections-hook
         '(magit-insert-status-headers
           magit-insert-merge-log
@@ -517,11 +518,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
     (let ((url (magit-get "remote" "origin" "url")))
       (progn
         (browse-url (parse-url url))
-        (message "opening repo %s" url))))
+        (message "opening repo %s" url)))))
 
-  (add-hook 'magit-mode-hook
-            (lambda ()
-              (local-set-key (kbd "o") 'magit-open-repo))))
 
 (use-package evil-magit)
 

@@ -251,6 +251,16 @@ _SPC_ cancel	_o_nly this   	_d_elete
         projectile-completion-system 'ivy)
   (projectile-mode))
 
+(use-package org-projectile
+  :after (org projectile)
+  :bind (:map global-map
+              ("C-c n p" . org-projectile-project-todo-completing-read)
+              ("C-c c" . org-capture))
+  :config
+  (setq org-projectile-projects-file (expand-file-name "projectile.org" org-remote-dir)
+        org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
+  (push (org-projectile-project-todo-entry) org-capture-templates))
+
 ;;;; * Diff
 (use-package ediff
   :config

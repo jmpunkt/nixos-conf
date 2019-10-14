@@ -24,6 +24,8 @@
 
 ;;; * Emacs
 (use-package emacs
+  :bind (:map global-map
+              ([f1] . eshell))
   :init
   (setq-default tab-width 4)
   (setq-default indent-tabs-mode nil)
@@ -45,9 +47,6 @@
   (menu-bar-mode -1)
 
   (global-eldoc-mode -1)
-  (setq eldoc-in-minibuffer-mode nil)
-
-  (global-set-key [f1] 'eshell)
 
   (custom-set-variables
    '(custom-safe-themes
@@ -301,22 +300,17 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (setq treemacs-follow-after-init t
         treemacs-width 35
         treemacs-indentation 2
-        treemacs-git-integration t
         treemacs-collapse-dirs 3
         treemacs-silent-refresh nil
-        treemacs-change-root-without-asking nil
         treemacs-sorting  'alphabetic-desc
         treemacs-show-hidden-files t
-        treemacs-never-persist nil
         treemacs-is-never-other-window nil
         treemacs-goto-tag-strategy 'refetch-index)
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t))
 
 (use-package treemacs-projectile
-  :after treemacs
-  :config
-  (setq treemacs-header-function #'treemacs-projectile-create-header))
+  :after treemacs)
 
 ;;;; * Language Server (LSP)
 (use-package lsp-mode
@@ -345,20 +339,20 @@ _SPC_ cancel	_o_nly this   	_d_elete
     ("x" lsp-execute-code-action)
 
     ("M-s" lsp-describe-session)
-    ("M-r" lsp-restart-workspace)
-    ("S" lsp-shutdown-workspace))
+    ("M-r" lsp-workspace-restart)
+    ("S" lsp-workspace-shutdown))
   :config
-  (setq lsp-inhibit-message nil
-        lsp-print-performance nil
+  (setq lsp-print-performance nil
         lsp-log-io nil
         lsp-auto-guess-root t
         lsp-eldoc-render-all nil
         lsp-eldoc-prefer-signature-help nil
         lsp-eldoc-enable-hover nil
         lsp-eldoc-enable-signature-help nil
-        lsp-highlight-symbol-at-point nil
+        lsp-enable-indentation t
+        lsp-enable-on-type-formatting t
         lsp-document-sync-method 'incremental
-        lsp-enable-snipped t
+        lsp-enable-snippet t
         lsp-prefer-flymake nil))
 
 (use-package lsp-ui
@@ -392,6 +386,14 @@ _SPC_ cancel	_o_nly this   	_d_elete
         enable-recursive-minibuffers t
         ivy-use-selectable-prompt t))
 
+(use-package ivy-bibtex
+  :after (ivy org org-ref bibtex)
+  :ensure org-ref
+  :config
+  (setq bibtex-completion-bibliography papers-refs
+        bibtex-completion-library-path papers-pdfs
+        bibtex-completion-notes-path papers-notes))
+
 (use-package counsel
   :bind (:map global-map
          ("M-x" . counsel-M-x)
@@ -399,8 +401,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package counsel-projectile
   :after (counsel projectile)
-  :bind (:map global-map
-         ("C-x m" . hydra-projectile/body))
+  :bind (:map projectile-mode-map
+         ("C-c m" . hydra-projectile/body))
   :config
   (defhydra hydra-projectile (:exit t :hint nil)
     "
@@ -484,9 +486,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
           magit-insert-unpulled-from-upstream
           magit-insert-unpulled-from-pushremote
           magit-insert-unpushed-to-upstream
-          magit-insert-unpushed-to-pushremote)
-        pretty-magit-alist nil
-        pretty-magit-prompt nil)
+          magit-insert-unpushed-to-pushremote))
 
   (defhydra hydra-magit (:color blue :hint nil)
     "
@@ -847,40 +847,45 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
 
 (use-package org
   :after (flyspell flycheck)
+  :defines (org-remote-dir)
   :init
-  (setq papers-dir (expand-file-name "~/Documents/papers/")
-        papers-pdfs (concat papers-dir "lib/")
-        papers-notes (concat papers-dir "index.org")
-        papers-refs (concat papers-dir "index.bib")
-        org-highlight-latex-and-related '(latex)
-        org-bullets-bullet-list '("●" "○" "✸" "✿")
+  (defvar org-remote-dir (expand-file-name "~/Dropbox"))
+  (defvar org-agenda-dir (expand-file-name "agenda" org-remote-dir))
+  (setq org-highlight-latex-and-related '(latex)
         org-ellipsis "…"
         org-catch-invisible-edits 'smart)
-  (defun disable-fylcheck-in-org-src-block ()
-    (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
-  :hook ((org-mode . flyspell-mode)
-         (org-src-mode . disable-fylcheck-in-org-src-block))
+  :hook
+  ((org-mode . flyspell-mode)
+   (org-src-mode . (lambda () (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))))
   :config
   ;; Sets the buffer name of org source blocks properly
   (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
     (let ((file-name (buffer-file-name)))
       ad-do-it
       (setq buffer-file-name file-name)))
-  (setq org-agenda-files '("~/Documents/org/"))
+  (setq org-agenda-files (list org-agenda-dir))
   (setq org-capture-templates
-        '(("t" "TODO" entry (file+headline (concat org-agenda-files "todo.org") "ToDo")
+        '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
            "* TODO %? %^G \n  %U" :empty-lines 1)
-          ("d" "Deadline" entry (file+headline (concat org-agenda-files "todo.org") "ToDo")
+          ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
            "* TODO %? %^G \n  DEADLINE: %^t" :empty-lines 1)
-          ("p" "Priority" entry (file+headline (concat org-agenda-files "todo.org") "ToDo")
+          ("p" "Priority" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
            "* TODO [#A] %? %^G \n  SCHEDULED: %^t")
-          ("a" "Appointment" entry (file+headline (concat org-agenda-files "calendar.org") "Event")
+          ("a" "Appointment" entry (file+headline
+                                    (lambda () (expand-file-name "calendar.org" org-agenda-dir))
+                                    "Event")
            "* %? %^G \n  %^t")
-          ("l" "Link" entry (file+headline (concat org-agenda-files "notes.org") "Link")
+          ("l" "Link" entry (file+headline
+                             (lambda () (expand-file-name "notes.org" org-agenda-dir))
+                             "Links")
            "* TODO %a %? %^G\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("n" "Note" entry (file+headline (concat org-agenda-files "notes.org") "Notes")
+          ("n" "Note" entry (file+headline
+                             (lambda () (expand-file-name "notes.org" org-agenda-dir))
+                             "Notes")
            "* %? %^G\n%U" :empty-lines 1)
-          ("j" "Journal" entry (file+datetree (concat org-agenda-files "journal.org") "Journal")
+          ("j" "Journal" entry (file+olp+datetree
+                                (lambda () (expand-file-name "journal.org" org-agenda-dir))
+                                "Journal")
            "* %? %^G\nEntered on %U\n")))
 
   (org-babel-do-load-languages
@@ -896,7 +901,7 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
      (dot . t))))
 
 (use-package toc-org
-  :after (markdown-mode org-mode)
+  :after (markdown-mode org)
   :hook
   ((org-mode . toc-org-mode)
    (markdown-mode . toc-org-mode))
@@ -905,15 +910,20 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
 
 (use-package org-ref
   :after org
+  :defines (papers-dir papers-pdfs papers-notes papers-refs)
+  :init
+  (defvar papers-dir (expand-file-name "papers" org-remote-dir))
+  (defvar papers-pdfs (expand-file-name "lib" papers-dir))
+  (defvar papers-notes (expand-file-name "notes.org" papers-dir))
+  (defvar papers-refs (expand-file-name "index.bib" papers-dir))
   :config
-  ;; (setq reftex-default-bibliography (list papers-refs))
   (setq org-ref-completion-library 'org-ref-ivy-cite
         org-ref-bibliography-notes papers-notes
         org-ref-default-bibliography (list papers-refs)
         org-ref-pdf-directory papers-pdfs))
 
 (use-package org-noter
-  :after org
+  :after (org org-ref)
   :commands org-noter
   :config
   (setq org-noter-default-notes-file-names '("index-org")
@@ -924,12 +934,17 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
 	  org-noter-insert-note-no-questions t
 	  org-noter-notes-window-location 'vertical-split))
 
-(use-package ivy-bibtex
-  :after (ivy org)
+(use-package org-bullets
+  :after org
+  :hook (org-mode . (lambda () (org-bullets-mode 1)))
   :config
-  (setq bibtex-completion-bibliography papers-refs
-        bibtex-completion-library-path papers-pdfs
-        bibtex-completion-notes-path papers-notes))
+  (setq org-bullets-bullet-list '("●" "○" "✸" "✿")))
+
+(use-package org-fancy-priorities
+  :hook
+  (org-mode . org-fancy-priorities-mode)
+  :config
+  (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
 
 (use-package interleave
   :after org
@@ -940,10 +955,12 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
         interleave-split-lines 20
         interleave-disable-narrowing t))
 
+
 ;;; * LaTeX
 
 (use-package tex-site
-  :after (auctex tex latex)
+  :after (tex latex)
+  :ensure auctex
   :hook
   ((LaTeX-mode . turn-off-auto-fill)
    (LaTeX-mode . (lambda () (TeX-fold-mode t)))
@@ -1032,6 +1049,7 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
   (auctex-latexmk-setup))
 
 (use-package reftex
+  :ensure auctex
   :hook (LaTeX-mode . turn-on-reftex)
   :config
   (setq reftex-save-parse-info t
@@ -1064,6 +1082,7 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
         reftex-cite-cleanup-optional-args t))
 
 (use-package latex-math-preview
+  :after (tex-site)
   :hook (LaTeX-mode-hook . LaTeX-preview-setup)
   :config
   (autoload 'LaTeX-preview-setup "preview")

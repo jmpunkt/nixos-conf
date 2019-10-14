@@ -10,6 +10,8 @@ super: self:
     hydra
     outshine
 
+    org-fancy-priorities
+    org-bullets
     org-ref
     org-noter
     toc-org
@@ -27,6 +29,7 @@ super: self:
     evil-magit
 
     projectile
+    org-projectile
 
     treemacs
     treemacs-projectile

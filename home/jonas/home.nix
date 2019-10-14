@@ -19,6 +19,7 @@
     nixify
     binutils-unwrapped
     steam
+    dropbox-cli
 
     # <START - emacs
     supermacs

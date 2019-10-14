@@ -3,6 +3,7 @@
   imports = [
     ./neovim/default.nix
     ./latex.nix
+    ./dropbox.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

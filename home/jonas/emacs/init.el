@@ -58,7 +58,6 @@
   (load-theme 'doom-vibrant))
 
 ;;; * Core Packages
-
 ;;;; * Evil
 (use-package evil
   :config
@@ -79,12 +78,9 @@
   :hook (emacs-lisp-mode . outshine-mode))
 
 ;;;; * Hydra
-
 (use-package hydra
-  :after smartparens
   :bind (:map global-map
-         ("C-x p" . hydra-smartparens/body)
-         ("C-x w" . hydra-window/body))
+                  ("C-x w" . hydra-window/body))
   :init
   (defhydra hydra-window ()
     "
@@ -105,8 +101,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
     ("w" hydra-move-splitter-down)
     ("e" hydra-move-splitter-up)
     ("r" hydra-move-splitter-right)
-    ("b" helm-mini)
-    ("f" helm-find-files)
+    ("b" switch-to-buffer)
+    ("f" counsel-find-file)
     ("F" follow-mode)
     ("a" (lambda ()
            (interactive)
@@ -139,9 +135,59 @@ _SPC_ cancel	_o_nly this   	_d_elete
            (winner-undo)
            (setq this-command 'winner-undo)))
     ("Z" winner-redo)
-    ("SPC" nil))
+    ("SPC" nil)))
 
-  ;; Hydra Smartparens
+;;;; * Flycheck
+(use-package flycheck
+  :requires direnv
+  :init
+  (global-flycheck-mode t)
+  ;; Hydra Flycheck
+  (defhydra hydra-flycheck
+    (:pre (progn (setq hydra-lv t) (flycheck-list-errors))
+          :post (progn (setq hydra-lv nil) (quit-windows-on "*Flycheck errors*"))
+          :hint nil)
+    "Errors"
+    ("f"  flycheck-error-list-set-filter "Filter")
+    ("j"  flycheck-next-error "Next")
+    ("k"  flycheck-previous-error "Previous")
+    ("gg" flycheck-first-error "First")
+    ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
+    ("q"  nil))
+  :config
+  (setq flycheck-check-syntax-automatically '(save mode-enabled)
+        flycheck-display-errors-delay .3
+        flycheck-executable-find
+        ;; Uses direnv environment
+        (lambda (cmd) (direnv-update-environment default-directory)(executable-find cmd))))
+
+;;;; * Spelling
+(use-package flyspell
+  :bind (:map flyspell-mode-map
+               ("C-x c" . flyspell-correct-at-point))
+  :hook (text-mode . flyspell-mode)
+  :config
+  (setq-default ispell-program-name "aspell"
+                ispell-list-command "--list")
+  (defun flyspell-buffer-after-pdict-save (&rest _) (flyspell-buffer))
+  (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save))
+
+(use-package flyspell-correct-ivy
+  :requires (flyspell ivy)
+  :init
+  (setq flyspell-correct-interface #'flyspell-correct-ivy))
+
+(use-package langtool
+  :init
+  ;; for NixOS use languagetool-commandline?
+  (setq langtool-bin "languagetool-commandline"))
+
+;;;; * Smartparens
+(use-package smartparens
+  :hook (eval-expression-minibuffer-setup . smartparens-mode)
+  :bind (:map global-map
+              ("C-x p" . hydra-smartparens/body))
+  :init
   (defhydra hydra-smartparens (:hint nil)
     "
  Moving^^^^                       Slurp & Barf^^   Wrapping^^            Sexp juggling^^^^               Destructive
@@ -188,60 +234,15 @@ _SPC_ cancel	_o_nly this   	_d_elete
     ("w" sp-copy-sexp)
 
     ("q" nil)
-    ("g" nil)))
-
-;;;; * Flycheck
-(use-package flycheck
-  :init
-  (global-flycheck-mode t)
-  ;; Hydra Flycheck
-  (defhydra hydra-flycheck
-    (:pre (progn (setq hydra-lv t) (flycheck-list-errors))
-          :post (progn (setq hydra-lv nil) (quit-windows-on "*Flycheck errors*"))
-          :hint nil)
-    "Errors"
-    ("f"  flycheck-error-list-set-filter "Filter")
-    ("j"  flycheck-next-error "Next")
-    ("k"  flycheck-previous-error "Previous")
-    ("gg" flycheck-first-error "First")
-    ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
-    ("q"  nil))
-  :after direnv
-  :config
-  (setq flycheck-check-syntax-automatically '(save mode-enabled)
-        flycheck-display-errors-delay .3
-        flycheck-executable-find
-        ;; Uses direnv environment
-        (lambda (cmd) (direnv-update-environment default-directory)(executable-find cmd))))
-
-;;;; * Flyspell
-(use-package flyspell
-  :bind (:map flyspell-mode-map
-               ("C-x c" . flyspell-correct-at-point))
-  :hook (text-mode . flyspell-mode)
-  :config
-  (setq-default ispell-program-name "aspell"
-                ispell-list-command "--list")
-  (defun flyspell-buffer-after-pdict-save (&rest _)
-    (flyspell-buffer))
-  (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save))
-
-(use-package flyspell-correct-ivy
-  :after (flyspell ivy)
-  :init
-  (setq flyspell-correct-interface #'flyspell-correct-ivy))
-
-;;;; * Smartparens
-(use-package smartparens
+    ("g" nil))
   :config
   (smartparens-global-mode t)
   (show-smartparens-global-mode t)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'smartparens-mode)
-  (sp-pair "'" nil :actions :rem))
+  (sp-pair "'" nil :actions :rem)
+  (sp-pair "`" nil :actions :rem))
 
 ;;;; * Projectile
 (use-package projectile
-  :after ivy
   :config
   (setq projectile-switch-project-action 'neotree-projectile-action
         projectile-enable-caching t
@@ -252,7 +253,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (projectile-mode))
 
 (use-package org-projectile
-  :after (org projectile)
+  :requires (org projectile)
   :bind (:map global-map
               ("C-c n p" . org-projectile-project-todo-completing-read)
               ("C-c c" . org-capture))
@@ -320,11 +321,11 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (treemacs-filewatch-mode t))
 
 (use-package treemacs-projectile
-  :after treemacs)
+  :requires (treemacs projectile))
 
 ;;;; * Language Server (LSP)
 (use-package lsp-mode
-  :after hydra
+  :commands lsp
   :bind (:map lsp-mode-map
               ([f6] . hydra-lsp/body))
   :init
@@ -365,6 +366,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
         lsp-enable-snippet t
         lsp-prefer-flymake nil))
 
+(use-package lsp-treemacs
+  :requires (lsp-mode treemacs))
+
 (use-package lsp-ui
   :commands lsp-ui-mode
   :config
@@ -377,14 +381,13 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package company-lsp
   :commands company-lsp
-  :after company
+  :requires (company lsp-mode)
   :config
   (setq company-lsp-enable-snippet t
         company-lsp-cache-candidates t))
 
-;;; * Completion
-
-;;;; * Ivy
+;;;; * Completion
+;;;;; * Ivy
 (use-package ivy
   :demand t
   :bind (:map global-map
@@ -397,7 +400,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
         ivy-use-selectable-prompt t))
 
 (use-package ivy-bibtex
-  :after (ivy org org-ref bibtex)
+  :requires (ivy org org-ref bibtex)
   :ensure org-ref
   :config
   (setq bibtex-completion-bibliography papers-refs
@@ -410,7 +413,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
          ("C-x C-f" . counsel-find-file)))
 
 (use-package counsel-projectile
-  :after (counsel projectile)
+  :requires (counsel projectile)
   :bind (:map projectile-mode-map
          ("C-c m" . hydra-projectile/body))
   :config
@@ -437,7 +440,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
     ("s" counsel-projectile-rg)
     ("S" projectile-save-project-buffers)))
 
-;;;; * Company
+;;;;; * Company
 (use-package company
   :hook ((emacs-lisp-mode . (lambda ()
                               (add-to-list
@@ -461,21 +464,20 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (add-to-list 'company-backends 'company-capf))
 
 (use-package company-quickhelp
-  :after company
+  :requires company
   :config
   (company-quickhelp-mode 1))
 
-;;;; * Snippets
+;;;;; * Snippets
 (use-package yasnippet
-  :after company
+  :requires company
   :config
   (add-to-list 'company-backends '(company-yasnippet))
   (yas-global-mode))
 
 (use-package yasnippet-snippets)
 
-;;; * Git
-
+;;;; * Git
 (use-package magit
   :bind (:map magit-mode-map
               ("C-o" . magit-open-repo))
@@ -497,23 +499,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
           magit-insert-unpulled-from-pushremote
           magit-insert-unpushed-to-upstream
           magit-insert-unpushed-to-pushremote))
-
-  (defhydra hydra-magit (:color blue :hint nil)
-    "
-  ^Magit^             ^Do^
------------------------------------------------
-  [_q_] quit          [_b_] blame
-  ^^                  [_c_] clone
-  ^^                  [_i_] init
-  ^^                  [_s_] status
-  ^^                  ^^
-"
-    ("q" nil)
-    ("b" magit-blame)
-    ("c" magit-clone)
-    ("i" magit-init)
-    ("s" magit-status))
-
   ;; Opening repo externally
   (defun parse-url (url)
     "convert a git remote location as a HTTP URL"
@@ -533,17 +518,125 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package evil-magit)
 
-;;; * Eshell
+;;;; * Eshell
 (use-package eshell
-  :after ansi-color
+  :requires ansi-color
   :config
   (defun eshell-handle-ansi-color ()
     (ansi-color-apply-on-region eshell-last-output-start
                                 eshell-last-output-end))
   (add-to-list 'eshell-output-filter-functions 'eshell-handle-ansi-color))
 
-;;; * Configuration Files
+;;;; * Org
+(use-package academic-phrases)
 
+(use-package org
+  :requires (flyspell flycheck)
+  :defines (org-remote-dir)
+  :init
+  (defvar org-remote-dir (expand-file-name "~/Dropbox"))
+  (defvar org-agenda-dir (expand-file-name "agenda" org-remote-dir))
+  (setq org-highlight-latex-and-related '(latex)
+        org-ellipsis "…"
+        org-catch-invisible-edits 'smart)
+  :hook ((org-mode . flyspell-mode)
+         (org-src-mode . (lambda () (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))))
+  :config
+  ;; Sets the buffer name of org source blocks properly
+  (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
+    (let ((file-name (buffer-file-name)))
+      ad-do-it
+      (setq buffer-file-name file-name)))
+  (setq org-agenda-files (list org-agenda-dir))
+  (setq org-capture-templates
+        '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+           "* TODO %? %^G \n  %U" :empty-lines 1)
+          ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+           "* TODO %? %^G \n  DEADLINE: %^t" :empty-lines 1)
+          ("p" "Priority" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+           "* TODO [#A] %? %^G \n  SCHEDULED: %^t")
+          ("a" "Appointment" entry (file+headline
+                                    (lambda () (expand-file-name "calendar.org" org-agenda-dir))
+                                    "Event")
+           "* %? %^G \n  %^t")
+          ("l" "Link" entry (file+headline
+                             (lambda () (expand-file-name "notes.org" org-agenda-dir))
+                             "Links")
+           "* TODO %a %? %^G\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+          ("n" "Note" entry (file+headline
+                             (lambda () (expand-file-name "notes.org" org-agenda-dir))
+                             "Notes")
+           "* %? %^G\n%U" :empty-lines 1)
+          ("j" "Journal" entry (file+olp+datetree
+                                (lambda () (expand-file-name "journal.org" org-agenda-dir))
+                                "Journal")
+           "* %? %^G\nEntered on %U\n")))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell . t)
+     (js . t)
+     (python . t)
+     (emacs-lisp . t)
+     (haskell . t)
+     (latex . t)
+     (gnuplot . t)
+     (sql . t)
+     (dot . t))))
+
+(use-package toc-org
+  :requires (markdown-mode org)
+  :hook ((org-mode . toc-org-mode)
+         (markdown-mode . toc-org-mode))
+  :bind (:map markdown-mode-map
+              ("C-c C-o" . toc-org-markdown-follow-thing-at-point)))
+
+(use-package org-ref
+  :requires org
+  :defines (papers-dir papers-pdfs papers-notes papers-refs)
+  :init
+  (defvar papers-dir (expand-file-name "papers" org-remote-dir))
+  (defvar papers-pdfs (expand-file-name "lib" papers-dir))
+  (defvar papers-notes (expand-file-name "notes.org" papers-dir))
+  (defvar papers-refs (expand-file-name "index.bib" papers-dir))
+  :config
+  (setq org-ref-completion-library 'org-ref-ivy-cite
+        org-ref-bibliography-notes papers-notes
+        org-ref-default-bibliography (list papers-refs)
+        org-ref-pdf-directory papers-pdfs))
+
+(use-package org-noter
+  :requires (org org-ref)
+  :commands org-noter
+  :config
+  (setq org-noter-default-notes-file-names '("index-org")
+	  org-noter-notes-search-path (list papers-dir)
+	  org-noter-auto-save-last-location t
+	  org-noter-doc-split-fraction '(0.8 . 0.8)
+	  org-noter-always-create-frame nil
+	  org-noter-insert-note-no-questions t
+	  org-noter-notes-window-location 'vertical-split))
+
+(use-package org-bullets
+  :requires org
+  :hook (org-mode . (lambda () (org-bullets-mode 1)))
+  :config (setq org-bullets-bullet-list '("●" "○" "✸" "✿")))
+
+(use-package org-fancy-priorities
+  :hook (org-mode . org-fancy-priorities-mode)
+  :config (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
+
+(use-package ob-async)
+
+(use-package interleave
+  :requires org
+  :bind (:map global-map
+              ("C-x i" . interleave-mode))
+  :config
+  (setq interleave-split-direction 'horizontal
+        interleave-split-lines 20
+        interleave-disable-narrowing t))
+
+;;; * Configuration Files
 ;;;; * JSON
 (use-package json-mode
   :mode "\\.json\\'"
@@ -568,7 +661,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :mode ("\\.graphql\\'"))
 
 ;;; * Text Files
-
 ;;;; * reStructuredText
 (use-package rst
   :mode (("\\.txt\\'" . rst-mode)
@@ -577,7 +669,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Markdown
 (use-package markdown-mode
-  :after (flyspell hydra)
+  :requires (flyspell hydra)
   :mode
   ("INSTALL\\'"
    "CONTRIBUTORS\\'"
@@ -624,10 +716,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
     ("W" markdown-insert-wiki-link :color blue)))
 
 (use-package markdown-mode+
-  :after markdown-mode)
+  :requires markdown-mode)
 
 ;;; * Programming Languages
-
 ;;;; * C/C++
 (use-package irony
   :hook ((c-mode . irony-mode)
@@ -635,23 +726,20 @@ _SPC_ cancel	_o_nly this   	_d_elete
          (c++-mode .irony-mode)))
 
 (use-package flycheck-irony
-  :after (flycheck irony))
+  :requires (flycheck irony))
 
 ;;;; * Elm
 (use-package elm-mode
-  :after company
+  :requires company
   :config
   (setq elm-format-on-save t)
   (add-to-list 'company-backends 'company-elm))
 
 ;;;; * Haskell
 (use-package haskell-mode
-  :after (lsp-mode smartparens)
-  :hook ((haskell-mode . lsp)
-         (haskell-mode . smartparens-mode)))
+  :hook (haskell-mode . lsp))
 
 (use-package flycheck-haskell
-  :after (flycheck)
   :hook (haskell-mode . flycheck-haskell-setup))
 
 ;;;; * Nix
@@ -660,24 +748,15 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Python
 (use-package python
-  :after (lsp-mode smartparens)
   :mode ("\\.py\\'" . python-mode)
-
-  :hook
-  (python-mode . lsp)
-  (python-mode . smartparens-mode)
-
-  :config
-  (setq python-indent-offset 4))
+  :hook (python-mode . lsp)
+  :config (setq python-indent-offset 4))
 
 ;;;; * Rust
 (use-package rust-mode
-  :after (lsp-mode smartparens)
-  :hook ((rust-mode . lsp)
-         (rust-mode . smartparens-mode)))
+  :hook (rust-mode . lsp))
 
 (use-package flycheck-rust
-  :after flycheck
   :hook (flycheck-mode . flycheck-rust-setup))
 
 ;;;; * Fish
@@ -686,7 +765,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Typescript
 (use-package tide
-  :after (flycheck company)
+  :requires (flycheck company)
   :init (defun setup-tide-mode ()
           (interactive)
           (tide-setup)
@@ -698,23 +777,18 @@ _SPC_ cancel	_o_nly this   	_d_elete
                 company-tooltip-align-annotations t)))
 
 (use-package typescript-mode
-  :after smartparens
   :mode ("\\.ts\\'")
-  :hook ((typescript-mode . smartparens-mode)
-         (typescript-mode . setup-tide-mode)))
+  :hook (typescript-mode . setup-tide-mode))
 
 ;;;; * Javascript
 (use-package js2-mode
-  :after smartparens
-  :mode (("\\.js\\'" . js2-mode))
-  :hook ((js2-mode . smartparens-mode))
-  :interpreter (("node" . js2-mode))
-  :config
-  (setq js2-basic-offset 4))
+  :mode ("\\.js\\'" . js2-mode)
+  :interpreter ("node" . js2-mode)
+  :config (setq js2-basic-offset 4))
 
 ;;;; * HTML/JSX/RSX
 (use-package web-mode
-  :after (smartparens flycheck tide)
+  :requires (flycheck tide)
   :mode
   ("\\.phtml\\'"
    "\\.tpl\\.php\\'"
@@ -725,13 +799,11 @@ _SPC_ cancel	_o_nly this   	_d_elete
    "\\.mustache\\'"
    "\\.djhtml\\'"
    "\\.html?\\'")
-  :hook
-  ((web-mode . smartparens-mode)
-   (web-mode . (lambda ()
-                 (when (and
-                        buffer-file-name
-                        (equal "tsx" (file-name-extension buffer-file-name)))
-                   (setup-tide-mode)))))
+  :hook (web-mode . (lambda ()
+                      (when (and
+                             buffer-file-name
+                             (equal "tsx" (file-name-extension buffer-file-name)))
+                        (setup-tide-mode))))
   :init
   (setq web-mode-markup-indent-offset 2
         web-mode-code-indent-offset 2
@@ -743,7 +815,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
         web-mode-enable-css-colorization t)
   :config
   (flycheck-add-mode 'typescript-tslint 'web-mode)
-
   (setq web-mode-content-types-alist
         '(("jsx" . "\\.js[x]?\\'"))
         web-mode-engines-alist
@@ -751,15 +822,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
           ("blade"  . "\\.blade\\."))))
 
 ;;; * PDF
-
 (use-package pdf-tools
-  :after hydra
-  :hook
-  (pdf-view-mode . (lambda ()
-                     (pdf-misc-size-indication-minor-mode)
-                     (pdf-links-minor-mode)
-                     (pdf-isearch-minor-mode)
-                     (cua-mode 0)))
+  :hook (pdf-view-mode . (lambda ()
+                           (pdf-misc-size-indication-minor-mode)
+                           (pdf-links-minor-mode)
+                           (pdf-isearch-minor-mode)
+                           (cua-mode 0)))
   :bind
   (:map pdf-view-mode-map
          ("/" . hydra-pdftools/body)
@@ -840,138 +908,16 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
           ("l" image-forward-hscroll :color red)
           ("h" image-backward-hscroll :color red)))
 
-;;; * Org
-
-(use-package academic-phrases)
-
-(use-package langtool
-  :init
-  ;; for NixOS use languagetool-commandline?
-  (setq langtool-bin "languagetool-commandline"))
-
-(use-package org
-  :after (flyspell flycheck)
-  :defines (org-remote-dir)
-  :init
-  (defvar org-remote-dir (expand-file-name "~/Dropbox"))
-  (defvar org-agenda-dir (expand-file-name "agenda" org-remote-dir))
-  (setq org-highlight-latex-and-related '(latex)
-        org-ellipsis "…"
-        org-catch-invisible-edits 'smart)
-  :hook
-  ((org-mode . flyspell-mode)
-   (org-src-mode . (lambda () (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))))
-  :config
-  ;; Sets the buffer name of org source blocks properly
-  (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
-    (let ((file-name (buffer-file-name)))
-      ad-do-it
-      (setq buffer-file-name file-name)))
-  (setq org-agenda-files (list org-agenda-dir))
-  (setq org-capture-templates
-        '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
-           "* TODO %? %^G \n  %U" :empty-lines 1)
-          ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
-           "* TODO %? %^G \n  DEADLINE: %^t" :empty-lines 1)
-          ("p" "Priority" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
-           "* TODO [#A] %? %^G \n  SCHEDULED: %^t")
-          ("a" "Appointment" entry (file+headline
-                                    (lambda () (expand-file-name "calendar.org" org-agenda-dir))
-                                    "Event")
-           "* %? %^G \n  %^t")
-          ("l" "Link" entry (file+headline
-                             (lambda () (expand-file-name "notes.org" org-agenda-dir))
-                             "Links")
-           "* TODO %a %? %^G\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("n" "Note" entry (file+headline
-                             (lambda () (expand-file-name "notes.org" org-agenda-dir))
-                             "Notes")
-           "* %? %^G\n%U" :empty-lines 1)
-          ("j" "Journal" entry (file+olp+datetree
-                                (lambda () (expand-file-name "journal.org" org-agenda-dir))
-                                "Journal")
-           "* %? %^G\nEntered on %U\n")))
-
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((shell . t)
-     (js . t)
-     (python . t)
-     (emacs-lisp . t)
-     (haskell . t)
-     (latex . t)
-     (gnuplot . t)
-     (sql . t)
-     (dot . t))))
-
-(use-package toc-org
-  :after (markdown-mode org)
-  :hook
-  ((org-mode . toc-org-mode)
-   (markdown-mode . toc-org-mode))
-  :bind (:map markdown-mode-map
-              ("C-c C-o" . toc-org-markdown-follow-thing-at-point)))
-
-(use-package org-ref
-  :after org
-  :defines (papers-dir papers-pdfs papers-notes papers-refs)
-  :init
-  (defvar papers-dir (expand-file-name "papers" org-remote-dir))
-  (defvar papers-pdfs (expand-file-name "lib" papers-dir))
-  (defvar papers-notes (expand-file-name "notes.org" papers-dir))
-  (defvar papers-refs (expand-file-name "index.bib" papers-dir))
-  :config
-  (setq org-ref-completion-library 'org-ref-ivy-cite
-        org-ref-bibliography-notes papers-notes
-        org-ref-default-bibliography (list papers-refs)
-        org-ref-pdf-directory papers-pdfs))
-
-(use-package org-noter
-  :after (org org-ref)
-  :commands org-noter
-  :config
-  (setq org-noter-default-notes-file-names '("index-org")
-	  org-noter-notes-search-path (list papers-dir)
-	  org-noter-auto-save-last-location t
-	  org-noter-doc-split-fraction '(0.8 . 0.8)
-	  org-noter-always-create-frame nil
-	  org-noter-insert-note-no-questions t
-	  org-noter-notes-window-location 'vertical-split))
-
-(use-package org-bullets
-  :after org
-  :hook (org-mode . (lambda () (org-bullets-mode 1)))
-  :config
-  (setq org-bullets-bullet-list '("●" "○" "✸" "✿")))
-
-(use-package org-fancy-priorities
-  :hook
-  (org-mode . org-fancy-priorities-mode)
-  :config
-  (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
-
-(use-package interleave
-  :after org
-  :bind (:map global-map
-              ("C-x i" . interleave-mode))
-  :config
-  (setq interleave-split-direction 'horizontal
-        interleave-split-lines 20
-        interleave-disable-narrowing t))
-
-
 ;;; * LaTeX
-
 (use-package tex-site
-  :after (tex latex)
+  :requires (tex latex)
   :ensure auctex
-  :hook
-  ((LaTeX-mode . turn-off-auto-fill)
-   (LaTeX-mode . (lambda () (TeX-fold-mode t)))
-   (LaTeX-mode . flyspell-mode)
-   (LaTeX-mode . LaTeX-math-mode)
-   (LaTeX-mode . TeX-source-correlate-mode)
-   (LaTeX-mode . outline-minor-mode))
+  :hook ((LaTeX-mode . turn-off-auto-fill)
+         (LaTeX-mode . (lambda () (TeX-fold-mode t)))
+         (LaTeX-mode . flyspell-mode)
+         (LaTeX-mode . LaTeX-math-mode)
+         (LaTeX-mode . TeX-source-correlate-mode)
+         (LaTeX-mode . outline-minor-mode))
   :config
   ;; Spelling
   (setq ispell-tex-skip-alists
@@ -1029,8 +975,7 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
         bibtex-autokey-titlewords 1))
 
 (use-package company-auctex
-  :hook
-  (latex-mode . (company-auctex-init)))
+  :hook (latex-mode . company-auctex-init))
 
 (use-package company-bibtex
   :hook
@@ -1044,8 +989,8 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
 
 (use-package company-math
   :hook
-  (latex-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-math-symbols-unicode))))
-  (org-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-math-symbols-unicode)))))
+  (latex-mode . (lambda () (add-to-list company-backends '(company-math-symbols-unicode))))
+  (org-mode . (lambda () (add-to-list company-backends '(company-math-symbols-unicode)))))
 
 (use-package auctex-latexmk
   :config
@@ -1086,12 +1031,10 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
         reftex-cite-cleanup-optional-args t))
 
 (use-package latex-math-preview
-  :after (tex-site)
   :hook (LaTeX-mode-hook . LaTeX-preview-setup)
   :config
   (autoload 'LaTeX-preview-setup "preview")
   (setq preview-scale-function 1.2))
-
 
 ;;; * -- End
 (provide 'init)

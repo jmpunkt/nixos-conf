@@ -14,6 +14,7 @@ super: self:
     org-bullets
     org-ref
     org-noter
+    ob-async
     toc-org
     ivy-bibtex
     pdf-tools
@@ -69,6 +70,7 @@ super: self:
     lsp-java
     lsp-haskell
     company-lsp
+    lsp-treemacs
 
     toml-mode
     yaml-mode

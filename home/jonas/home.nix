@@ -25,7 +25,7 @@
     # <START - emacs
     supermacs
     languagetool
-    # nixfmt
+    nixfmt
     ccls
     haskellPackages.haskell-lsp
     nodePackages.typescript-language-server

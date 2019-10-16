@@ -56,7 +56,6 @@ super: self:
 
     company
     company-bibtex
-    company-lua
     company-math
     company-emoji
     company-jedi
@@ -83,7 +82,6 @@ super: self:
     rust-mode
     graphql-mode
     elm-mode
-    lua-mode
     haskell-mode
     web-mode
     js2-mode

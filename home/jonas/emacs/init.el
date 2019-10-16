@@ -654,12 +654,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :after (flycheck)
   :hook (haskell-mode . flycheck-haskell-setup))
 
-;;;; * Lua
-(use-package lua-mode)
-
-(use-package company-lua
-  :after company)
-
 ;;;; * Nix
 (use-package nix-mode
   :mode "\\.nix\\'")

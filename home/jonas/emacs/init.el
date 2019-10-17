@@ -164,8 +164,26 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Spelling
 (use-package flyspell
   :bind (:map flyspell-mode-map
-               ("C-x c" . flyspell-correct-at-point))
+               ("C-c s" . hydra-spelling/body))
   :hook (text-mode . flyspell-mode)
+  :init
+  (defhydra hydra-spelling (:color blue)
+    "
+  ^
+  ^Spelling^          ^Errors^            ^Checker^
+------------------------------------------------------------
+  [_q_] quit          [_<_] previous      [_c_] correction
+  ^^                  [_>_] next          [_d_] dictionary
+  ^^                  [_f_] check         [_m_] mode
+  ^^                  ^^                  ^^
+  "
+    ("q" nil)
+    ("<" flyspell-correct-previous :color pink)
+    (">" flyspell-correct-next :color pink)
+    ("c" ispell)
+    ("d" ispell-change-dictionary)
+    ("f" flyspell-buffer)
+    ("m" flyspell-mode))
   :config
   (setq-default ispell-program-name "aspell"
                 ispell-list-command "--list")
@@ -178,7 +196,26 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (setq flyspell-correct-interface #'flyspell-correct-ivy))
 
 (use-package langtool
+  :bind (:map global-map
+               ("C-c l" . hydra-langtool/body))
   :init
+  (defhydra hydra-langtool (:color blue)
+    "
+  ^
+  ^Spelling^          ^Errors^            ^Checker^
+------------------------------------------------------------
+  [_q_] quit          [_<_] previous      [_c_] correction
+  ^^                  [_>_] next          [_s_] show error
+  ^^                  [_f_] check         ^^
+  ^^                  ^^                  ^^
+  "
+    ("q" nil)
+    ("<" langtool-goto-previous-error :color pink)
+    (">" langtool-goto-next-error :color pink)
+    ("c" langtool-correct-buffer)
+    ("s" langtool-show-message-at-point)
+    ("f" langtool-check))
+  :config
   ;; for NixOS use languagetool-commandline?
   (setq langtool-bin "languagetool-commandline"))
 
@@ -186,7 +223,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package smartparens
   :hook (eval-expression-minibuffer-setup . smartparens-mode)
   :bind (:map global-map
-              ("C-x p" . hydra-smartparens/body))
+              ("C-c p" . hydra-smartparens/body))
   :init
   (defhydra hydra-smartparens (:hint nil)
     "
@@ -415,8 +452,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package counsel-projectile
   :requires (counsel projectile)
   :bind (:map projectile-mode-map
-         ("C-c m" . hydra-projectile/body))
-  :config
+         ("C-c p" . hydra-projectile/body))
+  :init
   (defhydra hydra-projectile (:exit t :hint nil)
     "
   Projectile^^        Buffers^^           Find^^^^            Search^^
@@ -722,8 +759,11 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * C/C++
 (use-package irony
   :hook ((c-mode . irony-mode)
+         (c-mode . flyspell-prog-mode)
          (objc-mode . irony-mode)
-         (c++-mode .irony-mode)))
+         (objc-mode . flyspell-prog-mode)
+         (c++-mode .irony-mode)
+         (c++-mode . flyspell-prog-mode)))
 
 (use-package flycheck-irony
   :requires (flycheck irony))
@@ -731,13 +771,15 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Elm
 (use-package elm-mode
   :requires company
+  :hook (elm-mode . flyspell-prog-mode)
   :config
   (setq elm-format-on-save t)
   (add-to-list 'company-backends 'company-elm))
 
 ;;;; * Haskell
 (use-package haskell-mode
-  :hook (haskell-mode . lsp))
+  :hook ((haskell-mode . lsp)
+         (haskell-mode . flyspell-prog-mode)))
 
 (use-package flycheck-haskell
   :hook (haskell-mode . flycheck-haskell-setup))
@@ -749,12 +791,14 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Python
 (use-package python
   :mode ("\\.py\\'" . python-mode)
-  :hook (python-mode . lsp)
+  :hook ((python-mode . lsp)
+         (python-mode . flyspell-prog-mode))
   :config (setq python-indent-offset 4))
 
 ;;;; * Rust
 (use-package rust-mode
-  :hook (rust-mode . lsp))
+  :hook ((rust-mode . lsp)
+         (rust-mode . flyspell-prog-mode)))
 
 (use-package flycheck-rust
   :hook (flycheck-mode . flycheck-rust-setup))

@@ -399,7 +399,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
         lsp-eldoc-enable-signature-help nil
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
-        lsp-document-sync-method 'incremental
         lsp-enable-snippet t
         lsp-prefer-flymake nil))
 

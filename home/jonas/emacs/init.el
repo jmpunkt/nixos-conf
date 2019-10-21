@@ -80,7 +80,7 @@
 ;;;; * Hydra
 (use-package hydra
   :bind (:map global-map
-                  ("C-x w" . hydra-window/body))
+              ("C-x w" . hydra-window/body))
   :init
   (defhydra hydra-window ()
     "
@@ -164,7 +164,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Spelling
 (use-package flyspell
   :bind (:map flyspell-mode-map
-               ("C-c s" . hydra-spelling/body))
+              ("C-c s" . hydra-spelling/body))
   :hook (text-mode . flyspell-mode)
   :init
   (defhydra hydra-spelling (:color blue)
@@ -197,7 +197,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package langtool
   :bind (:map global-map
-               ("C-c l" . hydra-langtool/body))
+              ("C-c l" . hydra-langtool/body))
   :init
   (defhydra hydra-langtool (:color blue)
     "
@@ -341,8 +341,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Treemacs
 (use-package treemacs
   :bind (:map global-map
-        ([f8] . treemacs)
-        ("C-c f" . treemacs-select-window))
+              ([f8] . treemacs)
+              ("C-c f" . treemacs-select-window))
   :hook (treemacs-mode . (lambda () (linum-mode 0)))
   :config
   (setq treemacs-follow-after-init t
@@ -419,6 +419,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :commands company-lsp
   :requires (company lsp-mode)
   :config
+  (setq-local company-backends (append '(company-lsp) company-backends))
   (setq company-lsp-enable-snippet t
         company-lsp-cache-candidates t))
 
@@ -445,13 +446,13 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package counsel
   :bind (:map global-map
-         ("M-x" . counsel-M-x)
-         ("C-x C-f" . counsel-find-file)))
+              ("M-x" . counsel-M-x)
+              ("C-x C-f" . counsel-find-file)))
 
 (use-package counsel-projectile
   :requires (counsel projectile)
   :bind (:map projectile-mode-map
-         ("C-c p" . hydra-projectile/body))
+              ("C-c p" . hydra-projectile/body))
   :init
   (defhydra hydra-projectile (:exit t :hint nil)
     "
@@ -478,10 +479,10 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;;; * Company
 (use-package company
-  :hook ((emacs-lisp-mode . (lambda ()
-                              (add-to-list
-                               (make-local-variable 'company-backends)
-                               '(company-elisp)))))
+  :hook (emacs-lisp-mode . (lambda ()
+                             (setq-local
+                              company-backends
+                              (append '(company-elisp) company-backends))))
   :bind (:map company-active-map
               ("TAB" . company-complete-common-or-cycle)
               ("<tab>" . company-complete-common-or-cycle)
@@ -495,9 +496,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
         company-tooltip-align-annotations t
         company-tooltip-limit 20)
 
-  (add-to-list 'company-backends 'company-dabbrev-code)
-  (add-to-list 'company-backends 'company-files)
-  (add-to-list 'company-backends 'company-capf))
+  (setq company-backends
+        '(company-bbdb company-dabbrev-code company-files company-capf)))
 
 (use-package company-quickhelp
   :requires company
@@ -508,7 +508,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package yasnippet
   :requires company
   :config
-  (add-to-list 'company-backends '(company-yasnippet))
+  (add-to-list 'company-backends 'company-yasnippet)
   (yas-global-mode))
 
 (use-package yasnippet-snippets)
@@ -645,16 +645,16 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :commands org-noter
   :config
   (setq org-noter-default-notes-file-names '("index-org")
-	  org-noter-notes-search-path (list papers-dir)
-	  org-noter-auto-save-last-location t
-	  org-noter-doc-split-fraction '(0.8 . 0.8)
-	  org-noter-always-create-frame nil
-	  org-noter-insert-note-no-questions t
-	  org-noter-notes-window-location 'vertical-split))
+        org-noter-notes-search-path (list papers-dir)
+        org-noter-auto-save-last-location t
+        org-noter-doc-split-fraction '(0.8 . 0.8)
+        org-noter-always-create-frame nil
+        org-noter-insert-note-no-questions t
+        org-noter-notes-window-location 'vertical-split))
 
 (use-package org-bullets
   :requires org
-  :hook (org-mode . (lambda () (org-bullets-mode 1)))
+  :hook (org-mode . org-bullets-mode)
   :config (setq org-bullets-bullet-list '("●" "○" "✸" "✿")))
 
 (use-package org-fancy-priorities
@@ -762,7 +762,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
          (objc-mode . irony-mode)
          (objc-mode . flyspell-prog-mode)
          (c++-mode .irony-mode)
-         (c++-mode . flyspell-prog-mode)))
+         (c++-mode . flyspell-prog-mode))
+  :config
+  (setq-local company-backends (append '(company-clang) company-backends)))
 
 (use-package flycheck-irony
   :requires (flycheck irony))
@@ -773,7 +775,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :hook (elm-mode . flyspell-prog-mode)
   :config
   (setq elm-format-on-save t)
-  (add-to-list 'company-backends 'company-elm))
+  (setq-local company-backends (append '(company-elm) company-backends)))
 
 ;;;; * Haskell
 (use-package haskell-mode
@@ -873,26 +875,26 @@ _SPC_ cancel	_o_nly this   	_d_elete
                            (cua-mode 0)))
   :bind
   (:map pdf-view-mode-map
-         ("/" . hydra-pdftools/body)
-         ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
-         ("g"  . pdf-view-first-page)
-         ("G"  . pdf-view-last-page)
-         ("l"  . image-forward-hscroll)
-         ("h"  . image-backward-hscroll)
-         ("j"  . pdf-view-next-page)
-         ("k"  . pdf-view-previous-page)
-         ("e"  . pdf-view-goto-page)
-         ("u"  . pdf-view-revert-buffer)
-         ("al" . pdf-annot-list-annotations)
-         ("ad" . pdf-annot-delete)
-         ("aa" . pdf-annot-attachment-dired)
-         ("am" . pdf-annot-add-markup-annotation)
-         ("at" . pdf-annot-add-text-annotation)
-         ("y"  . pdf-view-kill-ring-save)
-         ("i"  . pdf-misc-display-metadata)
-         ("s"  . pdf-occur)
-         ("b"  . pdf-view-set-slice-from-bounding-box)
-         ("r"  . pdf-view-reset-slice))
+        ("/" . hydra-pdftools/body)
+        ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
+        ("g"  . pdf-view-first-page)
+        ("G"  . pdf-view-last-page)
+        ("l"  . image-forward-hscroll)
+        ("h"  . image-backward-hscroll)
+        ("j"  . pdf-view-next-page)
+        ("k"  . pdf-view-previous-page)
+        ("e"  . pdf-view-goto-page)
+        ("u"  . pdf-view-revert-buffer)
+        ("al" . pdf-annot-list-annotations)
+        ("ad" . pdf-annot-delete)
+        ("aa" . pdf-annot-attachment-dired)
+        ("am" . pdf-annot-add-markup-annotation)
+        ("at" . pdf-annot-add-text-annotation)
+        ("y"  . pdf-view-kill-ring-save)
+        ("i"  . pdf-misc-display-metadata)
+        ("s"  . pdf-occur)
+        ("b"  . pdf-view-set-slice-from-bounding-box)
+        ("r"  . pdf-view-reset-slice))
   :config
   (pdf-tools-install t t t)
   (setq-default pdf-view-display-size 'fit-page)
@@ -918,38 +920,38 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
      ^^^↓^^^
      ^^_G_^^
 "
-          ("\\" hydra-master/body "back")
-          ("<ESC>" nil "quit")
-          ("al" pdf-annot-list-annotations)
-          ("ad" pdf-annot-delete)
-          ("aa" pdf-annot-attachment-dired)
-          ("am" pdf-annot-add-markup-annotation)
-          ("at" pdf-annot-add-text-annotation)
-          ("y"  pdf-view-kill-ring-save)
-          ("+" pdf-view-enlarge :color red)
-          ("-" pdf-view-shrink :color red)
-          ("0" pdf-view-scale-reset)
-          ("H" pdf-view-fit-height-to-window)
-          ("W" pdf-view-fit-width-to-window)
-          ("P" pdf-view-fit-page-to-window)
-          ("n" pdf-view-next-page-command :color red)
-          ("p" pdf-view-previous-page-command :color red)
-          ("d" pdf-view-dark-minor-mode)
-          ("b" pdf-view-set-slice-from-bounding-box)
-          ("r" pdf-view-reset-slice)
-          ("g" pdf-view-first-page)
-          ("G" pdf-view-last-page)
-          ("e" pdf-view-goto-page)
-          ("o" pdf-outline)
-          ("s" pdf-occur)
-          ("i" pdf-misc-display-metadata)
-          ("u" pdf-view-revert-buffer)
-          ("F" pdf-links-action-perfom)
-          ("f" pdf-links-isearch-link)
-          ("B" pdf-history-backward :color red)
-          ("N" pdf-history-forward :color red)
-          ("l" image-forward-hscroll :color red)
-          ("h" image-backward-hscroll :color red)))
+    ("\\" hydra-master/body "back")
+    ("<ESC>" nil "quit")
+    ("al" pdf-annot-list-annotations)
+    ("ad" pdf-annot-delete)
+    ("aa" pdf-annot-attachment-dired)
+    ("am" pdf-annot-add-markup-annotation)
+    ("at" pdf-annot-add-text-annotation)
+    ("y"  pdf-view-kill-ring-save)
+    ("+" pdf-view-enlarge :color red)
+    ("-" pdf-view-shrink :color red)
+    ("0" pdf-view-scale-reset)
+    ("H" pdf-view-fit-height-to-window)
+    ("W" pdf-view-fit-width-to-window)
+    ("P" pdf-view-fit-page-to-window)
+    ("n" pdf-view-next-page-command :color red)
+    ("p" pdf-view-previous-page-command :color red)
+    ("d" pdf-view-dark-minor-mode)
+    ("b" pdf-view-set-slice-from-bounding-box)
+    ("r" pdf-view-reset-slice)
+    ("g" pdf-view-first-page)
+    ("G" pdf-view-last-page)
+    ("e" pdf-view-goto-page)
+    ("o" pdf-outline)
+    ("s" pdf-occur)
+    ("i" pdf-misc-display-metadata)
+    ("u" pdf-view-revert-buffer)
+    ("F" pdf-links-action-perfom)
+    ("f" pdf-links-isearch-link)
+    ("B" pdf-history-backward :color red)
+    ("N" pdf-history-forward :color red)
+    ("l" image-forward-hscroll :color red)
+    ("h" image-backward-hscroll :color red)))
 
 ;;; * LaTeX
 (use-package tex-site
@@ -1021,19 +1023,43 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
   :hook (latex-mode . company-auctex-init))
 
 (use-package company-bibtex
+  :requires (company bibtex)
   :hook
-  (latex-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-bibtex))))
-  (org-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-bibtex)))))
+  (tex-mode . company-bibtex-setup)
+  (latex-mode . company-bibtex-setup)
+  (org-mode . company-bibtex-setup)
+  :init
+  (defun company-bibtex-setup ()
+    (setq-local company-backends
+                (append
+                 '(company-bibtex)
+                 company-backends))))
 
 (use-package company-reftex
+  :requires (company reftex)
   :hook
-  (latex-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-reftex-labels company-reftex-citations))))
-  (org-mode . (lambda () (add-to-list (make-local-variable 'company-backends) '(company-reftex-labels company-reftex-citations)))))
+  (tex-mode . company-reftex-setup)
+  (latex-mode . company-reftex-setup)
+  (org-mode . company-reftex-setup)
+  :init
+  (defun company-reftex-setup ()
+    (setq-local company-backends
+                (append
+                 '(company-reftex-labels company-reftex-citations)
+                 company-backends))))
 
 (use-package company-math
+  :requires company
   :hook
-  (latex-mode . (lambda () (add-to-list company-backends '(company-math-symbols-unicode))))
-  (org-mode . (lambda () (add-to-list company-backends '(company-math-symbols-unicode)))))
+  (tex-mode . company-math-setup)
+  (latex-mode . company-math-setup)
+  (org-mode . company-math-setup)
+  :init
+  (defun company-math-setup ()
+    (setq-local company-backends
+                (append
+                 '(company-math-symbols-latex company-latex-commands)
+                 company-backends))))
 
 (use-package auctex-latexmk
   :config

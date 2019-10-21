@@ -2,7 +2,7 @@
 let
   my_latex = with pkgs;
     texlive.combine {
-        inherit (texlive)
+      inherit (texlive)
         scheme-tetex
         adjustbox
         ucs
@@ -31,6 +31,8 @@ let
         capt-of
         wrapfig
         tabu
+        footmisc
+        beamertheme-metropolis
         xkeyval;
     };
 in

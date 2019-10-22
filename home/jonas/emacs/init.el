@@ -168,19 +168,17 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :hook (text-mode . flyspell-mode)
   :init
   (defhydra hydra-spelling (:color blue)
-    "
-  ^
+    "^
   ^Spelling^          ^Errors^            ^Checker^
 ------------------------------------------------------------
   [_q_] quit          [_<_] previous      [_c_] correction
   ^^                  [_>_] next          [_d_] dictionary
   ^^                  [_f_] check         [_m_] mode
-  ^^                  ^^                  ^^
-  "
+  ^^                  ^^                  ^^"
     ("q" nil)
     ("<" flyspell-correct-previous :color pink)
     (">" flyspell-correct-next :color pink)
-    ("c" ispell)
+    ("c" flyspell-correct-at-point)
     ("d" ispell-change-dictionary)
     ("f" flyspell-buffer)
     ("m" flyspell-mode))

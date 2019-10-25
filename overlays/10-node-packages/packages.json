@@ -1,6 +1,5 @@
 [
   "typescript-language-server",
-  "@elm-tooling/elm-language-server",
   "tslint",
 
   "coc-python",
@@ -8,5 +7,7 @@
   "coc-rls",
   "coc-json",
   "coc-yaml",
-  "coc-css"
+  "coc-css",
+
+  "maildev"
 ]

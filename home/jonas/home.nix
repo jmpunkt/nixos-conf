@@ -35,7 +35,6 @@
     discount
     # >END - emacs
 
-    diesel_cli
 
     # coc-nvim dependencies
     yarn

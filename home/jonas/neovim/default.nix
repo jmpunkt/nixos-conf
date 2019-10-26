@@ -1,8 +1,6 @@
 { pkgs, stdenv, ... }:
 
 {
-  xdg.configFile."nvim/coc-settings.json".text = builtins.readFile ./coc-settings.json;
-
   programs.neovim = {
     enable = true;
 
@@ -27,13 +25,6 @@
       nerdtree
       nerdtree-git-plugin
 
-      coc-nvim
-      coc-rls
-      coc-python
-      coc-yaml
-      coc-vimtex
-      coc-json
-      coc-css
       lexima
       quick-scope
       vim-searchindex

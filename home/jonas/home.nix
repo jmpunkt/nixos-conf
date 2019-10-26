@@ -1,4 +1,5 @@
-{ pkgs, config, ... }:
+{ config, pkgs, ... }:
+
 {
   imports = [
     ./neovim/default.nix
@@ -34,12 +35,6 @@
     rustToolchain # overlays/40-toolchains.nix
     discount
     # >END - emacs
-
-
-    # coc-nvim dependencies
-    yarn
-    nodejs
-    ctags
   ];
 
   xdg.configFile."alacritty/alacritty.yml".text = builtins.readFile ./alacritty/alacritty.yml;

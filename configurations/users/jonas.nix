@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ../yubico.nix ];
-
   users = {
     groups.jonas.gid = 1000;
     users.jonas = {

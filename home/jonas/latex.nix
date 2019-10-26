@@ -1,6 +1,8 @@
-{ pkgs, config, ... }:
-let
-  my_latex = with pkgs;
+{ config, pkgs, ... }:
+
+with pkgs;
+{
+  home.packages = [
     texlive.combine {
       inherit (texlive)
         scheme-tetex
@@ -34,8 +36,6 @@ let
         footmisc
         beamertheme-metropolis
         xkeyval;
-    };
-in
-{
-  home.packages = [ my_latex ];
+    }
+  ];
 }

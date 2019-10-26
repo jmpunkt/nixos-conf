@@ -3,13 +3,9 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./../../configurations/base.nix
     ./../../configurations/kde.nix
-    ./../../configurations/locale.nix
-    ./../../configurations/misc.nix
-    ./../../configurations/network.nix
-    ./../../configurations/shell.nix
-    ./../../configurations/tmux.nix
+    ./../../configurations/development.nix
+    ./../../configurations/yubico.nix
     ./../../configurations/users/jonas.nix
   ];
 

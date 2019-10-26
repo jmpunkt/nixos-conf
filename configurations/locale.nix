@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
 {
   i18n = {
@@ -12,16 +12,4 @@
   };
 
   time.timeZone = "Europe/Berlin";
-
-  environment.systemPackages = with pkgs; [
-    hunspellDicts.en-gb-ize
-    hunspellDicts.en-us
-    hunspellDicts.de-de
-
-    aspell
-    aspellDicts.de
-    aspellDicts.en
-    aspellDicts.en-computers
-    aspellDicts.en-science
-  ];
 }

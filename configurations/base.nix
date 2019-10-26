@@ -3,26 +3,29 @@
 {
   environment.systemPackages = with pkgs; [
     srm
-    wget
-    git
-    unzip
     curl
+    unzip
     tmux
     htop
     telnet
-    ripgrep
     fd
     exa
-    nox
-    ntfs3g
-    gcc
-    gnumake
-    home-manager
+
+    git
+    ripgrep
     direnv
-    tokei
-    fzf
-    hyperfine
+
+    sdparm
+    hdparm
+    smartmontools
+    pciutils
+    usbutils
   ];
+
+  hardware.cpu.intel.updateMicrocode = true;
+  hardware.cpu.amd.updateMicrocode = true;
+
+  networking.firewall.enable = true;
 
   programs.mtr.enable = true;
   programs.fish.enable = true;

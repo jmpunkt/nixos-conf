@@ -2,12 +2,5 @@
   "typescript-language-server",
   "tslint",
 
-  "coc-python",
-  "coc-vimtex",
-  "coc-rls",
-  "coc-json",
-  "coc-yaml",
-  "coc-css",
-
   "maildev"
 ]

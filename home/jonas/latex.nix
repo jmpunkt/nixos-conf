@@ -3,7 +3,7 @@
 with pkgs;
 {
   home.packages = [
-    texlive.combine {
+    (texlive.combine {
       inherit (texlive)
         scheme-tetex
         adjustbox
@@ -36,6 +36,6 @@ with pkgs;
         footmisc
         beamertheme-metropolis
         xkeyval;
-    }
+    })
   ];
 }

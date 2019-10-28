@@ -14,10 +14,11 @@
     gnupg
     feh
     thunderbird
-    firefox
     dbeaver
     keepassxc
     home-manager
+    # !! use the firefox version distrbuted by Mozilla
+    firefox-bin
 
     discord
     tdesktop

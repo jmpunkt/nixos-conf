@@ -869,6 +869,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;; * PDF
 (use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-view-mode)
   :hook (pdf-view-mode . (lambda ()
                            (pdf-misc-size-indication-minor-mode)
                            (pdf-links-minor-mode)
@@ -877,6 +878,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :bind
   (:map pdf-view-mode-map
         ("/" . hydra-pdftools/body)
+        ("C-s" . isearch-forward)
         ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
         ("g"  . pdf-view-first-page)
         ("G"  . pdf-view-last-page)
@@ -901,10 +903,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (setq-default pdf-view-display-size 'fit-page)
   (setq pdf-annot-activate-created-annotations t
         pdf-view-resize-factor 1.1)
-  ;; use normal isearch
-  (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-  (add-to-list 'auto-mode-alist (cons "\\.pdf\\'" 'pdf-view-mode))
-
   (defhydra hydra-pdftools (:color blue :hint nil)
     "
       PDF tools

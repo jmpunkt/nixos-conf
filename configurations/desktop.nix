@@ -17,7 +17,7 @@
     dbeaver
     keepassxc
     home-manager
-    # !! use the firefox version distrbuted by Mozilla
+    # !! use Firefox distributed by Mozilla
     firefox-bin
 
     discord
@@ -66,18 +66,30 @@
     longitude = 8.682;
   };
 
-  boot.supportedFilesystems = [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
+  boot.supportedFilesystems = [
+    "btrfs" "reiserfs" "vfat"
+    "f2fs" "xfs" "ntfs" "cifs"
+  ];
 
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
-  hardware.opengl.enable = true;
-  hardware.opengl.driSupport32Bit = true;
-  hardware.pulseaudio.support32Bit = true;
+
+  hardware = {
+    opengl = {
+      enable = true;
+      driSupport32Bit = true;
+    };
+
+    pulseaudio = {
+      enable = true;
+      support32Bit = true;
+    };
+  };
 
   networking.networkmanager.enable = true;
 
-  services.redshift.enable = true;
-  services.printing.enable = true;
-  services.xserver.enable = true;
-  services.xserver.layout = "de";
+  services = {
+    redshift.enable = true;
+    printing.enable = true;
+    xserver.enable = true;
+  };
 }

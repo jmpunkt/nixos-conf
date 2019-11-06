@@ -19,8 +19,14 @@
     pinentry_qt5
   ];
 
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.sddm.autoLogin.enable = true;
-  services.xserver.displayManager.sddm.autoLogin.user = "jonas";
-  services.xserver.desktopManager.plasma5.enable = true;
+  services.xserver = {
+    displayManager.sddm = {
+      enable = true;
+      autoLogin = {
+        enable = true;
+        user = "jonas";
+      };
+    };
+    desktopManager.plasma5.enable = true;
+  };
 }

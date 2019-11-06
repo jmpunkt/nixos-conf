@@ -22,14 +22,20 @@
     usbutils
   ];
 
-  hardware.cpu.intel.updateMicrocode = true;
-  hardware.cpu.amd.updateMicrocode = true;
+  hardware.cpu = {
+    intel.updateMicrocode = true;
+    amd.updateMicrocode = true;
+  };
 
   networking.firewall.enable = true;
 
-  programs.mtr.enable = true;
-  programs.fish.enable = true;
+  programs = {
+    mtr.enable = true;
+    fish.enable = true;
+  };
 
-  services.fstrim.enable = true;
-  services.ntp.enable = true;
+  services = {
+    fstrim.enable = true;
+    ntp.enable = true;
+  };
 }

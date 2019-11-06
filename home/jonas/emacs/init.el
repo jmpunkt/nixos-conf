@@ -549,7 +549,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
         (browse-url (parse-url url))
         (message "opening repo %s" url)))))
 
-
 (use-package evil-magit)
 
 ;;;; * Eshell
@@ -574,7 +573,11 @@ _SPC_ cancel	_o_nly this   	_d_elete
         org-ellipsis "…"
         org-catch-invisible-edits 'smart)
   :hook ((org-mode . flyspell-mode)
-         (org-src-mode . (lambda () (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))))
+         (org-mode . (lambda () (setq-local tab-width 2)))
+         (org-src-mode . (lambda ()
+                           (setq-local
+                            flycheck-disabled-checkers
+                            '(emacs-lisp-checkdoc)))))
   :config
   ;; Sets the buffer name of org source blocks properly
   (defadvice org-edit-src-code (around set-buffer-file-name activate compile)

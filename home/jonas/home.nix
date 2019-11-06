@@ -34,17 +34,19 @@
     pythonToolchain # overlays/40-toolchains.nix
     rustToolchain # overlays/40-toolchains.nix
     discount
-    # >END - emacs
+    # END> - emacs
   ];
 
   xdg.configFile."alacritty/alacritty.yml".text = builtins.readFile ./alacritty/alacritty.yml;
-  home.file.".emacs.d" = {
-    source = ./emacs;
-    recursive = true;
-  };
 
-  home.file.".ssh/id_rsa.pub".text = builtins.readFile ./ssh/yubikey.pub;
-  home.file.".ssh/config".text = builtins.readFile ./ssh/config;
+  home.file = {
+    ".ssh/id_rsa.pub".text = builtins.readFile ./ssh/yubikey.pub;
+    ".ssh/config".text = builtins.readFile ./ssh/config;
+    ".emacs.d" = {
+      source = ./emacs;
+      recursive = true;
+    };
+  };
 
   programs.git = {
     enable = true;

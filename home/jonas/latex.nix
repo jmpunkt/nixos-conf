@@ -1,8 +1,7 @@
 { config, pkgs, ... }:
 
-with pkgs;
 {
-  home.packages = [
+  home.packages = with pkgs; [
     (texlive.combine {
       inherit (texlive)
         scheme-tetex

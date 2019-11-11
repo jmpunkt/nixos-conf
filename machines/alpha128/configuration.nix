@@ -13,15 +13,21 @@
   [ "nixpkgs-overlays=/etc/nixos/nixos-conf/overlays" ];
   nixpkgs.config.allowUnfree = true;
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  boot.cleanTmpDir = true;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+      efi.efiSysMountPoint = "/boot/efi";
+    };
+    cleanTmpDir = true;
+  };
 
   networking.hostName = "alpha128";
 
-  services.xserver.libinput.enable = true;
-  services.xserver.libinput.accelProfile = "flat";
+  services.xserver.libinput = {
+    enable = true;
+    accelProfile = "flat";
+  };
 
   system.stateVersion = "19.09";
 }

@@ -51,7 +51,10 @@
   (custom-set-variables
    '(custom-safe-themes
      (quote
-      ("43c808b039893c885bdeec885b4f7572141bd9392da7f0bd8d8346e02b2ec8da" "1c082c9b84449e54af757bcae23617d11f563fc9f33a832a8a2813c4d7dfb652" default))))
+      ("423435c7b0e6c0942f16519fa9e17793da940184a50201a4d932eafe4c94c92d"
+       "43c808b039893c885bdeec885b4f7572141bd9392da7f0bd8d8346e02b2ec8da"
+       "1c082c9b84449e54af757bcae23617d11f563fc9f33a832a8a2813c4d7dfb652"
+       default))))
   (custom-set-faces
    '(default ((t (:family "IBM Plex Mono" :foundry "IBM " :slant normal :weight normal :height 113 :width normal)))))
 
@@ -401,7 +404,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
         lsp-prefer-flymake nil))
 
 (use-package lsp-treemacs
-  :requires (lsp-mode treemacs))
+  :requires (lsp-mode treemacs)
+  :config (lsp-treemacs-sync-mode 1))
 
 (use-package lsp-ui
   :commands lsp-ui-mode

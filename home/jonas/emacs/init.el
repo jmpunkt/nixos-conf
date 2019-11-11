@@ -620,6 +620,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
      (emacs-lisp . t)
      (haskell . t)
      (latex . t)
+     (plantuml . t)
      (gnuplot . t)
      (sql . t)
      (dot . t))))
@@ -1107,6 +1108,8 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
   :config
   (autoload 'LaTeX-preview-setup "preview")
   (setq preview-scale-function 1.2))
+
+(load "~/.emacs.d/nix-paths.el")
 
 ;;; * -- End
 (provide 'init)

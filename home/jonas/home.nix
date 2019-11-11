@@ -24,9 +24,12 @@
     dropbox-cli
 
     # <START - emacs
+    jre # required by plantuml
+    ghostscript # LaTex EPS files
     supermacs
     languagetool
     nixfmt
+    plantuml
     ccls
     haskellPackages.haskell-lsp
     nodePackages.typescript-language-server
@@ -42,10 +45,11 @@
   home.file = {
     ".ssh/id_rsa.pub".text = builtins.readFile ./ssh/yubikey.pub;
     ".ssh/config".text = builtins.readFile ./ssh/config;
-    ".emacs.d" = {
-      source = ./emacs;
-      recursive = true;
-    };
+    ".emacs.d/init.el".text = builtins.readFile ./emacs/init.el;
+    ".emacs.d/nix-paths.el".text = ''
+        ;; Set executable or library paths explicitly
+        (setq org-plantuml-jar-path "${pkgs.plantuml}/lib/plantuml.jar")
+    '';
   };
 
   programs.git = {

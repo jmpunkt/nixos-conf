@@ -10,6 +10,7 @@ super: self:
       ripgrep
       hydra
       outshine
+      hl-todo
 
       org-fancy-priorities
       org-bullets
@@ -28,6 +29,7 @@ super: self:
       langtool
 
       magit
+      magit-todos
       evil-magit
 
       projectile

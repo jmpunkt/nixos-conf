@@ -14,7 +14,10 @@
   :init (setq inhibit-compacting-font-caches t))
 
 (use-package doom-themes
-  :init (doom-themes-treemacs-config))
+  :init
+  (doom-themes-treemacs-config)
+  (doom-themes-org-config)
+  (doom-themes-visual-bell-config))
 
 (use-package doom-modeline
   :hook (after-init . doom-modeline-mode)
@@ -201,19 +204,18 @@ _SPC_ cancel	_o_nly this   	_d_elete
               ("C-c l" . hydra-langtool/body))
   :init
   (defhydra hydra-langtool (:color blue)
-    "
-  ^
+    "^
   ^Spelling^          ^Errors^            ^Checker^
 ------------------------------------------------------------
   [_q_] quit          [_<_] previous      [_c_] correction
-  ^^                  [_>_] next          [_s_] show error
-  ^^                  [_f_] check         ^^
-  ^^                  ^^                  ^^
-  "
+  [_f_] check         [_>_] next          [_s_] show error
+  [_d_] done          ^^                  ^^
+  ^^                  ^^                  ^^"
     ("q" nil)
     ("<" langtool-goto-previous-error :color pink)
     (">" langtool-goto-next-error :color pink)
     ("c" langtool-correct-buffer)
+    ("d" langtool-check-done)
     ("s" langtool-show-message-at-point)
     ("f" langtool-check))
   :config
@@ -555,6 +557,19 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package evil-magit)
 
+(use-package hl-todo
+  :hook (text-mode-hook . (lambda () (hl-todo-mode t)))
+  :config
+  (add-to-list 'hl-todo-keyword-faces '("TODO" . "gold1"))
+  (add-to-list 'hl-todo-keyword-faces '("TEST" . "SpringGreen1"))
+  (add-to-list 'hl-todo-keyword-faces '("NOTICE" . "chartreuse3"))
+  (add-to-list 'hl-todo-keyword-faces '("FIXME" . "gold1"))
+  (add-to-list 'hl-todo-keyword-faces '("HACK" . "DarkOrange1")))
+
+(use-package magit-todos
+  :requires (magit hl-todo)
+  :config (magit-todos-mode))
+
 ;;;; * Eshell
 (use-package eshell
   :requires ansi-color
@@ -569,19 +584,25 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package org
   :requires (flyspell flycheck)
+  :mode ("\\.org\\'" . org-mode)
   :defines (org-remote-dir)
   :init
   (defvar org-remote-dir (expand-file-name "~/Dropbox"))
   (defvar org-agenda-dir (expand-file-name "agenda" org-remote-dir))
   (setq org-highlight-latex-and-related '(latex)
         org-ellipsis "…"
-        org-catch-invisible-edits 'smart)
+        org-catch-invisible-edits 'smart
+        org-deadline-warning-days 14
+        org-agenda-show-all-dates t)
   :hook ((org-mode . flyspell-mode)
          (org-mode . (lambda () (setq-local tab-width 2)))
          (org-src-mode . (lambda ()
                            (setq-local
                             flycheck-disabled-checkers
-                            '(emacs-lisp-checkdoc)))))
+                            '(emacs-lisp-checkdoc))))
+         (org-babel-after-execute . (lambda ()
+                                      (when org-inline-image-overlays
+                                        (org-redisplay-inline-images)))))
   :config
   ;; Sets the buffer name of org source blocks properly
   (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
@@ -659,7 +680,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
         org-noter-notes-window-location 'vertical-split))
 
 (use-package org-bullets
-  :requires org
   :hook (org-mode . org-bullets-mode)
   :config (setq org-bullets-bullet-list '("●" "○" "✸" "✿")))
 
@@ -670,7 +690,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package ob-async)
 
 (use-package interleave
-  :requires org
   :bind (:map global-map
               ("C-x i" . interleave-mode))
   :config

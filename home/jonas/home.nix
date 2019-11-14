@@ -24,6 +24,7 @@
     dropbox-cli
 
     # <START - emacs
+    graphviz-nox
     jre # required by plantuml
     ghostscript # LaTex EPS files
     supermacs

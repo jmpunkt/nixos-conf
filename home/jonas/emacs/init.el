@@ -35,6 +35,7 @@
   (setq-default show-paren-delay 0)
   (setq-default show-trailing-whitespace t)
   (setq indent-line-function 'insert-tab)
+  (setq revert-without-query '(".+\.pdf"))
 
   (setq make-backup-files nil)
   (setq auto-save-default nil)

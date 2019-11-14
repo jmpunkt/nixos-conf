@@ -899,6 +899,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
                            (pdf-misc-size-indication-minor-mode)
                            (pdf-links-minor-mode)
                            (pdf-isearch-minor-mode)
+                           (linum-mode 0)
                            (cua-mode 0)))
   :bind
   (:map pdf-view-mode-map

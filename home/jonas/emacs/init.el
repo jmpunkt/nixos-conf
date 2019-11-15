@@ -559,8 +559,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package evil-magit)
 
 (use-package hl-todo
-  :hook (text-mode-hook . (lambda () (hl-todo-mode t)))
   :config
+  (global-hl-todo-mode 1)
   (add-to-list 'hl-todo-keyword-faces '("TODO" . "gold1"))
   (add-to-list 'hl-todo-keyword-faces '("TEST" . "SpringGreen1"))
   (add-to-list 'hl-todo-keyword-faces '("NOTICE" . "chartreuse3"))

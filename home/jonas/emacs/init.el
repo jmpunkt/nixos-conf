@@ -605,6 +605,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
                                       (when org-inline-image-overlays
                                         (org-redisplay-inline-images)))))
   :config
+  (setq org-latex-to-pdf-process
+        '("xelatex -interaction nonstopmode %f"
+          "xelatex -interaction nonstopmode %f")) ;; for multiple passes
   ;; Sets the buffer name of org source blocks properly
   (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
     (let ((file-name (buffer-file-name)))

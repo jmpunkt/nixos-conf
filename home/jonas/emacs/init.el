@@ -396,7 +396,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :config
   (setq lsp-print-performance nil
         lsp-log-io nil
-        lsp-auto-guess-root t
+        ;; lsp-auto-guess-root t
         lsp-eldoc-render-all nil
         lsp-eldoc-prefer-signature-help nil
         lsp-eldoc-enable-hover nil

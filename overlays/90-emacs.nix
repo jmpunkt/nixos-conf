@@ -95,7 +95,9 @@ super: self:
     ])++ (with epkgs.elpaPackages; [
       undo-tree
       auctex
+    ]) ++ (with epkgs.orgPackages; [
       org
+      org-plus-contrib
     ])
   );
 }

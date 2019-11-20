@@ -606,8 +606,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
                                         (org-redisplay-inline-images)))))
   :config
   (setq org-latex-to-pdf-process
-        '("xelatex -interaction nonstopmode %f"
-          "xelatex -interaction nonstopmode %f")) ;; for multiple passes
+        '("latexmk -pdflatex='xelatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
   ;; Sets the buffer name of org source blocks properly
   (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
     (let ((file-name (buffer-file-name)))
@@ -650,6 +649,10 @@ _SPC_ cancel	_o_nly this   	_d_elete
      (sql . t)
      (dot . t))))
 
+(use-package ox-extra
+  :config
+  (ox-extras-activate '(ignore-headlines)))
+
 (use-package toc-org
   :requires (markdown-mode org)
   :hook ((org-mode . toc-org-mode)
@@ -669,7 +672,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (setq org-ref-completion-library 'org-ref-ivy-cite
         org-ref-bibliography-notes papers-notes
         org-ref-default-bibliography (list papers-refs)
-        org-ref-pdf-directory papers-pdfs))
+        org-ref-pdf-directory (list papers-pdfs)))
 
 (use-package org-noter
   :requires (org org-ref)

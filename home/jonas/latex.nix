@@ -34,7 +34,8 @@
         tabu
         footmisc
         beamertheme-metropolis
-        xkeyval;
+        xkeyval
+        latexmk;
     })
   ];
 }

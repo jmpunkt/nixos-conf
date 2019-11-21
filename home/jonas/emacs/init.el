@@ -193,6 +193,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :config
   (setq-default ispell-program-name "aspell"
                 ispell-list-command "--list")
+  (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+  (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+  (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
   (defun flyspell-buffer-after-pdict-save (&rest _) (flyspell-buffer))
   (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save))
 
@@ -587,17 +590,14 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package org
   :requires (flyspell flycheck)
   :mode ("\\.org\\'" . org-mode)
-  :defines (org-remote-dir)
+  :defines (org-remote-dir org-agenda-dir)
   :init
   (defvar org-remote-dir (expand-file-name "~/Dropbox"))
   (defvar org-agenda-dir (expand-file-name "agenda" org-remote-dir))
-  (setq org-highlight-latex-and-related '(latex)
-        org-ellipsis "…"
-        org-catch-invisible-edits 'smart
-        org-deadline-warning-days 14
-        org-agenda-show-all-dates t)
   :hook ((org-mode . flyspell-mode)
-         (org-mode . (lambda () (setq-local tab-width 2)))
+         (org-mode . (lambda ()
+                       (setq-local tab-width 2)
+                       (auto-fill-mode 1)))
          (org-src-mode . (lambda ()
                            (setq-local
                             flycheck-disabled-checkers
@@ -606,15 +606,21 @@ _SPC_ cancel	_o_nly this   	_d_elete
                                       (when org-inline-image-overlays
                                         (org-redisplay-inline-images)))))
   :config
-  (setq org-latex-to-pdf-process
-        '("latexmk -pdflatex='xelatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
   ;; Sets the buffer name of org source blocks properly
   (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
     (let ((file-name (buffer-file-name)))
       ad-do-it
       (setq buffer-file-name file-name)))
-  (setq org-agenda-files (list org-agenda-dir))
-  (setq org-capture-templates
+  (setq org-latex-to-pdf-process '("latexmk -pdflatex='xelatex -shell-escape -interaction nonstopmode' -pdf -f  %f")
+        org-highlight-latex-and-related '(latex)
+        org-ellipsis "…"
+        org-catch-invisible-edits 'smart
+        org-deadline-warning-days 14
+        org-agenda-show-all-dates t
+        org-agenda-files (list org-agenda-dir)
+        ;; `!` ensures that timestamps are used
+        org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+    (setq org-capture-templates
         '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
            "* TODO %? %^G \n  %U" :empty-lines 1)
           ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))

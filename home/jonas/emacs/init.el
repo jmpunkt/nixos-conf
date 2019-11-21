@@ -30,26 +30,27 @@
   :bind (:map global-map
               ([f1] . eshell))
   :init
-  (setq-default tab-width 4)
-  (setq-default indent-tabs-mode nil)
-  (setq-default show-paren-delay 0)
-  (setq-default show-trailing-whitespace t)
-  (setq indent-line-function 'insert-tab)
-  (setq revert-without-query '(".+\.pdf"))
+  (setq-default tab-width 4
+                indent-tabs-mode nil
+                show-paren-delay 0
+                show-trailing-whitespace t)
 
-  (setq make-backup-files nil)
-  (setq auto-save-default nil)
-  (setq column-number-mode t)
+  (setq indent-line-function 'insert-tab
+        revert-without-query '(".+\.pdf")
+        adaptive-fill-mode nil
+        make-backup-files nil
+        auto-save-default nil
+        column-number-mode t)
 
+  (save-place-mode 1)
   (show-paren-mode 1)
   (global-linum-mode t)
-  (global-hl-line-mode +1)
+  (global-hl-line-mode 1)
   (global-prettify-symbols-mode t)
 
   (toggle-scroll-bar -1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
-
   (global-eldoc-mode -1)
 
   (custom-set-variables

@@ -96,9 +96,9 @@
 ;;;; * Hydra
 (use-package hydra
   :bind (:map global-map
-              ("C-x w" . hydra-window/body))
+              ("C-x w" . my-hydra-window/body))
   :init
-  (defhydra hydra-window ()
+  (defhydra my-hydra-window ()
     "
 Movement^^        ^Split^         ^Switch^		^Resize^
 ----------------------------------------------------------------
@@ -124,7 +124,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
            (interactive)
            (ace-window 1)
            (add-hook 'ace-window-end-once-hook
-                     'hydra-window/body)))
+                     'my-hydra-window/body)))
     ("v" (lambda ()
            (interactive)
            (split-window-right)
@@ -137,7 +137,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
            (interactive)
            (ace-window 4)
            (add-hook 'ace-window-end-once-hook
-                     'hydra-window/body)))
+                     'my-hydra-window/body)))
     ("S" save-buffer)
     ("d" delete-window)
     ("D" (lambda ()
@@ -158,18 +158,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :requires direnv
   :init
   (global-flycheck-mode t)
-  ;; Hydra Flycheck
-  (defhydra hydra-flycheck
-    (:pre (progn (setq hydra-lv t) (flycheck-list-errors))
-          :post (progn (setq hydra-lv nil) (quit-windows-on "*Flycheck errors*"))
-          :hint nil)
-    "Errors"
-    ("f"  flycheck-error-list-set-filter "Filter")
-    ("j"  flycheck-next-error "Next")
-    ("k"  flycheck-previous-error "Previous")
-    ("gg" flycheck-first-error "First")
-    ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
-    ("q"  nil))
   :config
   (setq flycheck-check-syntax-automatically '(save mode-enabled)
         flycheck-display-errors-delay .3
@@ -180,10 +168,10 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Spelling
 (use-package flyspell
   :bind (:map flyspell-mode-map
-              ("C-c s" . hydra-spelling/body))
+              ("C-c s" . my-hydra-spelling/body))
   :hook (text-mode . flyspell-mode)
   :init
-  (defhydra hydra-spelling (:color blue)
+  (defhydra my-hydra-spelling (:color blue)
     "^
   ^Spelling^          ^Errors^            ^Checker^
 ------------------------------------------------------------
@@ -214,9 +202,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package langtool
   :bind (:map global-map
-              ("C-c l" . hydra-langtool/body))
+              ("C-c l" . my-hydra-langtool/body))
   :init
-  (defhydra hydra-langtool (:color blue)
+  (defhydra my-hydra-langtool (:color blue)
     "^
   ^Spelling^          ^Errors^            ^Checker^
 ------------------------------------------------------------
@@ -238,56 +226,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Smartparens
 (use-package smartparens
   :hook (eval-expression-minibuffer-setup . smartparens-mode)
-  :bind (:map global-map
-              ("C-c p" . hydra-smartparens/body))
-  :init
-  (defhydra hydra-smartparens (:hint nil)
-    "
- Moving^^^^                       Slurp & Barf^^   Wrapping^^            Sexp juggling^^^^               Destructive
-------------------------------------------------------------------------------------------------------------------------
- [_a_] beginning  [_n_] down      [_h_] bw slurp   [_R_]   rewrap        [_S_] split   [_t_] transpose   [_c_] change inner  [_w_] copy
- [_e_] end        [_N_] bw down   [_H_] bw barf    [_u_]   unwrap        [_s_] splice  [_A_] absorb      [_C_] change outer
- [_f_] forward    [_p_] up        [_l_] slurp      [_U_]   bw unwrap     [_r_] raise   [_E_] emit        [_k_] kill          [_g_] quit
- [_b_] backward   [_P_] bw up     [_L_] barf       [_(__{__[_] wrap (){}[]   [_j_] join    [_o_] convolute   [_K_] bw kill       [_q_] quit"
-    ;; Moving
-    ("a" sp-beginning-of-sexp)
-    ("e" sp-end-of-sexp)
-    ("f" sp-forward-sexp)
-    ("b" sp-backward-sexp)
-    ("n" sp-down-sexp)
-    ("N" sp-backward-down-sexp)
-    ("p" sp-up-sexp)
-    ("P" sp-backward-up-sexp)
-    ;; Slurping & barfing
-    ("h" sp-backward-slurp-sexp)
-    ("H" sp-backward-barf-sexp)
-    ("l" sp-forward-slurp-sexp)
-    ("L" sp-forward-barf-sexp)
-    ;; Wrapping
-    ("R" sp-rewrap-sexp)
-    ("u" sp-unwrap-sexp)
-    ("U" sp-backward-unwrap-sexp)
-    ("(" sp-wrap-round)
-    ("{" sp-wrap-curly)
-    ("[" sp-wrap-square)
-    ;; Sexp juggling
-    ("S" sp-split-sexp)
-    ("s" sp-splice-sexp)
-    ("r" sp-raise-sexp)
-    ("j" sp-join-sexp)
-    ("t" sp-transpose-sexp)
-    ("A" sp-absorb-sexp)
-    ("E" sp-emit-sexp)
-    ("o" sp-convolute-sexp)
-    ;; Destructive editing
-    ("c" sp-change-inner :exit t)
-    ("C" sp-change-enclosing :exit t)
-    ("k" sp-kill-sexp)
-    ("K" sp-backward-kill-sexp)
-    ("w" sp-copy-sexp)
-
-    ("q" nil)
-    ("g" nil))
   :config
   (smartparens-global-mode t)
   (show-smartparens-global-mode t)
@@ -379,9 +317,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package lsp-mode
   :commands lsp
   :bind (:map lsp-mode-map
-              ([f6] . hydra-lsp/body))
+              ([f6] . my-hydra-lsp/body))
   :init
-  (defhydra hydra-lsp (:exit t :hint nil)
+  (defhydra my-hydra-lsp (:exit t :hint nil)
     "
  Buffer^^               Server^^                   Symbol
 -------------------------------------------------------------------------------------
@@ -471,9 +409,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package counsel-projectile
   :requires (counsel projectile)
   :bind (:map projectile-mode-map
-              ("C-c m" . hydra-projectile/body))
+              ("C-c m" . my-hydra-projectile/body))
   :init
-  (defhydra hydra-projectile (:exit t :hint nil)
+  (defhydra my-hydra-projectile (:exit t :hint nil)
     "
   Projectile^^        Buffers^^           Find^^^^            Search^^
 -------------------------------------------------------------------------------------
@@ -754,7 +692,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Markdown
 (use-package markdown-mode
-  :requires (flyspell hydra)
+  :requires flyspell
   :mode
   ("INSTALL\\'"
    "CONTRIBUTORS\\'"
@@ -762,43 +700,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
    "README\\'"
    "\\.markdown\\'"
    "\\.md\\'")
-  :hook (markdown-mode . flyspell-mode)
-  :bind (:map markdown-mode-map
-              ([f6] . hydra-markdown-mode/body))
-  :init
-  (defhydra hydra-markdown-mode (:hint nil)
-    "
-   Formatting^^           Headings^^         References^^       Other
--------------------------------------------------------------------------------------
-   [_s_] bold             [_h_] automatic    [_L_] link         [_m_] insert item
-   [_e_] italic           [_1_] h1           [_U_] uri          [_l_] promote
-   [_b_] blockquote       [_2_] h2           [_F_] footnote     [_r_] demote
-   [_p_] pre-formatted    [_3_] h3           [_W_] wiki-link    [_u_] move up
-   [_c_] code             [_4_] h4                              [_d_] move down
-    "
-    ("s" markdown-insert-bold)
-    ("e" markdown-insert-italic)
-    ("b" markdown-insert-blockquote :color blue)
-    ("p" markdown-insert-pre :color blue)
-    ("c" markdown-insert-code)
-
-    ("h" markdown-insert-header-dwim)
-    ("1" markdown-insert-header-atx-1)
-    ("2" markdown-insert-header-atx-2)
-    ("3" markdown-insert-header-atx-3)
-    ("4" markdown-insert-header-atx-4)
-
-    ("m" markdown-insert-list-item)
-
-    ("l" markdown-promote)
-    ("r" markdown-demote)
-    ("d" markdown-move-down)
-    ("u" markdown-move-up)
-
-    ("L" markdown-insert-link :color blue)
-    ("U" markdown-insert-uri :color blue)
-    ("F" markdown-insert-footnote :color blue)
-    ("W" markdown-insert-wiki-link :color blue)))
+  :hook (markdown-mode . flyspell-mode))
 
 (use-package markdown-mode+
   :requires markdown-mode)
@@ -909,7 +811,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (setq web-mode-markup-indent-offset 2
         web-mode-code-indent-offset 2
         web-mode-css-indent-offset 2
-
         web-mode-enable-auto-pairing nil
         web-mode-enable-auto-quoting nil
         web-mode-enable-auto-expanding t
@@ -933,7 +834,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
                            (cua-mode 0)))
   :bind
   (:map pdf-view-mode-map
-        ("/" . hydra-pdftools/body)
+        ("/" . my-hydra-pdftools/body)
         ("C-s" . isearch-forward)
         ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
         ("g"  . pdf-view-first-page)
@@ -957,8 +858,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :config
   (pdf-tools-install)
   (setq-default pdf-view-display-size 'fit-page)
-  (defhydra hydra-pdftools (:color blue :hint nil)
   (setq pdf-view-resize-factor 1.1)
+  (defhydra my-hydra-pdftools (:color blue :hint nil)
     "
       PDF tools
 
@@ -974,14 +875,14 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
      ^^^↓^^^
      ^^_G_^^
 "
-    ("\\" hydra-master/body "back")
+    ("q" hydra-master/body "back")
     ("<ESC>" nil "quit")
     ("al" pdf-annot-list-annotations)
     ("ad" pdf-annot-delete)
     ("aa" pdf-annot-attachment-dired)
     ("am" pdf-annot-add-markup-annotation)
     ("at" pdf-annot-add-text-annotation)
-    ("y"  pdf-view-kill-ring-save)
+    ("y" pdf-view-kill-ring-save)
     ("+" pdf-view-enlarge :color red)
     ("-" pdf-view-shrink :color red)
     ("0" pdf-view-scale-reset)

@@ -9,6 +9,15 @@
 (package-initialize)
 (eval-when-compile (require 'use-package))
 
+;;; * Paths
+
+(defconst org-remote-dir (expand-file-name "~/Dropbox"))
+(defconst org-agenda-dir (expand-file-name "agenda" org-remote-dir))
+(defconst org-papers-dir (expand-file-name "papers" org-remote-dir))
+(defconst org-papers-pdfs (expand-file-name "lib" org-papers-dir))
+(defconst org-papers-notes (expand-file-name "notes.org" org-papers-dir))
+(defconst org-papers-bibtex (expand-file-name "index.bib" org-papers-dir))
+
 ;;; * Theme
 (use-package all-the-icons
   :init (setq inhibit-compacting-font-caches t))
@@ -450,11 +459,10 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package ivy-bibtex
   :requires (ivy org org-ref bibtex)
-  :ensure org-ref
   :config
-  (setq bibtex-completion-bibliography papers-refs
-        bibtex-completion-library-path papers-pdfs
-        bibtex-completion-notes-path papers-notes))
+  (setq bibtex-completion-bibliography org-papers-bibtex
+        bibtex-completion-library-path org-papers-pdfs
+        bibtex-completion-notes-path org-papers-notes))
 
 (use-package counsel
   :bind (:map global-map
@@ -595,10 +603,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package org
   :requires (flyspell flycheck)
   :mode ("\\.org\\'" . org-mode)
-  :defines (org-remote-dir org-agenda-dir)
-  :init
-  (defvar org-remote-dir (expand-file-name "~/Dropbox"))
-  (defvar org-agenda-dir (expand-file-name "agenda" org-remote-dir))
   :hook ((org-mode . flyspell-mode)
          (org-mode . (lambda ()
                        (setq-local tab-width 2)
@@ -676,24 +680,18 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package org-ref
   :requires org
-  :defines (papers-dir papers-pdfs papers-notes papers-refs)
-  :init
-  (defvar papers-dir (expand-file-name "papers" org-remote-dir))
-  (defvar papers-pdfs (expand-file-name "lib" papers-dir))
-  (defvar papers-notes (expand-file-name "notes.org" papers-dir))
-  (defvar papers-refs (expand-file-name "index.bib" papers-dir))
   :config
   (setq org-ref-completion-library 'org-ref-ivy-cite
-        org-ref-bibliography-notes papers-notes
-        org-ref-default-bibliography (list papers-refs)
-        org-ref-pdf-directory (list papers-pdfs)))
+        org-ref-bibliography-notes org-papers-notes
+        org-ref-default-bibliography (list org-papers-bibtex)
+        org-ref-pdf-directory (list org-papers-pdfs)))
 
 (use-package org-noter
   :requires (org org-ref)
   :commands org-noter
   :config
   (setq org-noter-default-notes-file-names '("index-org")
-        org-noter-notes-search-path (list papers-dir)
+        org-noter-notes-search-path (list org-papers-dir)
         org-noter-auto-save-last-location t
         org-noter-doc-split-fraction '(0.8 . 0.8)
         org-noter-always-create-frame nil

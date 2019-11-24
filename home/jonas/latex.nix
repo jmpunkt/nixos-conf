@@ -35,6 +35,14 @@
         footmisc
         beamertheme-metropolis
         xkeyval
+        minted
+
+        fvextra
+        ifplatform
+        xstring
+        framed
+        upquote
+
         latexmk;
     })
   ];

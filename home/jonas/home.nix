@@ -34,6 +34,7 @@
     haskellPackages.haskell-lsp
     nodePackages.typescript-language-server
     nodePackages.typescript
+    python37Packages.pygments
     pythonToolchain # overlays/40-toolchains.nix
     rustToolchain # overlays/40-toolchains.nix
     discount

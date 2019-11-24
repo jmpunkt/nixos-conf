@@ -622,6 +622,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
         org-catch-invisible-edits 'smart
         org-deadline-warning-days 14
         org-agenda-show-all-dates t
+        org-latex-listings 'minted
+        org-latex-packages-alist '(("" "minted") ("" "listings") ("" "url"))
         org-agenda-files (list org-agenda-dir)
         ;; `!` ensures that timestamps are used
         org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))

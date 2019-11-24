@@ -54,6 +54,7 @@ super: self:
       flycheck-rust
 
       ivy
+      flx
       counsel
       counsel-projectile
       flyspell-correct-ivy

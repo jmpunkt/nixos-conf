@@ -798,6 +798,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :requires markdown-mode)
 
 ;;; * Programming Languages
+
+;; Sets the auto-fill-mode only for comments
+(defun my-prog-setup ()
+  (auto-fill-mode 1)
+  (setq-local comment-auto-fill-only-comments t))
+
 ;;;; * C/C++
 (use-package irony
   :hook ((c-mode . irony-mode)
@@ -842,7 +848,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Rust
 (use-package rust-mode
   :hook ((rust-mode . lsp)
-         (rust-mode . flyspell-prog-mode)))
+         (rust-mode . flyspell-prog-mode)
+         (rust-mode . my-prog-setup)))
 
 (use-package flycheck-rust
   :hook (flycheck-mode . flycheck-rust-setup))

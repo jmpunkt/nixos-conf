@@ -308,8 +308,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package org-projectile
   :requires (org projectile)
   :bind (:map global-map
-              ("C-c n p" . org-projectile-project-todo-completing-read)
-              ("C-c c" . org-capture))
+              ("C-c n p" . org-projectile-project-todo-completing-read))
   :config
   (setq org-projectile-projects-file (expand-file-name "projectile.org" org-remote-dir)
         org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
@@ -602,11 +601,14 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package org
   :requires (flyspell flycheck)
+  :bind (:map global-map
+              ("C-c c" . org-capture))
   :mode ("\\.org\\'" . org-mode)
   :hook ((org-mode . flyspell-mode)
          (org-mode . (lambda ()
                        (setq-local tab-width 2)
                        (auto-fill-mode 1)))
+         (org-mode . org-indent-mode)
          (org-src-mode . (lambda ()
                            (setq-local
                             flycheck-disabled-checkers
@@ -950,11 +952,10 @@ _SPC_ cancel	_o_nly this   	_d_elete
         ("b"  . pdf-view-set-slice-from-bounding-box)
         ("r"  . pdf-view-reset-slice))
   :config
-  (pdf-tools-install t t t)
+  (pdf-tools-install)
   (setq-default pdf-view-display-size 'fit-page)
-  (setq pdf-annot-activate-created-annotations t
-        pdf-view-resize-factor 1.1)
   (defhydra hydra-pdftools (:color blue :hint nil)
+  (setq pdf-view-resize-factor 1.1)
     "
       PDF tools
 
@@ -1065,7 +1066,6 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
   (setq bibtex-align-at-equal-sign t
         bibtex-autokey-name-year-separator ""
         bibtex-autokey-year-title-separator ""
-        bibtex-autokey-titleword-first-ignore '("the" "a" "if" "and" "an")
         bibtex-autokey-titleword-length 100
         bibtex-autokey-titlewords 1))
 
@@ -1152,8 +1152,7 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
 (use-package latex-math-preview
   :hook (LaTeX-mode-hook . LaTeX-preview-setup)
   :config
-  (autoload 'LaTeX-preview-setup "preview")
-  (setq preview-scale-function 1.2))
+  (autoload 'LaTeX-preview-setup "preview"))
 
 (load "~/.emacs.d/nix-paths.el")
 

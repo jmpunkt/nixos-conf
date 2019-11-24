@@ -36,8 +36,7 @@
                 show-trailing-whitespace t)
 
   (setq indent-line-function 'insert-tab
-        revert-without-query '(".+\.pdf")
-        adaptive-fill-mode nil
+        revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")
         make-backup-files nil
         auto-save-default nil
         column-number-mode t)

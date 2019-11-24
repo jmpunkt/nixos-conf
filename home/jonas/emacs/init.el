@@ -490,12 +490,16 @@ _SPC_ cancel	_o_nly this   	_d_elete
     ("s" counsel-projectile-rg)
     ("S" projectile-save-project-buffers)))
 
+;;;;; * Snippets
+(use-package yasnippet
+  :config
+  (yas-global-mode))
+
+(use-package yasnippet-snippets)
+
 ;;;;; * Company
 (use-package company
-  :hook (emacs-lisp-mode . (lambda ()
-                             (setq-local
-                              company-backends
-                              (append '(company-elisp) company-backends))))
+  :requires yasnippet
   :bind (:map company-active-map
               ("TAB" . company-complete-common-or-cycle)
               ("<tab>" . company-complete-common-or-cycle)
@@ -508,23 +512,21 @@ _SPC_ cancel	_o_nly this   	_d_elete
         company-show-numbers t
         company-tooltip-align-annotations t
         company-tooltip-limit 20)
-
   (setq company-backends
-        '(company-bbdb company-dabbrev-code company-files company-capf)))
+        '(
+          company-bbdb
+          (company-files
+           company-capf
+           company-yasnippet)
+          (company-dabbrev-code
+           company-gtags
+           company-etags)
+          company-dabbrev)))
 
 (use-package company-quickhelp
   :requires company
   :config
   (company-quickhelp-mode 1))
-
-;;;;; * Snippets
-(use-package yasnippet
-  :requires company
-  :config
-  (add-to-list 'company-backends 'company-yasnippet)
-  (yas-global-mode))
-
-(use-package yasnippet-snippets)
 
 ;;;; * Git
 (use-package magit

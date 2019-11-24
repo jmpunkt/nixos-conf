@@ -437,13 +437,17 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package ivy
   :demand t
   :bind (:map global-map
-              ("C-s" . swiper))
+              ("C-s" . swiper)
+              ("C-x C-b" . ivy-switch-buffer-other-window))
   :config
   (ivy-mode 1)
   (setq ivy-display-style 'fancy
         ivy-use-virtual-buffers t
         enable-recursive-minibuffers t
-        ivy-use-selectable-prompt t))
+        ivy-use-selectable-prompt t
+        ivy-initial-inputs-alist nil
+        ivy-re-builders-alist '((swiper . ivy--regex-plus)
+                                (t . ivy--regex-fuzzy))))
 
 (use-package ivy-bibtex
   :requires (ivy org org-ref bibtex)

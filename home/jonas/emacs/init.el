@@ -465,7 +465,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package counsel-projectile
   :requires (counsel projectile)
   :bind (:map projectile-mode-map
-              ("C-c p" . hydra-projectile/body))
+              ("C-c m" . hydra-projectile/body))
   :init
   (defhydra hydra-projectile (:exit t :hint nil)
     "

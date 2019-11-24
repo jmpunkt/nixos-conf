@@ -18,7 +18,6 @@
   };
 
   home.packages = with pkgs; [
-    nixify
     binutils-unwrapped
     steam
     dropbox-cli

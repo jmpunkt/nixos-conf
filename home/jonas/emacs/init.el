@@ -622,14 +622,10 @@ _SPC_ cancel	_o_nly this   	_d_elete
     (let ((file-name (buffer-file-name)))
       ad-do-it
       (setq buffer-file-name file-name)))
-  (setq org-latex-to-pdf-process '("latexmk -pdflatex='xelatex -shell-escape -interaction nonstopmode' -pdf -f  %f")
-        org-highlight-latex-and-related '(latex)
+       (setq org-highlight-latex-and-related '(latex)
         org-ellipsis "…"
         org-catch-invisible-edits 'smart
         org-deadline-warning-days 14
-        org-agenda-show-all-dates t
-        org-latex-listings 'minted
-        org-latex-packages-alist '(("" "minted") ("" "listings") ("" "url"))
         org-agenda-files (list org-agenda-dir)
         ;; `!` ensures that timestamps are used
         org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
@@ -668,6 +664,13 @@ _SPC_ cancel	_o_nly this   	_d_elete
      (gnuplot . t)
      (sql . t)
      (dot . t))))
+
+(use-package ox-latex
+  :config
+  (setq org-latex-listings 'minted
+        org-latex-packages-alist '(("" "minted") ("" "color") ("" "listings") ("" "url"))
+        org-latex-compiler "xelatex"
+        org-latex-pdf-process '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape -interaction=nonstopmode\" -outdir=%o %f")))
 
 (use-package ox-extra
   :config

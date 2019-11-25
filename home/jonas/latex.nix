@@ -42,6 +42,7 @@
         xstring
         framed
         upquote
+        dvipng
 
         latexmk;
     })

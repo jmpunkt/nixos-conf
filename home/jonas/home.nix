@@ -21,8 +21,11 @@
     binutils-unwrapped
     steam
     dropbox-cli
+    pdfpc
 
     # <START - emacs
+    inkscape
+    imagemagick
     graphviz-nox
     jre # required by plantuml
     ghostscript # LaTex EPS files

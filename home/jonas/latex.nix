@@ -36,14 +36,16 @@
         beamertheme-metropolis
         xkeyval
         minted
-
         fvextra
         ifplatform
         xstring
         framed
         upquote
         dvipng
-
+        svg
+        trimspaces
+        relsize
+        pdfpages
         latexmk;
     })
   ];

@@ -46,6 +46,7 @@
         trimspaces
         relsize
         pdfpages
+        refman
         latexmk;
     })
   ];

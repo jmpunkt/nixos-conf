@@ -712,6 +712,18 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (auto-fill-mode 1)
   (setq-local comment-auto-fill-only-comments t))
 
+;;;; * SQL
+
+(use-package sql
+  :mode
+  ("sql" . sql-mode)
+  :hook
+  (sql-mode . (lambda () (setq tab-width 2)))
+  :config
+  (setq-default sql-database "development"
+                sql-server "localhost")
+  (sql-highlight-postgres-keywords))
+
 ;;;; * C/C++
 (use-package irony
   :hook ((c-mode . irony-mode)

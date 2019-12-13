@@ -263,47 +263,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
         org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
   (push (org-projectile-project-todo-entry) org-capture-templates))
 
-;;;; * Diff
-(use-package ediff
-  :config
-  (autoload 'diff-mode "diff-mode" "Diff major mode" t)
-  (setq diff-switches "-u"
-        ediff-auto-refine-limit (* 2 14000)
-        ediff-window-setup-function 'ediff-setup-windows-plain
-        ediff-split-window-function
-        (lambda (&optional arg)
-          (if (> (frame-width) 160)
-              (split-window-horizontally arg)
-            (split-window-vertically arg)))))
-
-(defun diff-region ()
-  "Select a region to compare."
-  (interactive)
-  (when (use-region-p) ; there is a region
-    (let (buf)
-      (setq buf (get-buffer-create "*Diff-regionA*"))
-      (save-current-buffer
-        (set-buffer buf)
-        (erase-buffer))
-      (append-to-buffer buf (region-beginning) (region-end)))
-    )
-  (message "Now select other region to compare and run `diff-region-now`"))
-
-(defun diff-region-now ()
-  "Compare current region with region already selected by `diff-region`."
-  (interactive)
-  (when (use-region-p)
-    (let (bufa bufb)
-      (setq bufa (get-buffer-create "*Diff-regionA*"))
-      (setq bufb (get-buffer-create "*Diff-regionB*"))
-      (save-current-buffer
-        (set-buffer bufb)
-        (erase-buffer))
-      (append-to-buffer bufb (region-beginning) (region-end))
-      (ediff-buffers bufa bufb))))
-
 ;;;; * Treemacs
 (use-package treemacs
+  :demand t
   :bind (:map global-map
               ([f8] . treemacs)
               ("C-c f" . treemacs-select-window))
@@ -464,7 +426,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
               ("C-n" . company-select-next))
   :init (global-company-mode t)
   :config
-  (setq company-idle-delay 0.2
+  (setq company-idle-delay 0.6
         company-minimum-prefix-length 1
         company-show-numbers t
         company-tooltip-align-annotations t
@@ -620,6 +582,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package ox-latex
   :config
   (setq org-latex-listings 'minted
+        org-latex-prefer-user-labels t
         org-latex-packages-alist '(("" "minted") ("" "color") ("" "listings") ("" "url"))
         org-latex-compiler "xelatex"
         org-latex-pdf-process '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape -interaction=nonstopmode\" -outdir=%o %f")))

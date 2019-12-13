@@ -47,6 +47,7 @@
         relsize
         pdfpages
         refman
+        cleveref
         latexmk;
     })
   ];

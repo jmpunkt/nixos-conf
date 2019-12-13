@@ -76,6 +76,7 @@ super: self:
       company-lsp
       lsp-treemacs
 
+      bazel-mode
       toml-mode
       yaml-mode
       json-mode

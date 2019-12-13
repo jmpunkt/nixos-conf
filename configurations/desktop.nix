@@ -8,6 +8,9 @@
     ./tmux.nix
   ];
 
+  # Use newer kernel for desktop based machines
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   environment.systemPackages = with pkgs; [
     alacritty
     cryptsetup

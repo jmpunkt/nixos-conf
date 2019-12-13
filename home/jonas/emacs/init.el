@@ -269,7 +269,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :bind (:map global-map
               ([f8] . treemacs)
               ("C-c f" . treemacs-select-window))
-  :hook (treemacs-mode . (lambda () (linum-mode 0)))
+  :hook (treemacs-mode . (lambda () (linum-mode -1)))
   :config
   (setq treemacs-follow-after-init t
         treemacs-width 35
@@ -504,6 +504,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Eshell
 (use-package eshell
   :after ansi-color
+  :hook (eshell-mode . (lambda () (linum-mode -1) (setq-local global-hl-line-mode nil)))
   :config
   (defun eshell-handle-ansi-color ()
     (ansi-color-apply-on-region eshell-last-output-start
@@ -824,8 +825,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
                            (pdf-misc-size-indication-minor-mode)
                            (pdf-links-minor-mode)
                            (pdf-isearch-minor-mode)
-                           (linum-mode 0)
-                           (cua-mode 0)))
+                           (linum-mode -1)
+                           (cua-mode -1)))
   :bind
   (:map pdf-view-mode-map
         ("/" . my-hydra-pdftools/body)

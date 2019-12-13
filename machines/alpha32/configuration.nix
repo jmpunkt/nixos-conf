@@ -27,6 +27,8 @@
 
   networking.hostName = "alpha32";
 
+  hardware.cpu.amd.updateMicrocode = true;
+
   services = {
     tlp.enable = true;
     xserver.libinput = {

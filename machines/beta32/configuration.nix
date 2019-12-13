@@ -46,6 +46,8 @@
     nameservers = [ "192.168.178.1" ];
   };
 
+  hardware.cpu.intel.updateMicrocode = true;
+
   services.openssh = {
     enable = true;
     permitRootLogin = "without-password";

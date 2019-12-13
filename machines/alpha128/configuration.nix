@@ -24,6 +24,8 @@
 
   networking.hostName = "alpha128";
 
+  hardware.cpu.amd.updateMicrocode = true;
+
   services.xserver.libinput = {
     enable = true;
     accelProfile = "flat";

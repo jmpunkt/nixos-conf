@@ -22,11 +22,6 @@
     usbutils
   ];
 
-  hardware.cpu = {
-    intel.updateMicrocode = true;
-    amd.updateMicrocode = true;
-  };
-
   networking.firewall.enable = true;
 
   programs = {

@@ -20,15 +20,18 @@
 
 ;;; * Theme
 (use-package all-the-icons
+  :demand t
   :init (setq inhibit-compacting-font-caches t))
 
 (use-package doom-themes
+  :demand t
   :init
   (doom-themes-treemacs-config)
   (doom-themes-org-config)
   (doom-themes-visual-bell-config))
 
 (use-package doom-modeline
+  :demand t
   :hook (after-init . doom-modeline-mode)
   :init
   (setq doom-modeline-icon t
@@ -36,6 +39,7 @@
 
 ;;; * Emacs
 (use-package emacs
+  :demand t
   :bind (:map global-map
               ([f1] . eshell))
   :init
@@ -76,16 +80,19 @@
 ;;; * Core Packages
 ;;;; * Evil
 (use-package evil
+  :demand t
   :config
   (evil-mode 1))
 
 ;;;; * DirEnv
 (use-package direnv
+  :demand t
   :config
   (direnv-mode))
 
 ;;;; * Which-Key
 (use-package which-key
+  :demand t
   :config
   (which-key-mode))
 
@@ -95,6 +102,7 @@
 
 ;;;; * Hydra
 (use-package hydra
+  :demand t
   :bind (:map global-map
               ("C-x w" . my-hydra-window/body))
   :init
@@ -155,7 +163,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Flycheck
 (use-package flycheck
-  :requires direnv
+  :after direnv
   :init
   (global-flycheck-mode t)
   :config
@@ -167,6 +175,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Spelling
 (use-package flyspell
+  :demand t
   :bind (:map flyspell-mode-map
               ("C-c s" . my-hydra-spelling/body))
   :hook (text-mode . flyspell-mode)
@@ -196,7 +205,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save))
 
 (use-package flyspell-correct-ivy
-  :requires (flyspell ivy)
+  :after (flyspell ivy)
   :init
   (setq flyspell-correct-interface #'flyspell-correct-ivy))
 
@@ -225,6 +234,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Smartparens
 (use-package smartparens
+  :demand t
   :hook (eval-expression-minibuffer-setup . smartparens-mode)
   :config
   (smartparens-global-mode t)
@@ -234,6 +244,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Projectile
 (use-package projectile
+  :demand t
   :config
   (setq projectile-switch-project-action 'neotree-projectile-action
         projectile-enable-caching t
@@ -244,7 +255,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (projectile-mode))
 
 (use-package org-projectile
-  :requires (org projectile)
+  :after (org projectile)
   :bind (:map global-map
               ("C-c n p" . org-projectile-project-todo-completing-read))
   :config
@@ -311,7 +322,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (treemacs-filewatch-mode t))
 
 (use-package treemacs-projectile
-  :requires (treemacs projectile))
+  :demand t
+  :after (treemacs projectile))
 
 ;;;; * Language Server (LSP)
 (use-package lsp-mode
@@ -356,8 +368,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
         lsp-prefer-flymake nil))
 
 (use-package lsp-treemacs
-  :requires (lsp-mode treemacs)
-  :config (lsp-treemacs-sync-mode 1))
+  :after (lsp-mode treemacs))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -371,7 +382,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package company-lsp
   :commands company-lsp
-  :requires (company lsp-mode)
+  :after (company lsp-mode)
   :config
   (setq-local company-backends (append '(company-lsp) company-backends))
   (setq company-lsp-enable-snippet t
@@ -395,19 +406,20 @@ _SPC_ cancel	_o_nly this   	_d_elete
                                 (t . ivy--regex-fuzzy))))
 
 (use-package ivy-bibtex
-  :requires (ivy org org-ref bibtex)
+  :after (ivy org org-ref bibtex)
   :config
   (setq bibtex-completion-bibliography org-papers-bibtex
         bibtex-completion-library-path org-papers-pdfs
         bibtex-completion-notes-path org-papers-notes))
 
 (use-package counsel
+  :demand t
   :bind (:map global-map
               ("M-x" . counsel-M-x)
               ("C-x C-f" . counsel-find-file)))
 
 (use-package counsel-projectile
-  :requires (counsel projectile)
+  :after (counsel projectile)
   :bind (:map projectile-mode-map
               ("C-c p" . my-hydra-projectile/body))
   :init
@@ -436,6 +448,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;;; * Snippets
 (use-package yasnippet
+  :demand t
   :config
   (yas-global-mode))
 
@@ -443,7 +456,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;;; * Company
 (use-package company
-  :requires yasnippet
+  :after yasnippet
   :bind (:map company-active-map
               ("TAB" . company-complete-common-or-cycle)
               ("<tab>" . company-complete-common-or-cycle)
@@ -468,7 +481,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
           company-dabbrev)))
 
 (use-package company-quickhelp
-  :requires company
+  :after company
   :config
   (company-quickhelp-mode 1))
 
@@ -513,6 +526,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package evil-magit)
 
 (use-package hl-todo
+  :demand t
   :config
   (global-hl-todo-mode 1)
   (add-to-list 'hl-todo-keyword-faces '("TODO" . "gold1"))
@@ -522,12 +536,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (add-to-list 'hl-todo-keyword-faces '("HACK" . "DarkOrange1")))
 
 (use-package magit-todos
-  :requires (magit hl-todo)
+  :after (magit hl-todo)
   :config (magit-todos-mode))
 
 ;;;; * Eshell
 (use-package eshell
-  :requires ansi-color
+  :after ansi-color
   :config
   (defun eshell-handle-ansi-color ()
     (ansi-color-apply-on-region eshell-last-output-start
@@ -538,7 +552,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package academic-phrases)
 
 (use-package org
-  :requires (flyspell flycheck)
+  :after (flyspell flycheck)
   :bind (:map global-map
               ("C-c c" . org-capture))
   :mode ("\\.org\\'" . org-mode)
@@ -615,14 +629,14 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package toc-org
-  :requires (markdown-mode org)
+  :after (markdown-mode org)
   :hook ((org-mode . toc-org-mode)
          (markdown-mode . toc-org-mode))
   :bind (:map markdown-mode-map
               ("C-c C-o" . toc-org-markdown-follow-thing-at-point)))
 
 (use-package org-ref
-  :requires org
+  :after (org hydra)
   :config
   (setq org-ref-completion-library 'org-ref-ivy-cite
         org-ref-bibliography-notes org-papers-notes
@@ -630,7 +644,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
         org-ref-pdf-directory (list org-papers-pdfs)))
 
 (use-package org-noter
-  :requires (org org-ref)
+  :after (org org-ref)
   :commands org-noter
   :config
   (setq org-noter-default-notes-file-names '("index-org")
@@ -692,7 +706,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Markdown
 (use-package markdown-mode
-  :requires flyspell
+  :after flyspell
   :mode
   ("INSTALL\\'"
    "CONTRIBUTORS\\'"
@@ -703,7 +717,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :hook (markdown-mode . flyspell-mode))
 
 (use-package markdown-mode+
-  :requires markdown-mode)
+  :after markdown-mode)
 
 ;;; * Programming Languages
 
@@ -736,11 +750,11 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (setq-local company-backends (append '(company-clang) company-backends)))
 
 (use-package flycheck-irony
-  :requires (flycheck irony))
+  :after (flycheck irony))
 
 ;;;; * Elm
 (use-package elm-mode
-  :requires company
+  :after company
   :hook (elm-mode . flyspell-prog-mode)
   :config
   (setq elm-format-on-save t)
@@ -780,7 +794,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Typescript
 (use-package tide
-  :requires (flycheck company)
+  :after (flycheck company)
   :init (defun setup-tide-mode ()
           (interactive)
           (tide-setup)
@@ -803,7 +817,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * HTML/JSX/RSX
 (use-package web-mode
-  :requires (flycheck tide)
+  :after (flycheck tide)
   :mode
   ("\\.phtml\\'"
    "\\.tpl\\.php\\'"
@@ -922,7 +936,7 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
 
 ;;; * LaTeX
 (use-package tex-site
-  :requires (tex latex)
+  :after (tex latex)
   :ensure auctex
   :hook ((LaTeX-mode . turn-off-auto-fill)
          (LaTeX-mode . (lambda () (TeX-fold-mode t)))
@@ -989,7 +1003,7 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
   :hook (latex-mode . company-auctex-init))
 
 (use-package company-bibtex
-  :requires (company bibtex)
+  :after (company bibtex)
   :hook
   (tex-mode . company-bibtex-setup)
   (latex-mode . company-bibtex-setup)
@@ -1002,7 +1016,7 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
                  company-backends))))
 
 (use-package company-reftex
-  :requires (company reftex)
+  :after (company reftex)
   :hook
   (tex-mode . company-reftex-setup)
   (latex-mode . company-reftex-setup)
@@ -1015,7 +1029,7 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
                  company-backends))))
 
 (use-package company-math
-  :requires company
+  :after company
   :hook
   (tex-mode . company-math-setup)
   (latex-mode . company-math-setup)

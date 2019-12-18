@@ -48,6 +48,7 @@
         pdfpages
         refman
         cleveref
+        semantic
         latexmk;
     })
   ];

@@ -62,6 +62,7 @@
 
     # Emacs Icons
     emacs-all-the-icons-fonts
+    symbola
   ];
 
   location = {

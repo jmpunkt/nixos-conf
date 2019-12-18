@@ -54,6 +54,9 @@
         auto-save-default nil
         column-number-mode t)
 
+  (set-fontset-font "fontset-default"
+                    'symbol (font-spec :family "Symbola"))
+
   (save-place-mode 1)
   (show-paren-mode 1)
   (global-linum-mode t)

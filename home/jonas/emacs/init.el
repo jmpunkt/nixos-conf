@@ -430,14 +430,13 @@ _SPC_ cancel	_o_nly this   	_d_elete
               ("C-n" . company-select-next))
   :init (global-company-mode t)
   :config
-  (setq company-idle-delay 0.6
+  (setq company-idle-delay 0.3
         company-minimum-prefix-length 1
         company-show-numbers t
         company-tooltip-align-annotations t
         company-tooltip-limit 20)
   (setq company-backends
-        '(
-          company-bbdb
+        '(company-bbdb
           (company-files
            company-capf
            company-yasnippet)

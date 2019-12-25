@@ -49,6 +49,7 @@
         refman
         cleveref
         semantic
+        todonotes
         latexmk;
     })
   ];

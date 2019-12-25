@@ -416,7 +416,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package yasnippet
   :demand t
   :config
-  (yas-global-mode))
+  (yas-global-mode 1))
 
 (use-package yasnippet-snippets)
 
@@ -702,10 +702,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * SQL
 
 (use-package sql
-  :mode
-  ("sql" . sql-mode)
-  :hook
-  (sql-mode . (lambda () (setq tab-width 2)))
+  :mode ("sql" . sql-mode)
+  :hook (sql-mode . (lambda () (setq tab-width 2)))
   :config
   (setq-default sql-database "development"
                 sql-server "localhost")

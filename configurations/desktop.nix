@@ -20,8 +20,7 @@
     dbeaver
     keepassxc
     home-manager
-    # !! use Firefox distributed by Mozilla
-    firefox-bin
+    firefox
 
     discord
     tdesktop

@@ -24,20 +24,22 @@
     pdfpc
 
     # <START - emacs
-    inkscape
-    imagemagick
-    graphviz-nox
+    supermacs # base
+    inkscape # org-mode:graphs
+    imagemagick # org-mode:graphs
+    graphviz-nox # org-mode:graphs
+    plantuml # org-mode:graphs
     jre # required by plantuml
     ghostscript # LaTex EPS files
-    supermacs
-    languagetool
-    nixfmt
-    plantuml
-    ccls
-    haskellPackages.haskell-lsp
-    nodePackages.typescript-language-server
-    nodePackages.typescript
-    python37Packages.pygments
+    python37Packages.pygments # org-mode:latex
+    unoconv # org-mode:odt
+    zip # org-mode:odt
+    languagetool # spelling
+    nixfmt # dev
+    ccls # dev
+    haskellPackages.haskell-lsp # dev
+    nodePackages.typescript-language-server # dev
+    nodePackages.typescript # dev
     pythonToolchain # overlays/40-toolchains.nix
     rustToolchain # overlays/40-toolchains.nix
     discount

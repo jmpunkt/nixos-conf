@@ -9,6 +9,22 @@
 (package-initialize)
 (eval-when-compile (require 'use-package))
 
+;;; Startup Improvements
+
+(defvar file-name-handler-alist-backup
+  file-name-handler-alist)
+(setq gc-cons-threshold most-positive-fixnum
+      file-name-handler-alist nil)
+(add-hook 'after-init-hook
+          (lambda ()
+            (garbage-collect)
+            (setq gc-cons-threshold
+                  (car (get 'gc-cons-threshold 'standard-value))
+                  file-name-handler-alist
+                  (append
+                   file-name-handler-alist-backup
+                   file-name-handler-alist))))
+
 ;;; * Paths
 
 (defconst org-remote-dir (expand-file-name "~/Dropbox"))

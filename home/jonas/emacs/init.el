@@ -702,6 +702,11 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package markdown-mode+
   :after markdown-mode)
 
+;;;; * Graphivz
+
+(use-package graphviz-dot-mode
+  :mode "\\.dot\\'")
+
 ;;; * Programming Languages
 
 ;; Sets the auto-fill-mode only for comments

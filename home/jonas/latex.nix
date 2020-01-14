@@ -1,7 +1,11 @@
-{ config, pkgs, ... }:
+{ config, ... }:
 
+
+let
+  unstable = import (fetchTarball https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz) { };
+in
 {
-  home.packages = with pkgs; [
+  home.packages = with unstable.pkgs; [
     (texlive.combine {
       inherit (texlive)
         scheme-tetex

@@ -22,7 +22,6 @@
     cleanTmpDir = true;
     kernelParams = [
       "acpi_backlight=native"
-      "amd_iommu=pt"
       "ivrs_ioapic[32]=00:14.0"
     ];
     initrd.luks.devices."root".allowDiscards = true;

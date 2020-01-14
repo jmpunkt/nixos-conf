@@ -212,8 +212,10 @@ _SPC_ cancel	_o_nly this   	_d_elete
     ("f" flyspell-buffer)
     ("m" flyspell-mode))
   :config
-  (setq-default ispell-program-name "aspell"
-                ispell-list-command "--list")
+  (setq-default ispell-program-name "hunspell"
+        ispell-local-dictionary "en_US"
+        ispell-local-dictionary-alist
+        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
   (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
   (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
   (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))

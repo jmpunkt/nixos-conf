@@ -33,6 +33,7 @@
     f2fs-tools
     ntfs3g
 
+    hunspell
     hunspellDicts.en-gb-ize
     hunspellDicts.en-us
     hunspellDicts.de-de

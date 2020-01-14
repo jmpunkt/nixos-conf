@@ -3,6 +3,7 @@ super: self:
 {
   supermacs = super.pkgs.emacsWithPackages (epkgs:
     (with epkgs.melpaPackages; [
+      # Core
       evil
       use-package
       smartparens
@@ -11,54 +12,67 @@ super: self:
       hydra
       outshine
       hl-todo
+      direnv
 
+      # Org
       org-fancy-priorities
       org-bullets
       org-ref
       org-noter
       ob-async
       toc-org
-      ivy-bibtex
       pdf-tools
+
+      # Bibliography
       biblio
       biblio-core
       parsebib
-      direnv
-      academic-phrases
-      interleave
-      langtool
 
+      # LaTeX
+      latex-math-preview
+      auctex-latexmk
+
+      # PDF
+      interleave
+      pdf-tools
+
+      # Git
       magit
       magit-todos
       evil-magit
 
+      # Tree
+      treemacs
+      treemacs-projectile
       projectile
       org-projectile
 
-      treemacs
-      treemacs-projectile
-
+      # Templates
       yasnippet
       yasnippet-snippets
 
+      # UI
       all-the-icons
       doom-modeline
       doom-themes
 
-      pdf-tools
-      latex-math-preview
-      auctex-latexmk
-
+      # Linter
       flycheck
       flycheck-irony
       flycheck-rust
 
+      # Search/Find
       ivy
+      ivy-bibtex
       flx
       counsel
       counsel-projectile
+
+      # Spelling
+      langtool
       flyspell-correct-ivy
 
+      # Completion
       company
       company-bibtex
       company-math
@@ -70,30 +84,37 @@ super: self:
       company-auctex
       company-reftex
 
+      # LSP
       lsp-ui
       lsp-java
       lsp-haskell
       company-lsp
       lsp-treemacs
 
+      # Configuration
       bazel-mode
       toml-mode
       yaml-mode
       json-mode
       fish-mode
       nix-mode
+      graphql-mode
+      meson-mode
+
+      # Presentation
       markdown-mode
       markdown-mode-plus
       pandoc-mode
+      graphviz-dot-mode
+
+      # Programming
       irony
       rust-mode
-      graphql-mode
       elm-mode
       haskell-mode
       web-mode
       js2-mode
       tide
-      meson-mode
     ])++ (with epkgs.elpaPackages; [
       undo-tree
       auctex

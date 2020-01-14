@@ -528,8 +528,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (add-to-list 'eshell-output-filter-functions 'eshell-handle-ansi-color))
 
 ;;;; * Org
-(use-package academic-phrases)
-
 (use-package org
   :after (flyspell flycheck)
   :bind (:map global-map

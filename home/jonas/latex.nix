@@ -54,6 +54,7 @@ in
         cleveref
         semantic
         todonotes
+        tuda-ci anyfontsize urcls roboto xcharter pdfx xmpincl
         latexmk;
     })
   ];

@@ -790,6 +790,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :mode ("\\.ts\\'")
   :hook (typescript-mode . setup-tide-mode))
 
+;;;; * Java
+(use-package lsp-java
+  :hook ((java-mode . lsp)
+         (java-mode . flyspell-prog-mode)
+         (java-mode . my-prog-setup)))
+
 ;;;; * Javascript
 (use-package js2-mode
   :mode ("\\.js\\'" . js2-mode)

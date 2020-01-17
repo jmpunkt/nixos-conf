@@ -34,8 +34,7 @@
     ntfs3g
 
     hunspell
-    hunspellDicts.en-gb-ize
-    hunspellDicts.en-us
+    hunspellDicts.en-us-large
     hunspellDicts.de-de
 
     aspell

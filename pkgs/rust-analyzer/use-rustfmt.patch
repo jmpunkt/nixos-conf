@@ -1,0 +1,29 @@
+diff --git a/xtask/src/lib.rs b/xtask/src/lib.rs
+index 9b0afe8e..d316c6df 100644
+--- a/xtask/src/lib.rs
++++ b/xtask/src/lib.rs
+@@ -32,20 +32,17 @@ pub fn project_root() -> PathBuf {
+ }
+ 
+ pub fn run_rustfmt(mode: Mode) -> Result<()> {
+-    ensure_rustfmt()?;
+-
+     if mode == Mode::Verify {
+-        run(&format!("rustup run {} -- cargo fmt -- --check", TOOLCHAIN), ".")?;
++        run(&format!("cargo fmt -- --check"), ".")?;
+     } else {
+-        run(&format!("rustup run {} -- cargo fmt", TOOLCHAIN), ".")?;
++        run(&format!("cargo fmt"), ".")?;
+     }
+     Ok(())
+ }
+ 
+ fn reformat(text: impl std::fmt::Display) -> Result<String> {
+-    ensure_rustfmt()?;
+-    let mut rustfmt = Command::new("rustup")
+-        .args(&["run", TOOLCHAIN, "--", "rustfmt", "--config-path"])
++    let mut rustfmt = Command::new("rustfmt")
++        .args(&["--config-path"])
+         .arg(project_root().join("rustfmt.toml"))
+         .stdin(Stdio::piped())
+         .stdout(Stdio::piped())

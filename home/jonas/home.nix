@@ -42,6 +42,7 @@
     nodePackages.typescript # dev
     pythonToolchain # overlays/40-toolchains.nix
     rustToolchain # overlays/40-toolchains.nix
+    rust-analyzer
     discount
     # END> - emacs
   ];

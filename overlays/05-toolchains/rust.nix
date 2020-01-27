@@ -1,6 +1,5 @@
 { mozOverlay ? (builtins.fetchTarball https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz), ...}:
 
-
 let
   nixpkgs = import <nixpkgs> { overlays = [ (import mozOverlay) ]; };
 in
@@ -12,6 +11,7 @@ nixpkgs.latest.rustChannels.stable.rust.override {
   extensions = [
     "rust-src"
     "rls-preview"
+    "rust-analysis"
     "clippy-preview"
     "rustfmt-preview"
   ];

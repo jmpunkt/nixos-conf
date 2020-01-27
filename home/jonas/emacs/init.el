@@ -587,26 +587,96 @@ _SPC_ cancel	_o_nly this   	_d_elete
                                 (lambda () (expand-file-name "journal.org" org-agenda-dir))
                                 "Journal")
            "* %? %^G\nEntered on %U\n")))
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((shell . t)
-     (js . t)
-     (python . t)
-     (emacs-lisp . t)
-     (haskell . t)
-     (latex . t)
-     (plantuml . t)
-     (gnuplot . t)
-     (sql . t)
-     (dot . t))))
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((shell . t)
+       (js . t)
+       (python . t)
+       (emacs-lisp . t)
+       (haskell . t)
+       (latex . t)
+       (plantuml . t)
+       (gnuplot . t)
+       (sql . t)
+       (dot . t))))
 
 (use-package ox-latex
   :config
   (setq org-latex-listings 'minted
         org-latex-prefer-user-labels t
-        org-latex-packages-alist '(("" "minted") ("" "color") ("" "listings") ("" "url"))
+        org-latex-packages-alist '(("" "minted") ("" "xcolor") ("" "listings") ("" "url"))
         org-latex-compiler "xelatex"
-        org-latex-pdf-process '("latexmk -g -pdf -pdflatex=\"%latex -shell-escape -interaction=nonstopmode\" -outdir=%o %f")))
+        org-latex-pdf-process '("latexmk -g -pdf -pdflatex=\"%latex -synctex=1 -shell-escape -interaction=nonstopmode\" -outdir=%o %f"))
+  (add-to-list
+   'org-latex-classes
+   '("tufte-book"
+     "\\documentclass{tufte-book}
+\\ifxetex
+  \\newcommand{\\textls}[2][5]{%
+    \\begingroup\\addfontfeatures{LetterSpace=#1}#2\\endgroup
+  }
+  \\renewcommand{\\allcapsspacing}[1]{\\textls[15]{#1}}
+  \\renewcommand{\\smallcapsspacing}[1]{\\textls[10]{#1}}
+  \\renewcommand{\\allcaps}[1]{\\textls[15]{\\MakeTextUppercase{#1}}}
+  \\renewcommand{\\smallcaps}[1]{\\smallcapsspacing{\\scshape\\MakeTextLowercase{#1}}}
+  \\renewcommand{\\textsc}[1]{\\smallcapsspacing{\\textsmallcaps{#1}}}
+\\fi"
+     ("\\section{%s}" . "\\section*{%s}")
+     ("\\subsection{%s}" . "\\subsection*{%s}")
+     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (add-to-list
+   'org-latex-classes
+   '("koma-article"
+     "\\documentclass{scrartcl}"
+     ("\\section{%s}" . "\\section*{%s}")
+     ("\\subsection{%s}" . "\\subsection*{%s}")
+     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (add-to-list
+   'org-latex-classes
+   '("spec"
+     "\\documentclass{refart}
+      \\pagestyle{plain}
+      \\usepackage{makeidx}
+      \\usepackage{ifthen}
+      \\usepackage{bookmark}
+      \\bibliographystyle{alpha}
+      \\pagestyle{headings}"
+     ("\\section{%s}" . "\\section*{%s}")
+     ("\\subsection{%s}" . "\\subsection*{%s}")
+     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (add-to-list
+   'org-latex-classes
+   '("tud-report"
+     "\\documentclass{tudapub}
+      \\usepackage[AUTO]{babel}
+      \\usepackage[botto1]{footmisc}
+      \\usepackage{amsbsy,amscd,amsfonts,amstext,amsmath,latexsym,theorem}
+      \\pagestyle{plain}
+      \\bibliographystyle{alpha}"
+     ("\\section{%s}" . "\\section*{%s}")
+     ("\\subsection{%s}" . "\\subsection*{%s}")
+     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (add-to-list
+   'org-latex-classes
+   '("tud-exercise"
+     "\\documentclass{tudaexercise}
+      \\usepackage[AUTO]{babel}
+      \\usepackage[botto1]{footmisc}
+      \\usepackage{amsbsy,amscd,amsfonts,amstext,amsmath,latexsym,theorem}
+      \\pagestyle{plain}
+      \\bibliographystyle{alpha}"
+     ("\\section{%s}" . "\\section*{%s}")
+     ("\\subsection{%s}" . "\\subsection*{%s}")
+     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (use-package ox-extra
   :config

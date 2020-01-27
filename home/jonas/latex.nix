@@ -26,13 +26,10 @@ in
         lm
         listings
         float
-        xcolor
-        setspace
         etoolbox
         caption
         l3packages
         l3kernel
-        hyperref
         capt-of
         wrapfig
         tabu
@@ -55,6 +52,7 @@ in
         semantic
         todonotes
         tuda-ci anyfontsize urcls roboto xcharter pdfx xmpincl
+        tufte-latex changepage fancyhdr geometry hyperref natbib sauerj paralist placeins ragged2e setspace textcase titlesec xcolor xifthen microtype mathpazo soul bera hardwrap realscripts was fontaxes
         latexmk;
     })
   ];

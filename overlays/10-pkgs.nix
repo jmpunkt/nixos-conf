@@ -1,6 +1,6 @@
 self: super:
 
-rec {
+{
   nyan-project = super.callPackage ../pkgs/nyan-project/default.nix {};
   openage = super.callPackage ../pkgs/openage/default.nix {};
   vcmi = super.callPackage ../pkgs/vcmi/default.nix {};
@@ -11,4 +11,5 @@ rec {
   tuxemon = super.callPackage ../pkgs/tuxemon/default.nix {};
   gluon-lsp = super.callPackage ../pkgs/gluon-lsp/default.nix {};
   gluon = super.callPackage ../pkgs/gluon-repl/default.nix {};
+  rust-analyzer = super.callPackage ../pkgs/rust-analyzer/default.nix {};
 }

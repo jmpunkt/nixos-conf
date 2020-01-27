@@ -845,7 +845,10 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package rust-mode
   :hook ((rust-mode . lsp)
          (rust-mode . flyspell-prog-mode)
-         (rust-mode . my-prog-setup)))
+         (rust-mode . my-prog-setup))
+
+  :config
+  (setq lsp-rust-server 'rust-analyzer))
 
 (use-package flycheck-rust
   :hook (flycheck-mode . flycheck-rust-setup))

@@ -339,9 +339,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
         lsp-log-io nil
         lsp-document-sync-method nil
         lsp-eldoc-render-all nil
-        lsp-eldoc-prefer-signature-help nil
         lsp-eldoc-enable-hover nil
-        lsp-eldoc-enable-signature-help nil
         lsp-enable-xref t
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t

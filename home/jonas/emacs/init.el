@@ -516,8 +516,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (add-to-list 'hl-todo-keyword-faces '("HACK" . "DarkOrange1")))
 
 (use-package magit-todos
-  :after (magit hl-todo)
-  :config (magit-todos-mode))
+  :ensure t
+  :commands (magit-todos-mode)
+  :hook (magit-mode . magit-todos-mode)
+  :config
+  (setq magit-todos-recursive t
+        magit-todos-depth 100))
 
 ;;;; * Eshell
 (use-package eshell

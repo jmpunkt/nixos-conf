@@ -359,6 +359,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
         lsp-ui-sideline-update-mode 'point
         lsp-ui-doc-enable nil))
 
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+
 (use-package company-lsp
   :commands company-lsp
   :after (company lsp-mode)
@@ -514,7 +516,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (add-to-list 'hl-todo-keyword-faces '("HACK" . "DarkOrange1")))
 
 (use-package magit-todos
-  :ensure t
   :commands (magit-todos-mode)
   :hook (magit-mode . magit-todos-mode)
   :config

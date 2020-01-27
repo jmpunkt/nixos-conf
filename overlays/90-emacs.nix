@@ -87,6 +87,7 @@ super: self:
       # LSP
       lsp-ui
       lsp-java
+      lsp-ivy
       lsp-haskell
       company-lsp
       lsp-treemacs

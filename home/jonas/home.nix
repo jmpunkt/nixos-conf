@@ -22,28 +22,7 @@
     dropbox-cli
     pdfpc
 
-    # <START - emacs
-    supermacs # base
-    inkscape # org-mode:graphs
-    imagemagick # org-mode:graphs
-    graphviz-nox # org-mode:graphs
-    plantuml # org-mode:graphs
-    jre # required by plantuml
-    ghostscript # LaTex EPS files
-    python37Packages.pygments # org-mode:latex
-    unoconv # org-mode:odt
-    zip # org-mode:odt
-    languagetool # spelling
-    nixfmt # dev
-    ccls # dev
-    haskellPackages.haskell-lsp # dev
-    nodePackages.typescript-language-server # dev
-    nodePackages.typescript # dev
-    pythonToolchain # overlays/40-toolchains.nix
-    rustToolchain # overlays/40-toolchains.nix
-    rust-analyzer
-    discount
-    # END> - emacs
+    jmpunkt.emacs
     jmpunkt.latex
   ];
 

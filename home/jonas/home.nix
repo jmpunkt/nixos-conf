@@ -3,7 +3,6 @@
 {
   imports = [
     ./neovim/default.nix
-    ./latex.nix
     ./dropbox.nix
   ];
 
@@ -45,6 +44,7 @@
     rust-analyzer
     discount
     # END> - emacs
+    jmpunkt.latex
   ];
 
   xdg.configFile."alacritty/alacritty.yml".text = builtins.readFile ./alacritty/alacritty.yml;

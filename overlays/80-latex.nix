@@ -1,14 +1,27 @@
-{ config, ... }:
-
+self: super:
 
 let
-  unstable = import (fetchTarball https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz) { };
+  # require texlive-2019
+  unstable = import super.unstableTarball { };
+  # Create pygments Texlive package which
+  pygments-tex.pkgs = [(
+    unstable.pkgs.python37Packages.pygments
+      .overrideAttrs (oldAttrs: {
+        pname="${oldAttrs.pname}-tex"; tlType = "bin";
+      })
+
+  )];
+  texlive = unstable.pkgs.texlive;
 in
 {
-  home.packages = with unstable.pkgs; [
-    (texlive.combine {
+  jmpunkt = (super.jmpunkt or {}) // {
+    latex = (texlive.combine {
+      # add custom package
+      inherit pygments-tex;
+      # add packages provided by NixOS
       inherit (texlive)
         scheme-tetex
+        ec
         adjustbox
         ucs
         collectbox
@@ -53,7 +66,8 @@ in
         todonotes
         tuda-ci anyfontsize urcls roboto xcharter pdfx xmpincl
         tufte-latex changepage fancyhdr geometry hyperref natbib sauerj paralist placeins ragged2e setspace textcase titlesec xcolor xifthen microtype mathpazo soul bera hardwrap realscripts was fontaxes
+        fancyvrb
         latexmk;
-    })
-  ];
+    });
+  };
 }

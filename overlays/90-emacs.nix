@@ -1,8 +1,37 @@
 self: super:
 
-{
-  jmpunkt = (super.jmpunkt or {}) // {
-    emacs = super.pkgs.emacsWithPackages (epkgs:
+let
+
+  nixos-config-el = ''
+    ;;; nixos-config.el --- short description                -*- lexical-binding: t; -*-
+
+    ;;; Code:
+    (setq-default org-plantuml-jar-path \"${super.plantuml}/lib/plantuml.jar\")
+
+    (provide 'nixos-config)
+    ;;; nixos-config.el ends here
+  '';
+
+  emacsConfiguration = super.stdenv.mkDerivation {
+    name = "emacs-nixos-config";
+    version = "0.0.0";
+
+    phases = [ "buildPhase" "installPhase" ];
+
+    buildPhase = ''
+      echo "${nixos-config-el}" > nixos-config.el
+    '';
+
+    installPhase = ''
+      install -d "$out/share/emacs/site-lisp"
+      install nixos-config.el "$out/share/emacs/site-lisp"
+    '';
+
+    meta = { description = "NixOS specific paths for Emacs."; };
+  };
+in {
+  jmpunkt = (super.jmpunkt or { }) // {
+    emacs = super.emacsWithPackages (epkgs:
       (with epkgs.melpaPackages; [
         # Core
         evil
@@ -117,18 +146,16 @@ self: super:
         web-mode
         js2-mode
         tide
-      ])++ (with epkgs.elpaPackages; [
-        undo-tree
-        auctex
-      ]) ++ (with epkgs.orgPackages; [
-        org
-        org-plus-contrib
-      ]) ++ (with super.pkgs; [
-        jmpunkt.latex
+      ]) ++ (with epkgs.elpaPackages; [ undo-tree auctex ])
+      ++ (with epkgs.orgPackages; [ org org-plus-contrib ])
+      ++ (with super.pkgs; [
+        jmpunkt.latex # custom latex suite
+        emacsConfiguration
+
         inkscape # org-mode:graphs
         imagemagick # org-mode:graphs
         graphviz-nox # org-mode:graphs
-        plantuml # org-mode:graphs
+        nodePackages.mermaid-cli # org-mode:graphs
         jre # required by plantuml
         ghostscript # LaTex EPS files
         unoconv # org-mode:odt

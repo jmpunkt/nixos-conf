@@ -32,10 +32,6 @@
     ".ssh/id_rsa.pub".text = builtins.readFile ./ssh/yubikey.pub;
     ".ssh/config".text = builtins.readFile ./ssh/config;
     ".emacs.d/init.el".text = builtins.readFile ./emacs/init.el;
-    ".emacs.d/nix-paths.el".text = ''
-        ;; Set executable or library paths explicitly
-        (setq org-plantuml-jar-path "${pkgs.plantuml}/lib/plantuml.jar")
-    '';
   };
 
   programs.git = {

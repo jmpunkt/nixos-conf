@@ -1155,7 +1155,7 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
   :config
   (autoload 'LaTeX-preview-setup "preview"))
 
-(load "~/.emacs.d/nix-paths.el")
+(use-package nixos-config)
 
 ;;; * -- End
 (provide 'init)

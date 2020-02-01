@@ -50,6 +50,7 @@ in {
         org-ref
         org-noter
         ob-async
+        ob-mermaid
         toc-org
         pdf-tools
 

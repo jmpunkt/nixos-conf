@@ -595,6 +595,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
        (haskell . t)
        (latex . t)
        (plantuml . t)
+       (mermaid . t)
        (gnuplot . t)
        (sql . t)
        (dot . t))))

@@ -1,7 +1,7 @@
 { stdenv, mozillaRustPlatform, fetchFromGitHub }:
 
 mozillaRustPlatform.buildRustPackage rec {
-  name = "rust-analyzer-${version}";
+  pname = "rust-analyzer";
   version = "2020-01-20";
 
   src = fetchFromGitHub {

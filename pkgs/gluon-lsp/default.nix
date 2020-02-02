@@ -1,7 +1,7 @@
 { stdenv, rustPlatform, fetchFromGitHub, pkg-config, openssl }:
 
 rustPlatform.buildRustPackage rec {
-  name = "gluon-lsp-${version}";
+  pname = "gluon-lsp";
   version = "0.13.0";
 
   src = fetchFromGitHub {

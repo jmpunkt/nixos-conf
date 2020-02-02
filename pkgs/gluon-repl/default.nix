@@ -1,7 +1,7 @@
 { stdenv, rustPlatform, fetchFromGitHub }:
 
 rustPlatform.buildRustPackage rec {
-  name = "gluon-${version}";
+  pname = "gluon";
   version = "0.13.1";
 
   src = fetchFromGitHub {

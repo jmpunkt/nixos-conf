@@ -1,7 +1,7 @@
-{ mozOverlay ? (builtins.fetchTarball https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz), ...}:
+{ mozillaTarball }:
 
 let
-  nixpkgs = import <nixpkgs> { overlays = [ (import mozOverlay) ]; };
+  nixpkgs = import <nixpkgs> { overlays = [ (import mozillaTarball) ]; };
 in
 nixpkgs.latest.rustChannels.stable.rust.override {
   targets = [

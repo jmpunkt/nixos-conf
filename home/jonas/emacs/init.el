@@ -41,7 +41,10 @@
 
 (use-package doom-themes
   :demand t
-  :init
+  :config
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t
+        doom-themes-treemacs-theme "doom-colors")
   (doom-themes-treemacs-config)
   (doom-themes-org-config)
   (doom-themes-visual-bell-config))

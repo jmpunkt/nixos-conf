@@ -291,6 +291,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
               ([f8] . treemacs)
               ("C-c f" . treemacs-select-window))
   :hook (treemacs-mode . (lambda () (linum-mode -1)))
+  :init
+  (setq-default treemacs-python-executable "python3")
   :config
   (setq treemacs-follow-after-init t
         treemacs-width 35

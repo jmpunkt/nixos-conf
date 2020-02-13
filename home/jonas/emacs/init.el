@@ -346,6 +346,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
         lsp-eldoc-render-all nil
         lsp-eldoc-enable-hover nil
         lsp-enable-xref t
+        lsp-signature-auto-activate nil
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
         lsp-enable-snippet t

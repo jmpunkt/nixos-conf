@@ -18,7 +18,6 @@
 
   home.packages = with pkgs; [
     binutils-unwrapped
-    steam
     dropbox-cli
     pdfpc
 

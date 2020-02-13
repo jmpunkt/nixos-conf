@@ -18,5 +18,4 @@ python37.withPackages(ps: with ps; [
 
     numpy
     scipy
-    pandas
-  ])
+])

@@ -855,7 +855,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package lsp-rust
   :init
-  (setq-default lsp-rust-server 'rust-analyzer))
+  (setq-default lsp-rust-server 'rust-analyzer
+                lsp-rust-analyzer-server-command "rust-analyzer"))
 
 (use-package flycheck-rust
   :hook (flycheck-mode . flycheck-rust-setup))

@@ -6,6 +6,8 @@ let
 
     ;;; Code:
     (setq-default org-plantuml-jar-path \"${plantuml}/lib/plantuml.jar\")
+    (setq-default ob-mermaid-cli-path \"${nodePackages.mermaid-cli}/bin/mmdc\")
+    (setq-default mermaid-mmdc-location \"${nodePackages.mermaid-cli}/bin/mmdc\")
 
     (add-to-list 'exec-path \"${emacsLibexec}/bin\")
     (setq-default exec-directory \"${emacsLibexec}/bin\")
@@ -169,6 +171,7 @@ in {
       nix-mode
       graphql-mode
       meson-mode
+      mermaid-mode
 
       # Presentation
       markdown-mode

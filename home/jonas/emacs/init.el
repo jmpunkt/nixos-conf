@@ -735,6 +735,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;; * Configuration Files
 
+;;;; * Mermaid
+(use-package mermaid-mode)
+
 ;;;; * Bazel
 (use-package bazel-mode
   :mode ("BUILD\\'" "\\.bzl\\'"))

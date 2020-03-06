@@ -6,7 +6,7 @@ in
 {
   nodePackages = super.nodePackages // packages // {
     # https://github.com/NixOS/nixpkgs/issues/60057#issuecomment-505781308
-    mermaid-cli = packages.mermaid-cli.overrideAttrs (oldAttrs: {
+    mermaid-cli = packages."@mermaid-js/mermaid-cli".overrideAttrs (oldAttrs: {
       nativeBuildInputs = (oldAttrs.nativeBuildInputs or [])
                           ++ [super.makeWrapper super.which];
 

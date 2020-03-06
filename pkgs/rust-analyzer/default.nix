@@ -2,13 +2,13 @@
 
 mozillaRustPlatform.buildRustPackage rec {
   pname = "rust-analyzer";
-  version = "2020-02-17";
+  version = "2020-03-02";
 
   src = fetchFromGitHub {
     owner = "rust-analyzer";
     repo = "rust-analyzer";
     rev = "tags/${version}";
-    sha256 = "04bl9k7sv51hb5r0lcxb5sa6y3v7ia1xay79dchy43dg3lm0yvvs";
+    sha256 = "1xpzj1ilf0q98ilbmq2gw71aa07ypl5qj7s6irjisnaqghgm7kqf";
   };
 
   nativeBuildInputs = [ makeWrapper ];
@@ -17,18 +17,17 @@ mozillaRustPlatform.buildRustPackage rec {
   patches = [ ./remove-rustup.patch ];
 
   # Exclude xtask since it depends on rustup
-  cargoBuildFlags = [ "--bin ra_cli" "--bin ra_lsp_server" ];
+  cargoBuildFlags = [ "--bin rust-analyzer" ];
 
   preBuild = ''
     cargo xtask codegen
   '';
 
   postInstall = ''
-    wrapProgram $out/bin/ra_cli --set "PATH" "$PATH:${mozillaRustPlatform.rust.cargo}/bin/"
-    wrapProgram $out/bin/ra_lsp_server --set "PATH" "$PATH:${mozillaRustPlatform.rust.cargo}/bin/"
+    wrapProgram $out/bin/rust-analyzer --set "PATH" "$PATH:${mozillaRustPlatform.rust.cargo}/bin/"
   '';
 
-  cargoSha256 = "0ha71kv54aijaadcakpb4hr69dlc4wfc8i7m8fl6jgp631bn2rla";
+  cargoSha256 = "0hmgw2rm87f5wr0kdrk241p4qz9n7wsmlq1da006ly3mi850v0nq";
 
   meta = with stdenv.lib; {
     description = "An experimental Rust compiler front-end for IDEs";

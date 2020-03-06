@@ -5,12 +5,25 @@
     enable = true;
     clock24 = true;
     keyMode = "vi";
+    terminal = "screen-256color";
     historyLimit = 10000;
+    aggressiveResize = true;
     escapeTime = 50;
     extraTmuxConf = ''
+        run-shell ${pkgs.tmuxPlugins.yank.rtp}
+
         set -g mouse on
         setw -g alternate-screen on
-        set -g default-terminal "screen-256color"
+
+        # easier and faster switching between next/prev window
+        bind C-p previous-window
+        bind C-n next-window
+
+        # address vim mode switching delay (http://superuser.com/a/252717/65504)
+        set -s escape-time 0
+
+        # tmux messages are displayed for 4 seconds
+        set -g display-time 4000
 
         # COLOUR (base16)
         # default statusbar colors

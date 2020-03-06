@@ -159,6 +159,7 @@ in {
       lsp-java
       lsp-ivy
       lsp-haskell
+      ccls
       company-lsp
       lsp-treemacs
 

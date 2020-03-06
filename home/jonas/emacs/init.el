@@ -374,6 +374,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (setq-local company-backends (append '(company-lsp) company-backends))
   (setq company-lsp-enable-snippet t
         company-lsp-cache-candidates t))
+(use-package ccls
+  :config
+  (setq ccls-executable "ccls"))
 
 ;;;; * Completion
 ;;;;; * Ivy

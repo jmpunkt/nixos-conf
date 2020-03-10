@@ -9,8 +9,6 @@
     ./../../configurations/users/jonas.nix
   ];
 
-  nix.nixPath = options.nix.nixPath.default ++
-  [ "nixpkgs-overlays=/etc/nixos/nixos-conf/overlays" ];
   nixpkgs.config.allowUnfree = true;
 
   boot = {

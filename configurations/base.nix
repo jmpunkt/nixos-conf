@@ -1,6 +1,9 @@
-{ config, pkgs, ... }:
+{ config, pkgs, options, ... }:
 
 {
+  nix.nixPath = options.nix.nixPath.default
+    ++ [ "nixpkgs-overlays=/etc/nixos/nixos-conf/overlays" ];
+
   environment.systemPackages = with pkgs; [
     srm
     curl

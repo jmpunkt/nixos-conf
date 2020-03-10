@@ -567,6 +567,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
       (setq buffer-file-name file-name)))
        (setq org-highlight-latex-and-related '(latex)
         org-ellipsis "…"
+        org-src-fontify-natively t
+        org-src-tab-acts-natively t
         org-catch-invisible-edits 'smart
         org-deadline-warning-days 14
         org-agenda-files (list org-agenda-dir)

@@ -165,7 +165,6 @@ in {
 
       # Configuration
       bazel-mode
-      toml-mode
       yaml-mode
       json-mode
       fish-mode

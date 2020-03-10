@@ -751,10 +751,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :config
   (setq js-indent-level 2))
 
-;;;; * TOML
-(use-package toml-mode
-  :mode ("\\.toml\\'"))
-
 ;;;; * YAML
 (use-package yaml-mode
   :mode ("\\.yaml$" "\\.yml\\'"))

@@ -14,14 +14,15 @@ rustPlatform.buildRustPackage rec {
   cargoSha256 = "1f8ksl538acy0nj7avixmkywf2s7abmlwapwims4jiz5r91v89is";
 
   # <2019-12-25 Mi> tests does not work at the moment
-  checkPhase = ''true'';
+  checkPhase = "true";
 
   preBuild = "cd repl";
   postBuild = "cd ..";
 
   meta = with stdenv.lib; {
-    description = "A static, type inferred and embeddable language written in Rust";
-    homepage = https://github.com/gluon-lang/gluon;
+    description =
+      "A static, type inferred and embeddable language written in Rust";
+    homepage = "https://github.com/gluon-lang/gluon";
     license = licenses.mit;
     maintainers = [ ];
     platforms = platforms.all;

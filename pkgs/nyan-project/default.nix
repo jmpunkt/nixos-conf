@@ -1,6 +1,4 @@
-{
-  lib, stdenv, fetchFromGitHub, cmake, pkgconfig, flex
-}:
+{ lib, stdenv, fetchFromGitHub, cmake, pkgconfig, flex }:
 
 stdenv.mkDerivation {
   pname = "nyan-project";
@@ -13,18 +11,14 @@ stdenv.mkDerivation {
     sha256 = "1zysapcyplfvz3ll91rd981w6zj5ja6c1p00hwig4fzn4xsghyir";
   };
 
-  nativeBuildInputs = [
-    cmake
-    pkgconfig
-  ];
+  nativeBuildInputs = [ cmake pkgconfig ];
 
-  buildInputs = [
-    flex
-  ];
+  buildInputs = [ flex ];
 
   meta = with lib; {
-    description = "Modding API with a typesafe hierarchical key-value database with inheritance and dynamic patching";
-    homepage = https://github.com/SFTtech/nyan/;
+    description =
+      "Modding API with a typesafe hierarchical key-value database with inheritance and dynamic patching";
+    homepage = "https://github.com/SFTtech/nyan/";
     license = licenses.lgpl3Plus;
     platforms = with platforms; unix;
     maintainers = with maintainers; [ ];

@@ -26,10 +26,7 @@
 
   security.allowUserNamespaces = true;
 
-  i18n.supportedLocales = [
-    "en_GB.UTF-8/UTF-8"
-    "de_DE.UTF-8/UTF-8"
-  ];
+  i18n.supportedLocales = [ "en_GB.UTF-8/UTF-8" "de_DE.UTF-8/UTF-8" ];
 
   networking = {
     hostName = "beta32";

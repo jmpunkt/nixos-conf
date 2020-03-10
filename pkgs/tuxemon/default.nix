@@ -7,12 +7,7 @@ let
     pname = "PyTMX";
     version = "3.21.7";
 
-    propagatedBuildInputs = [
-      six
-      pygame
-      pyglet
-      pysdl2
-    ];
+    propagatedBuildInputs = [ six pygame pyglet pysdl2 ];
 
     src = fetchPypi {
       inherit pname version;
@@ -30,8 +25,7 @@ let
       sha256 = "175d39rymnx3v3mcfjjkr1wv76nsl1s00z04nzsspklyk0ih2783";
     };
   };
-in
-buildPythonPackage rec {
+in buildPythonPackage rec {
   pname = "tuxemon";
   version = "0.4.2";
 
@@ -46,21 +40,13 @@ buildPythonPackage rec {
   # Transltations are build during the runtime -> not possible in Nix.
   broken = true;
 
-  checkPhase = ''true'';
+  checkPhase = "true";
 
-  propagatedBuildInputs = [
-    requests
-    Babel
-    cbor
-    pillow
-    lxml
-    pytmx
-    pyscroll
-    netira
-  ];
+  propagatedBuildInputs =
+    [ requests Babel cbor pillow lxml pytmx pyscroll netira ];
 
   meta = with lib; {
-    homepage = https://github.com/Tuxemon/Tuxemon;
+    homepage = "https://github.com/Tuxemon/Tuxemon";
     description = "Open source monster-fighting RPG.";
     license = licenses.gpl3;
     maintainers = with maintainers; [ ];

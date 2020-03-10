@@ -1,12 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ./base.nix
-    ./locale.nix
-    ./shell.nix
-    ./tmux.nix
-  ];
+  imports = [ ./base.nix ./locale.nix ./shell.nix ./tmux.nix ];
 
   # Use newer kernel for desktop based machines
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -65,14 +60,12 @@
   ];
 
   location = {
-    latitude = 50.110;
+    latitude = 50.11;
     longitude = 8.682;
   };
 
-  boot.supportedFilesystems = [
-    "btrfs" "reiserfs" "vfat"
-    "f2fs" "xfs" "ntfs" "cifs"
-  ];
+  boot.supportedFilesystems =
+    [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
 
   sound.enable = true;
 

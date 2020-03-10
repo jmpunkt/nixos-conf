@@ -1,10 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  imports = [
-    ./neovim/default.nix
-    ./dropbox.nix
-  ];
+  imports = [ ./neovim/default.nix ./dropbox.nix ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -20,12 +17,14 @@
     binutils-unwrapped
     dropbox-cli
     pdfpc
+    steam
 
     jmpunkt.emacs
     jmpunkt.latex
   ];
 
-  xdg.configFile."alacritty/alacritty.yml".text = builtins.readFile ./alacritty/alacritty.yml;
+  xdg.configFile."alacritty/alacritty.yml".text =
+    builtins.readFile ./alacritty/alacritty.yml;
 
   home.file = {
     ".ssh/id_rsa.pub".text = builtins.readFile ./ssh/yubikey.pub;
@@ -41,9 +40,7 @@
       key = "4D78720A4358CC504F3EB45B26CDFB2E4DB6B136";
       signByDefault = true;
     };
-    extraConfig = {
-      core.editor = "nvim";
-    };
+    extraConfig = { core.editor = "nvim"; };
   };
 
   home.sessionVariables = {

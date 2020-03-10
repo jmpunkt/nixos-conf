@@ -1,8 +1,5 @@
-{
-  lib, stdenv, fetchFromGitHub, cmake, pkgconfig,
-  zlib, SDL2, SDL2_mixer, SDL2_image, SDL2_ttf,
-  ffmpeg, boost, qt5, minizip, python37
-}:
+{ lib, stdenv, fetchFromGitHub, cmake, pkgconfig, zlib, SDL2, SDL2_mixer
+, SDL2_image, SDL2_ttf, ffmpeg, boost, qt5, minizip, python37 }:
 
 stdenv.mkDerivation rec {
   pname = "vcmi";
@@ -16,18 +13,18 @@ stdenv.mkDerivation rec {
     sha256 = "0ycwfcphrw5pvccspqkwhqnj042x17lmfl038jvnjcv9ddl4qk8q";
   };
 
-  nativeBuildInputs = [
-    cmake
-    pkgconfig
-    python37
-  ];
+  nativeBuildInputs = [ cmake pkgconfig python37 ];
 
-  NIX_CFLAGS_COMPILE = "-I${SDL2_ttf}/include/SDL2 -I${SDL2_image}/include/SDL2 -I${SDL2_mixer}/include/SDL2";
+  NIX_CFLAGS_COMPILE =
+    "-I${SDL2_ttf}/include/SDL2 -I${SDL2_image}/include/SDL2 -I${SDL2_mixer}/include/SDL2";
 
   buildInputs = [
     qt5.qtbase
     zlib
-    SDL2.dev SDL2_mixer SDL2_image SDL2_ttf
+    SDL2.dev
+    SDL2_mixer
+    SDL2_image
+    SDL2_ttf
     ffmpeg
     boost
     minizip
@@ -41,7 +38,7 @@ stdenv.mkDerivation rec {
 
   meta = with lib; {
     description = "Open-source engine for Heroes of Might and Magic III";
-    homepage = https://github.com/vcmi/vcmi/;
+    homepage = "https://github.com/vcmi/vcmi/";
     license = licenses.gpl2;
     platforms = with platforms; unix;
     maintainers = with maintainers; [ ];

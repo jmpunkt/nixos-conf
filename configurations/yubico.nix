@@ -15,7 +15,10 @@
   };
 
   programs = {
-    gnupg.agent = { enable = true; enableSSHSupport = true; };
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
     ssh.startAgent = false;
   };
 }

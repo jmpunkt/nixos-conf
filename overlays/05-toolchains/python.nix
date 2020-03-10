@@ -1,6 +1,7 @@
 { python37, ... }:
 
-python37.withPackages(ps: with ps; [
+python37.withPackages (ps:
+  with ps; [
     python-language-server
     pyls-black
     pyls-mypy
@@ -18,4 +19,4 @@ python37.withPackages(ps: with ps; [
 
     numpy
     scipy
-])
+  ])

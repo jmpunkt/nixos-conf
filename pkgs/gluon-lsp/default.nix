@@ -17,7 +17,7 @@ rustPlatform.buildRustPackage rec {
 
   meta = with stdenv.lib; {
     description = "Language server providing completion for gluon ";
-    homepage = https://github.com/gluon-lang/gluon_language-server;
+    homepage = "https://github.com/gluon-lang/gluon_language-server";
     license = licenses.mit;
     maintainers = [ ];
     platforms = platforms.all;

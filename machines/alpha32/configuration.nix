@@ -21,7 +21,7 @@
     initrd.luks.devices."enc-root".allowDiscards = true;
   };
 
-  fileSystems."/".options = ["noatime" "nodiratime" "discard"];
+  fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
 
   networking.hostName = "alpha32";
 

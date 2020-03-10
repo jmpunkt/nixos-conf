@@ -1,10 +1,6 @@
-{
-  lib, stdenv, python37, fetchFromGitHub, cmake, pkgconfig, doxygen,
-  python37Packages,
-  freetype, SDL2, SDL2_image, opusfile, epoxy, harfbuzz, eigen, qt5,
-  vulkan-headers, vulkan-loader, libogg,
-  nyan-project
-}:
+{ lib, stdenv, python37, fetchFromGitHub, cmake, pkgconfig, doxygen
+, python37Packages, freetype, SDL2, SDL2_image, opusfile, epoxy, harfbuzz, eigen
+, qt5, vulkan-headers, vulkan-loader, libogg, nyan-project }:
 
 stdenv.mkDerivation rec {
   pname = "openage";
@@ -37,7 +33,8 @@ stdenv.mkDerivation rec {
     epoxy
     harfbuzz
     eigen
-    opusfile libogg
+    opusfile
+    libogg
     vulkan-loader
 
     qt5.qtbase
@@ -58,8 +55,9 @@ stdenv.mkDerivation rec {
   '';
 
   meta = with lib; {
-    description = "Free (as in freedom) open source clone of the Age of Empires II engine";
-    homepage = https://github.com/SFTtech/openage/;
+    description =
+      "Free (as in freedom) open source clone of the Age of Empires II engine";
+    homepage = "https://github.com/SFTtech/openage/";
     license = licenses.lgpl3Plus;
     platforms = with platforms; unix;
     maintainers = with maintainers; [ ];

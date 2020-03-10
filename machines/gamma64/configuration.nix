@@ -18,14 +18,11 @@
       efi.efiSysMountPoint = "/boot/efi";
     };
     cleanTmpDir = true;
-    kernelParams = [
-      "acpi_backlight=native"
-      "ivrs_ioapic[32]=00:14.0"
-    ];
+    kernelParams = [ "acpi_backlight=native" "ivrs_ioapic[32]=00:14.0" ];
     initrd.luks.devices."root".allowDiscards = true;
   };
 
-  fileSystems."/".options = ["noatime" "nodiratime" "discard"];
+  fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
 
   networking.hostName = "gamma64";
 

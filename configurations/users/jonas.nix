@@ -4,12 +4,7 @@
   users = {
     groups.jonas.gid = 1000;
     users.jonas = {
-      extraGroups = [
-        "wheel"
-        "networkmanager"
-        "audio"
-        "users"
-      ];
+      extraGroups = [ "wheel" "networkmanager" "audio" "users" ];
       createHome = true;
       home = "/home/jonas";
       shell = pkgs.fish;

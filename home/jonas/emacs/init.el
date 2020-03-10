@@ -844,7 +844,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Nix
 (use-package nix-mode
-  :mode "\\.nix\\'")
+  :mode "\\.nix\\'"
+  :bind (:map nix-mode-map
+              ("C-c C-f" . nix-format-buffer)))
 
 ;;;; * Python
 (use-package python

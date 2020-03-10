@@ -216,9 +216,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
     ("m" flyspell-mode))
   :config
   (setq-default ispell-program-name "hunspell"
-        ispell-local-dictionary "en_US"
-        ispell-local-dictionary-alist
-        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
+                ispell-local-dictionary "en_US"
+                ispell-local-dictionary-alist
+                '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
   (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
   (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
   (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
@@ -565,7 +565,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
     (let ((file-name (buffer-file-name)))
       ad-do-it
       (setq buffer-file-name file-name)))
-       (setq org-highlight-latex-and-related '(latex)
+  (setq org-highlight-latex-and-related '(latex)
         org-ellipsis "…"
         org-src-fontify-natively t
         org-src-tab-acts-natively t
@@ -574,7 +574,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
         org-agenda-files (list org-agenda-dir)
         ;; `!` ensures that timestamps are used
         org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
-    (setq org-capture-templates
+  (setq org-capture-templates
         '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
            "* TODO %? %^G \n  %U" :empty-lines 1)
           ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
@@ -597,19 +597,19 @@ _SPC_ cancel	_o_nly this   	_d_elete
                                 (lambda () (expand-file-name "journal.org" org-agenda-dir))
                                 "Journal")
            "* %? %^G\nEntered on %U\n")))
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((shell . t)
-       (js . t)
-       (python . t)
-       (emacs-lisp . t)
-       (haskell . t)
-       (latex . t)
-       (plantuml . t)
-       (mermaid . t)
-       (gnuplot . t)
-       (sql . t)
-       (dot . t))))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell . t)
+     (js . t)
+     (python . t)
+     (emacs-lisp . t)
+     (haskell . t)
+     (latex . t)
+     (plantuml . t)
+     (mermaid . t)
+     (gnuplot . t)
+     (sql . t)
+     (dot . t))))
 
 (use-package ox-latex
   :config

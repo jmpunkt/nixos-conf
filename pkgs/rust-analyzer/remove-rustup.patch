@@ -1,34 +1,13 @@
 diff --git a/xtask/src/lib.rs b/xtask/src/lib.rs
-index 2bcd76d60..d2097dc28 100644
+index e1472e85d..5dbffc309 100644
 --- a/xtask/src/lib.rs
 +++ b/xtask/src/lib.rs
-@@ -7,7 +7,6 @@ pub mod pre_commit;
- pub mod codegen;
- mod ast_src;
- 
--use anyhow::Context;
- use std::{
-     env,
-     io::Write,
-@@ -22,8 +21,6 @@ use crate::{
- 
- pub use anyhow::Result;
- 
--const TOOLCHAIN: &str = "stable";
--
- pub fn project_root() -> PathBuf {
-     Path::new(
-         &env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| env!("CARGO_MANIFEST_DIR").to_owned()),
-@@ -38,17 +35,17 @@ pub fn run_rustfmt(mode: Mode) -> Result<()> {
+@@ -42,14 +42,14 @@ pub fn run_rustfmt(mode: Mode) -> Result<()> {
      ensure_rustfmt()?;
  
-     if mode == Mode::Verify {
--        run!("rustup run {} -- cargo fmt -- --check", TOOLCHAIN)?;
-+        run!("cargo fmt -- --check")?;
-     } else {
--        run!("rustup run {} -- cargo fmt", TOOLCHAIN)?;
-+        run!("cargo fmt")?;
-     }
+     let check = if mode == Mode::Verify { "--check" } else { "" };
+-    run!("rustup run {} -- cargo fmt -- {}", TOOLCHAIN, check)?;
++    run!("cargo fmt -- {}", check)?;
      Ok(())
  }
  
@@ -41,7 +20,7 @@ index 2bcd76d60..d2097dc28 100644
          .arg(project_root().join("rustfmt.toml"))
          .stdin(Stdio::piped())
          .stdout(Stdio::piped())
-@@ -61,29 +58,26 @@ fn reformat(text: impl std::fmt::Display) -> Result<String> {
+@@ -62,29 +62,26 @@ fn reformat(text: impl std::fmt::Display) -> Result<String> {
  }
  
  fn ensure_rustfmt() -> Result<()> {
@@ -53,15 +32,13 @@ index 2bcd76d60..d2097dc28 100644
          .stdout(Stdio::null())
          .status()
      {
--        Ok(status) if status.success() => return Ok(()),
+         Ok(status) if status.success() => return Ok(()),
 -        _ => (),
--    };
++        _ => panic!("Rustfmt is not installed."),
+     };
 -    run!("rustup toolchain install {}", TOOLCHAIN)?;
 -    run!("rustup component add rustfmt --toolchain {}", TOOLCHAIN)?;
 -    Ok(())
-+        Ok(status) if status.success() => Ok(()),
-+        _ => Err(anyhow::Error::msg("cargo does not provide formatting")),
-+    }
  }
  
  pub fn run_clippy() -> Result<()> {
@@ -75,11 +52,11 @@ index 2bcd76d60..d2097dc28 100644
      {
          Ok(status) if status.success() => (),
 -        _ => install_clippy().context("install clippy")?,
-+        _ => return Err(anyhow::Error::msg("cargo does not provide clippy")),
++        _ => panic!("Clippy not available"),
      };
  
      let allowed_lints = [
-@@ -93,17 +87,7 @@ pub fn run_clippy() -> Result<()> {
+@@ -93,17 +90,7 @@ pub fn run_clippy() -> Result<()> {
          "clippy::nonminimal_bool",
          "clippy::redundant_pattern_matching",
      ];
@@ -95,15 +72,6 @@ index 2bcd76d60..d2097dc28 100644
 -    run!("rustup toolchain install {}", TOOLCHAIN)?;
 -    run!("rustup component add clippy --toolchain {}", TOOLCHAIN)?;
 +    run!("cargo clippy --all-features --all-targets -- -A {}", allowed_lints.join(" -A "))?;
-     Ok(())
- }
- 
-@@ -113,7 +97,7 @@ pub fn run_fuzzer() -> Result<()> {
-         run!("cargo install cargo-fuzz")?;
-     };
- 
--    run!("rustup run nightly -- cargo fuzz run parser")?;
-+    run!("cargo fuzz run parser")?;
      Ok(())
  }
  

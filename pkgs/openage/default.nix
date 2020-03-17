@@ -1,6 +1,6 @@
 { lib, stdenv, python37, fetchFromGitHub, cmake, pkgconfig, doxygen
 , python37Packages, freetype, SDL2, SDL2_image, opusfile, epoxy, harfbuzz, eigen
-, qt5, vulkan-headers, vulkan-loader, libogg, nyan-project }:
+, qt5, vulkan-headers, vulkan-loader, libogg, jmpunkt }:
 
 stdenv.mkDerivation rec {
   pname = "openage";
@@ -40,7 +40,7 @@ stdenv.mkDerivation rec {
     qt5.qtbase
     qt5.qtquickcontrols
 
-    nyan-project
+    jmpunkt.nyan-project
   ];
 
   outputs = [ "out" "lib" ];

@@ -2,11 +2,10 @@ self: super:
 
 {
   # do not export libraries with prefix
-  nyan-project = super.callPackage ../pkgs/nyan-project/default.nix { };
-  vcmi = super.callPackage ../pkgs/vcmi/default.nix { };
-  veloren = super.callPackage ../pkgs/veloren/default.nix { };
-
   jmpunkt = (super.jmpunkt or { }) // {
+    nyan-project = super.callPackage ../pkgs/nyan-project/default.nix { };
+    vcmi = super.callPackage ../pkgs/vcmi/default.nix { };
+    veloren = super.callPackage ../pkgs/veloren/default.nix { };
     openage = super.callPackage ../pkgs/openage/default.nix { };
     opmon = super.callPackage ../pkgs/opmon/default.nix { };
     python3Packages = (super.python3Packages or { }) // {

@@ -18,6 +18,7 @@
     dropbox-cli
     pdfpc
     steam
+    skype
 
     jmpunkt.emacs
     jmpunkt.latex

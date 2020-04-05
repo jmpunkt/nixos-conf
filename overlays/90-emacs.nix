@@ -55,6 +55,7 @@ let
       rustToolchain # overlays/40-toolchains.nix
       jmpunkt.rust-analyzer
       discount
+      maven
     ];
   };
 

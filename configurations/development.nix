@@ -1,5 +1,5 @@
 { pkgs, config, ... }:
 
 {
-  environment.systemPackages = with pkgs; [ gcc gnumake tokei fzf hyperfine ];
+  environment.systemPackages = with pkgs; [ tokei fzf hyperfine ];
 }

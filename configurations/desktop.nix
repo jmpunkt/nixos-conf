@@ -16,6 +16,7 @@
     keepassxc
     home-manager
     firefox
+    amarok
 
     discord
     tdesktop

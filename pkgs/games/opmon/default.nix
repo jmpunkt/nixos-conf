@@ -1,7 +1,4 @@
-{
-  lib, stdenv, fetchFromGitHub, cmake, pkgconfig,
-  smpeg, sfml
-}:
+{ lib, stdenv, fetchFromGitHub, cmake, pkgconfig, smpeg, sfml }:
 
 stdenv.mkDerivation rec {
   pname = "opmon";
@@ -14,23 +11,17 @@ stdenv.mkDerivation rec {
     sha256 = "1vhvh50ca8vmfj5m10q0jbfahm3994l366ca3pgjpzizhqvpcsgz";
   };
 
-  nativeBuildInputs = [
-    cmake
-    pkgconfig
-  ];
+  nativeBuildInputs = [ cmake pkgconfig ];
 
   preConfigure = ''
     find ./src -name "*.cpp" -exec sed -i "s!/usr/local/share!$out/share!g" {} +
   '';
 
-  buildInputs = [
-    smpeg
-    sfml
-  ];
+  buildInputs = [ smpeg sfml ];
 
   meta = with lib; {
     description = "The free and open source Pokémon clone";
-    homepage = https://github.com/OpMonTeam/OpMon;
+    homepage = "https://github.com/OpMonTeam/OpMon";
     license = licenses.lgpl3;
     platforms = with platforms; unix;
     maintainers = with maintainers; [ ];

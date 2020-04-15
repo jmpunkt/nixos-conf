@@ -2,13 +2,13 @@
 
 mozillaRustPlatform.buildRustPackage rec {
   pname = "rust-analyzer";
-  version = "2020-04-0";
+  version = "2020-04-13";
 
   src = fetchFromGitHub {
     owner = "rust-analyzer";
     repo = "rust-analyzer";
     rev = "tags/${version}";
-    sha256 = "0cm12707rq88w9yd4kkh26pnaqfvif6yyshk42pfi9vyv4ljfpcv";
+    sha256 = "0giwhknmv1km0z5l2x4sixkyj45ha9ynmxz3dfd22dys6kr8fp0p";
   };
 
   nativeBuildInputs = [ makeWrapper ];
@@ -27,7 +27,7 @@ mozillaRustPlatform.buildRustPackage rec {
     wrapProgram $out/bin/rust-analyzer --set "PATH" "$PATH:${mozillaRustPlatform.rust.cargo}/bin/"
   '';
 
-  cargoSha256 = "16vllp0vf4jhqxaw0dlf1msmg9ak4dga5dqlv1z6n4kbqh1l6sl0";
+  cargoSha256 = "0zxylra9kqh5qxzc7gvs0zycs16wb64pbpkn14c3h73y7wx2739s";
 
   meta = with stdenv.lib; {
     description = "An experimental Rust compiler front-end for IDEs";

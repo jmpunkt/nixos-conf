@@ -844,7 +844,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package nix-mode
   :mode "\\.nix\\'"
   :bind (:map nix-mode-map
-              ("C-c C-f" . nix-format-buffer)))
+              ("C-c C-f" . nix-format-buffer))
+  :hook (nix-mode . flyspell-prog-mode))
 
 ;;;; * Python
 (use-package python
@@ -876,6 +877,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :after (flycheck company)
   :init (defun setup-tide-mode ()
           (interactive)
+          (my-prog-setup)
           (tide-setup)
           (flycheck-mode +1)
           (eldoc-mode -1)
@@ -886,7 +888,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package typescript-mode
   :mode ("\\.ts\\'")
-  :hook (typescript-mode . setup-tide-mode))
+  :hook (typescript-mode . setup-tide-mode)
+  :config (setq typescript-indent-level 2))
 
 ;;;; * Java
 (use-package lsp-java
@@ -913,11 +916,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
    "\\.mustache\\'"
    "\\.djhtml\\'"
    "\\.html?\\'")
-  :hook (web-mode . (lambda ()
-                      (when (and
-                             buffer-file-name
-                             (equal "tsx" (file-name-extension buffer-file-name)))
-                        (setup-tide-mode))))
+  :hook ((web-mode . (lambda ()
+                       (when (and
+                              buffer-file-name
+                              (equal "tsx" (file-name-extension buffer-file-name)))
+                         (setup-tide-mode))))
+         (web-mode . flyspell-prog-mode))
   :init
   (setq web-mode-markup-indent-offset 2
         web-mode-code-indent-offset 2
@@ -925,7 +929,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
         web-mode-enable-auto-pairing nil
         web-mode-enable-auto-quoting nil
         web-mode-enable-auto-expanding t
-        web-mode-enable-css-colorization t)
+        web-mode-enable-css-colorization t
+        web-mode-enable-current-element-highlight t)
   :config
   (flycheck-add-mode 'typescript-tslint 'web-mode)
   (setq web-mode-content-types-alist

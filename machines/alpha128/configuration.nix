@@ -34,5 +34,5 @@
     accelProfile = "flat";
   };
 
-  system.stateVersion = "19.09";
+  system.stateVersion = "20.03";
 }

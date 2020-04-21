@@ -9,7 +9,7 @@
     historyLimit = 10000;
     aggressiveResize = true;
     escapeTime = 50;
-    extraTmuxConf = ''
+    extraConfig = ''
       run-shell ${pkgs.tmuxPlugins.yank.rtp}
 
       set -g mouse on

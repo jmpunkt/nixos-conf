@@ -173,6 +173,7 @@ in {
         graphql-mode
         meson-mode
         mermaid-mode
+        dhall-mode
 
         # Presentation
         markdown-mode

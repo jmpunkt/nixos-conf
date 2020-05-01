@@ -740,6 +740,11 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;; * Configuration Files
 
+;;;; * Dhall
+(use-package dhall-mode
+  :ensure t
+  :mode "\\.dhall\\'")
+
 ;;;; * Mermaid
 (use-package mermaid-mode)
 

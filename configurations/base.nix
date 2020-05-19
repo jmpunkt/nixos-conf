@@ -13,10 +13,7 @@
     telnet
     fd
     exa
-
-    git
     ripgrep
-    direnv
 
     sdparm
     hdparm

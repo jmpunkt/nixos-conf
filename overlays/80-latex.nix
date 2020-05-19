@@ -27,7 +27,7 @@ in {
         anyfontsize urcls roboto xcharter pdfx xmpincl tufte-latex changepage
         fancyhdr geometry hyperref natbib sauerj paralist placeins ragged2e
         setspace textcase titlesec xcolor xifthen microtype mathpazo soul bera
-        hardwrap realscripts was fontaxes fancyvrb latexmk;
+        hardwrap realscripts was fontaxes fancyvrb latexmk catchfile;
     });
   };
 }

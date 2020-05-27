@@ -20,6 +20,7 @@
     steam
     skype
 
+    jmpunkt.papyrus-rt
     jmpunkt.emacs
     jmpunkt.latex
   ];

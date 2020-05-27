@@ -15,6 +15,6 @@ self: super:
     gluon-lsp = super.callPackage ../pkgs/gluon-lsp/default.nix { };
     gluon = super.callPackage ../pkgs/gluon-repl/default.nix { };
     rust-analyzer = super.callPackage ../pkgs/rust-analyzer/default.nix { };
-    paprus-rt = super.callPackage ../pkgs/papyrus-rt/default.nix { };
+    papyrus-rt = super.callPackage ../pkgs/papyrus-rt/default.nix { };
   };
 }

@@ -531,6 +531,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (setq magit-todos-recursive t
         magit-todos-depth 100))
 
+(use-package diff-hl
+  :init (global-diff-hl-mode))
+  ;; FIXME: old version which does not support yet
+  ;; :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
+  ;;        (magit-pre-refresh . diff-hl-magit-pre-refresh)))
+
 ;;;; * Eshell
 (use-package eshell
   :after ansi-color

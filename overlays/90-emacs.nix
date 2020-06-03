@@ -111,6 +111,7 @@ in {
         magit
         magit-todos
         evil-magit
+        diff-hl
 
         # Tree
         treemacs

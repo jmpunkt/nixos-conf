@@ -35,10 +35,16 @@ in stdenv.mkDerivation rec {
     zlib
   ] ++ stdenv.lib.optional (webkitgtk != null) webkitgtk;
 
-  buildCommand = ''
+  installPhase = ''
     # Unpack tarball.
     mkdir -p $out
-    tar xfvz $src -C $out
+    tar xfz $src -C $out
+
+    # Create desktop item.
+    mkdir -p $out/share/applications
+    cp ${desktopItem}/share/applications/* $out/share/applications
+    mkdir -p $out/share/pixmaps
+    ln -s $out/${name}/icon.xpm $out/share/pixmaps/${exec}.xpm
 
     # Patch binaries.
     interpreter=$(echo ${stdenv.glibc.out}/lib/ld-linux*.so.2)
@@ -54,17 +60,12 @@ in stdenv.mkDerivation rec {
         stdenv.lib.makeLibraryPath ([ glib gtk libXtst ]
           ++ stdenv.lib.optional (webkitgtk != null) webkitgtk)
       } \
-
-    # Create desktop item.
-    mkdir -p $out/share/applications
-    cp ${desktopItem}/share/applications/* $out/share/applications
-    mkdir -p $out/share/pixmaps
-    ln -s $out/${name}/icon.xpm $out/share/pixmaps/${exec}.xpm
-  ''; # */
+  '';
 
   meta = {
-    homepage = "https://www.eclipse.org/papyrus-rt/";
     inherit description;
+
+    homepage = "https://www.eclipse.org/papyrus-rt/";
     platforms = [ "x86_64-linux" ];
   };
 }

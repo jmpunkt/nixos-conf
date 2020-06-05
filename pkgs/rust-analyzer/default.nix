@@ -1,38 +1,41 @@
-{ stdenv, mozillaRustPlatform, fetchFromGitHub, makeWrapper }:
+# Taken from https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/rust/rust-analyzer/generic.nix (3ea54e69727b0195f25a2be909ae821223621a64)
+
+{ lib, mozillaRustPlatform, stdenv, fetchFromGitHub, darwin }:
 
 mozillaRustPlatform.buildRustPackage rec {
-  pname = "rust-analyzer";
-  version = "2020-04-27";
+  pname = "rust-analyzer-unwrapped";
+  version = "2020-06-01";
 
   src = fetchFromGitHub {
     owner = "rust-analyzer";
     repo = "rust-analyzer";
     rev = "tags/${version}";
-    sha256 = "15y25ii1bs010jga87wi3jirqwq65jhjxfwxgriykzw10g7a97as";
+    sha256 = "0chm47mrd4hybhvzn4cndq2ck0mj948mm181p1i1j1w0ms7zk1fg";
   };
 
-  nativeBuildInputs = [ makeWrapper ];
+  cargoSha256 = "1jr6y80m99w47vklfh0izs9zn1vrxmsziwmdrhcxvi20hg6pv0q4";
 
-  # Remove usage of rustup for the `codegen` path.
-  patches = [ ./remove-rustup.patch ];
+  preBuild = "pushd crates/rust-analyzer";
+  # Do not checking other crates in checkPhase.
+  preInstall = "popd";
 
-  # Exclude xtask since it depends on rustup
-  cargoBuildFlags = [ "--bin rust-analyzer" ];
+  # nativeBuildInputs = [ mozillaRustPlatform.rust-src ];
 
-  preBuild = ''
-    cargo xtask codegen
+  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin
+    [ darwin.apple_sdk.frameworks.CoreServices ];
+
+  # Skip tests running `rustup` for `cargo fmt`.
+  preCheck = ''
+    fakeRustup=$(mktemp -d)
+    ln -s $(command -v true) $fakeRustup/rustup
+    export PATH=$PATH''${PATH:+:}$fakeRustup
   '';
-
-  postInstall = ''
-    wrapProgram $out/bin/rust-analyzer --set "PATH" "$PATH:${mozillaRustPlatform.rust.cargo}/bin/"
-  '';
-
-  cargoSha256 = "125qizf2aak1anjdh5nsyqln0sic550b3rvj1rbyv0wpr5w4n6zr";
 
   meta = with stdenv.lib; {
-    description = "An experimental Rust compiler front-end for IDEs";
+    description =
+      "An experimental modular compiler frontend for the Rust language";
     homepage = "https://github.com/rust-analyzer/rust-analyzer";
-    license = [ licenses.mit licenses.asl20 ];
-    maintainers = [ ];
+    license = with licenses; [ mit asl20 ];
+    platforms = platforms.all;
   };
 }

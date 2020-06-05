@@ -6,9 +6,7 @@ let
     (super.python37Packages.pygments.overrideAttrs (oldAttrs: {
       pname = "${oldAttrs.pname}-tex";
       tlType = "bin";
-    })
-
-    )
+    }))
   ];
   texlive = super.texlive;
 in {

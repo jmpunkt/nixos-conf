@@ -1,17 +1,18 @@
 self: super:
 
-{
-  rustToolchain = super.callPackage ./rust.nix { };
-  nightlyRustToolchain = super.callPackage ./rust-nightly.nix { };
+rec {
+  rustToolchains = super.callPackage ./rust.nix { };
+  rustToolchain = rustToolchains.stable;
+  nightlyRustToolchain = rustToolchains.nightly;
   pythonToolchain = super.callPackage ./python.nix { };
 
   mozillaNightlyRustPlatform = super.makeRustPlatform {
-    rustc = self.nightlyRustToolchain;
-    cargo = self.nightlyRustToolchain;
+    rustc = self.rustToolchains.nightly;
+    cargo = self.rustToolchains.nightly;
   };
 
   mozillaRustPlatform = super.makeRustPlatform {
-    rustc = self.rustToolchain;
-    cargo = self.rustToolchain;
+    rustc = self.rustToolchains.stable;
+    cargo = self.rustToolchains.stable;
   };
 }

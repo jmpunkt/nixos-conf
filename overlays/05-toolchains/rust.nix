@@ -1,12 +1,18 @@
 { pkgs }:
 
-pkgs.latest.rustChannels.stable.rust.override {
-  targets = [ "x86_64-unknown-linux-gnu" "wasm32-unknown-unknown" ];
-  extensions = [
-    "rust-src"
-    "rls-preview"
-    "rust-analysis"
-    "clippy-preview"
-    "rustfmt-preview"
-  ];
+let
+  override = { rust }:
+    rust.override {
+      targets = [ "x86_64-unknown-linux-gnu" ];
+      extensions =
+        [ "rust-src" "rust-analysis" "clippy-preview" "rustfmt-preview" ];
+    };
+in {
+  stable = override { rust = pkgs.latest.rustChannels.stable.rust; };
+  nightly = override {
+    rust = (pkgs.rustChannelOf {
+      date = "2020-06-04";
+      channel = "nightly";
+    }).rust;
+  };
 }

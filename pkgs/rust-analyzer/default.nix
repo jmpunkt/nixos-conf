@@ -2,24 +2,23 @@
 
 { lib, mozillaRustPlatform, stdenv, fetchFromGitHub, darwin }:
 
+# Requires newest version of Rust (most of the time)
 mozillaRustPlatform.buildRustPackage rec {
   pname = "rust-analyzer-unwrapped";
-  version = "2020-06-01";
+  version = "2020-06-29";
 
   src = fetchFromGitHub {
     owner = "rust-analyzer";
     repo = "rust-analyzer";
     rev = "tags/${version}";
-    sha256 = "0chm47mrd4hybhvzn4cndq2ck0mj948mm181p1i1j1w0ms7zk1fg";
+    sha256 = "1b3zswar8kahagi952x9yk2aynwxf1plfs1kfw5r9gy7y8s174y9";
   };
 
-  cargoSha256 = "1jr6y80m99w47vklfh0izs9zn1vrxmsziwmdrhcxvi20hg6pv0q4";
+  cargoSha256 = "1bdkg19833ic0ks9j4rpfjlqw3hv37v25laqqgcvz369hlw7sh1p";
 
   preBuild = "pushd crates/rust-analyzer";
   # Do not checking other crates in checkPhase.
   preInstall = "popd";
-
-  # nativeBuildInputs = [ mozillaRustPlatform.rust-src ];
 
   buildInputs = lib.optionals stdenv.hostPlatform.isDarwin
     [ darwin.apple_sdk.frameworks.CoreServices ];

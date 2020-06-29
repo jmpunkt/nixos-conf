@@ -71,6 +71,7 @@
   sound.enable = true;
 
   hardware = {
+    sane.enable = true;
     opengl = {
       enable = true;
       driSupport32Bit = true;

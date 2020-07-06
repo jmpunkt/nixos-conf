@@ -5,7 +5,7 @@
 # Requires newest version of Rust (most of the time)
 mozillaRustPlatform.buildRustPackage rec {
   pname = "rust-analyzer-unwrapped";
-  version = "2020-06-29";
+  version = "2020-07-06";
 
   src = fetchFromGitHub {
     owner = "rust-analyzer";

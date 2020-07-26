@@ -90,7 +90,7 @@
   (custom-set-variables
    '(custom-safe-themes
      (quote
-      ("fa3bdd59ea708164e7821574822ab82a3c51e262d419df941f26d64d015c90ee" "423435c7b0e6c0942f16519fa9e17793da940184a50201a4d932eafe4c94c92d" "43c808b039893c885bdeec885b4f7572141bd9392da7f0bd8d8346e02b2ec8da" "1c082c9b84449e54af757bcae23617d11f563fc9f33a832a8a2813c4d7dfb652" default))))
+      ("79278310dd6cacf2d2f491063c4ab8b129fee2a498e4c25912ddaa6c3c5b621e" "fa3bdd59ea708164e7821574822ab82a3c51e262d419df941f26d64d015c90ee" "423435c7b0e6c0942f16519fa9e17793da940184a50201a4d932eafe4c94c92d" "43c808b039893c885bdeec885b4f7572141bd9392da7f0bd8d8346e02b2ec8da" "1c082c9b84449e54af757bcae23617d11f563fc9f33a832a8a2813c4d7dfb652" default))))
   (custom-set-faces
    '(default ((t (:family "IBM Plex Mono" :foundry "IBM " :slant normal :weight normal :height 113 :width normal)))))
 

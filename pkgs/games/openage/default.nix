@@ -4,13 +4,13 @@
 
 stdenv.mkDerivation rec {
   pname = "openage";
-  version = "2019-11-30";
+  version = "2020-07-13";
 
   src = fetchFromGitHub {
     owner = "SFTtech";
     repo = "openage";
-    rev = "eb8f3c66099f0b07422b5b66a18cdc58adfb9b9f";
-    sha256 = "0d67bihm577v52qbp4wa0li9ymlsp13gn02n5akm56dk19lzwx70";
+    rev = "3b2d966e69af35b1b3e6d47f4ebcb06f63a7fba0";
+    sha256 = "1mha92aq84a917ji8jg3qdf1gbpfwx47bngd29ng7b10yd9n6wx5";
   };
 
   nativeBuildInputs = [

@@ -1,49 +1,40 @@
-{ lib, stdenv, fetchFromGitHub, python3Packages }:
+{ lib, fetchFromGitHub, python3Packages }:
 
-with python3Packages;
-
-let
-  pytmx = buildPythonPackage rec {
-    pname = "PyTMX";
-    version = "3.21.7";
-
-    propagatedBuildInputs = [ six pygame pyglet pysdl2 ];
-
-    src = fetchPypi {
-      inherit pname version;
-      sha256 = "19wgjdhkzzi2kpnba6xpr29b24dqy3nhdvcfardfm738mzxc3sgn";
-    };
-  };
-  pyscroll = buildPythonPackage rec {
-    pname = "pyscroll";
-    version = "2.19.2";
-
-    propagatedBuildInputs = [ six pygame ];
-
-    src = fetchPypi {
-      inherit pname version;
-      sha256 = "175d39rymnx3v3mcfjjkr1wv76nsl1s00z04nzsspklyk0ih2783";
-    };
-  };
-in buildPythonPackage rec {
+python3Packages.buildPythonApplication rec {
   pname = "tuxemon";
-  version = "0.4.2";
+  version = "0.4.25";
 
   src = fetchFromGitHub {
     owner = "Tuxemon";
     repo = "Tuxemon";
-    rev = "73a751f908ccdceaee72710707f9dacb0e571d99";
-    sha256 = "1q801k04805l68sh547dz3kqwsipqn0n16qsaqa390w5p6sbq819";
+    rev = "2c741edc626073b65dbbca55dc30560928a2f44e";
+    sha256 = "0haml8q8njnprnrsyn7fibdswayq7nvq7y4sy1b7198c1bqbiwip";
   };
 
   # Tuxemon does not support to build the translation during the build phase.
-  # Transltations are build during the runtime -> not possible in Nix.
+  # Translations are build during the runtime -> not possible in Nix.
   broken = true;
 
-  checkPhase = "true";
+  checkPhase = ''
+    python -m unittest py3_tests/tuxemon/core/*.py
+  '';
 
-  propagatedBuildInputs =
-    [ requests Babel cbor pillow lxml pytmx pyscroll netira ];
+  propagatedBuildInputs = with python3Packages; [
+    six
+    natsort
+    click
+
+    requests
+    Babel
+    cbor
+    pillow
+    pygame
+    lxml
+
+    jmpunkt.pytmx
+    jmpunkt.pyscroll
+    jmpunkt.netira
+  ];
 
   meta = with lib; {
     homepage = "https://github.com/Tuxemon/Tuxemon";

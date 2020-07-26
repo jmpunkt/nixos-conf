@@ -2,13 +2,13 @@
 
 stdenv.mkDerivation {
   pname = "nyan-project";
-  version = "2019-10-18";
+  version = "2020-05-17";
 
   src = fetchFromGitHub {
     owner = "SFTtech";
     repo = "nyan";
-    rev = "03a996994b87803b5a8ff6ed0e85ab730163aa2d";
-    sha256 = "1zysapcyplfvz3ll91rd981w6zj5ja6c1p00hwig4fzn4xsghyir";
+    rev = "2d6fba801a34e67677ce212c8af7c0f991d2bbcd";
+    sha256 = "1jg7n0g5abzr4glq2xkskik2hakdzafylpb62z27mf4qbg01lqp4";
   };
 
   nativeBuildInputs = [ cmake pkgconfig ];

@@ -53,7 +53,7 @@
     roboto
     roboto-mono
     roboto-slab
-    monoid
+    # monoid FIXME: broken package since fontforge and python2 changes
 
     # Emacs Icons
     emacs-all-the-icons-fonts

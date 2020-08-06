@@ -10,20 +10,12 @@
 (eval-when-compile (require 'use-package))
 
 ;;; Startup Improvements
-
-(defvar file-name-handler-alist-backup
-  file-name-handler-alist)
-(setq gc-cons-threshold most-positive-fixnum
-      file-name-handler-alist nil)
+(setq gc-cons-threshold most-positive-fixnum)
 (add-hook 'after-init-hook
           (lambda ()
             (garbage-collect)
-            (setq gc-cons-threshold
-                  (car (get 'gc-cons-threshold 'standard-value))
-                  file-name-handler-alist
-                  (append
-                   file-name-handler-alist-backup
-                   file-name-handler-alist))))
+            (setq gc-cons-threshold 100000000
+                  read-process-output-max (* 1024 1024))))
 
 ;;; * Paths
 
@@ -61,6 +53,9 @@
   :demand t
   :bind (:map global-map
               ([f1] . eshell))
+  :hook ((prog-mode . (lambda ()
+                        (auto-fill-mode 1)
+                        (setq-local comment-auto-fill-only-comments t))))
   :init
   (setq-default tab-width 4
                 indent-tabs-mode nil
@@ -96,6 +91,7 @@
 
   (load-theme 'doom-vibrant))
 
+
 ;;; * Core Packages
 ;;;; * Evil
 (use-package evil
@@ -107,7 +103,9 @@
 (use-package direnv
   :demand t
   :config
-  (direnv-mode))
+  (direnv-mode)
+  ;; ensures that direnv is loaded and allowing lsp to find executable
+  (advice-add 'prog-mode :before #'direnv-update-environment))
 
 ;;;; * Which-Key
 (use-package which-key
@@ -182,22 +180,18 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Flycheck
 (use-package flycheck
-  :after direnv
-  :init
-  (global-flycheck-mode t)
+  :hook (prog-mode . flycheck-mode)
   :config
   (setq flycheck-check-syntax-automatically '(save mode-enabled)
-        flycheck-display-errors-delay .3
-        flycheck-executable-find
-        ;; Uses direnv environment
-        (lambda (cmd) (direnv-update-environment default-directory)(executable-find cmd))))
+        flycheck-display-errors-delay .3))
 
 ;;;; * Spelling
 (use-package flyspell
   :demand t
   :bind (:map flyspell-mode-map
               ("C-c s" . my-hydra-spelling/body))
-  :hook (text-mode . flyspell-mode)
+  :hook ((text-mode . flyspell-mode)
+         (prog-mode . flyspell-prog-mode))
   :init
   (defhydra my-hydra-spelling (:color blue)
     "^
@@ -350,7 +344,29 @@ _SPC_ cancel	_o_nly this   	_d_elete
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
         lsp-enable-snippet t
-        lsp-prefer-flymake nil))
+        lsp-completion-provider :capf
+        lsp-file-watch-ignored '(
+                                 "[/\\\\]\\.direnv$"
+                                 "[/\\\\]\\.git$"
+                                 "[/\\\\]\\.hg$"
+                                 "[/\\\\]\\.bzr$"
+                                 "[/\\\\]_darcs$"
+                                 "[/\\\\]\\.svn$"
+                                 "[/\\\\]_FOSSIL_$"
+                                 "[/\\\\]\\.idea$"
+                                 "[/\\\\]\\.ensime_cache$"
+                                 "[/\\\\]\\.eunit$"
+                                 "[/\\\\]node_modules$"
+                                 "[/\\\\]\\.fslckout$"
+                                 "[/\\\\]\\.tox$"
+                                 "[/\\\\]\\.stack-work$"
+                                 "[/\\\\]\\.bloop$"
+                                 "[/\\\\]\\.metals$"
+                                 "[/\\\\]target$"
+                                 "[/\\\\]\\.deps$"
+                                 "[/\\\\]build-aux$"
+                                 "[/\\\\]autom4te.cache$"
+                                 "[/\\\\]\\.reference$")))
 
 (use-package lsp-treemacs
   :after (lsp-mode treemacs))
@@ -367,13 +383,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
 
-(use-package company-lsp
-  :commands company-lsp
-  :after (company lsp-mode)
-  :config
-  (setq-local company-backends (append '(company-lsp) company-backends))
-  (setq company-lsp-enable-snippet t
-        company-lsp-cache-candidates t))
 (use-package ccls
   :config
   (setq ccls-executable "ccls"))
@@ -458,16 +467,13 @@ _SPC_ cancel	_o_nly this   	_d_elete
         company-minimum-prefix-length 1
         company-show-numbers t
         company-tooltip-align-annotations t
-        company-tooltip-limit 20)
-  (setq company-backends
-        '(company-bbdb
-          (company-files
-           company-capf
-           company-yasnippet)
-          (company-dabbrev-code
-           company-gtags
-           company-etags)
-          company-dabbrev)))
+        company-tooltip-limit 20
+        company-require-match nil
+        company-backends '(company-files
+                           company-capf
+                           company-yasnippet
+                           company-abbrev
+                           company-dabbrev)))
 
 (use-package company-quickhelp
   :after company
@@ -533,9 +539,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package diff-hl
   :init (global-diff-hl-mode))
-  ;; FIXME: old version which does not support yet
-  ;; :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
-  ;;        (magit-pre-refresh . diff-hl-magit-pre-refresh)))
+;; FIXME: old version which does not support yet
+;; :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
+;;        (magit-pre-refresh . diff-hl-magit-pre-refresh)))
 
 ;;;; * Eshell
 (use-package eshell
@@ -806,29 +812,21 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;; * Programming Languages
 
-;; Sets the auto-fill-mode only for comments
-(defun my-prog-setup ()
-  (auto-fill-mode 1)
-  (setq-local comment-auto-fill-only-comments t))
-
 ;;;; * SQL
 
 (use-package sql
   :mode ("sql" . sql-mode)
-  :hook (sql-mode . (lambda () (setq tab-width 2)))
   :config
   (setq-default sql-database "development"
                 sql-server "localhost")
+  (setq-local tab-width 2)
   (sql-highlight-postgres-keywords))
 
 ;;;; * C/C++
 (use-package irony
   :hook ((c-mode . irony-mode)
-         (c-mode . flyspell-prog-mode)
          (objc-mode . irony-mode)
-         (objc-mode . flyspell-prog-mode)
-         (c++-mode .irony-mode)
-         (c++-mode . flyspell-prog-mode))
+         (c++-mode .irony-mode))
   :config
   (setq-local company-backends (append '(company-clang) company-backends)))
 
@@ -838,15 +836,13 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Elm
 (use-package elm-mode
   :after company
-  :hook (elm-mode . flyspell-prog-mode)
   :config
   (setq elm-format-on-save t)
   (setq-local company-backends (append '(company-elm) company-backends)))
 
 ;;;; * Haskell
 (use-package haskell-mode
-  :hook ((haskell-mode . lsp)
-         (haskell-mode . flyspell-prog-mode)))
+  :hook (haskell-mode . lsp))
 
 (use-package flycheck-haskell
   :hook (haskell-mode . flycheck-haskell-setup))
@@ -855,21 +851,17 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package nix-mode
   :mode "\\.nix\\'"
   :bind (:map nix-mode-map
-              ("C-c C-f" . nix-format-buffer))
-  :hook (nix-mode . flyspell-prog-mode))
+              ("C-c C-f" . nix-format-buffer)))
 
 ;;;; * Python
 (use-package python
   :mode ("\\.py\\'" . python-mode)
-  :hook ((python-mode . lsp)
-         (python-mode . flyspell-prog-mode))
+  :hook (python-mode . lsp)
   :config (setq python-indent-offset 4))
 
 ;;;; * Rust
 (use-package rust-mode
-  :hook ((rust-mode . lsp)
-         (rust-mode . flyspell-prog-mode)
-         (rust-mode . my-prog-setup)))
+  :hook (rust-mode . lsp))
 
 (use-package lsp-rust
   :init
@@ -885,17 +877,14 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Typescript
 (use-package tide
-  :after (flycheck company)
   :init (defun setup-tide-mode ()
           (interactive)
-          (my-prog-setup)
           (tide-setup)
-          (flycheck-mode +1)
-          (eldoc-mode -1)
-          (tide-hl-identifier-mode +1)
-          (company-mode +1)
-          (setq flycheck-check-syntax-automatically '(save mode-enabled)
-                company-tooltip-align-annotations t)))
+          (flycheck-mode 1)
+          (eldoc-mode nil)
+          (tide-hl-identifier-mode 1)
+          (company-mode 1)
+          (setq flycheck-check-syntax-automatically '(save mode-enabled))))
 
 (use-package typescript-mode
   :mode ("\\.ts\\'")
@@ -904,9 +893,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Java
 (use-package lsp-java
-  :hook ((java-mode . lsp)
-         (java-mode . flyspell-prog-mode)
-         (java-mode . my-prog-setup)))
+  :hook (java-mode . lsp))
 
 ;;;; * Javascript
 (use-package js2-mode
@@ -917,22 +904,20 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * HTML/JSX/RSX
 (use-package web-mode
   :after (flycheck tide)
-  :mode
-  ("\\.phtml\\'"
-   "\\.tpl\\.php\\'"
-   "\\.[agj]sp\\'"
-   "\\.as[cp]x\\'"
-   "\\.erb\\'"
-   "\\.tsx\\'"
-   "\\.mustache\\'"
-   "\\.djhtml\\'"
-   "\\.html?\\'")
+  :mode ("\\.phtml\\'"
+         "\\.tpl\\.php\\'"
+         "\\.[agj]sp\\'"
+         "\\.as[cp]x\\'"
+         "\\.erb\\'"
+         "\\.tsx\\'"
+         "\\.mustache\\'"
+         "\\.djhtml\\'"
+         "\\.html?\\'")
   :hook ((web-mode . (lambda ()
                        (when (and
                               buffer-file-name
                               (equal "tsx" (file-name-extension buffer-file-name)))
-                         (setup-tide-mode))))
-         (web-mode . flyspell-prog-mode))
+                         (setup-tide-mode)))))
   :init
   (setq web-mode-markup-indent-offset 2
         web-mode-code-indent-offset 2
@@ -1118,10 +1103,9 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
 
 (use-package company-reftex
   :after (company reftex)
-  :hook
-  (tex-mode . company-reftex-setup)
-  (latex-mode . company-reftex-setup)
-  (org-mode . company-reftex-setup)
+  :hook ((tex-mode . company-reftex-setup)
+         (latex-mode . company-reftex-setup)
+         (org-mode . company-reftex-setup))
   :init
   (defun company-reftex-setup ()
     (setq-local company-backends
@@ -1131,10 +1115,9 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
 
 (use-package company-math
   :after company
-  :hook
-  (tex-mode . company-math-setup)
-  (latex-mode . company-math-setup)
-  (org-mode . company-math-setup)
+  :hook ((tex-mode . company-math-setup)
+         (latex-mode . company-math-setup)
+         (org-mode . company-math-setup))
   :init
   (defun company-math-setup ()
     (setq-local company-backends

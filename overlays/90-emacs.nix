@@ -162,7 +162,6 @@ in {
         lsp-ivy
         lsp-haskell
         ccls
-        company-lsp
         lsp-treemacs
 
         # Configuration

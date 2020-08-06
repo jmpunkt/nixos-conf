@@ -4,6 +4,8 @@
   nix.nixPath = options.nix.nixPath.default
     ++ [ "nixpkgs-overlays=/etc/nixos/nixos-conf/overlays" ];
 
+  nixpkgs.overlays = [ (import ../overlays/00-patch.nix) ];
+
   environment.systemPackages = with pkgs; [
     srm
     curl

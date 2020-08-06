@@ -5,16 +5,16 @@
 # Requires newest version of Rust (most of the time)
 mozillaRustPlatform.buildRustPackage rec {
   pname = "rust-analyzer-unwrapped";
-  version = "2020-07-20";
+  version = "2020-08-04";
 
   src = fetchFromGitHub {
     owner = "rust-analyzer";
     repo = "rust-analyzer";
     rev = "tags/${version}";
-    sha256 = "0bp6byaq9g3y2nxpflyj703q3bjfr2lf0wlb1b2kkjvzfnyygj5w";
+    sha256 = "1fy6mw51dn5l19qqzkhwkq720da7divvkqp3wgijlkk112li6r4c";
   };
 
-  cargoSha256 = "1llwankjm7ay8gk1dl1c8w4jj18qx2yx8ayb39an7pzncwfqrah7";
+  cargoSha256 = "04vys4kqbk6d8aiwfj7wlmdh0gdsg551d1dd7l0xzl734h5zd917";
 
   preBuild = "pushd crates/rust-analyzer";
   # Do not checking other crates in checkPhase.

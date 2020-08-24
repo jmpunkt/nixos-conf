@@ -11,7 +11,7 @@ in {
   stable = override { rust = pkgs.latest.rustChannels.stable.rust; };
   nightly = override {
     rust = (pkgs.rustChannelOf {
-      date = "2020-06-04";
+      date = "2020-07-20";
       channel = "nightly";
     }).rust;
   };

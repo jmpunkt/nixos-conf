@@ -86,7 +86,18 @@
   networking.networkmanager.enable = true;
 
   services = {
-    redshift.enable = true;
+    redshift = {
+      enable = true;
+      brightness = {
+        day = "1";
+        night = "0.8";
+      };
+      temperature = {
+        day = 6000;
+        night = 3500;
+      };
+    };
+
     printing.enable = true;
     xserver.enable = true;
   };

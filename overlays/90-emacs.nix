@@ -9,8 +9,21 @@ let
     (setq-default ob-mermaid-cli-path \"${nodePackages.mermaid-cli}/bin/mmdc\")
     (setq-default mermaid-mmdc-location \"${nodePackages.mermaid-cli}/bin/mmdc\")
 
+    ;;; Add path such that `executable-find` is able to find them
     (add-to-list 'exec-path \"${emacsLibexec}/bin\")
     (setq-default exec-directory \"${emacsLibexec}/bin\")
+    ;;; Add path such that `shell-command` can inherit `PATH`
+    ;;; NOTICE: append it at the end of `PATH` to ensure that the user can override `PATH` (Linux eval from left to right in `PATH`?)
+    (setenv \"PATH\"
+            (let ((currentPath (getenv \"PATH\"))
+                (additionalPath \"${emacsLibexec}/bin\"))
+            (if currentPath
+                (concat
+                    (getenv \"PATH\")
+                    \":\"
+                    additionalPath)
+                additionalPath)))
+
     (provide 'nixos-config)
     ;;; nixos-config.el ends here
   '';
@@ -53,7 +66,6 @@ let
       nodePackages.typescript # dev
       pythonToolchain # overlays/40-toolchains.nix
       rustToolchain # overlays/40-toolchains.nix
-      jmpunkt.rust-analyzer
       discount
       maven
     ];

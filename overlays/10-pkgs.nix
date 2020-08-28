@@ -11,7 +11,6 @@ self: super:
     tuxemon = super.callPackage ../pkgs/games/tuxemon/default.nix { };
     gluon-lsp = super.callPackage ../pkgs/gluon-lsp/default.nix { };
     gluon = super.callPackage ../pkgs/gluon-repl/default.nix { };
-    rust-analyzer = super.callPackage ../pkgs/rust-analyzer/default.nix { };
     papyrus-rt = super.callPackage ../pkgs/papyrus-rt/default.nix { };
   };
 

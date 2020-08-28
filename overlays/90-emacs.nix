@@ -199,9 +199,7 @@ in {
         elm-mode
         haskell-mode
         web-mode
-        js2-mode
-        tide
-      ]) ++ (with epkgs.elpaPackages; [ undo-tree auctex ])
+      ]) ++ (with epkgs.elpaPackages; [ undo-tree auctex seq ])
       ++ (with epkgs.orgPackages; [ org org-plus-contrib ])
       ++ (with super.pkgs; [ emacsConfiguration ]));
   };

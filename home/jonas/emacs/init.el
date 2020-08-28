@@ -3,6 +3,7 @@
 
 ;;; Code:
 
+(require 'seq)
 (require 'package)
 (setq package-archives nil)
 (setq package-enable-at-startup nil)
@@ -339,8 +340,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
         lsp-document-sync-method nil
         lsp-eldoc-render-all nil
         lsp-eldoc-enable-hover nil
-        lsp-enable-xref t
         lsp-signature-auto-activate nil
+        lsp-enable-xref t
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
         lsp-enable-snippet t
@@ -401,7 +402,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
         enable-recursive-minibuffers t
         ivy-use-selectable-prompt t
         ivy-initial-inputs-alist nil
-        ivy-re-builders-alist '((swiper . ivy--regex-plus)
+        ivy-re-builders-alist '((counsel-rg . ivy--regex-plus)
+                                (counsel-projectile-rg . ivy--regex-plus)
+                                (swiper . ivy--regex-plus)
                                 (t . ivy--regex-fuzzy))))
 
 (use-package ivy-bibtex
@@ -876,48 +879,40 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :mode "\\.fish\\'")
 
 ;;;; * Typescript
-(use-package tide
-  :init (defun setup-tide-mode ()
-          (interactive)
-          (tide-setup)
-          (flycheck-mode 1)
-          (eldoc-mode nil)
-          (tide-hl-identifier-mode 1)
-          (company-mode 1)
-          (setq flycheck-check-syntax-automatically '(save mode-enabled))))
+;; (use-package tide
+;;   :init (defun setup-tide-mode ()
+;;           (interactive)
+;;           (tide-setup)
+;;           (flycheck-mode 1)
+;;           (eldoc-mode nil)
+;;           (tide-hl-identifier-mode 1)
+;;           (company-mode 1)
+;;           (setq flycheck-check-syntax-automatically '(save mode-enabled))))
 
 (use-package typescript-mode
   :mode ("\\.ts\\'")
-  :hook (typescript-mode . setup-tide-mode)
+  :hook (typescript-mode . lsp)
   :config (setq typescript-indent-level 2))
 
 ;;;; * Java
 (use-package lsp-java
   :hook (java-mode . lsp))
 
-;;;; * Javascript
-(use-package js2-mode
-  :mode ("\\.js\\'" . js2-mode)
-  :interpreter ("node" . js2-mode)
-  :config (setq js2-basic-offset 4))
-
-;;;; * HTML/JSX/RSX
+;;;; * Web Development (TS[X], JS[X], HTML)
 (use-package web-mode
-  :after (flycheck tide)
-  :mode ("\\.phtml\\'"
-         "\\.tpl\\.php\\'"
-         "\\.[agj]sp\\'"
-         "\\.as[cp]x\\'"
-         "\\.erb\\'"
-         "\\.tsx\\'"
-         "\\.mustache\\'"
-         "\\.djhtml\\'"
-         "\\.html?\\'")
-  :hook ((web-mode . (lambda ()
-                       (when (and
-                              buffer-file-name
-                              (equal "tsx" (file-name-extension buffer-file-name)))
-                         (setup-tide-mode)))))
+  ;; :after (flycheck tide)
+  :after (flycheck)
+  :mode (("\\.js\\'" . web-mode)
+         ("\\.jsx\\'" . web-mode)
+         ("\\.ts\\'" . web-mode)
+         ("\\.tsx\\'" . web-mode)
+         ("\\.html\\'" . web-mode))
+  :hook (web-mode . lsp)
+  ;; :hook ((web-mode . (lambda ()
+  ;;                      (when (and
+  ;;                             buffer-file-name
+  ;;                             (equal "tsx" (file-name-extension buffer-file-name)))
+  ;;                        (setup-tide-mode)))))
   :init
   (setq web-mode-markup-indent-offset 2
         web-mode-code-indent-offset 2
@@ -929,11 +924,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
         web-mode-enable-current-element-highlight t)
   :config
   (flycheck-add-mode 'typescript-tslint 'web-mode)
-  (setq web-mode-content-types-alist
-        '(("jsx" . "\\.js[x]?\\'"))
-        web-mode-engines-alist
-        '(("php"    . "\\.phtml\\'")
-          ("blade"  . "\\.blade\\."))))
+  (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))
+        web-mode-ac-sources-alist '(("css" . (ac-source-css-property))
+                                    ("html" . (ac-source-words-in-buffer ac-source-abbrev)))))
 
 ;;; * PDF
 (use-package pdf-tools

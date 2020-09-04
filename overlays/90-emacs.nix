@@ -1,6 +1,13 @@
 self: super:
 
 let
+  # import overlay locally due to packaging issues with `libgccjt` which
+  # throws an error during searches
+  overlayTarball = builtins.fetchGit {
+    url = "https://github.com/nix-community/emacs-overlay";
+    rev = "aeeeefd7e3e5dee241d3307f73092c714517994e";
+  };
+  overlay = (import overlayTarball) self super;
   nixos-config-el = with super; ''
     ;;; nixos-config.el --- short description                -*- lexical-binding: t; -*-
 
@@ -49,7 +56,6 @@ let
     name = "emacs-runtime";
 
     paths = with super.pkgs; [
-      jmpunkt.latex # custom latex suite
       inkscape # org-mode:graphs
       imagemagick # org-mode:graphs
       graphviz-nox # org-mode:graphs
@@ -64,10 +70,12 @@ let
       haskellPackages.haskell-lsp # dev
       nodePackages.typescript-language-server # dev
       nodePackages.typescript # dev
-      pythonToolchain # overlays/40-toolchains.nix
-      rustToolchain # overlays/40-toolchains.nix
       discount
       maven
+
+      jmpunkt.pythonToolchain # overlays/40-toolchains.nix
+      jmpunkt.rustToolchain.stable # overlays/40-toolchains.nix
+      jmpunkt.latex # custom latex suite
     ];
   };
 
@@ -83,7 +91,7 @@ let
   };
 in {
   jmpunkt = (super.jmpunkt or { }) // {
-    emacs = super.emacsWithPackages (epkgs:
+    emacs = (overlay.emacsPackagesFor super.emacs).emacsWithPackages (epkgs:
       (with epkgs.melpaPackages; [
         # Core
         evil

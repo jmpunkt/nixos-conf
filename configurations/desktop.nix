@@ -98,7 +98,10 @@
       };
     };
 
-    printing.enable = true;
+    printing = {
+      enable = true;
+      drivers = with pkgs; [ gutenprint hplip ];
+    };
     xserver.enable = true;
   };
 }

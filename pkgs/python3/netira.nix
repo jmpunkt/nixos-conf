@@ -1,4 +1,4 @@
-{ python3Packages }:
+{ lib, python3Packages, fetchFromGitHub }:
 
 with python3Packages;
 

@@ -2,7 +2,7 @@ self: super:
 
 {
   # export everything with a prefix, to mark missing dependencies inside the nix files
-  jmpunkt = (super.jmpunkt or { }) // {
+  jmpunkt = (super.jmpunkt or { }) // rec {
     nyan-project = super.callPackage ../pkgs/games/nyan-project/default.nix { };
     vcmi = super.callPackage ../pkgs/games/vcmi/default.nix { };
     veloren = super.callPackage ../pkgs/games/veloren/default.nix { };
@@ -20,6 +20,8 @@ self: super:
   python3Packages = (super.python3Packages or { }) // {
     jmpunkt = (super.python3Packages.jmpunkt or { }) // {
       netira = super.callPackage ../pkgs/python3/netira.nix { };
+      pyscroll = super.callPackage ../pkgs/python3/pyscroll.nix { };
+      pytmx = super.callPackage ../pkgs/python3/pytmx.nix { };
     };
   };
 }

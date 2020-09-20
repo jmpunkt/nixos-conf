@@ -5,7 +5,7 @@ let
   # throws an error during searches
   overlayTarball = builtins.fetchGit {
     url = "https://github.com/nix-community/emacs-overlay";
-    rev = "aeeeefd7e3e5dee241d3307f73092c714517994e";
+    rev = "92d0791b08f37221799bfb6a263755b35a72fddb";
   };
   overlay = (import overlayTarball) self super;
   nixos-config-el = with super; ''

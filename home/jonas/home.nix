@@ -19,8 +19,8 @@
     pdfpc
     steam
     skype
+    minecraft
 
-    jmpunkt.papyrus-rt
     jmpunkt.gamemode
     jmpunkt.emacs
     jmpunkt.latex

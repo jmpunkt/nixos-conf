@@ -12,6 +12,8 @@ self: super:
     gluon-lsp = super.callPackage ../pkgs/gluon-lsp/default.nix { };
     gluon = super.callPackage ../pkgs/gluon-repl/default.nix { };
     papyrus-rt = super.callPackage ../pkgs/papyrus-rt/default.nix { };
+    gamemode = super.callPackage ../pkgs/gamemode/default.nix { };
+    inih = super.callPackage ../pkgs/inih/default.nix { };
   };
 
   # prefix additional libraries within the package

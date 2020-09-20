@@ -1,0 +1,3 @@
+[
+  ./gamemode/gamemode.nix
+]

@@ -1,6 +1,8 @@
 { config, pkgs, options, ... }:
 
 {
+  imports = import (../modules/all.nix);
+
   nix.nixPath = options.nix.nixPath.default
     ++ [ "nixpkgs-overlays=/etc/nixos/nixos-conf/overlays" ];
 

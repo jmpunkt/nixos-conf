@@ -3,14 +3,14 @@
 
 stdenv.mkDerivation rec {
   pname = "vcmi";
-  version = "0.99";
+  version = "2020-07-05";
 
   src = fetchFromGitHub {
     fetchSubmodules = true;
     owner = "vcmi";
     repo = "vcmi";
-    rev = "98e2d177c083251328de81067054ae1d65c75a4b";
-    sha256 = "0ycwfcphrw5pvccspqkwhqnj042x17lmfl038jvnjcv9ddl4qk8q";
+    rev = "8c77f0488c21cbd6de7c77b34c58654d1d039f21";
+    sha256 = "1fkxchyk2l09rn9f83n0mh1s5fw1q3v72x8pjbdaqbqx6rxi48y6";
   };
 
   nativeBuildInputs = [ cmake pkgconfig python37 ];

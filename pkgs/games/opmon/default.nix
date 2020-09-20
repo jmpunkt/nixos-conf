@@ -8,7 +8,8 @@ stdenv.mkDerivation rec {
     owner = "OpMonTeam";
     repo = "OpMon";
     rev = "tags/alpha-v0.16";
-    sha256 = "1vhvh50ca8vmfj5m10q0jbfahm3994l366ca3pgjpzizhqvpcsgz";
+    sha256 = "00s0iw4j4w99mn7yq05gqgawgmidrbwh71mcpygsk4k8mpfavz1b";
+    fetchSubmodules = true;
   };
 
   nativeBuildInputs = [ cmake pkgconfig ];
@@ -18,6 +19,8 @@ stdenv.mkDerivation rec {
   '';
 
   buildInputs = [ smpeg sfml ];
+
+  broken = true;
 
   meta = with lib; {
     description = "The free and open source Pokémon clone";

@@ -1,7 +1,8 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./neovim/default.nix ./dropbox.nix ];
+  imports = [ ./neovim/default.nix ./dropbox.nix ]
+    ++ (import ../../modules/all-home-manager.nix);
 
   nixpkgs.config.allowUnfree = true;
 

@@ -1,0 +1,3 @@
+[
+  ./gamemode/nixos.nix
+]

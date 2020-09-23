@@ -1,0 +1,3 @@
+[
+  ./gamemode/home-manager.nix
+]

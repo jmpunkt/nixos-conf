@@ -7,24 +7,40 @@ in {
       type = types.bool;
       default = false;
       description = ''
-        Whether to enable a user service of the Gamemode daemon. If <literal>true</literal>, <varname>services.emacs.install</varname> is considered <literal>true</literal>, whatever its value.
+        Whether to install a user service of the Gamemode daemon. This
+        installs a daemon which listens for D-Bus events. It is not
+        required to enable the daemon.
+      '';
+    };
 
-        The service must be manually started for each user with
-        "systemctl --user start gamemode" or globally through
-        <varname>services.gamemode.enable</varname>.
+    configFile = mkOption {
+      type = types.string;
+      default = "";
+      description = ''
+        Configuration file for gamemode.
       '';
     };
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      jmpunkt.gamemode
+    ];
+
+    security.pam.loginLimits = [{
+      domain = "@gamemode";
+      type = "-";
+      item = "nice";
+      value = "-10";
+    }];
+
     systemd.user.services.gamemode = {
-      wantedBy = [ "default.target" ];
       description = pkgs.jmpunkt.gamemode.meta.description;
       serviceConfig = {
         Type = "dbus";
         BusName = "com.feralinteractive.GameMode";
         NotifyAccess = "main";
-        ExecStart = "${pkgs.jmpunkt.gamemode}/bin/gamemoded";
+        ExecStart = "${pkgs.jmpunkt.gamemode}/bin/gamemoded -l";
       };
     };
   };

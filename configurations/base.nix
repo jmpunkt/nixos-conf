@@ -6,7 +6,8 @@
   nix.nixPath = options.nix.nixPath.default
     ++ [ "nixpkgs-overlays=/etc/nixos/nixos-conf/overlays" ];
 
-  nixpkgs.overlays = [ (import ../overlays/00-patch.nix) ];
+  nixpkgs.overlays =
+    [ (import ../overlays/00-patch.nix) (import ../overlays/10-pkgs.nix) ];
 
   environment.systemPackages = with pkgs; [
     srm
@@ -34,6 +35,7 @@
   };
 
   services = {
+    gamemode.enable = true;
     fstrim.enable = true;
     ntp.enable = true;
   };

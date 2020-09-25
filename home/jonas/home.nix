@@ -22,7 +22,6 @@
     skype
     minecraft
 
-    jmpunkt.gamemode
     jmpunkt.emacs
     jmpunkt.latex
   ];
@@ -46,8 +45,6 @@
     };
     extraConfig = { core.editor = "nvim"; };
   };
-
-  services = { gamemode.enable = true; };
 
   home.sessionVariables = {
     EDITOR = "nvim";

@@ -6,6 +6,13 @@
   nix.nixPath = options.nix.nixPath.default
     ++ [ "nixpkgs-overlays=/etc/nixos/nixos-conf/overlays" ];
 
+  nix = {
+    package = pkgs.nixUnstable;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+  };
+
   nixpkgs.overlays =
     [ (import ../overlays/00-patch.nix) (import ../overlays/10-pkgs.nix) ];
 
@@ -13,7 +20,6 @@
     srm
     curl
     unzip
-    tmux
     htop
     telnet
     fd
@@ -29,13 +35,9 @@
 
   networking.firewall.enable = true;
 
-  programs = {
-    mtr.enable = true;
-    fish.enable = true;
-  };
+  programs.fish.enable = true;
 
   services = {
-    gamemode.enable = true;
     fstrim.enable = true;
     ntp.enable = true;
   };

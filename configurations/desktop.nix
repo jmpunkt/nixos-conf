@@ -1,7 +1,8 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./base.nix ./locale.nix ./shell.nix ./tmux.nix ];
+  imports =
+    [ ./base.nix ./locale.nix ./shell.nix ./tmux.nix ./fish ./yubico.nix ];
 
   # Use newer kernel for desktop based machines
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -16,7 +17,7 @@
     keepassxc
     home-manager
     firefox
-    amarok
+    audacious
 
     discord
     tdesktop
@@ -97,7 +98,7 @@
         night = 3500;
       };
     };
-
+    gamemode.enable = true;
     printing = {
       enable = true;
       drivers = with pkgs; [ gutenprint hplip ];

@@ -26,7 +26,6 @@ stdenv.mkDerivation rec {
     "-Dwith-systemd-user-unit-dir=${placeholder "out"}/etc/systemd/system"
     "-Dwith-sd-bus-provider=systemd"
     "-Dwith-examples=false"
-    "-Dwith-pam-group=gamemode"
   ];
 
   preConfigure = ''

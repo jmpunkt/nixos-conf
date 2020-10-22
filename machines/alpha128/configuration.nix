@@ -25,6 +25,8 @@
     kernelParams = [ "processor.max_cstate=1" ];
   };
 
+  services.xserver.videoDrivers = [ "amdgpu" ];
+
   networking.hostName = "alpha128";
 
   hardware.cpu.amd.updateMicrocode = true;

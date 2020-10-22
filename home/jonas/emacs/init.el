@@ -765,7 +765,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Bazel
 (use-package bazel-mode
-  :mode ("BUILD\\'" "\\.bzl\\'"))
+  :mode ("BUILD\\'" "\\.bzl\\'")
+  :bind (:map bazel-mode-map
+              ("C-c C-f" . bazel-mode-buildifier)))
 
 ;;;; * JSON
 (use-package json-mode

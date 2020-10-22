@@ -1,36 +1,27 @@
 
-# Bootstrap
+# Usage
 
-## Clone repository
+## NixOS
 
+Link the home-manager profile.
 ```bash
-cd /etx/nixos
-git clone https://github.com/jmpunkt/nixos-conf
+ln -s <PATH_TO_GIT_REPO> /etc/nixos/nixos-conf
 ```
 
-## Setup NixOS
-
-Create the file _/etc/nixos/configuration.nix_ with the following content and
-then build the system.
-
-```nix
-{ config, pkgs, ... }:
-
-{
-  imports = [
-    ./nixos-conf/machines/<MACHINE>/configuration.nix
-  ];
-}
-```
-
-Build the system
-```bash
-nixos-rebuild switch
-```
-
-## Setup Home-Manager
+Building the system using the provided flake.
 
 ```bash
-ln -s /etc/nixos/nixos-conf/home/$USER $HOME/.config/nixpkgs
+nixos-rebuild switch --flake <PATH_TO_GIT_REPO>#
+```
+
+## Home-Manager
+
+Link the home-manager profile.
+```bash
+ln -s <PATH_TO_GIT_REPO>/$USER $HOME/.config/nixpkgs
+```
+
+Update programs and configurations.
+```bash
 home-manger switch
 ```

@@ -17,12 +17,7 @@ self: super:
     kaffeine = super.callPackage ../pkgs/applications/kaffeine { };
   };
 
-  # prefix additional libraries within the package
   python3Packages = (super.python3Packages or { }) // {
-    jmpunkt = (super.python3Packages.jmpunkt or { }) // {
-      netira = super.callPackage ../pkgs/python3/netira.nix { };
-      pyscroll = super.callPackage ../pkgs/python3/pyscroll.nix { };
-      pytmx = super.callPackage ../pkgs/python3/pytmx.nix { };
-    };
+    jmpunkt = super.callPackage ../pkgs/python3Packages { };
   };
 }

@@ -1,5 +1,4 @@
 [
-  "typescript-language-server",
   "tslint",
   "maildev",
   "@mermaid-js/mermaid-cli"

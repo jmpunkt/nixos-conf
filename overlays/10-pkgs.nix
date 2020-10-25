@@ -21,6 +21,10 @@ self: super:
     jmpunkt = super.callPackage ../pkgs/python3Packages { };
   };
 
+  nodePackages = (super.nodePackages or { }) // {
+    jmpunkt = super.callPackage ../pkgs/nodePackages { };
+  };
+
   vimPlugins = (super.vimPlugins or { }) // {
     jmpunkt = super.callPackage ../pkgs/vimPlugins { };
   };

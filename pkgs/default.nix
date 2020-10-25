@@ -13,4 +13,5 @@
   gamemode = callPackage ../pkgs/misc/gamemode { };
   inih = callPackage ../pkgs/misc/inih { };
   kaffeine = callPackage ../pkgs/applications/kaffeine { };
+  latex = callPackage ../pkgs/misc/latex { };
 }

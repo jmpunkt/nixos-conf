@@ -14,4 +14,5 @@
   inih = callPackage ../pkgs/misc/inih { };
   kaffeine = callPackage ../pkgs/applications/kaffeine { };
   latex = callPackage ../pkgs/misc/latex { };
+  emacs = callPackage ../pkgs/misc/emacs { };
 }

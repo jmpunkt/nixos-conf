@@ -25,10 +25,10 @@
       nerdtree
       nerdtree-git-plugin
 
-      lexima
-      quick-scope
-      vim-searchindex
+      lexima-vim
       vim-better-whitespace
+
+      jmpunkt.vim-searchindex
     ];
   };
 }

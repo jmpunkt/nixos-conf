@@ -39,6 +39,6 @@
 
   services = {
     fstrim.enable = true;
-    ntp.enable = true;
+    chrony.enable = true;
   };
 }

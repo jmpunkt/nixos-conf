@@ -870,29 +870,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package fish-mode
   :mode "\\.fish\\'")
 
-;;;; * Typescript
-;; (use-package tide
-;;   :init (defun setup-tide-mode ()
-;;           (interactive)
-;;           (tide-setup)
-;;           (flycheck-mode 1)
-;;           (eldoc-mode nil)
-;;           (tide-hl-identifier-mode 1)
-;;           (company-mode 1)
-;;           (setq flycheck-check-syntax-automatically '(save mode-enabled))))
-
-(use-package typescript-mode
-  :mode ("\\.ts\\'")
-  :hook (typescript-mode . lsp)
-  :config (setq typescript-indent-level 2))
-
 ;;;; * Java
 (use-package lsp-java
   :hook (java-mode . lsp))
 
 ;;;; * Web Development (TS[X], JS[X], HTML)
 (use-package web-mode
-  ;; :after (flycheck tide)
   :after (flycheck)
   :mode (("\\.js\\'" . web-mode)
          ("\\.jsx\\'" . web-mode)
@@ -900,11 +883,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
          ("\\.tsx\\'" . web-mode)
          ("\\.html\\'" . web-mode))
   :hook (web-mode . lsp)
-  ;; :hook ((web-mode . (lambda ()
-  ;;                      (when (and
-  ;;                             buffer-file-name
-  ;;                             (equal "tsx" (file-name-extension buffer-file-name)))
-  ;;                        (setup-tide-mode)))))
   :init
   (setq web-mode-markup-indent-offset 2
         web-mode-code-indent-offset 2

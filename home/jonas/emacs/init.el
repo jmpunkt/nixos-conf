@@ -546,16 +546,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;; :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
 ;;        (magit-pre-refresh . diff-hl-magit-pre-refresh)))
 
-;;;; * Eshell
-(use-package eshell
-  :after ansi-color
-  :hook (eshell-mode . (lambda () (display-line-numbers-mode -1) (setq-local global-hl-line-mode nil)))
-  :config
-  (defun eshell-handle-ansi-color ()
-    (ansi-color-apply-on-region eshell-last-output-start
-                                eshell-last-output-end))
-  (add-to-list 'eshell-output-filter-functions 'eshell-handle-ansi-color))
-
 ;;;; * Org
 (use-package org
   :after (flyspell flycheck)

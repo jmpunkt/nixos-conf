@@ -1,5 +1,4 @@
-{ pkgs }:
-
+{ pkgs, runCommand, makeWrapper, latest, rustChannelOf }:
 let
   override = channel:
     channel // {
@@ -11,9 +10,10 @@ let
 
   # wraps a rust toolchain and adds custom srcs to the environment path.
   wrapped = channel:
-    pkgs.runCommand "${channel.rust.name}-wrapped" {
-      buildInputs = [ pkgs.makeWrapper ];
-    } ''
+    runCommand "${channel.rust.name}-wrapped"
+      {
+        buildInputs = [ makeWrapper ];
+      } ''
       mkdir $out
       ln -s ${channel.rust}/* $out
       rm $out/bin
@@ -23,10 +23,16 @@ let
       makeWrapper ${channel.rust}/bin/rust-analyzer $out/bin/rust-analyzer \
           --set RUST_SRC_PATH ${channel.rust-src}/lib/rustlib/src/rust/src
     '';
-in {
-  stable = (override pkgs.latest.rustChannels.stable).rust;
-  nightly = (override (pkgs.rustChannelOf {
-    date = "2020-09-04";
+in
+{
+  stable = (override (rustChannelOf {
+    channel = "stable";
+    date = "2020-10-08"; # 1.47
+    sha256 = "adrApiScGGt4lZvGpEjbWiY5e10juOVRhyNpRSLTccI=";
+  })).rust;
+  nightly = (override (rustChannelOf {
     channel = "nightly";
+    date = "2020-10-01";
+    sha256 = "4Qdjc7PBLfexFQkU2SREnKxsHBwmErckKTUqbpengRU=";
   })).rust;
 }

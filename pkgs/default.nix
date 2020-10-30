@@ -15,4 +15,7 @@
   kaffeine = callPackage ../pkgs/applications/kaffeine { };
   latex = callPackage ../pkgs/misc/latex { };
   emacs = callPackage ../pkgs/misc/emacs { };
+  rustToolchain = callPackage ../pkgs/misc/rustToolchain { };
+  pythonToolchain = callPackage ../pkgs/misc/pythonToolchain { };
+  mozillaRustToolchain = callPackage ../pkgs/misc/mozillaRustToolchain { };
 }

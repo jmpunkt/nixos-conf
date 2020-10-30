@@ -1,4 +1,4 @@
-{ config, pkgs, options, ... }:
+{ lib, config, pkgs, options, ... }:
 
 {
   imports = import (../modules/all-nixos.nix);
@@ -32,7 +32,12 @@
 
   networking.firewall.enable = true;
 
-  programs.fish.enable = true;
+  programs = {
+    fish.enable = true;
+    # Disable command-not-found since there is probably no nixos
+    # channel
+    command-not-found.enable = lib.mkForce false;
+  };
 
   services = {
     fstrim.enable = true;

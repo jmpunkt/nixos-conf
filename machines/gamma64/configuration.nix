@@ -27,18 +27,15 @@
   networking.hostName = "gamma64";
 
   hardware.cpu.amd.updateMicrocode = true;
-  hardware.enableRedistributableFirmware = true;
 
   services = {
     tlp = {
       enable = true;
-      extraConfig = ''
-        RUNTIME_PM_BLACKLIST="05:00.3 05:00.4"
-      '';
+      settings = {
+        "RUNTIME_PM_BLACKLIST" = "05:00.3 05:00.4";
+      };
     };
     xserver.libinput = {
-      enable = true;
-      accelProfile = "flat";
       naturalScrolling = true;
       tapping = true;
     };

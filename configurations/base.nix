@@ -3,9 +3,6 @@
 {
   imports = import (../modules/all-nixos.nix);
 
-  nix.nixPath = options.nix.nixPath.default
-    ++ [ "nixpkgs-overlays=/etc/nixos/nixos-conf/overlays" ];
-
   nix = {
     package = pkgs.nixUnstable;
     extraOptions = ''

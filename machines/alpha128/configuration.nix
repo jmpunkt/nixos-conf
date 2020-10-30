@@ -23,18 +23,20 @@
       "sp5100_tco"
     ];
     kernelParams = [ "processor.max_cstate=1" ];
+    initrd.kernelModules = [ "amdgpu" ];
   };
-
-  services.xserver.videoDrivers = [ "amdgpu" ];
 
   networking.hostName = "alpha128";
 
-  hardware.cpu.amd.updateMicrocode = true;
-
-  services.xserver.libinput = {
-    enable = true;
-    accelProfile = "flat";
+  hardware = {
+    cpu.amd.updateMicrocode = true;
+    opengl.extraPackages = with pkgs; [
+      rocm-opencl-icd
+      amdvlk
+    ];
   };
+
+  services.xserver.videoDrivers = [ "amdgpu" ];
 
   system.stateVersion = "20.03";
 }

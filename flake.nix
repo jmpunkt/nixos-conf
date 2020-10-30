@@ -2,16 +2,19 @@
   description = "My configuration as a flake";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.03";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.09";
     hardware.url = "github:NixOS/nixos-hardware";
 
-    # TODO: Wait for 20.09 to integrate home-manager
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     mozilla = {
       url = "github:mozilla/nixpkgs-mozilla";
       flake = false;
     };
+
     emacs.url = "github:nix-community/emacs-overlay";
     utils.url = "github:numtide/flake-utils";
 
@@ -23,13 +26,30 @@
 
   outputs = { self, nixpkgs, hardware, home-manager, mozilla, emacs, utils
     , flake-compat }:
-    utils.lib.eachDefaultSystem (system: {
-      legacyPackages = import nixpkgs {
-        inherit system;
-        overlays = [ (import mozilla) self.overlay emacs.overlay ];
-      };
+    let
+      mkSystem = { system, modules }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            nixpkgs.nixosModules.notDetected
+            ({ config, ... }: {
+              # Pins nixpkgs of system to `inputs.nixpkgs`.
+              nix.registry.nixpkgs.flake = nixpkgs;
+              # Allows commands like `nix shell self#jmpunkt.emacs`
+              nix.registry.self.flake = self;
+              nixpkgs.overlays = overlays;
+            })
+          ] ++ modules;
+        };
 
-    }) // utils.lib.eachSystem [ "x86_64-linux" "i686-linux" ] (system: {
+      overlays = [
+        (import mozilla)
+        self.overlay
+        emacs.overlay
+      ];
+    in utils.lib.eachDefaultSystem
+    (system: { legacyPackages = import nixpkgs { inherit system overlays; }; })
+    // utils.lib.eachSystem [ "x86_64-linux" "i686-linux" ] (system: {
       packages.iso = (nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [ (import ./machines/iso/configuration.nix) ];
@@ -37,33 +57,36 @@
     }) // {
       overlay = (final: prev: (import ./overlays/10-pkgs.nix final prev));
 
+      nixosModules = {
+        home-jonas = ({ config, ... }: {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.jonas = ./home/jonas/home.nix;
+        });
+      };
+
       nixosConfigurations = {
-        alpha128 = nixpkgs.lib.nixosSystem {
+        alpha128 = mkSystem {
           system = "x86_64-linux";
           modules = [
             ./machines/alpha128/configuration.nix
-            nixpkgs.nixosModules.notDetected
-            ({ config, ... }: { nix.registry.nixpkgs.flake = nixpkgs; })
+            self.nixosModules.home-jonas
+            home-manager.nixosModules.home-manager
           ];
         };
 
-        alpha32 = nixpkgs.lib.nixosSystem {
+        alpha32 = mkSystem {
           system = "x86_64-linux";
           modules = [
             ./machines/alpha32/configuration.nix
             hardware.nixosModules.lenovo-thinkpad-e495
-            nixpkgs.nixosModules.notDetected
           ];
         };
 
-        gamma64 = nixpkgs.lib.nixosSystem {
+        gamma64 = mkSystem {
           system = "x86_64-linux";
-          modules = [
-            ./machines/gamma64/configuration.nix
-            nixpkgs.nixosModules.notDetected
-          ];
+          modules = [ ./machines/gamma64/configuration.nix ];
         };
-
       };
     };
 }

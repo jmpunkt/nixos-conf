@@ -1,10 +1,8 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./neovim/default.nix ./dropbox.nix ]
+  imports = [ ./neovim/default.nix ]
     ++ (import ../../modules/all-home-manager.nix);
-
-  nixpkgs.config.allowUnfree = true;
 
   home.language = {
     base = "en_US.utf8";
@@ -35,16 +33,20 @@
     ".emacs.d/init.el".text = builtins.readFile ./emacs/init.el;
   };
 
-  programs.git = {
-    enable = true;
-    userName = "Jonas Meurer";
-    userEmail = "jmpunkt@outlook.com";
-    signing = {
-      key = "4D78720A4358CC504F3EB45B26CDFB2E4DB6B136";
-      signByDefault = true;
+  programs = {
+    git = {
+      enable = true;
+      userName = "Jonas Meurer";
+      userEmail = "jmpunkt@outlook.com";
+      signing = {
+        key = "4D78720A4358CC504F3EB45B26CDFB2E4DB6B136";
+        signByDefault = true;
+      };
+      extraConfig = { core.editor = "nvim"; };
     };
-    extraConfig = { core.editor = "nvim"; };
   };
+
+  services.dropbox.enable = true;
 
   home.sessionVariables = {
     EDITOR = "nvim";

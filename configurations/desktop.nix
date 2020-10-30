@@ -54,7 +54,7 @@
     roboto
     roboto-mono
     roboto-slab
-    # monoid FIXME: broken package since fontforge and python2 changes
+    monoid
 
     # Emacs Icons
     emacs-all-the-icons-fonts
@@ -103,6 +103,12 @@
       enable = true;
       drivers = with pkgs; [ gutenprint hplip ];
     };
-    xserver.enable = true;
+    xserver = {
+      enable = true;
+      libinput = {
+        enable = true;
+        accelProfile = "flat";
+      };
+    };
   };
 }

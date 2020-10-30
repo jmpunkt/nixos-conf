@@ -77,6 +77,7 @@
   (global-display-line-numbers-mode t)
   (global-hl-line-mode 1)
   (global-prettify-symbols-mode t)
+  (global-undo-tree-mode 1)
 
   (toggle-scroll-bar -1)
   (tool-bar-mode -1)
@@ -98,7 +99,8 @@
 (use-package evil
   :demand t
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  (evil-set-undo-system 'undo-tree))
 
 ;;;; * DirEnv
 (use-package direnv
@@ -541,10 +543,10 @@ _SPC_ cancel	_o_nly this   	_d_elete
         magit-todos-depth 100))
 
 (use-package diff-hl
-  :init (global-diff-hl-mode))
-;; FIXME: old version which does not support yet
-;; :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
-;;        (magit-pre-refresh . diff-hl-magit-pre-refresh)))
+  :after (magit)
+  :init (global-diff-hl-mode)
+  :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
+         (magit-post-refresh . diff-hl-magit-post-refresh)))
 
 ;;;; * Org
 (use-package org
@@ -797,9 +799,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
    "\\.md\\'")
   :hook (markdown-mode . flyspell-mode))
 
-(use-package markdown-mode+
-  :after markdown-mode)
-
 ;;;; * Graphivz
 
 (use-package graphviz-dot-mode
@@ -808,9 +807,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;; * Programming Languages
 
 ;;;; * SQL
-
 (use-package sql
-  :mode ("sql" . sql-mode)
+  :mode ("\\.sql\\'" . sql-mode)
   :config
   (setq-default sql-database "development"
                 sql-server "localhost")
@@ -846,7 +844,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package nix-mode
   :mode "\\.nix\\'"
   :bind (:map nix-mode-map
-              ("C-c C-f" . nix-format-buffer)))
+              ("C-c C-f" . nix-format-buffer))
+  :config
+  (setq-default nix-nixfmt-bin "nixpkgs-fmt"))
 
 ;;;; * Python
 (use-package python

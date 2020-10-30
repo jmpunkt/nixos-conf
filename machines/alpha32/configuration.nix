@@ -25,13 +25,11 @@
 
   networking.hostName = "alpha32";
 
-  hardware.cpu.amd.updateMicrocode = true;
+  hardware.cpu.intel.updateMicrocode = true;
 
   services = {
     tlp.enable = true;
     xserver.libinput = {
-      enable = true;
-      accelProfile = "flat";
       naturalScrolling = true;
       tapping = true;
     };

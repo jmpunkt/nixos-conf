@@ -6,24 +6,23 @@
   nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;
 
   environment.systemPackages = with pkgs; [
-    ark
-    vlc
-    okular
-    libreoffice-fresh
-    krita
-    kate
-    gwenview
+    kdeApplications.ark
+    kdeApplications.okular
+    kdeApplications.kate
+    kdeApplications.gwenview
     kdeApplications.spectacle
     kdeApplications.ktouch
     kdeApplications.kdialog
+    vlc
+    libreoffice-qt
+    krita
     skanlite
-    kgpg
     pinentry_qt5
   ];
 
   services.xserver = {
-    displayManager.sddm = {
-      enable = true;
+    displayManager = {
+      sddm.enable = true;
       autoLogin = {
         enable = true;
         user = "jonas";

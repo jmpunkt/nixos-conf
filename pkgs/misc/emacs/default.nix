@@ -65,7 +65,7 @@ let
       unoconv # org-mode:odt
       zip # org-mode:odt
       languagetool # spelling
-      nixfmt # dev
+      nixpkgs-fmt # dev
       ccls # dev
       haskellPackages.haskell-lsp # dev
       nodePackages.typescript-language-server # dev

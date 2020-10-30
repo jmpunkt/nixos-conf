@@ -67,6 +67,18 @@ set prompt_git (__fish_git_prompt | string trim -c ' ()')
 test -n "$prompt_git"
 and _nim_prompt_wrapper $retc G $prompt_git
 
+# nix
+set prompt_pkgs (__fish_current_nix_pkgs)
+if test -n "$prompt_pkgs"
+    # use package number instead of names complying to max row width
+    if test (string length "$prompt_pkgs") -gt 40
+        set prompt_pkgs (echo $prompt_pkgs | tr -cd ' \t' | wc -c)
+        _nim_prompt_wrapper $retc P "($prompt_pkgs*)"
+    else
+        _nim_prompt_wrapper $retc P $prompt_pkgs
+    end
+end
+
 # New line
 echo
 

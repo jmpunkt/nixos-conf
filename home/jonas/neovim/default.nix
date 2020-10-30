@@ -10,7 +10,6 @@
       fzfWrapper
       fzf-vim
       vim-polyglot
-      vimtex
       vim-cursorword
       vim-commentary
       denite-nvim

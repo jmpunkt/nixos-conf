@@ -1,31 +1,6 @@
 filetype plugin indent on
 syntax enable
 
-"" vimtex
-let g:vimtex_indent_enabled = 0
-let g:vimtex_imaps_enabled = 0
-let g:vimtex_matchparen_enabled = 0
-let g:vimtex_motion_enabled = 0
-let g:vimtex_toc_enabled = 0
-let g:vimtex_quickfix_mode = 2
-let g:vimtex_quickfix_open_on_warning = 0
-
-let g:vimtex_compiler_latexmk = {
-            \ 'backend' : 'nvim',
-            \ 'background' : 1,
-            \ 'build_dir' : '',
-            \ 'callback' : 1,
-            \ 'continuous' : 0,
-            \ 'executable' : 'latexmk',
-            \ 'options' : [
-            \   '-verbose',
-            \   '-file-line-error',
-            \   '-synctex=1',
-            \   '-interaction=nonstopmode',
-            \   '-halt-on-error',
-            \ ],
-            \}
-
 "" Airline
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
@@ -34,9 +9,6 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 "" QuickScope
 let g:qs_highlight_on_keys = ['f', 'F']
 let g:qs_max_chars = 300
-
-"" Polyglot
-let g:polyglot_disabled = ['latex']
 
 "" Better-Whitesapces
 let g:better_whitespace_enabled = 1
@@ -47,6 +19,8 @@ let maplocalleader = "\\"
 if has('termguicolors')
     set termguicolors
 endif
+
+let g:tex_flavor = "latex"
 
 set undofile
 set undolevels=1000

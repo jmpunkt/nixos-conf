@@ -1,6 +1,12 @@
-{ stdenv, buildEnv, pkgs, emacs, emacsPackagesFor
-# pkgs
-, plantuml, nodePackages }:
+{ stdenv
+, buildEnv
+, pkgs
+, emacs
+, emacsPackagesFor
+, symlinkJoin
+, plantuml
+, nodePackages
+}:
 let
   nixos-config-el = ''
     ;;; nixos-config.el --- short description                -*- lexical-binding: t; -*-
@@ -82,8 +88,13 @@ let
       ln -s ${emacsRuntime}/bin/* $out/bin
       find ${emacs}/libexec/ -type f -exec ln -s {} $out/bin \;
     '';
+
+    meta = {
+      description = "Emulates a `libexec` directory for Emacs which includes the default `libexec` paths and additional dependencies.";
+    };
   };
-in (emacsPackagesFor emacs).emacsWithPackages (epkgs:
+in
+(emacsPackagesFor emacs).emacsWithPackages (epkgs:
   (with epkgs.melpaPackages; [
     # Core
     evil
@@ -189,7 +200,6 @@ in (emacsPackagesFor emacs).emacsWithPackages (epkgs:
 
     # Presentation
     markdown-mode
-    markdown-mode-plus
     pandoc-mode
     graphviz-dot-mode
 

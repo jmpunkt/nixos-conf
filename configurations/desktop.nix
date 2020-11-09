@@ -14,7 +14,6 @@
     feh
     thunderbird
     dbeaver
-    keepassxc
     home-manager
     firefox
     audacious

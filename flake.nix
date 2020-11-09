@@ -79,13 +79,19 @@
           system = "x86_64-linux";
           modules = [
             ./machines/alpha32/configuration.nix
-            hardware.nixosModules.lenovo-thinkpad-e495
+            self.nixosModules.home-jonas
+            home-manager.nixosModules.home-manager
           ];
         };
 
         gamma64 = mkSystem {
           system = "x86_64-linux";
-          modules = [ ./machines/gamma64/configuration.nix ];
+          modules = [
+            ./machines/gamma64/configuration.nix
+            hardware.nixosModules.lenovo-thinkpad-e495
+            self.nixosModules.home-jonas
+            home-manager.nixosModules.home-manager
+          ];
         };
       };
     };

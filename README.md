@@ -2,10 +2,21 @@
 
 ## NixOS + Home-Manager
 
+### Local
+
 Building the system using the provided flake.
 ```bash
 nixos-rebuild switch --flake <PATH_TO_GIT_REPO>#
 ```
+
+### Remote
+
+```bash
+nixos-rebuild --flake <PATH_TO_GIT_REPO>#mymachine \
+  --target-host mymachine-hostname --build-host localhost \
+  switch
+```
+
 
 ## ISO
 

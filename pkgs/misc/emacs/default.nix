@@ -1,7 +1,7 @@
 { stdenv
 , buildEnv
 , pkgs
-, emacs
+, emacsGcc
 , emacsPackagesFor
 , symlinkJoin
 , plantuml
@@ -86,7 +86,7 @@ let
       mkdir -p $out/bin
 
       ln -s ${emacsRuntime}/bin/* $out/bin
-      find ${emacs}/libexec/ -type f -exec ln -s {} $out/bin \;
+      find ${emacsGcc}/libexec/ -type f -exec ln -s {} $out/bin \;
     '';
 
     meta = {
@@ -94,7 +94,7 @@ let
     };
   };
 in
-(emacsPackagesFor emacs).emacsWithPackages (epkgs:
+(emacsPackagesFor emacsGcc).emacsWithPackages (epkgs:
   (with epkgs.melpaPackages; [
     # Core
     evil

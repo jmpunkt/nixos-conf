@@ -250,6 +250,19 @@ _SPC_ cancel	_o_nly this   	_d_elete
   ;; for NixOS use languagetool-commandline?
   (setq langtool-bin "languagetool-commandline"))
 
+;;;; * Dashboard
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook)
+  (setq dashboard-center-content t
+        dashboard-startup-banner nil
+        dashboard-set-heading-icons t
+        dashboard-set-file-icons t
+        dashboard-set-footer nil
+        dashboard-items '((projects . 5)
+                          (agenda . 5))))
+
 ;;;; * Smartparens
 (use-package smartparens
   :demand t

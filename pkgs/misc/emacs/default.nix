@@ -106,6 +106,7 @@ in
     outshine
     hl-todo
     direnv
+    dashboard
 
     # Org
     org-fancy-priorities

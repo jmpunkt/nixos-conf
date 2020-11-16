@@ -18,4 +18,5 @@
   rustToolchain = callPackage ../pkgs/misc/rustToolchain { };
   pythonToolchain = callPackage ../pkgs/misc/pythonToolchain { };
   mozillaRustToolchain = callPackage ../pkgs/misc/mozillaRustToolchain { };
+  hunspellDicts = callPackage ../pkgs/hunspellDicts { };
 }

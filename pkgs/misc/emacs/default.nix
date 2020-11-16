@@ -66,12 +66,15 @@ let
       zip # org-mode:odt
       languagetool # spelling
       nixpkgs-fmt # dev
-      ccls # dev
-      haskellPackages.haskell-lsp # dev
-      nodePackages.typescript-language-server # dev
+      ccls # LSP
+      rnix-lsp # LSP
+      haskellPackages.haskell-lsp # LSP
+      nodePackages.typescript-language-server # LSP
+      texlab # LSP
+      yaml-language-server # LSP
       nodePackages.typescript # dev
       discount
-      maven
+      maven # dev
 
       jmpunkt.pythonToolchain # overlays/40-toolchains.nix
       jmpunkt.rustToolchain.stable # overlays/40-toolchains.nix
@@ -123,10 +126,6 @@ in
     biblio-core
     parsebib
 
-    # LaTeX
-    latex-math-preview
-    auctex-latexmk
-
     # PDF
     interleave
     pdf-tools
@@ -140,6 +139,7 @@ in
     # Tree
     treemacs
     treemacs-projectile
+    treemacs-evil
     projectile
     org-projectile
 
@@ -166,6 +166,7 @@ in
 
     # Spelling
     langtool
+    flyspell-correct
     flyspell-correct-ivy
 
     # Completion
@@ -184,8 +185,6 @@ in
     lsp-ui
     lsp-java
     lsp-ivy
-    lsp-haskell
-    ccls
     lsp-treemacs
 
     # Configuration
@@ -207,7 +206,6 @@ in
     # Programming
     irony
     rust-mode
-    elm-mode
     haskell-mode
     web-mode
   ]) ++ (with epkgs.elpaPackages; [ undo-tree auctex seq ])

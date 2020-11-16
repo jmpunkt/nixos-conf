@@ -39,11 +39,9 @@
         doom-themes-enable-italic t
         doom-themes-treemacs-theme "doom-colors")
   (doom-themes-treemacs-config)
-  (doom-themes-org-config)
-  (doom-themes-visual-bell-config))
+  (doom-themes-org-config))
 
 (use-package doom-modeline
-  :demand t
   :hook (after-init . doom-modeline-mode)
   :init
   (setq doom-modeline-icon t
@@ -52,8 +50,6 @@
 ;;; * Emacs
 (use-package emacs
   :demand t
-  :bind (:map global-map
-              ([f1] . eshell))
   :hook ((prog-mode . (lambda ()
                         (auto-fill-mode 1)
                         (setq-local comment-auto-fill-only-comments t))))
@@ -87,12 +83,11 @@
   (custom-set-variables
    '(custom-safe-themes
      (quote
-      ("79278310dd6cacf2d2f491063c4ab8b129fee2a498e4c25912ddaa6c3c5b621e" "fa3bdd59ea708164e7821574822ab82a3c51e262d419df941f26d64d015c90ee" "423435c7b0e6c0942f16519fa9e17793da940184a50201a4d932eafe4c94c92d" "43c808b039893c885bdeec885b4f7572141bd9392da7f0bd8d8346e02b2ec8da" "1c082c9b84449e54af757bcae23617d11f563fc9f33a832a8a2813c4d7dfb652" default))))
+      ("79278310dd6cacf2d2f491063c4ab8b129fee2a498e4c25912ddaa6c3c5b621e" default))))
   (custom-set-faces
    '(default ((t (:family "IBM Plex Mono" :foundry "IBM " :slant normal :weight normal :height 113 :width normal)))))
 
   (load-theme 'doom-vibrant))
-
 
 ;;; * Core Packages
 ;;;; * Evil
@@ -190,7 +185,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Spelling
 (use-package flyspell
-  :demand t
   :hook ((prog-mode . enable-flyspell)
          (text-mode . enable-flyspell))
   :bind (:map flyspell-mode-map
@@ -231,8 +225,11 @@ _SPC_ cancel	_o_nly this   	_d_elete
                 ispell-dictionary-base-alist nil
                 ispell-local-dictionary "en_US"))
 
+(use-package flyspell-correct
+  :after flyspell)
+
 (use-package flyspell-correct-ivy
-  :after (flyspell ivy)
+  :after (flyspell-correct ivy)
   :init
   (setq flyspell-correct-interface #'flyspell-correct-ivy))
 
@@ -261,7 +258,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Dashboard
 (use-package dashboard
-  :ensure t
   :config
   (dashboard-setup-startup-hook)
   (setq dashboard-center-content t
@@ -274,7 +270,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Smartparens
 (use-package smartparens
-  :demand t
   :hook (eval-expression-minibuffer-setup . smartparens-mode)
   :config
   (smartparens-global-mode t)
@@ -295,7 +290,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (projectile-mode))
 
 (use-package org-projectile
-  :after (org projectile)
   :bind (:map global-map
               ("C-c n p" . org-projectile-project-todo-completing-read))
   :config
@@ -305,7 +299,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Treemacs
 (use-package treemacs
-  :demand t
   :bind (:map global-map
               ([f8] . treemacs)
               ("C-c f" . treemacs-select-window))
@@ -326,12 +319,15 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (treemacs-filewatch-mode t))
 
 (use-package treemacs-projectile
-  :demand t
   :after (treemacs projectile))
+
+(use-package treemacs-evil
+  :after (treemacs evil))
 
 ;;;; * Language Server (LSP)
 (use-package lsp-mode
   :commands lsp
+  :hook (lsp-mode . lsp-enable-which-key-integration)
   :bind (:map lsp-mode-map
               ([f6] . my-hydra-lsp/body))
   :init
@@ -395,7 +391,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
                                  "[/\\\\]\\.reference$")))
 
 (use-package lsp-treemacs
-  :after (lsp-mode treemacs))
+  :commands lsp-treemacs-errors-list)
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -407,18 +403,15 @@ _SPC_ cancel	_o_nly this   	_d_elete
         lsp-ui-sideline-update-mode 'point
         lsp-ui-doc-enable nil))
 
-(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-
-(use-package ccls
-  :config
-  (setq ccls-executable "ccls"))
+(use-package lsp-ivy
+  :commands lsp-ivy-workspace-symbol)
 
 ;;;; * Completion
 ;;;;; * Ivy
 (use-package ivy
-  :demand t
   :bind (:map global-map
               ("C-s" . swiper)
+              ("C-x b" . ivy-switch-buffer)
               ("C-x C-b" . ivy-switch-buffer-other-window))
   :config
   (ivy-mode 1)
@@ -432,21 +425,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
                                 (swiper . ivy--regex-plus)
                                 (t . ivy--regex-fuzzy))))
 
-(use-package ivy-bibtex
-  :after (ivy org org-ref bibtex)
-  :config
-  (setq bibtex-completion-bibliography org-papers-bibtex
-        bibtex-completion-library-path org-papers-pdfs
-        bibtex-completion-notes-path org-papers-notes))
-
 (use-package counsel
-  :demand t
   :bind (:map global-map
               ("M-x" . counsel-M-x)
               ("C-x C-f" . counsel-find-file)))
 
 (use-package counsel-projectile
-  :after (counsel projectile)
   :bind (:map projectile-mode-map
               ("C-c p" . my-hydra-projectile/body))
   :init
@@ -479,11 +463,11 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :config
   (yas-global-mode 1))
 
-(use-package yasnippet-snippets)
+(use-package yasnippet-snippets
+  :after yasnippet)
 
 ;;;;; * Company
 (use-package company
-  :after yasnippet
   :bind (:map company-active-map
               ("TAB" . company-complete-common-or-cycle)
               ("<tab>" . company-complete-common-or-cycle)
@@ -510,8 +494,8 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Git
 (use-package magit
-  :bind (:map magit-mode-map
-              ("C-o" . magit-open-repo))
+  :bind (:map global-map
+              ("C-x g" . magit-status))
   :config
   (setq magit-status-sections-hook
         '(magit-insert-status-headers
@@ -529,24 +513,10 @@ _SPC_ cancel	_o_nly this   	_d_elete
           magit-insert-unpulled-from-upstream
           magit-insert-unpulled-from-pushremote
           magit-insert-unpushed-to-upstream
-          magit-insert-unpushed-to-pushremote))
-  ;; Opening repo externally
-  (defun parse-url (url)
-    "convert a git remote location as a HTTP URL"
-    (if (string-match "^http" url)
-        url
-      (replace-regexp-in-string "\\(.*\\)@\\(.*\\):\\(.*\\)\\(\\.git?\\)"
-                                "https://\\2/\\3"
-                                url)))
-  (defun magit-open-repo ()
-    "open remote repo URL"
-    (interactive)
-    (let ((url (magit-get "remote" "origin" "url")))
-      (progn
-        (browse-url (parse-url url))
-        (message "opening repo %s" url)))))
+          magit-insert-unpushed-to-pushremote)))
 
-(use-package evil-magit)
+(use-package evil-magit
+  :after magit)
 
 (use-package hl-todo
   :demand t
@@ -559,14 +529,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (add-to-list 'hl-todo-keyword-faces '("HACK" . "DarkOrange1")))
 
 (use-package magit-todos
-  :commands (magit-todos-mode)
   :hook (magit-mode . magit-todos-mode)
   :config
   (setq magit-todos-recursive t
         magit-todos-depth 100))
 
 (use-package diff-hl
-  :after (magit)
   :init (global-diff-hl-mode)
   :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
          (magit-post-refresh . diff-hl-magit-post-refresh)))
@@ -718,31 +686,16 @@ _SPC_ cancel	_o_nly this   	_d_elete
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package toc-org
-  :after (markdown-mode org)
-  :hook ((org-mode . toc-org-mode)
-         (markdown-mode . toc-org-mode))
-  :bind (:map markdown-mode-map
-              ("C-c C-o" . toc-org-markdown-follow-thing-at-point)))
+  :commands toc-org-mode
+  :hook ((org-mode . toc-org-mode)))
 
 (use-package org-ref
-  :after (org hydra)
+  :after org
   :config
   (setq org-ref-completion-library 'org-ref-ivy-cite
         org-ref-bibliography-notes org-papers-notes
         org-ref-default-bibliography (list org-papers-bibtex)
         org-ref-pdf-directory (list org-papers-pdfs)))
-
-(use-package org-noter
-  :after (org org-ref)
-  :commands org-noter
-  :config
-  (setq org-noter-default-notes-file-names '("index-org")
-        org-noter-notes-search-path (list org-papers-dir)
-        org-noter-auto-save-last-location t
-        org-noter-doc-split-fraction '(0.8 . 0.8)
-        org-noter-always-create-frame nil
-        org-noter-insert-note-no-questions t
-        org-noter-notes-window-location 'vertical-split))
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
@@ -752,21 +705,13 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :hook (org-mode . org-fancy-priorities-mode)
   :config (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
 
-(use-package ob-async)
-
-(use-package interleave
-  :bind (:map global-map
-              ("C-x i" . interleave-mode))
-  :config
-  (setq interleave-split-direction 'horizontal
-        interleave-split-lines 20
-        interleave-disable-narrowing t))
+(use-package ob-async
+  :after org)
 
 ;;; * Configuration Files
 
 ;;;; * Dhall
 (use-package dhall-mode
-  :ensure t
   :mode "\\.dhall\\'")
 
 ;;;; * Mermaid
@@ -786,6 +731,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * YAML
 (use-package yaml-mode
+  :hook (yaml-mode . lsp)
   :mode ("\\.yaml$" "\\.yml\\'"))
 
 ;;;; * Meson
@@ -806,7 +752,9 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Markdown
 (use-package markdown-mode
-  :after flyspell
+  :bind (:map markdown-mode-map
+              ("C-c C-o" . toc-org-markdown-follow-thing-at-point))
+  :hook (markdown-mode . toc-org-mode)
   :mode
   ("INSTALL\\'"
    "CONTRIBUTORS\\'"
@@ -816,7 +764,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
    "\\.md\\'"))
 
 ;;;; * Graphivz
-
 (use-package graphviz-dot-mode
   :mode "\\.dot\\'")
 
@@ -835,19 +782,13 @@ _SPC_ cancel	_o_nly this   	_d_elete
 (use-package irony
   :hook ((c-mode . irony-mode)
          (objc-mode . irony-mode)
-         (c++-mode .irony-mode))
+         (c++-mode . irony-mode)
+         (irony-mode . lsp))
   :config
   (setq-local company-backends (append '(company-clang) company-backends)))
 
 (use-package flycheck-irony
   :after (flycheck irony))
-
-;;;; * Elm
-(use-package elm-mode
-  :after company
-  :config
-  (setq elm-format-on-save t)
-  (setq-local company-backends (append '(company-elm) company-backends)))
 
 ;;;; * Haskell
 (use-package haskell-mode
@@ -859,6 +800,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Nix
 (use-package nix-mode
   :mode "\\.nix\\'"
+  :hook (nix-mode . lsp)
   :bind (:map nix-mode-map
               ("C-c C-f" . nix-format-buffer))
   :config
@@ -872,15 +814,13 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Rust
 (use-package rust-mode
-  :hook (rust-mode . lsp))
-
-(use-package lsp-rust
-  :init
+  :hook (rust-mode . lsp)
+  :config
   (setq-default lsp-rust-server 'rust-analyzer
                 lsp-rust-analyzer-server-command "rust-analyzer"))
 
 (use-package flycheck-rust
-  :hook (flycheck-mode . flycheck-rust-setup))
+  :hook (rust-mode . flycheck-rust-setup))
 
 ;;;; * Fish
 (use-package fish-mode
@@ -892,7 +832,6 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Web Development (TS[X], JS[X], HTML)
 (use-package web-mode
-  :after (flycheck)
   :mode (("\\.js\\'" . web-mode)
          ("\\.jsx\\'" . web-mode)
          ("\\.ts\\'" . web-mode)
@@ -948,131 +887,16 @@ _SPC_ cancel	_o_nly this   	_d_elete
         web-mode-ac-sources-alist '(("css" . (ac-source-css-property))
                                     ("html" . (ac-source-words-in-buffer ac-source-abbrev)))))
 
-;;; * PDF
-(use-package pdf-tools
-  :mode ("\\.pdf\\'" . pdf-view-mode)
-  :hook (pdf-view-mode . (lambda ()
-                           (pdf-misc-size-indication-minor-mode)
-                           (pdf-links-minor-mode)
-                           (pdf-isearch-minor-mode)
-                           (display-line-numbers-mode -1)
-                           (cua-mode -1)))
-  :bind
-  (:map pdf-view-mode-map
-        ("/" . my-hydra-pdftools/body)
-        ("C-s" . isearch-forward)
-        ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
-        ("g"  . pdf-view-first-page)
-        ("G"  . pdf-view-last-page)
-        ("l"  . image-forward-hscroll)
-        ("h"  . image-backward-hscroll)
-        ("j"  . pdf-view-next-page)
-        ("k"  . pdf-view-previous-page)
-        ("e"  . pdf-view-goto-page)
-        ("u"  . pdf-view-revert-buffer)
-        ("al" . pdf-annot-list-annotations)
-        ("ad" . pdf-annot-delete)
-        ("aa" . pdf-annot-attachment-dired)
-        ("am" . pdf-annot-add-markup-annotation)
-        ("at" . pdf-annot-add-text-annotation)
-        ("y"  . pdf-view-kill-ring-save)
-        ("i"  . pdf-misc-display-metadata)
-        ("s"  . pdf-occur)
-        ("b"  . pdf-view-set-slice-from-bounding-box)
-        ("r"  . pdf-view-reset-slice))
-  :config
-  (pdf-tools-install)
-  (setq-default pdf-view-display-size 'fit-page)
-  (setq pdf-view-resize-factor 1.1)
-  (defhydra my-hydra-pdftools (:color blue :hint nil)
-    "
-      PDF tools
-
-   Move  History   Scale/Fit                  Annotations     Search/Link     Do
-------------------------------------------------------------------------------------------------
-     ^^_g_^^      _B_    ^↧^    _+_    ^ ^     _al_: list    _s_: search    _u_: revert buffer
-     ^^^↑^^^      ^↑^    _H_    ^↑^  ↦ _W_ ↤   _am_: markup  _o_: outline   _i_: info
-     ^^_p_^^      ^ ^    ^↥^    _0_    ^ ^     _at_: text    _F_: link      _d_: dark mode
-     ^^^↑^^^      ^↓^  ╭─^─^─┐  ^↓^  ╭─^ ^─┐   _ad_: delete  _f_: search link
-_h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
-     ^^^↓^^^      ^ ^  ╰─^─^─╯  ^ ^  ╰─^ ^─╯   _y_:  yank
-     ^^_n_^^      ^ ^  _r_eset slice box
-     ^^^↓^^^
-     ^^_G_^^
-"
-    ("q" hydra-master/body "back")
-    ("<ESC>" nil "quit")
-    ("al" pdf-annot-list-annotations)
-    ("ad" pdf-annot-delete)
-    ("aa" pdf-annot-attachment-dired)
-    ("am" pdf-annot-add-markup-annotation)
-    ("at" pdf-annot-add-text-annotation)
-    ("y" pdf-view-kill-ring-save)
-    ("+" pdf-view-enlarge :color red)
-    ("-" pdf-view-shrink :color red)
-    ("0" pdf-view-scale-reset)
-    ("H" pdf-view-fit-height-to-window)
-    ("W" pdf-view-fit-width-to-window)
-    ("P" pdf-view-fit-page-to-window)
-    ("n" pdf-view-next-page-command :color red)
-    ("p" pdf-view-previous-page-command :color red)
-    ("d" pdf-view-dark-minor-mode)
-    ("b" pdf-view-set-slice-from-bounding-box)
-    ("r" pdf-view-reset-slice)
-    ("g" pdf-view-first-page)
-    ("G" pdf-view-last-page)
-    ("e" pdf-view-goto-page)
-    ("o" pdf-outline)
-    ("s" pdf-occur)
-    ("i" pdf-misc-display-metadata)
-    ("u" pdf-view-revert-buffer)
-    ("F" pdf-links-action-perfom)
-    ("f" pdf-links-isearch-link)
-    ("B" pdf-history-backward :color red)
-    ("N" pdf-history-forward :color red)
-    ("l" image-forward-hscroll :color red)
-    ("h" image-backward-hscroll :color red)))
-
 ;;; * LaTeX
-(use-package tex-site
-  :after (tex latex)
+(use-package latex
   :ensure auctex
   :hook ((LaTeX-mode . turn-off-auto-fill)
-         (LaTeX-mode . (lambda () (TeX-fold-mode t)))
+         (LaTeX-mode . TeX-fold-mode)
          (LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . TeX-source-correlate-mode)
+         (LaTeX-mode . lsp)
          (LaTeX-mode . outline-minor-mode))
   :config
-  ;; Spelling
-  (setq ispell-tex-skip-alists
-        '((
-           ;;("%\\[" . "%\\]") ; AMStex block comment...
-           ;; All the standard LaTeX keywords from L. Lamport's guide:
-           ;; \cite, \hspace, \hspace*, \hyphenation, \include, \includeonly
-           ;; \input, \label, \nocite, \rule (in ispell - rest included here)
-           ("\\\\addcontentsline"              ispell-tex-arg-end 2)
-           ("\\\\add\\(tocontents\\|vspace\\)" ispell-tex-arg-end)
-           ("\\\\\\([aA]lph\\|arabic\\)"   ispell-tex-arg-end)
-           ("\\\\author"                         ispell-tex-arg-end)
-           ;; New regexps here --- kjh
-           ("\\\\\\(text\\|paren\\)cite" ispell-tex-arg-end)
-           ("\\\\cite\\(t\\|p\\|year\\|yearpar\\)" ispell-tex-arg-end)
-           ("\\\\bibliographystyle"                ispell-tex-arg-end)
-           ("\\\\makebox"                  ispell-tex-arg-end 0)
-           ("\\\\e?psfig"                  ispell-tex-arg-end)
-           ("\\\\document\\(class\\|style\\)" .
-            "\\\\begin[ \t\n]*{[ \t\n]*document[ \t\n]*}"))
-          (
-           ;; delimited with \begin.  In ispell: displaymath, eqnarray,
-           ;; eqnarray*, equation, minipage, picture, tabular,
-           ;; tabular* (ispell)
-           ("\\(figure\\|table\\)\\*?"     ispell-tex-arg-end 0)
-           ("\\(equation\\|eqnarray\\)\\*?"     ispell-tex-arg-end 0)
-           ("list"                                 ispell-tex-arg-end 2)
-           ("program" . "\\\\end[ \t\n]*{[ \t\n]*program[ \t\n]*}")
-           ("verbatim\\*?"."\\\\end[ \t\n]*{[ \t\n]*verbatim\\*?[ \t\n]*}")
-           ("lstlisting\\*?"."\\\\end[ \t\n]*{[ \t\n]*lstlisting\\*?[ \t\n]*}"))))
-
   (TeX-global-PDF-mode 1)
   (setq-default TeX-master nil)
   (setq TeX-parse-self t
@@ -1084,103 +908,10 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
         TeX-brace-indent-level 4
         TeX-newline-function 'newline-and-indent
         TeX-source-correlate-method 'synctex)
+  (add-to-list 'LaTeX-verbatim-environments "comment"))
 
-  ;; Minor helpers for comment and quotes
-  (add-to-list 'LaTeX-verbatim-environments "comment")
-  (define-key LaTeX-mode-map (kbd "C-c C-=") 'align-current))
-
-(use-package bibtex
-  :config
-  (setq bibtex-align-at-equal-sign t
-        bibtex-autokey-name-year-separator ""
-        bibtex-autokey-year-title-separator ""
-        bibtex-autokey-titleword-length 100
-        bibtex-autokey-titlewords 1))
-
-(use-package company-auctex
-  :hook (latex-mode . company-auctex-init))
-
-(use-package company-bibtex
-  :after (company bibtex)
-  :hook
-  (tex-mode . company-bibtex-setup)
-  (latex-mode . company-bibtex-setup)
-  (org-mode . company-bibtex-setup)
-  :init
-  (defun company-bibtex-setup ()
-    (setq-local company-backends
-                (append
-                 '(company-bibtex)
-                 company-backends))))
-
-(use-package company-reftex
-  :after (company reftex)
-  :hook ((tex-mode . company-reftex-setup)
-         (latex-mode . company-reftex-setup)
-         (org-mode . company-reftex-setup))
-  :init
-  (defun company-reftex-setup ()
-    (setq-local company-backends
-                (append
-                 '(company-reftex-labels company-reftex-citations)
-                 company-backends))))
-
-(use-package company-math
-  :after company
-  :hook ((tex-mode . company-math-setup)
-         (latex-mode . company-math-setup)
-         (org-mode . company-math-setup))
-  :init
-  (defun company-math-setup ()
-    (setq-local company-backends
-                (append
-                 '(company-math-symbols-latex company-latex-commands)
-                 company-backends))))
-
-(use-package auctex-latexmk
-  :config
-  (setq auctex-latexmk-inherit-TeX-PDF-mode t)
-  (auctex-latexmk-setup))
-
-(use-package reftex
-  :ensure auctex
-  :hook (LaTeX-mode . turn-on-reftex)
-  :config
-  (setq reftex-save-parse-info t
-        reftex-enable-partial-scans t
-        reftex-use-multiple-selection-buffers t
-        reftex-plug-into-AUCTeX t
-        reftex-vref-is-default t
-        reftex-cite-format
-        '((?\C-m . "\\cite[]{%l}")
-          (?t . "\\textcite{%l}")
-          (?a . "\\autocite[]{%l}")
-          (?p . "\\parencite{%l}")
-          (?f . "\\footcite[][]{%l}")
-          (?F . "\\fullcite[]{%l}")
-          (?x . "[]{%l}")
-          (?X . "{%l}"))
-        font-latex-match-reference-keywords
-        '(("cite" "[{")
-          ("cites" "[{}]")
-          ("footcite" "[{")
-          ("footcites" "[{")
-          ("parencite" "[{")
-          ("textcite" "[{")
-          ("fullcite" "[{")
-          ("citetitle" "[{")
-          ("citetitles" "[{")
-          ("headlessfullcite" "[{"))
-
-        reftex-cite-prompt-optional-args nil
-        reftex-cite-cleanup-optional-args t))
-
-(use-package latex-math-preview
-  :hook (LaTeX-mode-hook . LaTeX-preview-setup)
-  :config
-  (autoload 'LaTeX-preview-setup "preview"))
-
-(use-package nixos-config)
+(use-package nixos-config
+  :demand t)
 
 ;;; * -- End
 (provide 'init)

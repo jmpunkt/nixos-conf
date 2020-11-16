@@ -31,7 +31,7 @@
 
     hunspell
     hunspellDicts.en-us-large
-    hunspellDicts.de-de
+    jmpunkt.hunspellDicts.de-de
 
     aspell
     aspellDicts.de

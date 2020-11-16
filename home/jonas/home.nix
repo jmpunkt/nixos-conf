@@ -47,10 +47,4 @@
   };
 
   services.dropbox.enable = true;
-
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    BROWSER = "firefox";
-    TERMINAL = "alacritty";
-  };
 }

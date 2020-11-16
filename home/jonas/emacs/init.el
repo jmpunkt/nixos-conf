@@ -360,6 +360,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
         lsp-enable-snippet t
+        lsp-enable-folding nil
         lsp-completion-provider :capf
         lsp-file-watch-ignored '(
                                  "[/\\\\]\\.direnv$"

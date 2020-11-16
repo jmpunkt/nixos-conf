@@ -587,6 +587,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
       (setq buffer-file-name file-name)))
   (setq org-highlight-latex-and-related '(latex)
         org-ellipsis "…"
+        org-log-done 'time
         org-src-fontify-natively t
         org-src-tab-acts-natively t
         org-catch-invisible-edits 'smart
@@ -604,19 +605,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
           ("a" "Appointment" entry (file+headline
                                     (lambda () (expand-file-name "calendar.org" org-agenda-dir))
                                     "Event")
-           "* %? %^G \n  %^t")
-          ("l" "Link" entry (file+headline
-                             (lambda () (expand-file-name "notes.org" org-agenda-dir))
-                             "Links")
-           "* TODO %a %? %^G\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-          ("n" "Note" entry (file+headline
-                             (lambda () (expand-file-name "notes.org" org-agenda-dir))
-                             "Notes")
-           "* %? %^G\n%U" :empty-lines 1)
-          ("j" "Journal" entry (file+olp+datetree
-                                (lambda () (expand-file-name "journal.org" org-agenda-dir))
-                                "Journal")
-           "* %? %^G\nEntered on %U\n")))
+           "* %? %^G \n  %^t")))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)

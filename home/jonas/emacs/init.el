@@ -191,36 +191,45 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Spelling
 (use-package flyspell
   :demand t
+  :hook ((prog-mode . enable-flyspell)
+         (text-mode . enable-flyspell))
   :bind (:map flyspell-mode-map
               ("C-c s" . my-hydra-spelling/body))
-  :hook ((text-mode . flyspell-mode)
-         (prog-mode . flyspell-prog-mode))
   :init
+  (defun enable-flyspell ()
+      (when
+          (not (memq major-mode
+                     '(dired-mode
+                       log-edit-mode
+                       compilation-mode
+                       help-mode
+                       profiler-report-mode
+                       speedbar-mode
+                       gud-mode
+                       calc-mode
+                       Info-mode)))
+        (flyspell-mode 1)))
   (defhydra my-hydra-spelling (:color blue)
     "^
   ^Spelling^          ^Errors^            ^Checker^
 ------------------------------------------------------------
   [_q_] quit          [_<_] previous      [_c_] correction
   ^^                  [_>_] next          [_d_] dictionary
-  ^^                  [_f_] check         [_m_] mode
+  ^^                  [_f_] check         ^^
   ^^                  ^^                  ^^"
     ("q" nil)
     ("<" flyspell-correct-previous :color pink)
     (">" flyspell-correct-next :color pink)
     ("c" flyspell-correct-at-point)
     ("d" ispell-change-dictionary)
-    ("f" flyspell-buffer)
-    ("m" flyspell-mode))
+    ("f" flyspell-buffer))
   :config
-  (setq-default ispell-program-name "hunspell"
-                ispell-local-dictionary "en_US"
-                ispell-local-dictionary-alist
-                '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US") nil utf-8)))
-  (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
-  (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
-  (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
-  (defun flyspell-buffer-after-pdict-save (&rest _) (flyspell-buffer))
-  (advice-add 'ispell-pdict-save :after #'flyspell-buffer-after-pdict-save))
+  (setq-default ispell-program-name "/run/current-system/sw/bin/hunspell"
+                ispell-really-hunspell t
+                ; Hide all default entries which may not be available
+                ; on the system anyways
+                ispell-dictionary-base-alist nil
+                ispell-local-dictionary "en_US"))
 
 (use-package flyspell-correct-ivy
   :after (flyspell ivy)
@@ -564,12 +573,10 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 ;;;; * Org
 (use-package org
-  :after (flyspell flycheck)
   :bind (:map global-map
               ("C-c c" . org-capture))
   :mode ("\\.org\\'" . org-mode)
-  :hook ((org-mode . flyspell-mode)
-         (org-mode . (lambda ()
+  :hook ((org-mode . (lambda ()
                        (setq-local tab-width 2)
                        (auto-fill-mode 1)))
          (org-mode . org-indent-mode)
@@ -581,6 +588,13 @@ _SPC_ cancel	_o_nly this   	_d_elete
                                       (when org-inline-image-overlays
                                         (org-redisplay-inline-images)))))
   :config
+  (add-to-list 'ispell-skip-region-alist
+               '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+  (add-to-list 'ispell-skip-region-alist
+               '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+  (add-to-list 'ispell-skip-region-alist
+               '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
+
   ;; Sets the buffer name of org source blocks properly
   (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
     (let ((file-name (buffer-file-name)))
@@ -799,8 +813,7 @@ _SPC_ cancel	_o_nly this   	_d_elete
    "LICENSE\\'"
    "README\\'"
    "\\.markdown\\'"
-   "\\.md\\'")
-  :hook (markdown-mode . flyspell-mode))
+   "\\.md\\'"))
 
 ;;;; * Graphivz
 
@@ -896,6 +909,40 @@ _SPC_ cancel	_o_nly this   	_d_elete
         web-mode-enable-css-colorization t
         web-mode-enable-current-element-highlight t)
   :config
+  ;; http://blog.binchen.org/posts/effective-spell-check-in-emacs.html
+  (defun web-mode-flyspell-verify ()
+    (let* ((f (get-text-property (- (point) 1) 'face))
+           rlt)
+      (cond
+       ;; Check the words with these font faces, possibly.
+       ;; this *blacklist* will be tweaked in next condition
+       ((not (memq f '(web-mode-html-attr-value-face
+                       web-mode-html-tag-face
+                       web-mode-html-attr-name-face
+                       web-mode-constant-face
+                       web-mode-doctype-face
+                       web-mode-keyword-face
+                       web-mode-comment-face ;; focus on get html label right
+                       web-mode-function-name-face
+                       web-mode-variable-name-face
+                       web-mode-css-property-name-face
+                       web-mode-css-selector-face
+                       web-mode-css-color-face
+                       web-mode-type-face
+                       web-mode-block-control-face)))
+        (setq rlt t))
+       ;; check attribute value under certain conditions
+       ((memq f '(web-mode-html-attr-value-face))
+        (save-excursion
+          (search-backward-regexp "=['\"]" (line-beginning-position) t)
+          (backward-char)
+          (setq rlt (string-match "^\\(value\\|class\\|ng[A-Za-z0-9-]*\\)$"
+                                  (thing-at-point 'symbol)))))
+       ;; finalize the blacklist
+       (t
+        (setq rlt nil)))
+      rlt))
+  (put 'web-mode 'flyspell-mode-predicate 'web-mode-flyspell-verify)
   (flycheck-add-mode 'typescript-tslint 'web-mode)
   (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))
         web-mode-ac-sources-alist '(("css" . (ac-source-css-property))
@@ -992,7 +1039,6 @@ _h_ ←pag_e_→ _l_  _N_  │ _P_ │  _-_    _b_     _aa_: dired
   :ensure auctex
   :hook ((LaTeX-mode . turn-off-auto-fill)
          (LaTeX-mode . (lambda () (TeX-fold-mode t)))
-         (LaTeX-mode . flyspell-mode)
          (LaTeX-mode . LaTeX-math-mode)
          (LaTeX-mode . TeX-source-correlate-mode)
          (LaTeX-mode . outline-minor-mode))

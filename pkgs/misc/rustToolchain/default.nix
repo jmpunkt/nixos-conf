@@ -27,12 +27,12 @@ in
 {
   stable = (override (rustChannelOf {
     channel = "stable";
-    date = "2020-10-08"; # 1.47
-    sha256 = "adrApiScGGt4lZvGpEjbWiY5e10juOVRhyNpRSLTccI=";
+    date = "2020-11-19"; # 1.48
+    sha256 = "7zt+rHZxx+ha4P/UnT2aNIuBtjPkejVI2PycAt+Apiw=";
   })).rust;
   nightly = (override (rustChannelOf {
     channel = "nightly";
-    date = "2020-10-01";
-    sha256 = "4Qdjc7PBLfexFQkU2SREnKxsHBwmErckKTUqbpengRU=";
+    date = "2020-11-20";
+    sha256 = "tVY4fftXrSO25w1xpYRnD80QcFRza2UV4QrduvGmdeo=";
   })).rust;
 }

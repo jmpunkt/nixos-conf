@@ -217,6 +217,7 @@
 
 ;;;; * Treemacs
 (use-package treemacs
+  :demand t
   :bind (:map global-map
               ([f8] . treemacs)
               ("C-c f" . treemacs-select-window))
@@ -387,7 +388,13 @@
           magit-insert-unpulled-from-upstream
           magit-insert-unpulled-from-pushremote
           magit-insert-unpushed-to-upstream
-          magit-insert-unpushed-to-pushremote)))
+          magit-insert-unpushed-to-pushremote))
+  (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
+  (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
+  (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-pushremote)
+  (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-upstream))
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpushed-to-pushremote)
+  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpushed-to-upstream-or-recent))
 
 (use-package evil-magit
   :after magit)

@@ -59,13 +59,14 @@
                 show-paren-delay 0
                 show-trailing-whitespace t)
 
-
   (setq indent-line-function 'insert-tab
         revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")
         make-backup-files nil
         auto-save-default nil
         column-number-mode t
-        frame-title-format "%b")
+        frame-title-format "%b"
+        auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
+        backup-directory-alist `((".*" . ,temporary-file-directory)))
 
   (set-fontset-font "fontset-default"
                     'symbol (font-spec :family "Symbola"))

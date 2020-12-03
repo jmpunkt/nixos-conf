@@ -123,8 +123,12 @@
 
 ;;;; * Spelling
 (use-package flyspell
-  :hook ((prog-mode . enable-flyspell)
-         (text-mode . enable-flyspell))
+  :hook ((prog-mode . (lambda ()
+                        (when (not (memq major-mode flyspell-disabled-modes))
+                          (flyspell-prog-mode))))
+         (text-mode . (lambda ()
+                        (when (not (memq major-mode flyspell-disabled-modes))
+                          (flyspell-mode 1)))))
   :bind (:map flyspell-mode-map
               ("C-c s <" . flyspell-correct-previous )
               ("C-c s >" . flyspell-correct-next)
@@ -132,6 +136,16 @@
               ("C-c s d" . ispell-change-dictionary)
               ("C-c s f" . flyspell-buffer))
   :init
+  (defvar flyspell-disabled-modes
+    '(dired-mode
+      log-edit-mode
+      compilation-mode
+      help-mode
+      profiler-report-mode
+      speedbar-mode
+      gud-mode
+      calc-mode
+      Info-mode))
   :config
   (setq-default ispell-program-name "/run/current-system/sw/bin/hunspell"
                 ispell-really-hunspell t
@@ -729,44 +743,7 @@
         web-mode-enable-css-colorization t
         web-mode-enable-current-element-highlight t)
   :config
-  ;; http://blog.binchen.org/posts/effective-spell-check-in-emacs.html
-  (defun web-mode-flyspell-verify ()
-    (let* ((f (get-text-property (- (point) 1) 'face))
-           rlt)
-      (cond
-       ;; Check the words with these font faces, possibly.
-       ;; this *blacklist* will be tweaked in next condition
-       ((not (memq f '(web-mode-html-attr-value-face
-                       web-mode-html-tag-face
-                       web-mode-html-attr-name-face
-                       web-mode-constant-face
-                       web-mode-doctype-face
-                       web-mode-keyword-face
-                       web-mode-comment-face ;; focus on get html label right
-                       web-mode-function-name-face
-                       web-mode-variable-name-face
-                       web-mode-css-property-name-face
-                       web-mode-css-selector-face
-                       web-mode-css-color-face
-                       web-mode-type-face
-                       web-mode-block-control-face)))
-        (setq rlt t))
-       ;; check attribute value under certain conditions
-       ((memq f '(web-mode-html-attr-value-face))
-        (save-excursion
-          (search-backward-regexp "=['\"]" (line-beginning-position) t)
-          (backward-char)
-          (setq rlt (string-match "^\\(value\\|class\\|ng[A-Za-z0-9-]*\\)$"
-                                  (thing-at-point 'symbol)))))
-       ;; finalize the blacklist
-       (t
-        (setq rlt nil)))
-      rlt))
-  (put 'web-mode 'flyspell-mode-predicate 'web-mode-flyspell-verify)
-  (flycheck-add-mode 'typescript-tslint 'web-mode)
-  (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))
-        web-mode-ac-sources-alist '(("css" . (ac-source-css-property))
-                                    ("html" . (ac-source-words-in-buffer ac-source-abbrev)))))
+  (flycheck-add-mode 'typescript-tslint 'web-mode))
 
 ;;; * LaTeX
 (use-package latex

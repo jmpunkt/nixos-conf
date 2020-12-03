@@ -657,6 +657,25 @@
 (use-package flycheck-haskell
   :hook (haskell-mode . flycheck-haskell-setup))
 
+;;;; * Scala
+
+(use-package scala-mode
+  :hook  (scala-mode . lsp)
+  :interpreter
+  ("scala" . scala-mode))
+
+(use-package sbt-mode
+  :commands sbt-start sbt-command
+  :config
+  (substitute-key-definition
+   'minibuffer-complete-word
+   'self-insert-command
+   minibuffer-local-completion-map)
+  (setq sbt:program-options '("-Dsbt.supershell=false")))
+
+(use-package lsp-metals
+  :config (setq lsp-metals-treeview-show-when-views-received t))
+
 ;;;; * Nix
 (use-package nix-mode
   :mode "\\.nix\\'"

@@ -75,6 +75,8 @@ let
       nodePackages.typescript # dev
       discount
       maven # dev
+      metals # LSP
+      sbt # Scala
 
       jmpunkt.pythonToolchain # overlays/40-toolchains.nix
       jmpunkt.rustToolchain.stable # overlays/40-toolchains.nix
@@ -184,6 +186,7 @@ in
     lsp-java
     lsp-ivy
     lsp-treemacs
+    lsp-metals
 
     # Configuration
     bazel-mode
@@ -195,6 +198,8 @@ in
     meson-mode
     mermaid-mode
     dhall-mode
+    sbt-mode
+    scala-mode
 
     # Presentation
     markdown-mode

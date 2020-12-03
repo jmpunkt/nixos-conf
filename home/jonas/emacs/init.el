@@ -668,9 +668,6 @@
   :config
   (setq-local company-backends (append '(company-clang) company-backends)))
 
-(use-package flycheck-irony
-  :after (flycheck irony))
-
 ;;;; * Haskell
 (use-package haskell-mode
   :hook (haskell-mode . lsp))
@@ -775,6 +772,7 @@
         TeX-source-correlate-method 'synctex)
   (add-to-list 'LaTeX-verbatim-environments "comment"))
 
+;;; * Custom NixOS paths
 (use-package nixos-config
   :demand t)
 

@@ -105,8 +105,6 @@ in
     smartparens
     which-key
     ripgrep
-    hydra
-    outshine
     hl-todo
     direnv
     dashboard

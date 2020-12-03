@@ -114,71 +114,6 @@
   :config
   (which-key-mode))
 
-;;;; * Outshine
-(use-package outshine
-  :hook (emacs-lisp-mode . outshine-mode))
-
-;;;; * Hydra
-(use-package hydra
-  :demand t
-  :bind (:map global-map
-              ("C-x w" . my-hydra-window/body))
-  :init
-  (defhydra my-hydra-window ()
-    "
-Movement^^        ^Split^         ^Switch^		^Resize^
-----------------------------------------------------------------
-_h_ ←       	_v_ertical    	_b_uffer		_q_ X←
-_j_ ↓        	_x_ horizontal	_f_ind files	_w_ X↓
-_k_ ↑        	_z_ undo      	_a_ce 1		_e_ X↑
-_l_ →        	_Z_ reset      	_s_wap		_r_ X→
-_F_ollow		_D_lt Other   	_S_ave		max_i_mize
-_SPC_ cancel	_o_nly this   	_d_elete
-"
-    ("h" windmove-left )
-    ("j" windmove-down )
-    ("k" windmove-up )
-    ("l" windmove-right )
-    ("q" hydra-move-splitter-left)
-    ("w" hydra-move-splitter-down)
-    ("e" hydra-move-splitter-up)
-    ("r" hydra-move-splitter-right)
-    ("b" switch-to-buffer)
-    ("f" counsel-find-file)
-    ("F" follow-mode)
-    ("a" (lambda ()
-           (interactive)
-           (ace-window 1)
-           (add-hook 'ace-window-end-once-hook
-                     'my-hydra-window/body)))
-    ("v" (lambda ()
-           (interactive)
-           (split-window-right)
-           (windmove-right)))
-    ("x" (lambda ()
-           (interactive)
-           (split-window-below)
-           (windmove-down)))
-    ("s" (lambda ()
-           (interactive)
-           (ace-window 4)
-           (add-hook 'ace-window-end-once-hook
-                     'my-hydra-window/body)))
-    ("S" save-buffer)
-    ("d" delete-window)
-    ("D" (lambda ()
-           (interactive)
-           (ace-window 16)
-           (add-hook 'ace-window-end-once-hook
-                     'hydra-window/body)))
-    ("o" delete-other-windows)
-    ("i" ace-maximize-window)
-    ("z" (progn
-           (winner-undo)
-           (setq this-command 'winner-undo)))
-    ("Z" winner-redo)
-    ("SPC" nil)))
-
 ;;;; * Flycheck
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
@@ -191,35 +126,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :hook ((prog-mode . enable-flyspell)
          (text-mode . enable-flyspell))
   :bind (:map flyspell-mode-map
-              ("C-c s" . my-hydra-spelling/body))
+              ("C-c s <" . flyspell-correct-previous )
+              ("C-c s >" . flyspell-correct-next)
+              ("C-c s c" . flyspell-correct-at-point)
+              ("C-c s d" . ispell-change-dictionary)
+              ("C-c s f" . flyspell-buffer))
   :init
-  (defun enable-flyspell ()
-      (when
-          (not (memq major-mode
-                     '(dired-mode
-                       log-edit-mode
-                       compilation-mode
-                       help-mode
-                       profiler-report-mode
-                       speedbar-mode
-                       gud-mode
-                       calc-mode
-                       Info-mode)))
-        (flyspell-mode 1)))
-  (defhydra my-hydra-spelling (:color blue)
-    "^
-  ^Spelling^          ^Errors^            ^Checker^
-------------------------------------------------------------
-  [_q_] quit          [_<_] previous      [_c_] correction
-  ^^                  [_>_] next          [_d_] dictionary
-  ^^                  [_f_] check         ^^
-  ^^                  ^^                  ^^"
-    ("q" nil)
-    ("<" flyspell-correct-previous :color pink)
-    (">" flyspell-correct-next :color pink)
-    ("c" flyspell-correct-at-point)
-    ("d" ispell-change-dictionary)
-    ("f" flyspell-buffer))
   :config
   (setq-default ispell-program-name "/run/current-system/sw/bin/hunspell"
                 ispell-really-hunspell t
@@ -238,23 +150,12 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package langtool
   :bind (:map global-map
-              ("C-c l" . my-hydra-langtool/body))
-  :init
-  (defhydra my-hydra-langtool (:color blue)
-    "^
-  ^Spelling^          ^Errors^            ^Checker^
-------------------------------------------------------------
-  [_q_] quit          [_<_] previous      [_c_] correction
-  [_f_] check         [_>_] next          [_s_] show error
-  [_d_] done          ^^                  ^^
-  ^^                  ^^                  ^^"
-    ("q" nil)
-    ("<" langtool-goto-previous-error :color pink)
-    (">" langtool-goto-next-error :color pink)
-    ("c" langtool-correct-buffer)
-    ("d" langtool-check-done)
-    ("s" langtool-show-message-at-point)
-    ("f" langtool-check))
+              ("C-c l <" . langtool-goto-previous-error)
+              ("C-c l >" . langtool-goto-next-error)
+              ("C-c l c" . langtool-correct-buffer)
+              ("C-c l q" . langtool-check-done)
+              ("C-c l m" . langtool-show-message-at-point)
+              ("C-c l f" . langtool-check))
   :config
   ;; for NixOS use languagetool-commandline?
   (setq langtool-bin "languagetool-commandline"))
@@ -332,66 +233,35 @@ _SPC_ cancel	_o_nly this   	_d_elete
   :commands lsp
   :hook (lsp-mode . lsp-enable-which-key-integration)
   :bind (:map lsp-mode-map
-              ([f6] . my-hydra-lsp/body))
-  :init
-  (defhydra my-hydra-lsp (:exit t :hint nil)
-    "
- Buffer^^               Server^^                   Symbol
--------------------------------------------------------------------------------------
- [_f_] format           [_M-r_] restart            [_d_] declaration  [_i_] implementation  [_o_] documentation
- [_m_] imenu            [_S_]   shutdown           [_D_] definition   [_t_] type            [_r_] rename
- [_x_] execute action   [_M-s_] describe session   [_R_] references   [_s_] signature"
-    ("d" lsp-find-declaration)
-    ("D" lsp-ui-peek-find-definitions)
-    ("R" lsp-ui-peek-find-references)
-    ("i" lsp-ui-peek-find-implementation)
-    ("t" lsp-find-type-definition)
-    ("s" lsp-signature-help)
-    ("o" lsp-describe-thing-at-point)
-    ("r" lsp-rename)
+              ("C-c k d" . lsp-find-declaration)
+              ("C-c k D" . lsp-ui-peek-find-definitions)
+              ("C-c k R" . lsp-ui-peek-find-references)
+              ("C-c k i" . lsp-ui-peek-find-implementation)
+              ("C-c k t" . lsp-find-type-definition)
+              ("C-c k s" . lsp-signature-help)
+              ("C-c k o" . lsp-describe-thing-at-point)
+              ("C-c k r" . lsp-rename)
 
-    ("f" lsp-format-buffer)
-    ("m" lsp-ui-imenu)
-    ("x" lsp-execute-code-action)
+              ("C-c k f" . lsp-format-buffer)
+              ("C-c k m" . lsp-ui-imenu)
+              ("C-c k x" . lsp-execute-code-action)
 
-    ("M-s" lsp-describe-session)
-    ("M-r" lsp-workspace-restart)
-    ("S" lsp-workspace-shutdown))
+              ("C-c k S" . lsp-workspace-shutdown))
   :config
   (setq lsp-print-performance nil
         lsp-log-io nil
-        lsp-document-sync-method nil
         lsp-eldoc-render-all nil
         lsp-eldoc-enable-hover nil
         lsp-signature-auto-activate nil
+        lsp-enable-folding nil
+
+        lsp-modeline-code-actions-enable t
         lsp-enable-xref t
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
-        lsp-enable-snippet t
-        lsp-enable-folding nil
-        lsp-completion-provider :capf
-        lsp-file-watch-ignored '(
-                                 "[/\\\\]\\.direnv$"
-                                 "[/\\\\]\\.git$"
-                                 "[/\\\\]\\.hg$"
-                                 "[/\\\\]\\.bzr$"
-                                 "[/\\\\]_darcs$"
-                                 "[/\\\\]\\.svn$"
-                                 "[/\\\\]_FOSSIL_$"
-                                 "[/\\\\]\\.idea$"
-                                 "[/\\\\]\\.ensime_cache$"
-                                 "[/\\\\]\\.eunit$"
-                                 "[/\\\\]node_modules$"
-                                 "[/\\\\]\\.fslckout$"
-                                 "[/\\\\]\\.tox$"
-                                 "[/\\\\]\\.stack-work$"
-                                 "[/\\\\]\\.bloop$"
-                                 "[/\\\\]\\.metals$"
-                                 "[/\\\\]target$"
-                                 "[/\\\\]\\.deps$"
-                                 "[/\\\\]build-aux$"
-                                 "[/\\\\]autom4te.cache$"
-                                 "[/\\\\]\\.reference$")))
+        lsp-enable-snippet t)
+  (add-to-list 'lsp-file-watch-ignored '("[/\\\\]\\.direnv$"
+                                         "[/\\\\]bazel-*")))
 
 (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list)
@@ -435,30 +305,17 @@ _SPC_ cancel	_o_nly this   	_d_elete
 
 (use-package counsel-projectile
   :bind (:map projectile-mode-map
-              ("C-c p" . my-hydra-projectile/body))
-  :init
-  (defhydra my-hydra-projectile (:exit t :hint nil)
-    "
-  Projectile^^        Buffers^^           Find^^^^            Search^^
--------------------------------------------------------------------------------------
-  [_q_] quit          [_b_] list          [_d_] directory     [_r_] replace
-  [_i_] reset cache   [_k_] kill all      [_D_] root          [_R_] regexp replace
-  ^^                  [_S_] save all      [_f_] file          [_s_] search
-  ^^                  ^^                  [_p_] project^^
-  ^^                  ^^                  ^^                  ^^
-  "
-    ("q" nil)
-    ("b" counsel-projectile-switch-to-buffer)
-    ("d" counsel-projectile-find-dir)
-    ("D" projectile-dired)
-    ("f" counsel-projectile-find-file)
-    ("i" projectile-invalidate-cache :color red)
-    ("k" projectile-kill-buffers)
-    ("p" counsel-projectile-switch-project)
-    ("r" projectile-replace)
-    ("R" projectile-replace-regexp)
-    ("s" counsel-projectile-rg)
-    ("S" projectile-save-project-buffers)))
+              ("C-c p b" . counsel-projectile-switch-to-buffer)
+              ("C-c p d" . counsel-projectile-find-dir)
+              ("C-c p D" . projectile-dired)
+              ("C-c p f" . counsel-projectile-find-file)
+              ("C-c p i" . projectile-invalidate-cache)
+              ("C-c p k" . projectile-kill-buffers)
+              ("C-c p p" . counsel-projectile-switch-project)
+              ("C-c p r" . projectile-replace)
+              ("C-c p R" . projectile-replace-regexp)
+              ("C-c p s" . counsel-projectile-rg)
+              ("C-c p S" . projectile-save-project-buffers)))
 
 ;;;;; * Snippets
 (use-package yasnippet
@@ -818,12 +675,14 @@ _SPC_ cancel	_o_nly this   	_d_elete
 ;;;; * Rust
 (use-package rust-mode
   :hook (rust-mode . lsp)
-  :config
-  (setq-default lsp-rust-server 'rust-analyzer
-                lsp-rust-analyzer-server-command "rust-analyzer"))
+  :bind (:map rust-mode-map
+              ("C-c k t" . rust-test)
+              ("C-c k c" . rust-run-clippy)
+              ("C-c k b" . rust-build)
+              ("C-c k r" . rust-run)))
 
 (use-package flycheck-rust
-  :hook (rust-mode . flycheck-rust-setup))
+  :hook (flycheck-mode . flycheck-rust-setup))
 
 ;;;; * Fish
 (use-package fish-mode

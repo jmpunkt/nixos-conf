@@ -173,12 +173,8 @@ in
     company
     company-bibtex
     company-math
-    company-emoji
-    company-jedi
     company-web
     company-quickhelp
-    company-irony
-    company-auctex
     company-reftex
 
     # LSP

@@ -772,7 +772,6 @@
         TeX-source-correlate-method 'synctex)
   (add-to-list 'LaTeX-verbatim-environments "comment"))
 
-;;; * Custom NixOS paths
 (use-package nixos-config
   :demand t)
 

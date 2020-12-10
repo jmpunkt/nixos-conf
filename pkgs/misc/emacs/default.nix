@@ -160,7 +160,7 @@ in
     # Search/Find
     ivy
     ivy-bibtex
-    flx
+    ivy-prescient
     counsel
     counsel-projectile
 
@@ -176,6 +176,7 @@ in
     company-web
     company-quickhelp
     company-reftex
+    company-prescient
 
     # LSP
     lsp-ui

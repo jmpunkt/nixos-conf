@@ -297,9 +297,10 @@
 ;;;; * Completion
 ;;;;; * Ivy
 (use-package ivy
+  :demand t
   :bind (:map global-map
-              ("C-s" . swiper)
               ("C-x b" . ivy-switch-buffer)
+              ("C-c C-r" . ivy-resume)
               ("C-x C-b" . ivy-switch-buffer-other-window))
   :config
   (ivy-mode 1)
@@ -308,15 +309,30 @@
         enable-recursive-minibuffers t
         ivy-use-selectable-prompt t
         ivy-initial-inputs-alist nil
+        ivy-count-format "(%d/%d)"
         ivy-re-builders-alist '((counsel-rg . ivy--regex-plus)
                                 (counsel-projectile-rg . ivy--regex-plus)
                                 (swiper . ivy--regex-plus)
                                 (t . ivy--regex-fuzzy))))
 
 (use-package counsel
+  :after ivy
   :bind (:map global-map
               ("M-x" . counsel-M-x)
-              ("C-x C-f" . counsel-find-file)))
+              ("C-x C-f" . counsel-find-file)
+              ("C-c c" . counsel-org-capture)
+              ("C-c C-g" . counsel-search)))
+
+
+(use-package ivy-prescient
+  :after ivy
+  :config
+  (ivy-prescient-mode t))
+
+(use-package swiper
+  :after ivy
+  :bind (:map global-map
+              ("C-s" . swiper)))
 
 (use-package counsel-projectile
   :bind (:map projectile-mode-map
@@ -362,10 +378,16 @@
                            company-abbrev
                            company-dabbrev)))
 
+(use-package company-prescient
+  :after company
+  :config
+  (company-prescient-mode t))
+
 (use-package company-quickhelp
   :after company
   :config
   (company-quickhelp-mode 1))
+
 
 ;;;; * Git
 (use-package magit
@@ -422,8 +444,6 @@
 
 ;;;; * Org
 (use-package org
-  :bind (:map global-map
-              ("C-c c" . org-capture))
   :mode ("\\.org\\'" . org-mode)
   :hook ((org-mode . (lambda ()
                        (setq-local tab-width 2)

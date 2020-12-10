@@ -710,16 +710,16 @@
   :config (setq python-indent-offset 4))
 
 ;;;; * Rust
-(use-package rust-mode
-  :hook (rust-mode . lsp)
-  :bind (:map rust-mode-map
-              ("C-c k t" . rust-test)
-              ("C-c k c" . rust-run-clippy)
-              ("C-c k b" . rust-build)
-              ("C-c k r" . rust-run)))
-
-(use-package flycheck-rust
-  :hook (flycheck-mode . flycheck-rust-setup))
+(use-package rustic
+  :bind (:map rustic-mode-map
+              ("C-c k t" . rustic-cargo-test)
+              ("C-c k c" . rustic-cargo-clippy)
+              ("C-c k o" . rustic-cargo-outdated)
+              ("C-c k b" . rustic-compile)
+              ("C-c C-f" . rustic-format-buffer))
+  :config
+  (setq rustic-lsp-server 'rust-analyzer)
+  (setq rustic-rustfmt-config-alist '((edition . "2018"))))
 
 ;;;; * Fish
 (use-package fish-mode

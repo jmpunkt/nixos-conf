@@ -77,6 +77,7 @@ let
       maven # dev
       metals # LSP
       sbt # Scala
+      cargo-outdated # dev
 
       jmpunkt.pythonToolchain # overlays/40-toolchains.nix
       jmpunkt.rustToolchain.stable # overlays/40-toolchains.nix
@@ -155,7 +156,6 @@ in
     # Linter
     flycheck
     flycheck-irony
-    flycheck-rust
 
     # Search/Find
     ivy
@@ -204,7 +204,7 @@ in
 
     # Programming
     irony
-    rust-mode
+    rustic
     haskell-mode
     web-mode
   ]) ++ (with epkgs.elpaPackages; [ undo-tree auctex seq ])

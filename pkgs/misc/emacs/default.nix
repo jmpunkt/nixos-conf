@@ -128,7 +128,6 @@ in
     parsebib
 
     # PDF
-    interleave
     pdf-tools
 
     # Git
@@ -196,7 +195,6 @@ in
     mermaid-mode
     dhall-mode
     sbt-mode
-    scala-mode
 
     # Presentation
     markdown-mode
@@ -208,6 +206,7 @@ in
     rustic
     haskell-mode
     web-mode
+    scala-mode
   ]) ++ (with epkgs.elpaPackages; [ undo-tree auctex seq ])
   ++ (with epkgs.orgPackages; [ org org-plus-contrib ])
   ++ (with pkgs; [ emacsConfiguration ]))

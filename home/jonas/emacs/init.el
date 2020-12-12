@@ -20,6 +20,9 @@
 
 ;;; * Paths
 
+(use-package nixos-paths
+  :demand t)
+
 (defconst org-remote-dir (expand-file-name "~/Dropbox"))
 (defconst org-agenda-dir (expand-file-name "agenda" org-remote-dir))
 (defconst org-papers-dir (expand-file-name "papers" org-remote-dir))
@@ -791,9 +794,6 @@
         TeX-newline-function 'newline-and-indent
         TeX-source-correlate-method 'synctex)
   (add-to-list 'LaTeX-verbatim-environments "comment"))
-
-(use-package nixos-config
-  :demand t)
 
 ;;; * -- End
 (provide 'init)

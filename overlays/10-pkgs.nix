@@ -16,4 +16,18 @@ self: super:
   vimPlugins = (super.vimPlugins or { }) // {
     jmpunkt = super.callPackage ../pkgs/vimPlugins { };
   };
+
+  emacsPackagesFor = emacs: (
+    (super.emacsPackagesFor emacs).overrideScope' (
+      eself: esuper:
+        let
+          manualPackages = esuper.manualPackages // {
+            jmpunkt = super.callPackage ../pkgs/emacsPackages { };
+          };
+        in
+        esuper.override {
+          inherit manualPackages;
+        }
+    )
+  );
 }

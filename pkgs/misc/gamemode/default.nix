@@ -1,9 +1,5 @@
 { stdenv, fetchFromGitHub, lib, meson, ninja, pkgconfig, cmake, systemd, dbus
-, polkit, jmpunkt,
-
-# provides the nvidia-settings package which is required to control
-# Nvidia cards, otherwise the executable is compiled with a generic path
-withNvidiaPackage ? null }:
+, polkit, jmpunkt }:
 
 stdenv.mkDerivation rec {
   name = "gamemode";
@@ -20,10 +16,8 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ systemd dbus jmpunkt.inih polkit ];
 
-  patches = [ ./polkit-policy.patch ];
-
   mesonFlags = [
-    "-Dwith-systemd-user-unit-dir=${placeholder "out"}/etc/systemd/system"
+    "-Dwith-systemd-user-unit-dir=${placeholder "out"}/lib/systemd/user"
     "-Dwith-sd-bus-provider=systemd"
     "-Dwith-examples=false"
   ];
@@ -31,25 +25,18 @@ stdenv.mkDerivation rec {
   preConfigure = ''
     for f in daemon/gamemode-gpu.c daemon/gamemode-context.c; do
         substituteInPlace $f \
-            --replace '/usr/bin/pkexec' "${polkit}/bin/pkexec"
+            --replace '/usr/bin/pkexec' "/run/current-system/sw/bin/pkexec"
     done
-  '' + stdenv.lib.optionalString (withNvidiaPackage != null) ''
+
     for f in util/gpuclockctl.c; do
         substituteInPlace $f \
-            --replace '/usr/bin/nvidia-settings' "${withNvidiaPackage}/bin/nvidia-settings"
+            --replace '/usr/bin/nvidia-settings' "/run/current-system/sw/bin/nvidia-settings"
     done
   '';
 
   postInstall = ''
     substituteInPlace $out/bin/gamemoderun \
         --replace libgamemodeauto.so.0 $out/lib/libgamemodeauto.so.0:$out/lib/libgamemode.so.0:
-  '';
-
-  # So the polkit policy can reference /run/current-system/sw/bin/gamemode-daemon
-  postFixup = ''
-    mkdir -p $out/bin/gamemode-daemon
-    ln -s $out/libexec/cpugovctl $out/bin/gamemode-daemon/cpugovctl
-    ln -s $out/libexec/gpuclockctl $out/bin/gamemode-daemon/gpuclockctl
   '';
 
   meta = with lib; {

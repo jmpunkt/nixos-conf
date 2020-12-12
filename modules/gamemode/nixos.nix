@@ -1,7 +1,8 @@
 { lib, pkgs, config, ... }:
 with lib;
 let cfg = config.services.gamemode;
-in {
+in
+{
   options.services.gamemode = {
     enable = mkOption {
       type = types.bool;
@@ -13,19 +14,28 @@ in {
       '';
     };
 
-    configFile = mkOption {
-      type = types.string;
+    package = mkOption {
+      type = types.package;
+      default = pkgs.jmpunkt.gamemode;
+    };
+
+    ini = mkOption {
+      type = types.lines;
       default = "";
       description = ''
-        Configuration file for gamemode.
+        Configuration content for gamemode.
       '';
     };
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      jmpunkt.gamemode
-    ];
+    environment.systemPackages = [ cfg.package ];
+
+    systemd.packages = [ cfg.package ];
+
+    services.dbus.packages = [ cfg.package ];
+
+    environment.etc."gamemode.ini".text = cfg.ini;
 
     security.pam.loginLimits = [{
       domain = "@gamemode";
@@ -33,15 +43,5 @@ in {
       item = "nice";
       value = "-10";
     }];
-
-    systemd.user.services.gamemode = {
-      description = pkgs.jmpunkt.gamemode.meta.description;
-      serviceConfig = {
-        Type = "dbus";
-        BusName = "com.feralinteractive.GameMode";
-        NotifyAccess = "main";
-        ExecStart = "${pkgs.jmpunkt.gamemode}/bin/gamemoded -l";
-      };
-    };
   };
 }

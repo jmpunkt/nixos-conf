@@ -103,7 +103,18 @@
         night = 3500;
       };
     };
-    gamemode.enable = true;
+    gamemode = {
+      enable = false;
+      ini = ''
+        [general]
+        reaper_freq=5
+        desiredgov=performance
+        softrealtime=off
+        renice=0
+        ioprio=0
+        inhibit_screensaver=1
+      '';
+    };
     printing = {
       enable = true;
       drivers = with pkgs; [ gutenprint hplip ];

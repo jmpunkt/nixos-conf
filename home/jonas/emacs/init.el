@@ -39,16 +39,14 @@
   :demand t
   :config
   (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t
-        doom-themes-treemacs-theme "doom-colors")
+        doom-themes-enable-italic t)
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 
 (use-package doom-modeline
-  :hook (after-init . doom-modeline-mode)
-  :init
-  (setq doom-modeline-icon t
-        doom-modeline-lsp t))
+  :demand t
+  :init (doom-modeline-mode 1)
+  :config (setq doom-modeline-lsp t))
 
 ;;; * Emacs
 (use-package emacs

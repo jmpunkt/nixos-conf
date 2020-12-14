@@ -2,8 +2,22 @@
 
 { emacs, variables, paths }:
 let
+  valueToEmacs = value:
+    if (builtins.typeOf value) == "list" then
+      "'(${builtins.concatStringsSep "\n" (builtins.map valueToEmacs value)})"
+    else if (builtins.isString value) || (builtins.isPath value) then
+      ''\"${value}\"''
+    else if (builtins.isNull value) || ((builtins.isBool value) && value == false) then
+      "nil"
+    else if (builtins.isBool value) then
+      "1"
+    else if (builtins.isInt value) || (builtins.isFloat value) then
+      "${value}"
+    else
+      lib.assertMsg false "sets are not translated into emacs";
+
   pairs = builtins.concatStringsSep "\n"
-    (lib.mapAttrsToList (name: value: ''(setq-default ${name} \"${value}\")'') variables);
+    (lib.mapAttrsToList (name: value: ''(setq-default ${name} ${valueToEmacs value})'') variables);
 
   nixos-paths-el = ''
     ;;; nixos-paths.el --- auto generated file by NixOS                -*- lexical-binding: t; -*-

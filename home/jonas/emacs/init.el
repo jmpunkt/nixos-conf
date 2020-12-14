@@ -709,7 +709,9 @@
 
 ;;;; * Haskell
 (use-package haskell-mode
-  :hook (haskell-mode . lsp))
+  :hook (haskell-mode . lsp)
+  :bind (:map lsp-mode-map
+               ("C-c C-f" . lsp-format-buffer)))
 
 (use-package flycheck-haskell
   :hook (haskell-mode . flycheck-haskell-setup))
@@ -737,8 +739,10 @@
 (use-package nix-mode
   :mode "\\.nix\\'"
   :hook (nix-mode . lsp)
-  :bind (:map nix-mode-map
-              ("C-c C-f" . nix-format-buffer))
+  :bind ((:map nix-mode-map
+               ("C-c C-f" . nix-format-buffer))
+         (:map lsp-mode-map
+               ("C-c C-f" . lsp-format-buffer)))
   :config
   (setq-default nix-nixfmt-bin "nixpkgs-fmt"))
 
@@ -750,12 +754,14 @@
 
 ;;;; * Rust
 (use-package rustic
-  :bind (:map rustic-mode-map
-              ("C-c k t" . rustic-cargo-test)
-              ("C-c k c" . rustic-cargo-clippy)
-              ("C-c k o" . rustic-cargo-outdated)
-              ("C-c k b" . rustic-compile)
-              ("C-c C-f" . rustic-format-buffer))
+  :bind ((:map rustic-mode-map
+               ("C-c k t" . rustic-cargo-test)
+               ("C-c k c" . rustic-cargo-clippy)
+               ("C-c k o" . rustic-cargo-outdated)
+               ("C-c k b" . rustic-compile)
+               ("C-c C-f" . rustic-format-buffer))
+         (:map lsp-mode-map
+               ("C-c C-f" . lsp-format-buffer)))
   :config
   (setq rustic-lsp-server 'rust-analyzer)
   (setq rustic-rustfmt-config-alist '((edition . "2018"))))
@@ -775,7 +781,10 @@
          ("\\.ts\\'" . web-mode)
          ("\\.tsx\\'" . web-mode)
          ("\\.html\\'" . web-mode))
-  :hook (web-mode . lsp)
+  :bind (:map web-mode-map
+              ("C-c C-f" . prettier-js))
+  :hook ((web-mode . lsp)
+         (web-mode . prettier-js-mode))
   :init
   (setq web-mode-markup-indent-offset 2
         web-mode-code-indent-offset 2
@@ -786,7 +795,9 @@
         web-mode-enable-css-colorization t
         web-mode-enable-current-element-highlight t)
   :config
-  (flycheck-add-mode 'typescript-tslint 'web-mode))
+  (flycheck-add-mode 'javascript-eslint 'web-mode))
+
+(use-package prettier-js)
 
 ;;; * LaTeX
 (use-package latex
@@ -797,6 +808,8 @@
          (LaTeX-mode . TeX-source-correlate-mode)
          (LaTeX-mode . lsp)
          (LaTeX-mode . outline-minor-mode))
+  :bind (:map lsp-mode-map
+               ("C-c C-f" . lsp-format-buffer))
   :config
   (TeX-global-PDF-mode 1)
   (setq-default TeX-master nil)

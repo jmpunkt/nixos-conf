@@ -2,12 +2,6 @@
 ;;; Commentary:
 
 ;;; Code:
-
-(require 'seq)
-(require 'package)
-(setq package-archives nil)
-(setq package-enable-at-startup nil)
-(package-initialize)
 (eval-when-compile (require 'use-package))
 
 ;;; Startup Improvements
@@ -18,8 +12,11 @@
             (setq gc-cons-threshold 100000000
                   read-process-output-max (* 1024 1024))))
 
-;;; * Paths
+(require 'bind-key)
+(setq use-package-verbose t)
+(setq garbage-collection-messages t)
 
+;;; * Paths
 (use-package nixos-paths
   :demand t)
 
@@ -39,14 +36,25 @@
   :demand t
   :config
   (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t)
+        doom-themes-enable-italic t
+        doom-themes-treemacs-theme "doom-colors")
   (doom-themes-treemacs-config)
-  (doom-themes-org-config))
+  (doom-themes-org-config)
+
+  (custom-set-variables
+   '(custom-safe-themes
+     (quote
+      ("79278310dd6cacf2d2f491063c4ab8b129fee2a498e4c25912ddaa6c3c5b621e" default))))
+  (load-theme 'doom-vibrant))
 
 (use-package doom-modeline
   :demand t
   :init (doom-modeline-mode 1)
-  :config (setq doom-modeline-lsp t))
+  :config
+  (setq doom-modeline-lsp t
+        doom-modeline-height 30
+        doom-modeline-icon nil
+        doom-modeline-major-mode-icon nil))
 
 ;;; * Emacs
 (use-package emacs
@@ -65,6 +73,7 @@
         make-backup-files nil
         auto-save-default nil
         column-number-mode t
+        delete-by-moving-to-trash t
         frame-title-format "%b"
         auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
         backup-directory-alist `((".*" . ,temporary-file-directory)))
@@ -84,14 +93,8 @@
   (menu-bar-mode -1)
   (global-eldoc-mode -1)
 
-  (custom-set-variables
-   '(custom-safe-themes
-     (quote
-      ("79278310dd6cacf2d2f491063c4ab8b129fee2a498e4c25912ddaa6c3c5b621e" default))))
   (custom-set-faces
-   '(default ((t (:family "IBM Plex Mono" :foundry "IBM " :slant normal :weight normal :height 113 :width normal)))))
-
-  (load-theme 'doom-vibrant))
+   '(default ((t (:family "IBM Plex Mono" :foundry "IBM " :slant normal :weight normal :height 113 :width normal))))))
 
 ;;; * Core Packages
 ;;;; * Evil
@@ -99,13 +102,16 @@
   :demand t
   :config
   (evil-mode 1)
-  (evil-set-undo-system 'undo-tree))
+  (evil-set-undo-system 'undo-tree)
+  ; use Xref to find references
+  (define-key evil-normal-state-map (kbd "M-.") nil)
+  (define-key evil-motion-state-map "gd" nil))
 
 ;;;; * DirEnv
 (use-package direnv
   :demand t
   :config
-  (direnv-mode)
+  (direnv-mode 1)
   ;; ensures that direnv is loaded and allowing lsp to find executable
   (advice-add 'prog-mode :before #'direnv-update-environment))
 
@@ -113,7 +119,7 @@
 (use-package which-key
   :demand t
   :config
-  (which-key-mode))
+  (which-key-mode 1))
 
 ;;;; * Flycheck
 (use-package flycheck
@@ -178,14 +184,13 @@
 ;;;; * Dashboard
 (use-package dashboard
   :config
-  (dashboard-setup-startup-hook)
   (setq dashboard-center-content t
-        dashboard-startup-banner nil
+        dashboard-startup-banner t
         dashboard-set-heading-icons t
         dashboard-set-file-icons t
         dashboard-set-footer nil
-        dashboard-items '((projects . 5)
-                          (agenda . 5))))
+        dashboard-items nil)
+  (dashboard-setup-startup-hook))
 
 ;;;; * Smartparens
 (use-package smartparens
@@ -200,21 +205,12 @@
 (use-package projectile
   :demand t
   :config
-  (setq projectile-switch-project-action 'neotree-projectile-action
-        projectile-enable-caching t
-        projectile-create-missing-test-files t
-        projectile-switch-project-action #'projectile-commander
-        projectile-ignored-project-function 'file-remote-p
-        projectile-completion-system 'ivy)
-  (projectile-mode))
+  (setq projectile-completion-system 'ivy)
 
-(use-package org-projectile
-  :bind (:map global-map
-              ("C-c n p" . org-projectile-project-todo-completing-read))
-  :config
-  (setq org-projectile-projects-file (expand-file-name "projectile.org" org-remote-dir)
-        org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
-  (push (org-projectile-project-todo-entry) org-capture-templates))
+  (projectile-register-project-type 'nix-flake '("flake.nix")
+                                    :project-file "flake.nix"
+                                    :test "nix flake check")
+  (projectile-mode 1))
 
 ;;;; * Treemacs
 (use-package treemacs
@@ -231,11 +227,12 @@
         treemacs-indentation 2
         treemacs-collapse-dirs 3
         treemacs-silent-refresh nil
-        treemacs-sorting  'alphabetic-desc
+        treemacs-sorting 'alphabetic-desc
         treemacs-show-hidden-files t
         treemacs-is-never-other-window nil
-        treemacs-goto-tag-strategy 'refetch-index)
+        treemacs-eldoc-display nil)
   (treemacs-follow-mode t)
+  (treemacs-git-mode 'deferred)
   (treemacs-filewatch-mode t))
 
 (use-package treemacs-projectile
@@ -243,6 +240,9 @@
 
 (use-package treemacs-evil
   :after (treemacs evil))
+
+(use-package treemacs-magit
+  :after (treemacs magit))
 
 ;;;; * Language Server (LSP)
 (use-package lsp-mode
@@ -258,7 +258,6 @@
               ("C-c k o" . lsp-describe-thing-at-point)
               ("C-c k r" . lsp-rename)
 
-              ("C-c k f" . lsp-format-buffer)
               ("C-c k m" . lsp-ui-imenu)
               ("C-c k x" . lsp-execute-code-action)
 
@@ -275,9 +274,7 @@
         lsp-enable-xref t
         lsp-enable-indentation t
         lsp-enable-on-type-formatting t
-        lsp-enable-snippet t)
-  (add-to-list 'lsp-file-watch-ignored '("[/\\\\]\\.direnv$"
-                                         "[/\\\\]bazel-*")))
+        lsp-enable-snippet t))
 
 (use-package lsp-treemacs
   :commands lsp-treemacs-errors-list)
@@ -329,6 +326,13 @@
   :after ivy
   :config
   (ivy-prescient-mode t))
+
+(use-package ivy-xref
+  :after xref
+  :init
+  (when (>= emacs-major-version 27)
+    (setq xref-show-definitions-function #'ivy-xref-show-defs))
+  (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
 
 (use-package swiper
   :after ivy
@@ -416,8 +420,10 @@
   (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
   (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-pushremote)
   (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-upstream))
-  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpushed-to-pushremote)
-  ;; (remove-hook 'magit-status-sections-hook 'magit-insert-unpushed-to-upstream-or-recent))
+
+(use-package gitattributes-mode)
+(use-package gitconfig-mode)
+(use-package gitignore-mode)
 
 (use-package evil-magit
   :after magit)
@@ -435,8 +441,7 @@
 (use-package magit-todos
   :hook (magit-mode . magit-todos-mode)
   :config
-  (setq magit-todos-recursive t
-        magit-todos-depth 100))
+  (setq magit-todos-depth 100))
 
 (use-package diff-hl
   :init (global-diff-hl-mode)
@@ -646,16 +651,19 @@
 ;;;; * JSON
 (use-package json-mode
   :mode "\\.json\\'"
+  :bind (:map json-mode-map
+              ("C-c C-f" . json-pretty-print-buffer))
   :config
   (setq js-indent-level 2))
 
 ;;;; * YAML
 (use-package yaml-mode
   :hook (yaml-mode . lsp)
-  :mode ("\\.yaml$" "\\.yml\\'"))
+  :mode ("\\.yaml\\'" "\\.yml\\'"))
 
 ;;;; * Meson
 (use-package meson-mode
+  :mode ("meson.build\\'")
   :init
   (setq meson-indent-basic 4))
 
@@ -720,6 +728,8 @@
 
 (use-package scala-mode
   :hook  (scala-mode . lsp)
+  :bind (:map lsp-mode-map
+               ("C-c C-f" . lsp-format-buffer))
   :interpreter
   ("scala" . scala-mode))
 
@@ -733,6 +743,7 @@
   (setq sbt:program-options '("-Dsbt.supershell=false")))
 
 (use-package lsp-metals
+  :after (lsp scala-mode)
   :config (setq lsp-metals-treeview-show-when-views-received t))
 
 ;;;; * Nix

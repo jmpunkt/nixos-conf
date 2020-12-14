@@ -448,49 +448,25 @@
   :mode ("\\.org\\'" . org-mode)
   :hook ((org-mode . (lambda ()
                        (setq-local tab-width 2)
-                       (auto-fill-mode 1)))
-         (org-mode . org-indent-mode)
-         (org-src-mode . (lambda ()
-                           (setq-local
-                            flycheck-disabled-checkers
-                            '(emacs-lisp-checkdoc))))
+                       (auto-fill-mode 1)
+                       (add-to-list 'ispell-skip-region-alist
+                                    '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+                       (add-to-list 'ispell-skip-region-alist
+                                    '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+                       (add-to-list 'ispell-skip-region-alist
+                                    '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))))
          (org-babel-after-execute . (lambda ()
                                       (when org-inline-image-overlays
                                         (org-redisplay-inline-images)))))
   :config
-  (add-to-list 'ispell-skip-region-alist
-               '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
-  (add-to-list 'ispell-skip-region-alist
-               '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
-  (add-to-list 'ispell-skip-region-alist
-               '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
 
-  ;; Sets the buffer name of org source blocks properly
-  (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
-    (let ((file-name (buffer-file-name)))
-      ad-do-it
-      (setq buffer-file-name file-name)))
   (setq org-highlight-latex-and-related '(latex)
         org-ellipsis "…"
         org-log-done 'time
-        org-src-fontify-natively t
-        org-src-tab-acts-natively t
         org-catch-invisible-edits 'smart
         org-deadline-warning-days 14
-        org-agenda-files (list org-agenda-dir)
-        ;; `!` ensures that timestamps are used
         org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
-  (setq org-capture-templates
-        '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
-           "* TODO %? %^G \n  %U" :empty-lines 1)
-          ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
-           "* TODO %? %^G \n  DEADLINE: %^t" :empty-lines 1)
-          ("p" "Priority" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
-           "* TODO [#A] %? %^G \n  SCHEDULED: %^t")
-          ("a" "Appointment" entry (file+headline
-                                    (lambda () (expand-file-name "calendar.org" org-agenda-dir))
-                                    "Event")
-           "* %? %^G \n  %^t")))
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((shell . t)
@@ -505,7 +481,47 @@
      (sql . t)
      (dot . t))))
 
+(use-package org-agenda
+  :after org
+  :config
+  (setq org-agenda-files (list org-agenda-dir)))
+
+(use-package org-capture
+  :after org
+  :config
+  (setq org-capture-templates
+        '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+           "* TODO %? %^G \n  %U" :empty-lines 1)
+          ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+           "* TODO %? %^G \n  DEADLINE: %^t" :empty-lines 1)
+          ("p" "Priority" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+           "* TODO [#A] %? %^G \n  SCHEDULED: %^t")
+          ("a" "Appointment" entry (file+headline
+                                    (lambda () (expand-file-name "calendar.org" org-agenda-dir))
+                                    "Event")
+           "* %? %^G \n  %^t"))))
+
+(use-package org-indent
+  :after org
+  :hook (org-mode . org-indent-mode))
+
+(use-package org-src
+  :after org
+  :hook (org-src-mode . (lambda ()
+                          (setq-local
+                           flycheck-disabled-checkers
+                           '(emacs-lisp-checkdoc))))
+  :config
+  ;; Sets the buffer name of org source blocks properly
+  (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
+    (let ((file-name (buffer-file-name)))
+      ad-do-it
+      (setq buffer-file-name file-name)))
+  (setq org-src-fontify-natively t
+        org-src-tab-acts-natively t))
+
 (use-package ox-latex
+  :defer t
   :config
   (setq org-latex-listings 'minted
         org-latex-prefer-user-labels t
@@ -584,18 +600,20 @@
      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (use-package ox-extra
+  :after org
   :config
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package toc-org
-  :commands toc-org-mode
   :hook ((org-mode . toc-org-mode)))
 
 (use-package org-ref
-  :after org
+  :commands org-ref-ivy-cite
+  :init
+  ; prevent Helm from loading
+  (setq org-ref-completion-library 'org-ref-ivy-cite)
   :config
-  (setq org-ref-completion-library 'org-ref-ivy-cite
-        org-ref-bibliography-notes org-papers-notes
+  (setq org-ref-bibliography-notes org-papers-notes
         org-ref-default-bibliography (list org-papers-bibtex)
         org-ref-pdf-directory (list org-papers-pdfs)))
 

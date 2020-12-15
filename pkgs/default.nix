@@ -10,11 +10,11 @@
   gluon-lsp = callPackage ../pkgs/misc/gluon-lsp { };
   gluon = callPackage ../pkgs/misc/gluon-repl { };
   papyrus-rt = callPackage ../pkgs/applications/papyrus-rt { };
-  gamemode = callPackage ../pkgs/misc/gamemode { };
+  gamemode = callPackage ../pkgs/applications/gamemode { };
   inih = callPackage ../pkgs/misc/inih { };
   kaffeine = callPackage ../pkgs/applications/kaffeine { };
   latex = callPackage ../pkgs/misc/latex { };
-  emacs = callPackage ../pkgs/misc/emacs { };
+  emacs = callPackage ../pkgs/applications/emacs { };
   rustToolchain = callPackage ../pkgs/misc/rustToolchain { };
   pythonToolchain = callPackage ../pkgs/misc/pythonToolchain { };
   mozillaRustToolchain = callPackage ../pkgs/misc/mozillaRustToolchain { };

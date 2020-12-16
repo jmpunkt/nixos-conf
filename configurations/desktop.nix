@@ -40,25 +40,19 @@
     aspellDicts.en-science
   ];
 
-  fonts.fonts = with pkgs; [
-    corefonts
-    dejavu_fonts
-    ibm-plex
-    fira
-    fira-code
-    fira-mono
-    noto-fonts
-    noto-fonts-extra
-    noto-fonts-emoji
-    roboto
-    roboto-mono
-    roboto-slab
-    monoid
+  fonts = {
+    fonts = with pkgs; [
+      corefonts
+      ibm-plex
+      jetbrains-mono
 
-    # Emacs Icons
-    emacs-all-the-icons-fonts
-    symbola
-  ];
+      # Emacs Icons
+      emacs-all-the-icons-fonts
+      symbola
+    ];
+
+    fontconfig.defaultFonts.monospace = [ "Jetbrains Mono" ];
+  };
 
   location = {
     latitude = 50.11;

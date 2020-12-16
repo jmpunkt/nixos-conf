@@ -143,6 +143,7 @@ in
     ++ (with epkgs.orgPackages; [ org org-plus-contrib ])
     ++ (
       with epkgs.manualPackages; [
+        jmpunkt.ligature
         (
           jmpunkt.nixosPaths
             {

@@ -30,14 +30,16 @@
 ;;; * Theme
 (use-package all-the-icons
   :demand t
-  :init (setq inhibit-compacting-font-caches t))
+  :init
+  (setq inhibit-compacting-font-caches t))
 
 (use-package doom-themes
   :demand t
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t
-        doom-themes-treemacs-theme "doom-colors")
+        doom-themes-treemacs-theme "doom-colors"
+        doom-themes-treemacs-enable-variable-pitch nil)
   (doom-themes-treemacs-config)
   (doom-themes-org-config)
 
@@ -77,24 +79,54 @@
         frame-title-format "%b"
         auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
         backup-directory-alist `((".*" . ,temporary-file-directory)))
-
-  (set-fontset-font "fontset-default"
-                    'symbol (font-spec :family "Symbola"))
-
   (save-place-mode 1)
   (show-paren-mode 1)
   (global-display-line-numbers-mode t)
   (global-hl-line-mode 1)
-  (global-prettify-symbols-mode t)
   (global-undo-tree-mode 1)
 
+  (global-prettify-symbols-mode -1)
   (toggle-scroll-bar -1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (global-eldoc-mode -1)
 
-  (custom-set-faces
-   '(default ((t (:family "IBM Plex Mono" :foundry "IBM " :slant normal :weight normal :height 113 :width normal))))))
+  (set-face-attribute 'default nil
+                      :family "JetBrains Mono"
+                      :height 112
+                      :weight 'light)
+  (set-face-attribute 'variable-pitch nil
+                      :family "JetBrains Mono"
+                      :height 1.0)
+  (set-face-attribute 'fixed-pitch nil
+                      :family "JetBrains Mono"
+                      :height 1.0))
+
+(use-package ligature
+  :config
+  ;; Enable all Cascadia Code ligatures in programming modes
+  (ligature-set-ligatures 'prog-mode
+                          '("--" "---" "==" "===" "!=" "!==" "=!="
+                            "=:=" "=/=" "<=" ">=" "&&" "&&&" "&=" "++"
+                            "+++" "***" ";;" "!!" "??" "?:" "?." "?="
+                            "<:" ":<" ":>" ">:" "<>" "<<<" ">>>" "<<"
+                            ">>" "||" "-|" "_|_" "|-" "||-" "|=" "||="
+                            "##" "###" "####" "#{" "#[" "]#" "#(" "#?"
+                            "#_" "#_(" "#:" "#!" "#=" "^=" "<$>" "<$"
+                            "$>" "<+>" "<+" "+>" "<*>" "<*" "*>" "</"
+                            "</>" "/>" "<!--" "<#--" "-->" "->" "->>"
+                            "<<-" "<-" "<=<" "=<<" "<<=" "<==" "<=>"
+                            "<==>" "==>" "=>" "=>>" ">=>" ">>=" ">>-"
+                            ">-" ">--" "-<" "-<<" ">->" "<-<" "<-|"
+                            "<=|" "|=>" "|->" "<->" "<~~" "<~" "<~>"
+                            "~~" "~~>" "~>" "~-" "-~" "~@" "[||]" "|]"
+                            "[|" "|}" "{|" "[<" ">]" "|>" "<|" "||>"
+                            "<||" "|||>" "<|||" "<|>" "..." ".." ".="
+                            ".-" "..<" ".?" "::" ":::" ":=" "::=" ":?"
+                            ":?>" "//" "///" "/*" "*/" "/=" "//=" "/=="
+                            "@_" "__"))
+
+  (global-ligature-mode t))
 
 ;;; * Core Packages
 ;;;; * Evil

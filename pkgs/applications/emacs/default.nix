@@ -71,6 +71,7 @@ in
       treemacs
       treemacs-projectile
       treemacs-evil
+      treemacs-magit
 
       # Templates
       yasnippet

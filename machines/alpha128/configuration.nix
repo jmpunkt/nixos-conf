@@ -7,6 +7,7 @@
     ./../../configurations/development.nix
     ./../../configurations/yubico.nix
     ./../../configurations/users/jonas.nix
+    ./../../configurations/razer.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

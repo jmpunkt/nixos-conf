@@ -828,8 +828,12 @@
         web-mode-enable-current-element-highlight t)
   :config
   (with-eval-after-load 'lsp-mode
-      (make-local-variable 'lsp-mode-map)
-      (define-key lsp-mode-map (kbd "C-c C-f") #'prettier-js))
+    (when (derived-mode-p 'web-mode)
+      (let ((map (make-sparse-keymap)))
+        (set-keymap-parent map lsp-mode-map)
+        (define-key map (kbd "C-c C-f") 'prettier-js)
+        (push `(lsp-mode . ,map)
+              minor-mode-overriding-map-alist))))
   (flycheck-add-mode 'javascript-eslint 'web-mode))
 
 (use-package prettier-js)

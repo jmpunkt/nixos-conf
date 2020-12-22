@@ -18,7 +18,7 @@
       efi.efiSysMountPoint = "/boot/efi";
     };
     cleanTmpDir = true;
-    kernelParams = [ "acpi_backlight=native" "ivrs_ioapic[32]=00:14.0" ];
+    kernelParams = [ "acpi_backlight=native" "ivrs_ioapic[32]=00:14.0" "intel_pstate=disable"];
     initrd.luks.devices."root".allowDiscards = true;
   };
 
@@ -27,6 +27,10 @@
   networking.hostName = "gamma64";
 
   hardware.cpu.amd.updateMicrocode = true;
+
+  environment.systemPackages = with pkgs; [
+    tlp powertop s-tui config.boot.kernelPackages.cpupower
+  ];
 
   services = {
     tlp = {

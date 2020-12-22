@@ -89,6 +89,8 @@
           modules = [
             ./machines/gamma64/configuration.nix
             hardware.nixosModules.lenovo-thinkpad-e495
+            hardware.nixosModules.common-pc-laptop-acpi_call
+            hardware.nixosModules.common-pc-laptop-ssd
             self.nixosModules.home-jonas
             home-manager.nixosModules.home-manager
           ];

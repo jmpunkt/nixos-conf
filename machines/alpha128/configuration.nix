@@ -4,10 +4,9 @@
   imports = [
     ./hardware-configuration.nix
     ./../../configurations/kde.nix
-    ./../../configurations/development.nix
     ./../../configurations/yubico.nix
     ./../../configurations/users/jonas.nix
-    ./../../configurations/razer.nix
+    ./../../configurations/games.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -30,12 +29,27 @@
   networking.hostName = "alpha128";
 
   hardware = {
-    cpu.amd.updateMicrocode = true;
     opengl.extraPackages = with pkgs; [
       rocm-opencl-icd
       amdvlk
     ];
   };
+
+  users.users.jonas = {
+    extraGroups = [
+      config.users.groups.plugdev.name
+    ];
+  };
+
+  hardware.openrazer = {
+    enable = true;
+    syncEffectsEnabled = false;
+    mouseBatteryNotifier = false;
+  };
+
+  environment.systemPackages = with pkgs; [
+    razergenie
+  ];
 
   services.xserver.videoDrivers = [ "amdgpu" ];
 

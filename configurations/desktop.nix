@@ -4,8 +4,12 @@
   imports =
     [ ./base.nix ./locale.nix ./shell.nix ./tmux.nix ./fish ./yubico.nix ];
 
-  # Use newer kernel for desktop based machines
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot = {
+    # Use newer kernel for desktop based machines
+    kernelPackages = pkgs.linuxPackages_latest;
+    supportedFilesystems =
+      [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
+  };
 
   environment.systemPackages = with pkgs; [
     alacritty
@@ -13,14 +17,11 @@
     gnupg
     feh
     thunderbird
-    dbeaver
-    home-manager
     firefox
     audacious
 
     discord
     tdesktop
-    pencil
 
     ntfsprogs
     dosfstools
@@ -28,6 +29,13 @@
     jfsutils
     f2fs-tools
     ntfs3g
+
+    tokei
+    fzf
+    git
+    hyperfine
+    direnv
+    dbeaver
 
     hunspell
     hunspellDicts.en-us-large
@@ -59,9 +67,6 @@
     longitude = 8.682;
   };
 
-  boot.supportedFilesystems =
-    [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
-
   sound.enable = true;
 
   programs.blender = {
@@ -72,15 +77,8 @@
 
   hardware = {
     sane.enable = true;
-    opengl = {
-      enable = true;
-      driSupport32Bit = true;
-    };
-
-    pulseaudio = {
-      enable = true;
-      support32Bit = true;
-    };
+    opengl.enable = true;
+    pulseaudio.enable = true;
   };
 
   networking.networkmanager.enable = true;

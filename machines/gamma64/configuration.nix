@@ -4,7 +4,6 @@
   imports = [
     ./hardware-configuration.nix
     ./../../configurations/kde.nix
-    ./../../configurations/development.nix
     ./../../configurations/yubico.nix
     ./../../configurations/users/jonas.nix
   ];
@@ -18,7 +17,7 @@
       efi.efiSysMountPoint = "/boot/efi";
     };
     cleanTmpDir = true;
-    kernelParams = [ "acpi_backlight=native" "ivrs_ioapic[32]=00:14.0" "intel_pstate=disable"];
+    kernelParams = [ "acpi_backlight=native" "ivrs_ioapic[32]=00:14.0" "intel_pstate=disable" ];
     initrd.luks.devices."root".allowDiscards = true;
   };
 
@@ -29,7 +28,10 @@
   hardware.cpu.amd.updateMicrocode = true;
 
   environment.systemPackages = with pkgs; [
-    tlp powertop s-tui config.boot.kernelPackages.cpupower
+    tlp
+    powertop
+    s-tui
+    config.boot.kernelPackages.cpupower
   ];
 
   services = {

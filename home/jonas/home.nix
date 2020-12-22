@@ -16,9 +16,7 @@
     binutils-unwrapped
     dropbox-cli
     pdfpc
-    steam
     skype
-    minecraft
 
     jmpunkt.emacs
     jmpunkt.latex

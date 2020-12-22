@@ -70,6 +70,9 @@
           system = "x86_64-linux";
           modules = [
             ./machines/alpha128/configuration.nix
+            hardware.nixosModules.common-pc
+            hardware.nixosModules.common-cpu-amd
+            hardware.nixosModules.common-pc-ssd
             self.nixosModules.home-jonas
             home-manager.nixosModules.home-manager
           ];

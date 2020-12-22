@@ -6,35 +6,11 @@
 , symlinkJoin
 , plantuml
 , nodePackages
-, vscode-utils
 , nodejs
-, fetchFromGitHub
+, vscode-extensions
 }:
 let
   emacs = emacsGcc;
-
-  vscode-eslint = let
-    name = "vscode-eslint";
-    publisher = "dbaeumer";
-    # https://github.com/emacs-lsp/lsp-mode/issues/1932#issuecomment-714633460
-    version = "2.1.8";
-  in
-    vscode-utils.buildVscodeExtension {
-      name = "${publisher}-${name}-${version}";
-
-      vscodeExtUniqueId = "${publisher}.${name}";
-
-      src = fetchFromGitHub {
-        owner = "microsoft";
-        repo = "vscode-eslint";
-        rev = "release/${version}";
-        sha256 = "ceNiSXlyeglL9ML73iSTttOEy2rYyc3/lPGOhnL1ZoU=";
-      };
-
-      meta = {
-        license = stdenv.lib.licenses.mit;
-      };
-    };
 
   pathOfExtension = ext: "${ext}/share/vscode/extensions/${ext.vscodeExtUniqueId}";
 in
@@ -159,14 +135,13 @@ in
         (
           jmpunkt.nixosPaths
             {
-              inherit emacs;
               variables = {
                 org-plantuml-jar-path = "${plantuml}/lib/plantuml.jar";
                 ob-mermaid-cli-path = "${nodePackages.jmpunkt.mermaid-cli}/bin/mmdc";
                 mermaid-mmdc-location = "${nodePackages.jmpunkt.mermaid-cli}/bin/mmdc";
                 lsp-eslint-server-command = [
                   "${nodejs}/bin/node"
-                  "${pathOfExtension vscode-eslint}/server/out/eslintServer.js"
+                  "${pathOfExtension vscode-extensions.jmpunkt.vscode-eslint}/server/out/eslintServer.js"
                   "--stdio"
                 ];
                 prettier-js-command = "${nodePackages.prettier}/bin/prettier";

@@ -291,12 +291,16 @@
         lsp-eldoc-render-all nil
         lsp-eldoc-enable-hover nil
         lsp-signature-auto-activate nil
+        lsp-modeline-code-actions-enable nil
         lsp-enable-folding nil
+        lsp-enable-on-type-formatting nil
+        lsp-enable-relative-indentation nil
+        lsp-headerline-breadcrumb-enable nil
 
-        lsp-modeline-code-actions-enable t
+        lsp-completion-enable t
+        lsp-enable-semantic-highlighting t
         lsp-enable-xref t
         lsp-enable-indentation t
-        lsp-enable-on-type-formatting t
         lsp-enable-snippet t))
 
 (use-package lsp-treemacs

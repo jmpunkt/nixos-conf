@@ -39,8 +39,5 @@
     command-not-found.enable = lib.mkForce false;
   };
 
-  services = {
-    fstrim.enable = true;
-    chrony.enable = true;
-  };
+  services.chrony.enable = true;
 }

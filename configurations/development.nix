@@ -7,8 +7,5 @@
     git
     hyperfine
     direnv
-    niv
   ];
-
-  services.lorri.enable = true;
 }

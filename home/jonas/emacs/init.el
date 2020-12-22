@@ -1,9 +1,7 @@
-;;; init.el --- Initilizes Emacs
+;;; init.el --- Initilizes Emacs -*- lexical-binding: t; -*-
 ;;; Commentary:
 
 ;;; Code:
-(eval-when-compile (require 'use-package))
-
 ;;; Startup Improvements
 (setq gc-cons-threshold most-positive-fixnum)
 (add-hook 'after-init-hook
@@ -12,9 +10,13 @@
             (setq gc-cons-threshold 100000000
                   read-process-output-max (* 1024 1024))))
 
-(require 'bind-key)
+;;; Packages
+(setq package-archives nil)
+(setq package-enable-at-startup nil)
 (setq use-package-verbose t)
-(setq garbage-collection-messages t)
+
+(eval-when-compile (require 'use-package))
+(require 'bind-key)
 
 ;;; * Paths
 (use-package nixos-paths

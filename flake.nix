@@ -81,9 +81,7 @@
           }
         );
       in
-        {
-          inherit forAllSystems forx86Systems;
-
+        forAllSystems // forx86Systems // {
           overlay = (final: prev: (import ./overlays/10-pkgs.nix final prev));
 
           nixosModules = {

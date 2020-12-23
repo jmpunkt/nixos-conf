@@ -814,7 +814,13 @@
          ("\\.tsx\\'" . web-mode)
          ("\\.html\\'" . web-mode))
   :hook ((web-mode . lsp)
-         (web-mode . prettier-js-mode))
+         (web-mode . prettier-js-mode)
+         (web-mode . (lambda ()
+                       (with-eval-after-load 'lsp-mode
+                         (let ((newmap (copy-keymap lsp-mode-map)))
+                           (define-key newmap (kbd "C-c C-f") 'prettier-js)
+                           (push `(lsp-mode . ,newmap)
+                                 minor-mode-overriding-map-alist))))))
   :init
   (setq web-mode-markup-indent-offset 2
         web-mode-code-indent-offset 2
@@ -825,13 +831,6 @@
         web-mode-enable-css-colorization t
         web-mode-enable-current-element-highlight t)
   :config
-  (with-eval-after-load 'lsp-mode
-    (when (derived-mode-p 'web-mode)
-      (let ((map (make-sparse-keymap)))
-        (set-keymap-parent map lsp-mode-map)
-        (define-key map (kbd "C-c C-f") 'prettier-js)
-        (push `(lsp-mode . ,map)
-              minor-mode-overriding-map-alist))))
   (flycheck-add-mode 'javascript-eslint 'web-mode))
 
 (use-package prettier-js)

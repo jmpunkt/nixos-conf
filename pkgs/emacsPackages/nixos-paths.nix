@@ -26,15 +26,14 @@ let
     ${pairs}
 
     ;;; Add path such that `executable-find` is able to find them
-    (add-to-list 'exec-path "${emacsLibexec}/bin")
-    (setq-default exec-directory "${emacsLibexec}/bin")
+    (add-to-list 'exec-path "${emacsPaths}/bin")
 
     ;;; Add path such that `shell-command` can inherit `PATH`
     ;;; NOTICE: append at the end of `PATH` ensuring that users can
     ;;; prepend `PATH` allowing overrides
     (setenv "PATH"
             (let ((currentPath (getenv "PATH"))
-                (additionalPath "${emacsLibexec}/bin"))
+                (additionalPath "${emacsPaths}/bin"))
             (if currentPath
                 (concat
                     (getenv "PATH")
@@ -48,24 +47,10 @@ let
 
   emacsPaths = buildEnv {
     inherit paths;
+
     name = "emacs-paths-deps";
-  };
 
-  emacsLibexec = stdenv.mkDerivation {
-    name = "emacs-libexec";
-
-    phases = [ "installPhase" ];
-
-    installPhase = ''
-      mkdir -p $out/bin
-
-      ln -s ${emacsPaths}/bin/* $out/bin
-      find ${emacs}/libexec/ -type f -exec ln -s {} $out/bin \;
-    '';
-
-    meta = {
-      description = "Emulates a `libexec` directory for Emacs which includes the default `libexec` paths and additional dependencies.";
-    };
+    pathsToLink = [ "/bin" ];
   };
 in
 emacsTrivialBuild {

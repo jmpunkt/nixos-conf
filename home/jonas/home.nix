@@ -22,13 +22,16 @@
     jmpunkt.latex
   ];
 
-  xdg.configFile."alacritty/alacritty.yml".text =
-    builtins.readFile ./alacritty/alacritty.yml;
+  xdg.configFile = {
+    "alacritty/alacritty.yml".text =
+      builtins.readFile ./alacritty/alacritty.yml;
+    # since emacs 27.1
+    "emacs/init.el".text = builtins.readFile ./emacs/init.el;
+  };
 
   home.file = {
     ".ssh/id_rsa.pub".text = builtins.readFile ./ssh/yubikey.pub;
     ".ssh/config".text = builtins.readFile ./ssh/config;
-    ".emacs.d/init.el".text = builtins.readFile ./emacs/init.el;
   };
 
   programs = {

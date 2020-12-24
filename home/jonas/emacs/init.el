@@ -298,9 +298,9 @@
         lsp-enable-on-type-formatting nil
         lsp-enable-relative-indentation nil
         lsp-headerline-breadcrumb-enable nil
+        lsp-enable-semantic-highlighting nil
 
         lsp-completion-enable t
-        lsp-enable-semantic-highlighting t
         lsp-enable-xref t
         lsp-enable-indentation t
         lsp-enable-snippet t))

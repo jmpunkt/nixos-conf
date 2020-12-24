@@ -5,7 +5,7 @@ vscode-utils.buildVscodeMarketplaceExtension {
     name = "vscode-eslint";
     publisher = "dbaeumer";
     version = "2.1.8";
-    sha256 = "parXZhF9qyRAlmeGItCbvPfyyQQ9WmlBKKFYQ8KIFH0=";
+    sha256 = "SNAcFeD0ZIr6FTUC2CPdaVqRA0TcYcfK24tT7wUL3KM=";
   };
 
   meta = {

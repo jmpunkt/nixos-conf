@@ -49,7 +49,19 @@
    '(custom-safe-themes
      (quote
       ("79278310dd6cacf2d2f491063c4ab8b129fee2a498e4c25912ddaa6c3c5b621e" default))))
-  (load-theme 'doom-vibrant))
+  (load-theme 'doom-vibrant)
+
+  (set-face-attribute 'default nil
+                      :font "JetBrains Mono"
+                      :height 110
+                      :weight 'light
+                      :width 'normal)
+  (set-face-attribute 'variable-pitch nil
+                      :font "JetBrains Mono"
+                      :height 1.0)
+  (set-face-attribute 'fixed-pitch nil
+                      :font "JetBrains Mono"
+                      :height 1.0))
 
 (use-package doom-modeline
   :demand t
@@ -78,9 +90,10 @@
         auto-save-default nil
         column-number-mode t
         delete-by-moving-to-trash t
-        frame-title-format "%b"
+        frame-title-format "Emacs"
         auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
-        backup-directory-alist `((".*" . ,temporary-file-directory)))
+        backup-directory-alist `((".*" . ,temporary-file-directory))
+        display-line-numbers-grow-only t)
   (save-place-mode 1)
   (show-paren-mode 1)
   (global-display-line-numbers-mode t)
@@ -91,22 +104,12 @@
   (toggle-scroll-bar -1)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
-  (global-eldoc-mode -1)
+  (global-eldoc-mode -1))
 
-  (set-face-attribute 'default nil
-                      :family "JetBrains Mono"
-                      :height 112
-                      :weight 'light)
-  (set-face-attribute 'variable-pitch nil
-                      :family "JetBrains Mono"
-                      :height 1.0)
-  (set-face-attribute 'fixed-pitch nil
-                      :family "JetBrains Mono"
-                      :height 1.0))
+
 
 (use-package ligature
   :config
-  ;; Enable all Cascadia Code ligatures in programming modes
   (ligature-set-ligatures 'prog-mode
                           '("==" "===" "!=" "!==" "=!=" "=:=" "=/="
                             "<=" ">=" "<>" "-|" "_|_" "|-" "||-" "|="
@@ -119,7 +122,6 @@
                             "~>" "[||]" "|]" "[|" "|}" "{|" "[<" ">]"
                             "|>" "<|" "||>" "<||" "|||>" "<|||" "<|>"
                             ":=" "::=" "/=" "//=" "/==" ))
-
   (global-ligature-mode t))
 
 ;;; * Core Packages
@@ -129,7 +131,7 @@
   :config
   (evil-mode 1)
   (evil-set-undo-system 'undo-tree)
-  ; use Xref to find references
+  ;; use Xref to find references
   (define-key evil-normal-state-map (kbd "M-.") nil)
   (define-key evil-motion-state-map "gd" nil))
 
@@ -182,8 +184,8 @@
   :config
   (setq-default ispell-program-name "/run/current-system/sw/bin/hunspell"
                 ispell-really-hunspell t
-                ; Hide all default entries which may not be available
-                ; on the system anyways
+                ;; Hide all default entries which may not be available
+                ;; on the system anyways
                 ispell-dictionary-base-alist nil
                 ispell-local-dictionary "en_US"))
 
@@ -644,7 +646,7 @@
 (use-package org-ref
   :commands org-ref-ivy-cite
   :init
-  ; prevent Helm from loading
+  ;; prevent Helm from loading
   (setq org-ref-completion-library 'org-ref-ivy-cite)
   :config
   (setq org-ref-bibliography-notes org-papers-notes
@@ -776,7 +778,7 @@
   :mode "\\.nix\\'"
   :hook (nix-mode . lsp)
   :bind (:map nix-mode-map
-               ("C-c C-f" . nix-format-buffer))
+              ("C-c C-f" . nix-format-buffer))
   :config
   (setq-default nix-nixfmt-bin "nixpkgs-fmt"))
 
@@ -789,11 +791,11 @@
 ;;;; * Rust
 (use-package rustic
   :bind (:map rustic-mode-map
-               ("C-c k t" . rustic-cargo-test)
-               ("C-c k c" . rustic-cargo-clippy)
-               ("C-c k o" . rustic-cargo-outdated)
-               ("C-c k b" . rustic-compile)
-               ("C-c C-f" . rustic-format-buffer))
+              ("C-c k t" . rustic-cargo-test)
+              ("C-c k c" . rustic-cargo-clippy)
+              ("C-c k o" . rustic-cargo-outdated)
+              ("C-c k b" . rustic-compile)
+              ("C-c C-f" . rustic-format-buffer))
   :config
   (setq rustic-lsp-server 'rust-analyzer)
   (setq rustic-rustfmt-config-alist '((edition . "2018"))))

@@ -27,8 +27,8 @@ in
 {
   stable = (override (rustChannelOf {
     channel = "stable";
-    date = "2020-11-19"; # 1.48
-    sha256 = "7zt+rHZxx+ha4P/UnT2aNIuBtjPkejVI2PycAt+Apiw=";
+    date = "2020-12-31"; # 1.49
+    sha256 = "KCh2UBGtdlBJ/4UOqZlxUtcyefv7MH1neoVNV4z0nWs=";
   })).rust;
   nightly = (override (rustChannelOf {
     channel = "nightly";

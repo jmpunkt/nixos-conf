@@ -152,9 +152,31 @@
 ;;;; * Flycheck
 (use-package flycheck
   :hook (prog-mode . flycheck-mode)
+  :bind (:map flycheck-mode-map
+              ([f7] . toggle-flycheck-error-buffer))
+  :init
+  ;; https://github.com/flycheck/flycheck/issues/710#issuecomment-290899713
+  (defun toggle-flycheck-error-buffer ()
+    "toggle a flycheck error buffer."
+    (interactive)
+    (if (string-match-p "Flycheck errors" (format "%s" (window-list)))
+        (dolist (w (window-list))
+          (when (string-match-p "*Flycheck errors*" (buffer-name (window-buffer w)))
+            (delete-window w)
+            ))
+      (flycheck-list-errors)
+      )
+    )
   :config
   (setq flycheck-check-syntax-automatically '(save mode-enabled)
-        flycheck-display-errors-delay .3))
+        flycheck-display-errors-delay .3)
+  (add-to-list 'display-buffer-alist
+               `(,(rx bos "*Flycheck errors*" eos)
+                 (display-buffer-reuse-window
+                  display-buffer-in-side-window)
+                 (side . bottom)
+                 (reusable-frames . visible)
+                 (window-height . 0.125))))
 
 ;;;; * Spelling
 (use-package flyspell
@@ -165,7 +187,7 @@
                         (when (not (memq major-mode flyspell-disabled-modes))
                           (flyspell-mode 1)))))
   :bind (:map flyspell-mode-map
-              ("C-c s <" . flyspell-correct-previous )
+              ("C-c s <" . flyspell-correct-previous)
               ("C-c s >" . flyspell-correct-next)
               ("C-c s c" . flyspell-correct-at-point)
               ("C-c s d" . ispell-change-dictionary)

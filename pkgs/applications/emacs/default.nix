@@ -28,7 +28,6 @@ in
       projectile
 
       # Org
-      org-fancy-priorities
       org-bullets
       org-ref
       org-noter

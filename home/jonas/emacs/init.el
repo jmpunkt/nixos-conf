@@ -679,10 +679,6 @@
   :hook (org-mode . org-bullets-mode)
   :config (setq org-bullets-bullet-list '("●" "○" "✸" "✿")))
 
-(use-package org-fancy-priorities
-  :hook (org-mode . org-fancy-priorities-mode)
-  :config (setq org-fancy-priorities-list '("⚡" "⬆" "⬇" "☕")))
-
 (use-package ob-async
   :after org)
 

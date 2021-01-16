@@ -32,7 +32,6 @@
   hardware = {
     opengl.extraPackages = with pkgs; [
       rocm-opencl-icd
-      amdvlk
     ];
   };
 

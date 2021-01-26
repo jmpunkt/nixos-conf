@@ -34,7 +34,6 @@ in
       ob-async
       ob-mermaid
       toc-org
-      pdf-tools
 
       # Bibliography
       biblio

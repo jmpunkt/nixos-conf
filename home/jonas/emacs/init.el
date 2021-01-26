@@ -77,6 +77,7 @@
   :demand t
   :hook ((prog-mode . (lambda ()
                         (auto-fill-mode 1)
+                        (display-line-numbers-mode 1)
                         (setq-local comment-auto-fill-only-comments t))))
   :init
   (setq-default tab-width 4
@@ -96,7 +97,6 @@
         display-line-numbers-grow-only t)
   (save-place-mode 1)
   (show-paren-mode 1)
-  (global-display-line-numbers-mode t)
   (global-hl-line-mode 1)
   (global-undo-tree-mode 1)
 
@@ -268,7 +268,6 @@
   :bind (:map global-map
               ([f8] . treemacs)
               ("C-c f" . treemacs-select-window))
-  :hook (treemacs-mode . (lambda () (display-line-numbers-mode -1)))
   :init
   (setq-default treemacs-python-executable "python3")
   :config
@@ -507,6 +506,7 @@
   :hook ((org-mode . (lambda ()
                        (setq-local tab-width 2)
                        (auto-fill-mode 1)
+                       (display-line-numbers-mode 1)
                        (add-to-list 'ispell-skip-region-alist
                                     '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
                        (add-to-list 'ispell-skip-region-alist
@@ -877,6 +877,43 @@
         TeX-newline-function 'newline-and-indent
         TeX-source-correlate-method 'synctex)
   (add-to-list 'LaTeX-verbatim-environments "comment"))
+
+;;; * PDF
+(use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :hook (pdf-view-mode . (lambda ()
+                           (pdf-misc-size-indication-minor-mode)
+                           (pdf-links-minor-mode)
+                           (pdf-isearch-minor-mode)
+                           (display-line-numbers-mode -1)
+                           (cua-mode -1)))
+  :bind
+  (:map pdf-view-mode-map
+        ("/" . my-hydra-pdftools/body)
+        ("C-s" . isearch-forward)
+        ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
+        ("g"  . pdf-view-first-page)
+        ("G"  . pdf-view-last-page)
+        ("l"  . image-forward-hscroll)
+        ("h"  . image-backward-hscroll)
+        ("j"  . pdf-view-next-page)
+        ("k"  . pdf-view-previous-page)
+        ("e"  . pdf-view-goto-page)
+        ("u"  . pdf-view-revert-buffer)
+        ("al" . pdf-annot-list-annotations)
+        ("ad" . pdf-annot-delete)
+        ("aa" . pdf-annot-attachment-dired)
+        ("am" . pdf-annot-add-markup-annotation)
+        ("at" . pdf-annot-add-text-annotation)
+        ("y"  . pdf-view-kill-ring-save)
+        ("i"  . pdf-misc-display-metadata)
+        ("s"  . pdf-occur)
+        ("b"  . pdf-view-set-slice-from-bounding-box)
+        ("r"  . pdf-view-reset-slice))
+  :config
+  (pdf-tools-install)
+  (setq-default pdf-view-display-size 'fit-page)
+  (setq pdf-view-resize-factor 1.1))
 
 ;;; * -- End
 (provide 'init)

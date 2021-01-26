@@ -855,29 +855,6 @@
 
 (use-package prettier-js)
 
-;;; * LaTeX
-(use-package latex
-  :ensure auctex
-  :hook ((LaTeX-mode . turn-off-auto-fill)
-         (LaTeX-mode . TeX-fold-mode)
-         (LaTeX-mode . LaTeX-math-mode)
-         (LaTeX-mode . TeX-source-correlate-mode)
-         (LaTeX-mode . lsp)
-         (LaTeX-mode . outline-minor-mode))
-  :config
-  (TeX-global-PDF-mode 1)
-  (setq-default TeX-master nil)
-  (setq TeX-parse-self t
-        TeX-auto-save t
-        TeX-open-quote "\enquote{"
-        TeX-close-quote "}"
-        LaTeX-indent-level 4
-        LaTeX-item-indent 0
-        TeX-brace-indent-level 4
-        TeX-newline-function 'newline-and-indent
-        TeX-source-correlate-method 'synctex)
-  (add-to-list 'LaTeX-verbatim-environments "comment"))
-
 ;;; * PDF
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)

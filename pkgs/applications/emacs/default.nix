@@ -126,7 +126,7 @@ in
       scala-mode
       prettier-js
     ]
-    ++ (with epkgs.elpaPackages; [ undo-tree auctex seq ])
+    ++ (with epkgs.elpaPackages; [ undo-tree seq ])
     ++ (with epkgs.orgPackages; [ org org-plus-contrib ])
     ++ (
       with epkgs.manualPackages; [

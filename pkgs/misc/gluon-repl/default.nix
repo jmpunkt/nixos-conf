@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub }:
+{ lib, rustPlatform, fetchFromGitHub }:
 
 rustPlatform.buildRustPackage rec {
   pname = "gluon";
@@ -19,7 +19,7 @@ rustPlatform.buildRustPackage rec {
   preBuild = "cd repl";
   postBuild = "cd ..";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description =
       "A static, type inferred and embeddable language written in Rust";
     homepage = "https://github.com/gluon-lang/gluon";

@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, extra-cmake-modules, kdoctools, gettext, isocodes, libX11
+{ stdenv, lib, fetchgit, extra-cmake-modules, kdoctools, gettext, isocodes, libX11
 , libXScrnSaver, vlc, sqlite, xorg, qt5, libsForQt5 }:
 
 stdenv.mkDerivation rec {
@@ -28,10 +28,10 @@ stdenv.mkDerivation rec {
     libsForQt5.kdbusaddons
   ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     homepage = "https://invent.kde.org/multimedia/kaffeine";
     license = with licenses; [ gpl2 ];
     maintainers = with maintainers; [ ];
-    platforms = stdenv.lib.platforms.linux;
+    platforms = platforms.linux;
   };
 }

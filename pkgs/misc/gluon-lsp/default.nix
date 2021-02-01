@@ -1,4 +1,4 @@
-{ stdenv, rustPlatform, fetchFromGitHub, pkg-config, openssl }:
+{ lib, rustPlatform, fetchFromGitHub, pkg-config, openssl }:
 
 rustPlatform.buildRustPackage rec {
   pname = "gluon-lsp";
@@ -15,7 +15,7 @@ rustPlatform.buildRustPackage rec {
 
   buildInputs = [ openssl pkg-config ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Language server providing completion for gluon ";
     homepage = "https://github.com/gluon-lang/gluon_language-server";
     license = licenses.mit;

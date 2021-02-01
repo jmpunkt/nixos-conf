@@ -1,4 +1,4 @@
-{ stdenv, lib, mozillaNightlyRustPlatform, fetchurl, pkg-config, git, git-lfs
+{ lib, mozillaNightlyRustPlatform, fetchurl, pkg-config, git, git-lfs
 , python3, alsaLib, atk, cairo, glib, gtk3, pango, server ? false, chat ? false,
 }:
 
@@ -26,7 +26,7 @@ mozillaNightlyRustPlatform.buildRustPackage rec {
 
   cargoSha256 = "0yzmsr2iqdz6k4bagkfp0fs0k571cr1w03kxzxwqr2laqic42aw5";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description =
       "Veloren is a multiplayer voxel RPG written in Rust. It is inspired by games such as Cube World, Legend of Zelda: Breath of the Wild, Dwarf Fortress and Minecraft.";
     homepage = "https://gitlab.com/veloren/veloren";

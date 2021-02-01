@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, fetchFromGitHub, unzip, coreutils, bash, which, zip, ispell, perl, hunspell }:
+{ stdenv, lib, fetchurl, fetchFromGitHub, unzip, coreutils, bash, which, zip, ispell, perl, hunspell }:
 let
   mkDict =
     { name, readmeFile, dictFileName, ... }@args:
@@ -37,7 +37,7 @@ in
       unzip $src ${dictFileName}/{${dictFileName}.dic,${dictFileName}.aff,${readmeFile}}
     '';
 
-    meta = with stdenv.lib; {
+    meta = with lib; {
       description = "Hunspell dictionary for German (Germany) from LibreOffice";
       homepage = "https://extensions.libreoffice.org/extensions/german-de-de-frami-dictionaries";
       license = licenses.lgpl3Only;

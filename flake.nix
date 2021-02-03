@@ -18,6 +18,8 @@
 
     emacs.url = "github:nix-community/emacs-overlay";
 
+    emacs-pinned.url = "github:nix-community/emacs-overlay/6e3544b73afea08d1428b159b2a57dc9d1724493";
+
     utils.url = "github:numtide/flake-utils";
 
     flake-compat = {
@@ -33,6 +35,7 @@
     , home-manager
     , mozilla
     , emacs
+    , emacs-pinned
     , utils
     , flake-compat
     }:
@@ -58,6 +61,11 @@
           (import mozilla)
           self.overlay
           emacs.overlay
+          (
+            final: prev: {
+              emacsGcc = (import "${emacs-pinned}/default.nix" final prev).emacsGcc;
+            }
+          )
         ];
 
         forAllSystems = utils.lib.eachDefaultSystem

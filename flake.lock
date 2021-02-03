@@ -2,6 +2,21 @@
   "nodes": {
     "emacs": {
       "locked": {
+        "lastModified": 1612311986,
+        "narHash": "sha256-hN98kHV90Xs3AVvFWa3UlL39W1mMJB3S1E0iBmS888Q=",
+        "owner": "nix-community",
+        "repo": "emacs-overlay",
+        "rev": "a083f48ac6ee172d69aafe4af2b0d1f7714140de",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "emacs-overlay",
+        "type": "github"
+      }
+    },
+    "emacs-pinned": {
+      "locked": {
         "lastModified": 1609691039,
         "narHash": "sha256-D8XxSBJ/FgUozgyqilSxq+AT7re9NOOOY/LlLK91JmA=",
         "owner": "nix-community",
@@ -12,6 +27,7 @@
       "original": {
         "owner": "nix-community",
         "repo": "emacs-overlay",
+        "rev": "6e3544b73afea08d1428b159b2a57dc9d1724493",
         "type": "github"
       }
     },
@@ -102,6 +118,7 @@
     "root": {
       "inputs": {
         "emacs": "emacs",
+        "emacs-pinned": "emacs-pinned",
         "flake-compat": "flake-compat",
         "hardware": "hardware",
         "home-manager": "home-manager",

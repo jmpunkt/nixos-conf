@@ -11,12 +11,12 @@
                   read-process-output-max (* 1024 1024))))
 
 ;;; Packages
+(eval-when-compile (require 'use-package))
+(require 'bind-key)
+
 (setq package-archives nil)
 (setq package-enable-at-startup nil)
 (setq use-package-verbose t)
-
-(eval-when-compile (require 'use-package))
-(require 'bind-key)
 
 ;;; * Paths
 (use-package nixos-paths
@@ -128,12 +128,21 @@
 ;;;; * Evil
 (use-package evil
   :demand t
+  :init
+  (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
   :config
   (evil-mode 1)
   (evil-set-undo-system 'undo-tree)
   ;; use Xref to find references
   (define-key evil-normal-state-map (kbd "M-.") nil)
   (define-key evil-motion-state-map "gd" nil))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 ;;;; * DirEnv
 (use-package direnv
@@ -321,7 +330,7 @@
         lsp-enable-on-type-formatting nil
         lsp-enable-relative-indentation nil
         lsp-headerline-breadcrumb-enable nil
-        lsp-enable-semantic-highlighting nil
+        lsp-semantic-tokens-enable nil
 
         lsp-completion-enable t
         lsp-enable-xref t
@@ -476,9 +485,6 @@
 (use-package gitattributes-mode)
 (use-package gitconfig-mode)
 (use-package gitignore-mode)
-
-(use-package evil-magit
-  :after magit)
 
 (use-package hl-todo
   :demand t

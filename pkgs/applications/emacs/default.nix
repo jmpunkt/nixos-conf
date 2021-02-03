@@ -19,6 +19,7 @@ in
     with epkgs.melpaPackages; [
       # Core
       evil
+      evil-collection
       use-package
       smartparens
       which-key
@@ -49,7 +50,6 @@ in
       gitattributes-mode
       gitconfig-mode
       gitignore-mode
-      evil-magit
       diff-hl
 
       # Tree

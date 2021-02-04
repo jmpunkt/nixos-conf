@@ -737,7 +737,9 @@
 (use-package markdown-mode
   :bind (:map markdown-mode-map
               ("C-c C-o" . toc-org-markdown-follow-thing-at-point))
-  :hook (markdown-mode . toc-org-mode)
+  :hook ((markdown-mode . toc-org-mode)
+         (markdown-mode . (lambda ()
+                            (display-line-numbers-mode 1))))
   :mode
   ("INSTALL\\'"
    "CONTRIBUTORS\\'"
@@ -868,7 +870,6 @@
                            (pdf-misc-size-indication-minor-mode)
                            (pdf-links-minor-mode)
                            (pdf-isearch-minor-mode)
-                           (display-line-numbers-mode -1)
                            (cua-mode -1)))
   :bind
   (:map pdf-view-mode-map

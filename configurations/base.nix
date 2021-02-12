@@ -39,5 +39,8 @@
     command-not-found.enable = lib.mkForce false;
   };
 
+  security.doas.enable = true;
+  security.sudo.enable = lib.mkForce false;
+
   services.chrony.enable = true;
 }

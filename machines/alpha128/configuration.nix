@@ -7,7 +7,6 @@
     ./../../configurations/yubico.nix
     ./../../configurations/users/jonas.nix
     ./../../configurations/games.nix
-    ./../../configurations/android.nix
   ];
 
   nixpkgs.config.allowUnfree = true;

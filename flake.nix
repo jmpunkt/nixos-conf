@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-20.09";
 
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     hardware.url = "github:NixOS/nixos-hardware";
 
     home-manager = {
@@ -35,6 +37,7 @@
     , emacs
     , utils
     , flake-compat
+    , unstable
     }:
       let
         mkSystem = { system, modules }:
@@ -48,7 +51,7 @@
                   nix.registry.nixpkgs.flake = nixpkgs;
                   # Allows commands like `nix shell self#jmpunkt.emacs`
                   nix.registry.self.flake = self;
-                  nixpkgs.overlays = overlays;
+                  nixpkgs.overlays = overlays ++ [ (unstableOverlay system) ];
                 }
               )
             ] ++ modules;
@@ -60,8 +63,22 @@
           emacs.overlay
         ];
 
+        unstableOverlay = system: final: prev: {
+          unstable = import unstable {
+            inherit system overlays;
+            config.allowUnfree = true;
+          };
+        };
+
         forAllSystems = utils.lib.eachDefaultSystem
-          (system: { legacyPackages = import nixpkgs { inherit system overlays; }; });
+          (
+            system: {
+              legacyPackages = import nixpkgs {
+                inherit system;
+                overlays = overlays ++ [ (unstableOverlay system) ];
+              };
+            }
+          );
 
         forx86Systems = utils.lib.eachSystem [ "x86_64-linux" "i686-linux" ] (
           system: {

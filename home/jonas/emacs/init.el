@@ -353,6 +353,34 @@
 (use-package lsp-ivy
   :commands lsp-ivy-workspace-symbol)
 
+;;;; elfeed
+(use-package elfeed
+  :commands (elfeed)
+  :init
+  (setq elfeed-feeds
+      '("https://rss.golem.de/rss.php?feed=RSS2.0"
+        "https://www.phoronix.com/phoronix-rss.php"
+        "https://www.heise.de/security/rss/alert-news-atom.xml"
+        "https://www.heise.de/rss/heise-atom.xml"
+        "https://www.tagesschau.de/xml/rss2/")))
+
+;;;; WWW
+(use-package shr
+  :config
+  (setq shr-use-colors nil
+        shr-bullet "• "
+        shr-folding-mode t))
+
+(use-package browse-url
+  :config
+  (setq browse-url-handlers '((".*youtube.*" . browse-url-firefox)
+                              (".*github.*" . browse-url-firefox)
+                              ("." . eww-browse-url))))
+(use-package eww
+  :hook (eww-mode . (lambda () (setq-local show-trailing-whitespace nil)))
+  :config
+  (setq eww-search-prefix "https://duckduckgo.com/html?q="))
+
 ;;;; * Completion
 ;;;;; * Ivy
 (use-package ivy

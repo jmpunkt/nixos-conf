@@ -94,6 +94,8 @@ in
       company-reftex
       company-prescient
 
+      elfeed
+
       # LSP
       lsp-ui
       lsp-java

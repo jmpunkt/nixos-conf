@@ -15,6 +15,9 @@
       set -g mouse on
       setw -g alternate-screen on
 
+      # enable true 256-color support
+      set -ga terminal-overrides ",xterm-256color:Tc"
+
       # easier and faster switching between next/prev window
       bind C-p previous-window
       bind C-n next-window

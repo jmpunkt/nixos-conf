@@ -477,6 +477,7 @@
           magit-insert-unpulled-from-pushremote
           magit-insert-unpushed-to-upstream
           magit-insert-unpushed-to-pushremote))
+  (setq magit-diff-refine-hunk 'all)
   (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
   (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
   (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-pushremote)
@@ -500,6 +501,9 @@
   :hook (magit-mode . magit-todos-mode)
   :config
   (setq magit-todos-depth 100))
+
+;; (use-package magit-delta
+;;   :hook (magit-mode . magit-delta-mode))
 
 (use-package diff-hl
   :init (global-diff-hl-mode)

@@ -2,7 +2,7 @@
 
 {
   imports = [ ./neovim/default.nix ]
-    ++ (import ../../modules/all-home-manager.nix);
+  ++ (import ../../modules/all-home-manager.nix);
 
   home.language = {
     base = "en_US.utf8";
@@ -43,7 +43,22 @@
         key = "4D78720A4358CC504F3EB45B26CDFB2E4DB6B136";
         signByDefault = true;
       };
-      extraConfig = { core.editor = "nvim"; };
+      extraConfig = {
+        core = {
+          editor = "nvim";
+          pager = "delta";
+        };
+        interactive.diffFilter = "delta --color-only";
+        delta = {
+          features = "line-numbers";
+          whitespace-error-style = "22 reverse";
+          decorations = {
+            commit-decoration-style = "bold yellow box ul";
+            file-style = "bold yellow ul";
+            file-decoration-style = "none";
+          };
+        };
+      };
     };
   };
 

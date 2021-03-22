@@ -33,6 +33,7 @@
     tokei
     fzf
     git
+    gitAndTools.delta
     hyperfine
     direnv
     dbeaver

@@ -47,6 +47,7 @@ in
       # Git
       magit
       magit-todos
+      # magit-delta
       gitattributes-mode
       gitconfig-mode
       gitignore-mode
@@ -145,6 +146,7 @@ in
                 prettier-js-command = "${nodePackages.prettier}/bin/prettier";
               };
               paths = with pkgs; [
+                gitAndTools.delta # magit-delta
                 inkscape # org-mode:graphs
                 imagemagick # org-mode:graphs
                 graphviz-nox # org-mode:graphs

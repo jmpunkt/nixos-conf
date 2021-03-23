@@ -21,11 +21,6 @@
     emacs.url = "github:nix-community/emacs-overlay";
 
     utils.url = "github:numtide/flake-utils";
-
-    flake-compat = {
-      url = "github:edolstra/flake-compat";
-      flake = false;
-    };
   };
 
   outputs =
@@ -36,7 +31,6 @@
     , mozilla
     , emacs
     , utils
-    , flake-compat
     , unstable
     }:
       let

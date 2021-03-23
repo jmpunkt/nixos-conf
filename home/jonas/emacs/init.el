@@ -288,7 +288,8 @@
         treemacs-sorting 'alphabetic-desc
         treemacs-show-hidden-files t
         treemacs-is-never-other-window nil
-        treemacs-eldoc-display nil)
+        treemacs-eldoc-display nil
+        treemacs-read-string-input 'from-minibuffer)
   (treemacs-follow-mode t)
   (treemacs-git-mode 'deferred)
   (treemacs-filewatch-mode t))
@@ -362,7 +363,8 @@
         "https://www.phoronix.com/phoronix-rss.php"
         "https://www.heise.de/security/rss/alert-news-atom.xml"
         "https://www.heise.de/rss/heise-atom.xml"
-        "https://www.tagesschau.de/xml/rss2/")))
+        "https://www.tagesschau.de/xml/rss2/"
+        "https://weekly.nixos.org/feeds/all.rss.xml")))
 
 ;;;; WWW
 (use-package shr

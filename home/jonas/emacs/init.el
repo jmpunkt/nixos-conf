@@ -438,7 +438,7 @@
               ("C-c p f" . counsel-projectile-find-file)
               ("C-c p i" . projectile-invalidate-cache)
               ("C-c p k" . projectile-kill-buffers)
-              ("C-c p p" . counsel-projectile-switch-project)
+              ("C-c p p" . projectile-switch-project)
               ("C-c p r" . projectile-replace)
               ("C-c p R" . projectile-replace-regexp)
               ("C-c p s" . counsel-projectile-rg)

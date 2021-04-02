@@ -19,4 +19,5 @@
   pythonToolchain = callPackage ../pkgs/misc/pythonToolchain { };
   mozillaRustToolchain = callPackage ../pkgs/misc/mozillaRustToolchain { };
   hunspellDicts = callPackage ../pkgs/hunspellDicts { };
+  verapdf = callPackage ../pkgs/applications/verapdf { };
 }

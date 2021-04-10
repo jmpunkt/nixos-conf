@@ -13,7 +13,8 @@
     kdeApplications.spectacle
     kdeApplications.ktouch
     kdeApplications.kdialog
-    vlc
+    mpv
+    smplayer
     libreoffice-qt
     krita
     skanlite

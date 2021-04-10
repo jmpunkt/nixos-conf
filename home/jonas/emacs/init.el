@@ -318,7 +318,7 @@
               ("C-c k r" . lsp-rename)
               ("C-c C-f" . lsp-format-buffer)
               ("C-c k m" . lsp-ui-imenu)
-              ("C-c k x" . lsp-execute-code-action)
+              ("M-RET" . lsp-execute-code-action)
               ("C-c k S" . lsp-workspace-shutdown))
   :config
   (setq lsp-print-performance nil

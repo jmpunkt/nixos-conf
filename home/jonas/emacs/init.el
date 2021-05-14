@@ -70,7 +70,8 @@
   (setq doom-modeline-lsp t
         doom-modeline-height 30
         doom-modeline-icon nil
-        doom-modeline-major-mode-icon nil))
+        doom-modeline-major-mode-icon nil
+        doom-modeline-buffer-file-name-style 'relative-to-project))
 
 ;;; * Emacs
 (use-package emacs

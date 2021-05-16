@@ -77,6 +77,8 @@ in
       ivy-bibtex
       ivy-prescient
       ivy-xref
+      flx
+      prescient
       counsel
       counsel-projectile
 

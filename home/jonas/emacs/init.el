@@ -405,6 +405,13 @@
                                 (swiper . ivy--regex-plus)
                                 (t . ivy--regex-fuzzy))))
 
+(use-package flx)
+
+(use-package prescient
+  :after counsel
+  :config
+  (prescient-persist-mode 1))
+
 (use-package counsel
   :after ivy
   :bind (:map global-map
@@ -415,8 +422,9 @@
 
 
 (use-package ivy-prescient
-  :after ivy
+  :after (prescient counsel)
   :config
+  (setq ivy-prescient-retain-classic-highlighting t)
   (ivy-prescient-mode t))
 
 (use-package ivy-xref
@@ -476,7 +484,7 @@
                            company-dabbrev)))
 
 (use-package company-prescient
-  :after company
+  :after prescient
   :config
   (company-prescient-mode t))
 

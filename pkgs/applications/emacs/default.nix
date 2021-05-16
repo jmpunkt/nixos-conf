@@ -47,10 +47,6 @@ in
       # Git
       magit
       magit-todos
-      # magit-delta
-      gitattributes-mode
-      gitconfig-mode
-      gitignore-mode
       diff-hl
 
       # Tree
@@ -92,7 +88,6 @@ in
       company-bibtex
       company-math
       company-web
-      company-quickhelp
       company-reftex
       company-prescient
 

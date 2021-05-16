@@ -488,12 +488,6 @@
   :config
   (company-prescient-mode t))
 
-(use-package company-quickhelp
-  :after company
-  :config
-  (company-quickhelp-mode 1))
-
-
 ;;;; * Git
 (use-package magit
   :bind (:map global-map
@@ -521,10 +515,6 @@
   (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
   (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-pushremote)
   (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-upstream))
-
-(use-package gitattributes-mode)
-(use-package gitconfig-mode)
-(use-package gitignore-mode)
 
 (use-package hl-todo
   :demand t

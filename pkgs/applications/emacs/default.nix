@@ -106,7 +106,7 @@ in
       lsp-metals
 
       # Configuration
-      bazel-mode
+      bazel
       yaml-mode
       json-mode
       fish-mode

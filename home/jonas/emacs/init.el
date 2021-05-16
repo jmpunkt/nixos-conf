@@ -741,7 +741,7 @@
 (use-package mermaid-mode)
 
 ;;;; * Bazel
-(use-package bazel-mode
+(use-package bazel
   :mode ("BUILD\\'" "\\.bzl\\'")
   :bind (:map bazel-mode-map
               ("C-c C-f" . bazel-mode-buildifier)))

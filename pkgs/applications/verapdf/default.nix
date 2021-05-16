@@ -92,7 +92,8 @@ buildMavenModules rec {
 
   modules = [ "pdfbox-apps" "greenfield-apps" ];
 
-  depsSha256 = "Ftn617AQaz4A7uv1+IIox4qxrvd0O181nUZUIWTKhig=";
+  # NOTICE: SHA changed without changing the version of verapdf
+  depsSha256 = "D/ZCCPDwJa/lM5zgjskBnnnAlNRh7nH5+ksrQr3Y59I=";
 
   meta = with stdenv.lib; {
     description = "Greenfield PDF/A validation, feature reporting and metadata repair developed for veraPDF";

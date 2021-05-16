@@ -1,7 +1,7 @@
 { stdenv
 , buildEnv
 , pkgs
-, emacsGcc
+, emacsPgtkGcc
 , emacsPackagesFor
 , symlinkJoin
 , plantuml
@@ -10,7 +10,7 @@
 , vscode-extensions
 }:
 let
-  emacs = emacsGcc;
+  emacs = emacsPgtkGcc;
 
   pathOfExtension = ext: "${ext}/share/vscode/extensions/${ext.vscodeExtUniqueId}";
 in

@@ -18,6 +18,12 @@
 (setq package-enable-at-startup nil)
 (setq use-package-verbose t)
 
+;;; * Profiler
+(use-package esup
+  :commands (esup)
+  :init
+  (setq esup-depth 0))
+
 ;;; * Paths
 (use-package nixos-paths
   :demand t)
@@ -64,8 +70,7 @@
                       :height 1.0))
 
 (use-package doom-modeline
-  :demand t
-  :init (doom-modeline-mode 1)
+  :hook (after-init . doom-modeline-mode)
   :config
   (setq doom-modeline-lsp t
         doom-modeline-height 30
@@ -141,9 +146,52 @@
 
 (use-package evil-collection
   :after evil
-  :ensure t
   :config
-  (evil-collection-init))
+  (evil-collection-init `(bookmark
+                          calc
+                          calendar
+                          company
+                          compile
+                          dashboard
+                          debug
+                          dictionary
+                          diff-mo
+                          dired
+                          ediff
+                          elfeed
+                          elisp-mode
+                          elisp-refs
+                          elisp-slime-nav
+                          eshell
+                          eww
+                          flycheck
+                          help
+                          helpful
+                          info
+                          ivy
+                          js2-mode
+                          man
+                          magit
+                          magit-todos
+                          ,@(when evil-collection-setup-minibuffer '(minibuffer))
+                          ;; occur is in replace.el which was built-in before Emacs 26.
+                          org-present
+                          (pdf pdf-view)
+                          (process-menu simple)
+                          profiler
+                          python
+                          reftex
+                          rg
+                          ripgrep
+                          rjsx-mode
+                          sh-script
+                          ,@(when (>= emacs-major-version 28) '(shortdoc))
+                          tide
+                          typescript-mode
+                          wgrep
+                          which-key
+                          woman
+                          xref)))
 
 ;;;; * DirEnv
 (use-package direnv
@@ -274,7 +322,6 @@
 
 ;;;; * Treemacs
 (use-package treemacs
-  :demand t
   :bind (:map global-map
               ([f8] . treemacs)
               ("C-c f" . treemacs-select-window))
@@ -369,17 +416,20 @@
 
 ;;;; WWW
 (use-package shr
+  :defer t
   :config
   (setq shr-use-colors nil
         shr-bullet "• "
         shr-folding-mode t))
 
 (use-package browse-url
+  :defer t
   :config
   (setq browse-url-handlers '((".*youtube.*" . browse-url-firefox)
                               (".*github.*" . browse-url-firefox)
                               ("." . eww-browse-url))))
 (use-package eww
+  :commands (eww eww-follow-link)
   :hook (eww-mode . (lambda () (setq-local show-trailing-whitespace nil)))
   :config
   (setq eww-search-prefix "https://duckduckgo.com/html?q="))
@@ -405,7 +455,8 @@
                                 (swiper . ivy--regex-plus)
                                 (t . ivy--regex-fuzzy))))
 
-(use-package flx)
+(use-package flx
+  :defer t)
 
 (use-package prescient
   :after counsel
@@ -460,7 +511,8 @@
   (yas-global-mode 1))
 
 (use-package yasnippet-snippets
-  :after yasnippet)
+  :after yasnippet
+  :defer 2)
 
 ;;;;; * Company
 (use-package company
@@ -556,27 +608,43 @@
                                       (when org-inline-image-overlays
                                         (org-redisplay-inline-images)))))
   :config
-
   (setq org-highlight-latex-and-related '(latex)
         org-ellipsis "…"
         org-log-done 'time
         org-catch-invisible-edits 'smart
         org-deadline-warning-days 14
-        org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+        org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((shell . t)
-     (js . t)
-     (python . t)
-     (emacs-lisp . t)
-     (haskell . t)
-     (latex . t)
-     (plantuml . t)
-     (mermaid . t)
-     (gnuplot . t)
-     (sql . t)
-     (dot . t))))
+(use-package ob-python
+  :defer t
+  :commands (org-babel-execute:python))
+
+(use-package ob-latex
+  :defer t
+  :commands (org-babel-execute:latex
+             org-babel-expand-body:latex))
+
+(use-package ob-gnuplot
+  :defer t
+  :commands (org-babel-expand-body:gnuplot))
+
+(use-package ob-dot
+  :defer t
+  :commands (org-babel-execute:dot
+             org-babel-expand-body:dot))
+
+(use-package ob-emacs-lisp
+  :defer t
+  :commands (org-babel-execute:emacs-lisp
+             org-babel-expand-body:emacs-lisp))
+
+(use-package ob-plantuml
+  :defer t
+  :commands (org-babel-execute:plantuml))
+
+(use-package ob-async
+  :commands (ob-async-org-babel-execute-src-block
+             org-babel-execute-src-block:async))
 
 (use-package org-agenda
   :after org
@@ -584,7 +652,7 @@
   (setq org-agenda-files (list org-agenda-dir)))
 
 (use-package org-capture
-  :after org
+  :commands (org-capture)
   :config
   (setq org-capture-templates
         '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
@@ -599,11 +667,11 @@
            "* %? %^G \n  %^t"))))
 
 (use-package org-indent
-  :after org
   :hook (org-mode . org-indent-mode))
 
 (use-package org-src
   :after org
+  :defer t
   :hook (org-src-mode . (lambda ()
                           (setq-local
                            flycheck-disabled-checkers
@@ -698,6 +766,7 @@
 
 (use-package ox-extra
   :after org
+  :defer t
   :config
   (ox-extras-activate '(ignore-headlines)))
 
@@ -718,9 +787,6 @@
   :hook (org-mode . org-bullets-mode)
   :config (setq org-bullets-bullet-list '("●" "○" "✸" "✿")))
 
-(use-package ob-async
-  :after org)
-
 ;;; * Configuration Files
 
 ;;;; * Dhall
@@ -728,7 +794,8 @@
   :mode "\\.dhall\\'")
 
 ;;;; * Mermaid
-(use-package mermaid-mode)
+(use-package mermaid-mode
+  :defer t)
 
 ;;;; * Bazel
 (use-package bazel
@@ -894,7 +961,8 @@
   :config
   (flycheck-add-mode 'javascript-eslint 'web-mode))
 
-(use-package prettier-js)
+(use-package prettier-js
+  :commands prettier-js)
 
 ;;; * PDF
 (use-package pdf-tools

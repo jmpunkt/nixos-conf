@@ -8,6 +8,7 @@
 , nodePackages
 , nodejs
 , vscode-extensions
+, unstable
 }:
 let
   emacs = emacsPgtkGcc;
@@ -136,8 +137,8 @@ in
             {
               variables = {
                 org-plantuml-jar-path = "${plantuml}/lib/plantuml.jar";
-                ob-mermaid-cli-path = "${nodePackages.jmpunkt.mermaid-cli}/bin/mmdc";
-                mermaid-mmdc-location = "${nodePackages.jmpunkt.mermaid-cli}/bin/mmdc";
+                ob-mermaid-cli-path = "${unstable.nodePackages.mermaid-cli}/bin/mmdc";
+                mermaid-mmdc-location = "${unstable.nodePackages.mermaid-cli}/bin/mmdc";
                 lsp-eslint-server-command = [
                   "${nodejs}/bin/node"
                   "${pathOfExtension vscode-extensions.jmpunkt.vscode-eslint}/server/out/eslintServer.js"
@@ -150,7 +151,7 @@ in
                 inkscape # org-mode:graphs
                 imagemagick # org-mode:graphs
                 graphviz-nox # org-mode:graphs
-                nodePackages.jmpunkt.mermaid-cli # org-mode:graphs
+                unstable.nodePackages.mermaid-cli # org-mode:graphs
                 jre # required by plantuml
                 ghostscript # LaTex EPS files
                 unoconv # org-mode:odt

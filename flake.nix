@@ -57,12 +57,17 @@
           emacs.overlay
         ];
 
-        unstableOverlay = system: final: prev: {
-          unstable = import unstable {
-            inherit system overlays;
-            config.allowUnfree = true;
-          };
-        };
+        unstableOverlay = system: final: prev:
+          let
+            unstablePkgs = final: prev: { unstable = prev.pkgs; };
+          in
+            {
+              unstable = import unstable {
+                inherit system;
+                overlays = overlays ++ [ unstablePkgs ];
+                config.allowUnfree = true;
+              };
+            };
 
         forAllSystems = utils.lib.eachDefaultSystem
           (

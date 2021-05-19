@@ -82,7 +82,7 @@
         forx86Systems = utils.lib.eachSystem [ "x86_64-linux" "i686-linux" ] (
           system: {
             packages.iso = (
-              nixpkgs.lib.nixosSystem {
+              mkSystem {
                 inherit system;
                 modules = [ (import ./machines/iso/configuration.nix) ];
               }

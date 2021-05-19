@@ -824,6 +824,8 @@
 
 ;;;; * GraphQL
 (use-package graphql-mode
+  :bind (:map graphql-mode-map
+              ("C-c C-f" . prettier-js))
   :mode ("\\.graphql\\'"))
 
 ;;; * Text Files

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -68,7 +68,7 @@
     longitude = 8.682;
   };
 
-  sound.enable = true;
+  sound.enable = lib.mkForce false;
 
   programs.blender = {
     enable = true;
@@ -79,12 +79,20 @@
   hardware = {
     sane.enable = true;
     opengl.enable = true;
-    pulseaudio.enable = true;
+    pulseaudio.enable = lib.mkForce false;
   };
 
   networking.networkmanager.enable = true;
 
   services = {
+    pipewire = {
+      enable = true;
+      pulse = { enable = true; };
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+    };
     redshift = {
       enable = true;
       brightness = {
@@ -116,7 +124,7 @@
       enable = true;
       libinput = {
         enable = true;
-        accelProfile = "flat";
+        touchpad.accelProfile = "flat";
       };
     };
   };

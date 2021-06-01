@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, jdk, jre, maven, makeWrapper }:
+{ stdenv, lib, fetchFromGitHub, jdk, jre, maven, makeWrapper }:
 
 #  <interactiveMode>true</interactiveMode>
 #  <offline>false</offline>
@@ -95,7 +95,7 @@ buildMavenModules rec {
   # NOTICE: SHA changed without changing the version of verapdf
   depsSha256 = "D/ZCCPDwJa/lM5zgjskBnnnAlNRh7nH5+ksrQr3Y59I=";
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Greenfield PDF/A validation, feature reporting and metadata repair developed for veraPDF";
     homepage = "https://github.com/veraPDF/veraPDF-validation";
     license = with licenses; [ gpl3Plus mpl20 ];

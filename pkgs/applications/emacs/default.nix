@@ -1,7 +1,7 @@
 { stdenv
 , buildEnv
 , pkgs
-, emacsPgtkGcc
+, emacsGcc
 , emacsPackagesFor
 , symlinkJoin
 , plantuml
@@ -11,7 +11,7 @@
 , unstable
 }:
 let
-  emacs = emacsPgtkGcc;
+  emacs = emacsGcc;
 
   pathOfExtension = ext: "${ext}/share/vscode/extensions/${ext.vscodeExtUniqueId}";
 in
@@ -32,16 +32,10 @@ in
 
       # Org
       org-bullets
-      org-ref
       org-noter
       ob-async
       ob-mermaid
       toc-org
-
-      # Bibliography
-      biblio
-      biblio-core
-      parsebib
 
       # PDF
       pdf-tools
@@ -66,43 +60,35 @@ in
       doom-modeline
       doom-themes
 
+      # Bibliography
+      bibtex-actions
+
       # Linter
       flycheck
-      flycheck-irony
 
       # Search/Find
-      ivy
-      ivy-bibtex
-      ivy-prescient
-      ivy-xref
-      flx
-      prescient
-      counsel
-      counsel-projectile
+      selectrum
+      consult
+      orderless
 
       # Spelling
       langtool
       flyspell-correct
-      flyspell-correct-ivy
 
       # Completion
       company
-      company-bibtex
       company-math
       company-web
-      company-reftex
-      company-prescient
 
+      # RSS
       elfeed
 
       # LSP
       lsp-ui
-      lsp-java
-      lsp-ivy
       lsp-treemacs
       lsp-metals
 
-      # Configuration
+      # Misc
       bazel
       yaml-mode
       json-mode
@@ -116,11 +102,9 @@ in
 
       # Presentation
       markdown-mode
-      pandoc-mode
       graphviz-dot-mode
 
       # Programming
-      irony
       rustic
       haskell-mode
       web-mode

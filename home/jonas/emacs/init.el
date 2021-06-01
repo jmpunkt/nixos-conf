@@ -33,16 +33,13 @@
 (defconst org-papers-dir (expand-file-name "papers" org-remote-dir))
 (defconst org-papers-pdfs (expand-file-name "lib" org-papers-dir))
 (defconst org-papers-notes (expand-file-name "notes.org" org-papers-dir))
-(defconst org-papers-bibtex (expand-file-name "index.bib" org-papers-dir))
 
 ;;; * Theme
 (use-package all-the-icons
-  :demand t
   :init
   (setq inhibit-compacting-font-caches t))
 
 (use-package doom-themes
-  :demand t
   :config
   (setq doom-themes-enable-bold t
         doom-themes-enable-italic t
@@ -54,7 +51,7 @@
   (custom-set-variables
    '(custom-safe-themes
      (quote
-      ("79278310dd6cacf2d2f491063c4ab8b129fee2a498e4c25912ddaa6c3c5b621e" default))))
+      ("f4fefd141d606f337880a642f20cfd0472ebe2d8a339741faa4ae222ec250bfb" default))))
   (load-theme 'doom-vibrant)
 
   (set-face-attribute 'default nil
@@ -70,7 +67,7 @@
                       :height 1.0))
 
 (use-package doom-modeline
-  :hook (after-init . doom-modeline-mode)
+  :init (doom-modeline-mode 1)
   :config
   (setq doom-modeline-lsp t
         doom-modeline-height 30
@@ -155,43 +152,31 @@
                           dashboard
                           debug
                           dictionary
-                          diff-mo
+                          diff-mode
                           dired
                           ediff
                           elfeed
                           elisp-mode
-                          elisp-refs
-                          elisp-slime-nav
                           eshell
                           eww
                           flycheck
                           help
-                          helpful
                           info
-                          ivy
-                          js2-mode
+                          xref
                           man
                           magit
                           magit-todos
                           ,@(when evil-collection-setup-minibuffer '(minibuffer))
-                          ;; occur is in replace.el which was built-in before Emacs 26.
                           org-present
                           (pdf pdf-view)
                           (process-menu simple)
                           profiler
-                          python
-                          reftex
-                          rg
-                          ripgrep
-                          rjsx-mode
-                          sh-script
-                          ,@(when (>= emacs-major-version 28) '(shortdoc))
+                          js2-mode
                           tide
                           typescript-mode
-                          wgrep
                           which-key
-                          woman
-                          xref)))
+                          python
+                          rjsx-mode)))
 
 ;;;; * DirEnv
 (use-package direnv
@@ -244,12 +229,6 @@
          (text-mode . (lambda ()
                         (when (not (memq major-mode flyspell-disabled-modes))
                           (flyspell-mode 1)))))
-  :bind (:map flyspell-mode-map
-              ("C-c s <" . flyspell-correct-previous)
-              ("C-c s >" . flyspell-correct-next)
-              ("C-c s c" . flyspell-correct-at-point)
-              ("C-c s d" . ispell-change-dictionary)
-              ("C-c s f" . flyspell-buffer))
   :init
   (defvar flyspell-disabled-modes
     '(dired-mode
@@ -270,12 +249,15 @@
                 ispell-local-dictionary "en_US"))
 
 (use-package flyspell-correct
-  :after flyspell)
-
-(use-package flyspell-correct-ivy
-  :after (flyspell-correct ivy)
-  :init
-  (setq flyspell-correct-interface #'flyspell-correct-ivy))
+  :after flyspell
+  :bind (:map flyspell-mode-map
+              ("C-c s <" . flyspell-correct-previous)
+              ("C-c s >" . flyspell-correct-next)
+              ("C-c s c" . flyspell-correct-at-point)
+              ("C-c s d" . ispell-change-dictionary)
+              ("C-c s f" . flyspell-buffer))
+  :config
+  (setq flyspell-correct-interface #'flyspell-correct-dummy))
 
 (use-package langtool
   :bind (:map global-map
@@ -312,9 +294,19 @@
 ;;;; * Projectile
 (use-package projectile
   :demand t
+  :bind (:map projectile-mode-map
+              ("C-c p b" . projectile-switch-to-buffer)
+              ("C-c p C-b" . projectile-switch-to-buffer-other-window)
+              ("C-c p d" . projectile-find-dir)
+              ("C-c p D" . projectile-dired)
+              ("C-c p f" . projectile-find-file)
+              ("C-c p k" . projectile-kill-buffers)
+              ("C-c p p" . projectile-switch-project)
+              ("C-c p r" . projectile-replace)
+              ("C-c p R" . projectile-replace-regexp)
+              ("C-c p s" . consult-ripgrep)
+              ("C-c p S" . projectile-save-project-buffers))
   :config
-  (setq projectile-completion-system 'ivy)
-
   (projectile-register-project-type 'nix-flake '("flake.nix")
                                     :project-file "flake.nix"
                                     :test "nix flake check")
@@ -399,10 +391,7 @@
         lsp-ui-sideline-update-mode 'point
         lsp-ui-doc-enable nil))
 
-(use-package lsp-ivy
-  :commands lsp-ivy-workspace-symbol)
-
-;;;; elfeed
+;;;; RSS
 (use-package elfeed
   :commands (elfeed)
   :init
@@ -434,75 +423,39 @@
   :config
   (setq eww-search-prefix "https://duckduckgo.com/html?q="))
 
-;;;; * Completion
-;;;;; * Ivy
-(use-package ivy
+;;;; Selection
+
+(use-package orderless
   :demand t
+  :custom (completion-styles '(orderless)))
+
+(use-package selectrum
+  :demand t
+  :config
+  (selectrum-mode +1)
+  (setq selectrum-refine-candidates-function #'orderless-filter)
+  (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
+
+(use-package consult
+  :demand t
+  :after (projectile)
   :bind (:map global-map
-              ("C-x b" . ivy-switch-buffer)
-              ("C-c C-r" . ivy-resume)
-              ("C-x C-b" . ivy-switch-buffer-other-window))
-  :config
-  (ivy-mode 1)
-  (setq ivy-display-style 'fancy
-        ivy-use-virtual-buffers t
-        enable-recursive-minibuffers t
-        ivy-use-selectable-prompt t
-        ivy-initial-inputs-alist nil
-        ivy-count-format "(%d/%d)"
-        ivy-re-builders-alist '((counsel-rg . ivy--regex-plus)
-                                (counsel-projectile-rg . ivy--regex-plus)
-                                (swiper . ivy--regex-plus)
-                                (t . ivy--regex-fuzzy))))
-
-(use-package flx
-  :defer t)
-
-(use-package prescient
-  :after counsel
-  :config
-  (prescient-persist-mode 1))
-
-(use-package counsel
-  :after ivy
-  :bind (:map global-map
-              ("M-x" . counsel-M-x)
-              ("C-x C-f" . counsel-find-file)
-              ("C-c c" . counsel-org-capture)
-              ("C-c C-g" . counsel-search)))
-
-
-(use-package ivy-prescient
-  :after (prescient counsel)
-  :config
-  (setq ivy-prescient-retain-classic-highlighting t)
-  (ivy-prescient-mode t))
-
-(use-package ivy-xref
-  :after xref
+              ("C-x b" . consult-buffer)
+              ("C-x C-b" . consult-buffer-other-window)
+              ("M-o" . consult-outline)
+              ("C-s" . consult-line))
   :init
-  (when (>= emacs-major-version 27)
-    (setq xref-show-definitions-function #'ivy-xref-show-defs))
-  (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+  :config
+  (setq consult-project-root-function #'projectile-project-root
+        consult-preview-key nil))
 
-(use-package swiper
-  :after ivy
-  :bind (:map global-map
-              ("C-s" . swiper)))
-
-(use-package counsel-projectile
-  :bind (:map projectile-mode-map
-              ("C-c p b" . counsel-projectile-switch-to-buffer)
-              ("C-c p d" . counsel-projectile-find-dir)
-              ("C-c p D" . projectile-dired)
-              ("C-c p f" . counsel-projectile-find-file)
-              ("C-c p i" . projectile-invalidate-cache)
-              ("C-c p k" . projectile-kill-buffers)
-              ("C-c p p" . projectile-switch-project)
-              ("C-c p r" . projectile-replace)
-              ("C-c p R" . projectile-replace-regexp)
-              ("C-c p s" . counsel-projectile-rg)
-              ("C-c p S" . projectile-save-project-buffers)))
+(use-package recentf
+  :init (recentf-mode)
+  :config
+  (setq recentf-max-saved-items 200
+        recentf-max-menu-items 15))
 
 ;;;;; * Snippets
 (use-package yasnippet
@@ -523,6 +476,11 @@
               ("C-n" . company-select-next))
   :init (global-company-mode t)
   :config
+  (defun just-one-face (fn &rest args)
+    (let ((orderless-match-faces [completions-common-part]))
+      (apply fn args)))
+
+  (advice-add 'company-capf--candidates :around #'just-one-face)
   (setq company-idle-delay 0.3
         company-minimum-prefix-length 1
         company-show-numbers t
@@ -534,12 +492,6 @@
                            company-yasnippet
                            company-abbrev
                            company-dabbrev)))
-
-(use-package company-prescient
-  :after prescient
-  :config
-  (company-prescient-mode t))
-
 ;;;; * Git
 (use-package magit
   :bind (:map global-map
@@ -562,6 +514,7 @@
           magit-insert-unpulled-from-pushremote
           magit-insert-unpushed-to-upstream
           magit-insert-unpushed-to-pushremote))
+  (setq magit-completing-read-function #'selectrum-completing-read)
   (setq magit-diff-refine-hunk 'all)
   (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
   (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
@@ -608,6 +561,7 @@
                                       (when org-inline-image-overlays
                                         (org-redisplay-inline-images)))))
   :config
+  (put 'bibtex-completion-bibliography 'safe-local-variable #'stringp)
   (setq org-highlight-latex-and-related '(latex)
         org-ellipsis "…"
         org-log-done 'time
@@ -647,7 +601,7 @@
              org-babel-execute-src-block:async))
 
 (use-package org-agenda
-  :after org
+  :defer t
   :config
   (setq org-agenda-files (list org-agenda-dir)))
 
@@ -670,7 +624,6 @@
   :hook (org-mode . org-indent-mode))
 
 (use-package org-src
-  :after org
   :defer t
   :hook (org-src-mode . (lambda ()
                           (setq-local
@@ -773,19 +726,14 @@
 (use-package toc-org
   :hook ((org-mode . toc-org-mode)))
 
-(use-package org-ref
-  :commands org-ref-ivy-cite
-  :init
-  ;; prevent Helm from loading
-  (setq org-ref-completion-library 'org-ref-ivy-cite)
-  :config
-  (setq org-ref-bibliography-notes org-papers-notes
-        org-ref-default-bibliography (list org-papers-bibtex)
-        org-ref-pdf-directory (list org-papers-pdfs)))
-
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
   :config (setq org-bullets-bullet-list '("●" "○" "✸" "✿")))
+
+(use-package bibtex-actions
+  :bind (("C-c b" . bibtex-actions-insert-citation)
+         :map minibuffer-local-map
+         ("M-b" . bibtex-actions-insert-preset)))
 
 ;;; * Configuration Files
 
@@ -865,15 +813,6 @@
   (setq-local tab-width 2)
   (sql-highlight-postgres-keywords))
 
-;;;; * C/C++
-(use-package irony
-  :hook ((c-mode . irony-mode)
-         (objc-mode . irony-mode)
-         (c++-mode . irony-mode)
-         (irony-mode . lsp))
-  :config
-  (setq-local company-backends (append '(company-clang) company-backends)))
-
 ;;;; * Haskell
 (use-package haskell-mode
   :hook (haskell-mode . lsp))
@@ -931,10 +870,6 @@
 ;;;; * Fish
 (use-package fish-mode
   :mode "\\.fish\\'")
-
-;;;; * Java
-(use-package lsp-java
-  :hook (java-mode . lsp))
 
 ;;;; * Web Development (TS[X], JS[X], HTML)
 (use-package web-mode

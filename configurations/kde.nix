@@ -6,13 +6,13 @@
   nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;
 
   environment.systemPackages = with pkgs; [
-    kdeApplications.ark
-    kdeApplications.okular
-    kdeApplications.kate
-    kdeApplications.gwenview
-    kdeApplications.spectacle
-    kdeApplications.ktouch
-    kdeApplications.kdialog
+    ark
+    okular
+    kate
+    gwenview
+    spectacle
+    ktouch
+    kdialog
     mpv
     smplayer
     libreoffice-qt

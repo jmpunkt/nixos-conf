@@ -17,7 +17,7 @@
     dropbox-cli
     pdfpc
 
-    unstable.jmpunkt.emacs
+    jmpunkt.emacs
     jmpunkt.latex
   ];
 

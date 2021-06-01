@@ -35,6 +35,7 @@
   };
 
   users.users.jonas = {
+    isNormalUser = true;
     extraGroups = [
       config.users.groups.plugdev.name
     ];

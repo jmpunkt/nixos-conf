@@ -84,6 +84,9 @@
 
   networking.networkmanager.enable = true;
 
+  # pipewire (optional)
+  security.rtkit.enable = true;
+
   services = {
     pipewire = {
       enable = true;

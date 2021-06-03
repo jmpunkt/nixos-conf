@@ -2,6 +2,7 @@
 
 {
   users.users.jonas = {
+    isNormalUser = true;
     uid = 1000;
     extraGroups = [
       config.users.groups.wheel.name

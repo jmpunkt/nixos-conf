@@ -299,12 +299,12 @@
               ("C-c p C-b" . projectile-switch-to-buffer-other-window)
               ("C-c p d" . projectile-find-dir)
               ("C-c p D" . projectile-dired)
-              ("C-c p f" . projectile-find-file)
+              ("C-c p f" . affe-find)
               ("C-c p k" . projectile-kill-buffers)
               ("C-c p p" . projectile-switch-project)
               ("C-c p r" . projectile-replace)
               ("C-c p R" . projectile-replace-regexp)
-              ("C-c p s" . consult-ripgrep)
+              ("C-c p s" . affe-grep)
               ("C-c p S" . projectile-save-project-buffers))
   :config
   (projectile-register-project-type 'nix-flake '("flake.nix")
@@ -367,6 +367,7 @@
         lsp-eldoc-enable-hover nil
         lsp-signature-auto-activate nil
         lsp-modeline-code-actions-enable nil
+        lsp-ui-sideline-show-code-actions nil
         lsp-enable-folding nil
         lsp-enable-on-type-formatting nil
         lsp-enable-relative-indentation nil
@@ -423,7 +424,11 @@
   :config
   (setq eww-search-prefix "https://duckduckgo.com/html?q="))
 
-;;;; Selection
+;;;; Search/Find
+(use-package embark
+  :bind
+  (("C-c r" . embark-act)
+   ("C-h B" . embark-bindings)))
 
 (use-package orderless
   :demand t
@@ -435,6 +440,10 @@
   (selectrum-mode +1)
   (setq selectrum-refine-candidates-function #'orderless-filter)
   (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
+
+(use-package marginalia
+  :init
+  (marginalia-mode))
 
 (use-package consult
   :demand t
@@ -448,14 +457,26 @@
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   :config
-  (setq consult-project-root-function #'projectile-project-root
-        consult-preview-key nil))
+  (setq consult-project-root-function #'projectile-project-root)
+  (consult-customize
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-file consult--source-project-file consult--source-bookmark
+   :preview-key (kbd "M-.")))
 
 (use-package recentf
   :init (recentf-mode)
   :config
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15))
+
+(use-package affe
+  :after orderless
+  :config
+  ;; Configure Orderless
+  (setq affe-regexp-function #'orderless-pattern-compiler
+        affe-highlight-function #'orderless--highlight)
+  (consult-customize affe-grep :preview-key (kbd "M-.")))
 
 ;;;;; * Snippets
 (use-package yasnippet

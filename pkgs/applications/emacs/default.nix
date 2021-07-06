@@ -70,6 +70,9 @@ in
       selectrum
       consult
       orderless
+      affe
+      embark
+      marginalia
 
       # Spelling
       langtool

@@ -26,6 +26,7 @@
       builtins.readFile ./alacritty/alacritty.yml;
     # since emacs 27.1
     "emacs/init.el".text = builtins.readFile ./emacs/init.el;
+    "emacs/early-init.el".text = builtins.readFile ./emacs/early-init.el;
   };
 
   home.file = {

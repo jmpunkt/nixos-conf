@@ -2,21 +2,9 @@
 ;;; Commentary:
 
 ;;; Code:
-;;; Startup Improvements
-(setq gc-cons-threshold most-positive-fixnum)
-(add-hook 'after-init-hook
-          (lambda ()
-            (garbage-collect)
-            (setq gc-cons-threshold 100000000
-                  read-process-output-max (* 1024 1024))))
-
 ;;; Packages
 (eval-when-compile (require 'use-package))
 (require 'bind-key)
-
-(setq package-archives nil)
-(setq package-enable-at-startup nil)
-(setq use-package-verbose t)
 
 ;;; * Profiler
 (use-package esup
@@ -102,14 +90,10 @@
   (show-paren-mode 1)
   (global-hl-line-mode 1)
   (global-undo-tree-mode 1)
+  (toggle-scroll-bar -1)
 
   (global-prettify-symbols-mode -1)
-  (toggle-scroll-bar -1)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
   (global-eldoc-mode -1))
-
-
 
 (use-package ligature
   :config
@@ -490,12 +474,9 @@
 
 ;;;;; * Company
 (use-package company
-  :bind (:map company-active-map
-              ("TAB" . company-complete-common-or-cycle)
-              ("<tab>" . company-complete-common-or-cycle)
-              ("C-p" . company-select-previous)
-              ("C-n" . company-select-next))
-  :init (global-company-mode t)
+  :init
+  (global-company-mode t)
+  (company-tng-configure-default)
   :config
   (defun just-one-face (fn &rest args)
     (let ((orderless-match-faces [completions-common-part]))
@@ -885,8 +866,9 @@
               ("C-c k b" . rustic-compile)
               ("C-c C-f" . rustic-format-buffer))
   :config
-  (setq rustic-lsp-server 'rust-analyzer)
-  (setq rustic-rustfmt-config-alist '((edition . "2018"))))
+  (setq rustic-lsp-server 'rust-analyzer
+        rustic-rustfmt-config-alist '((edition . "2018"))
+        rustic-format-trigger 'on-save))
 
 ;;;; * Fish
 (use-package fish-mode

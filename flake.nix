@@ -13,9 +13,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mozilla = {
-      url = "github:mozilla/nixpkgs-mozilla";
-      flake = false;
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     emacs.url = "github:nix-community/emacs-overlay";
@@ -28,7 +28,7 @@
     , nixpkgs
     , hardware
     , home-manager
-    , mozilla
+    , rust-overlay
     , emacs
     , utils
     , unstable
@@ -52,7 +52,7 @@
           };
 
         overlays = [
-          (import mozilla)
+          rust-overlay.overlay
           self.overlay
           emacs.overlay
         ];

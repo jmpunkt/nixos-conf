@@ -160,7 +160,7 @@ in
                 git # treemacs
 
                 jmpunkt.pythonToolchain # overlays/40-toolchains.nix
-                jmpunkt.rustToolchain.stable # overlays/40-toolchains.nix
+                jmpunkt.rustToolchain.nightly # overlays/40-toolchains.nix
                 jmpunkt.latex # custom latex suite
               ];
             }

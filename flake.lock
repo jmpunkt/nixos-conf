@@ -51,22 +51,6 @@
         "type": "github"
       }
     },
-    "mozilla": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1622726979,
-        "narHash": "sha256-JCBPZVQ4aGe3cmnQc1tjJRwaxqz1b60piQz+/F9CMtc=",
-        "owner": "mozilla",
-        "repo": "nixpkgs-mozilla",
-        "rev": "3f3fba4e2066f28a1ad7ac60e86a688a92eb5b5f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mozilla",
-        "repo": "nixpkgs-mozilla",
-        "type": "github"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1626117186,
@@ -88,10 +72,31 @@
         "emacs": "emacs",
         "hardware": "hardware",
         "home-manager": "home-manager",
-        "mozilla": "mozilla",
         "nixpkgs": "nixpkgs",
+        "rust-overlay": "rust-overlay",
         "unstable": "unstable",
         "utils": "utils"
+      }
+    },
+    "rust-overlay": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1627006532,
+        "narHash": "sha256-yy+BxQ3zKdCVwBIAyUCV4BRUaJlSJjfxfAcrnqud4AA=",
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "rev": "8ca45fe1a756176b50f5fc14ee8dd96e70fd25e4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oxalica",
+        "repo": "rust-overlay",
+        "type": "github"
       }
     },
     "unstable": {

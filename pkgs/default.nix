@@ -17,7 +17,6 @@
   emacs = callPackage ../pkgs/applications/emacs { };
   rustToolchain = callPackage ../pkgs/misc/rustToolchain { };
   pythonToolchain = callPackage ../pkgs/misc/pythonToolchain { };
-  mozillaRustToolchain = callPackage ../pkgs/misc/mozillaRustToolchain { };
   hunspellDicts = callPackage ../pkgs/hunspellDicts { };
   verapdf = callPackage ../pkgs/applications/verapdf { };
 }

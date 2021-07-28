@@ -39,7 +39,7 @@
   (custom-set-variables
    '(custom-safe-themes
      (quote
-      ("80147cd7121944101fb451c69800c8565db80b5b819754118d96a28be6ea1054" default))))
+      ("0d01e1e300fcafa34ba35d5cf0a21b3b23bc4053d388e352ae6a901994597ab1" default))))
   (load-theme 'doom-vibrant)
 
   (set-face-attribute 'default nil

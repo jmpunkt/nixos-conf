@@ -158,6 +158,8 @@ in
                 sbt # Scala
                 cargo-outdated # dev
                 git # treemacs
+                fd # affe
+                ripgrep #affe
 
                 jmpunkt.pythonToolchain # overlays/40-toolchains.nix
                 jmpunkt.rustToolchain.nightly # overlays/40-toolchains.nix

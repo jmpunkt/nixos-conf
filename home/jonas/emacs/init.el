@@ -123,7 +123,8 @@
   (evil-set-undo-system 'undo-tree)
   ;; use Xref to find references
   (define-key evil-normal-state-map (kbd "M-.") nil)
-  (define-key evil-motion-state-map "gd" nil))
+  (define-key evil-motion-state-map "gd" nil)
+  (define-key evil-motion-state-map "n" nil))
 
 (use-package evil-collection
   :after evil
@@ -459,7 +460,8 @@
   :config
   ;; Configure Orderless
   (setq affe-regexp-function #'orderless-pattern-compiler
-        affe-highlight-function #'orderless--highlight)
+        affe-highlight-function #'orderless--highlight
+        affe-find-command "fd -c never -t f")
   (consult-customize affe-grep :preview-key (kbd "M-.")))
 
 ;;;;; * Snippets

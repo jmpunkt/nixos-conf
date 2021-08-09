@@ -417,14 +417,15 @@
 
 (use-package orderless
   :demand t
-  :custom (completion-styles '(orderless)))
+  :init
+  (setq completion-styles '(orderless)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
 
-(use-package selectrum
+(use-package vertico
   :demand t
-  :config
-  (selectrum-mode +1)
-  (setq selectrum-refine-candidates-function #'orderless-filter)
-  (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
+  :init
+  (vertico-mode))
 
 (use-package marginalia
   :init
@@ -518,7 +519,6 @@
           magit-insert-unpulled-from-pushremote
           magit-insert-unpushed-to-upstream
           magit-insert-unpushed-to-pushremote))
-  (setq magit-completing-read-function #'selectrum-completing-read)
   (setq magit-diff-refine-hunk 'all)
   (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
   (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)

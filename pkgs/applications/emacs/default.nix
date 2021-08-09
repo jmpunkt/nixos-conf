@@ -67,7 +67,6 @@ in
       flycheck
 
       # Search/Find
-      selectrum
       consult
       orderless
       affe
@@ -114,7 +113,7 @@ in
       scala-mode
       prettier-js
     ]
-    ++ (with epkgs.elpaPackages; [ undo-tree seq ])
+    ++ (with epkgs.elpaPackages; [ undo-tree seq vertico ])
     ++ (with epkgs.orgPackages; [ org org-plus-contrib ])
     ++ (
       with epkgs.manualPackages; [

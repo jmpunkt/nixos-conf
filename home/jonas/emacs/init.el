@@ -226,7 +226,7 @@
       calc-mode
       Info-mode))
   :config
-  (setq-default ispell-program-name "/run/current-system/sw/bin/hunspell"
+  (setq-default ispell-program-name "hunspell"
                 ispell-really-hunspell t
                 ;; Hide all default entries which may not be available
                 ;; on the system anyways

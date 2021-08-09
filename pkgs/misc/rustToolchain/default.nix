@@ -12,7 +12,10 @@ let
       "rustfmt"
       "reproducible-artifacts"
     ] ++ (
-      lib.optional nightly "rust-analyzer-preview"
+      lib.optionals nightly [
+        "rust-analyzer-preview"
+        "miri"
+      ]
     );
   };
 in

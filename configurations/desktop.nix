@@ -12,41 +12,12 @@
   };
 
   environment.systemPackages = with pkgs; [
-    alacritty
-    cryptsetup
-    gnupg
-    feh
-    thunderbird
-    firefox
-    audacious
-
-    discord
-    tdesktop
-
     ntfsprogs
     dosfstools
     xfsprogs.bin
     jfsutils
     f2fs-tools
     ntfs3g
-
-    tokei
-    fzf
-    git
-    gitAndTools.delta
-    hyperfine
-    direnv
-    dbeaver
-
-    hunspell
-    hunspellDicts.en-us-large
-    jmpunkt.hunspellDicts.de-de
-
-    aspell
-    aspellDicts.de
-    aspellDicts.en
-    aspellDicts.en-computers
-    aspellDicts.en-science
   ];
 
   fonts = {

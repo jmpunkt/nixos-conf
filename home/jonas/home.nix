@@ -17,6 +17,34 @@
     dropbox-cli
     pdfpc
 
+    alacritty
+    cryptsetup
+    gnupg
+    feh
+    thunderbird
+    firefox
+    audacious
+
+    discord
+    tdesktop
+
+    tokei
+    fzf
+    git
+    gitAndTools.delta
+    hyperfine
+    dbeaver
+
+    hunspell
+    hunspellDicts.en-us-large
+    jmpunkt.hunspellDicts.de-de
+
+    aspell
+    aspellDicts.de
+    aspellDicts.en
+    aspellDicts.en-computers
+    aspellDicts.en-science
+
     jmpunkt.emacs
     jmpunkt.latex
   ];
@@ -35,6 +63,12 @@
   };
 
   programs = {
+    direnv.enable = true;
+    direnv.nix-direnv = {
+      enable = true;
+      enableFlakes = true;
+    };
+
     git = {
       enable = true;
       userName = "Jonas Meurer";

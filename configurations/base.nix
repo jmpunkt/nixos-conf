@@ -28,6 +28,7 @@
     fd
     exa
     ripgrep
+    git
 
     sdparm
     hdparm

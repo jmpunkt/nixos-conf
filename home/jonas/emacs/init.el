@@ -289,7 +289,7 @@
               ("C-c p p" . projectile-switch-project)
               ("C-c p r" . projectile-replace)
               ("C-c p R" . projectile-replace-regexp)
-              ("C-c p s" . affe-grep)
+              ("C-c p s" . consult-ripgrep)
               ("C-c p S" . projectile-save-project-buffers))
   :config
   (projectile-register-project-type 'nix-flake '("flake.nix")
@@ -445,7 +445,7 @@
   :config
   (setq consult-project-root-function #'projectile-project-root)
   (consult-customize
-   consult-ripgrep consult-git-grep consult-grep
+   consult-ripgrep consult-git-grep consult-find
    consult-bookmark consult-recent-file consult-xref
    consult--source-file consult--source-project-file consult--source-bookmark
    :preview-key (kbd "M-.")))

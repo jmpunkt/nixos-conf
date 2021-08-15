@@ -875,8 +875,7 @@
               ("C-c C-f" . rustic-format-buffer))
   :config
   (setq rustic-lsp-server 'rust-analyzer
-        rustic-rustfmt-config-alist '((edition . "2018"))
-        rustic-format-trigger 'on-save))
+        rustic-rustfmt-config-alist '((edition . "2018"))))
 
 ;;;; * Fish
 (use-package fish-mode

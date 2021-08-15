@@ -1,4 +1,5 @@
-{ stdenv
+{ lib
+, stdenv
 , buildEnv
 , pkgs
 , emacsGcc
@@ -9,11 +10,18 @@
 , nodejs
 , vscode-extensions
 , unstable
+, jmpunkt
 }:
 let
   emacs = emacsGcc;
 
   pathOfExtension = ext: "${ext}/share/vscode/extensions/${ext.vscodeExtUniqueId}";
+
+  treeSitterGrammars = pkgs.runCommandLocal "tree-sitter-grammars-bundle" {} ''
+    mkdir -p $out/bin
+    ${lib.concatStringsSep "\n"
+    (lib.mapAttrsToList (name: src: "ln -s ${src}/parser $out/bin/${(builtins.replaceStrings [ "tree-sitter-" ] [ "" ] name)}.so") pkgs.tree-sitter.builtGrammars)};
+  '';
 in
 (emacsPackagesFor emacs).emacsWithPackages (
   epkgs:
@@ -29,6 +37,9 @@ in
       direnv
       dashboard
       projectile
+
+      tree-sitter
+      tree-sitter-langs
 
       # Org
       org-bullets
@@ -117,9 +128,9 @@ in
     ++ (with epkgs.orgPackages; [ org org-plus-contrib ])
     ++ (
       with epkgs.manualPackages; [
-        jmpunkt.ligature
+        jmpunktPkgs.ligature
         (
-          jmpunkt.nixosPaths
+          jmpunktPkgs.nixosPaths
             {
               variables = {
                 org-plantuml-jar-path = "${plantuml}/lib/plantuml.jar";
@@ -127,10 +138,14 @@ in
                 mermaid-mmdc-location = "${unstable.nodePackages.mermaid-cli}/bin/mmdc";
                 lsp-eslint-server-command = [
                   "${nodejs}/bin/node"
-                  "${pathOfExtension vscode-extensions.jmpunkt.vscode-eslint}/server/out/eslintServer.js"
+                  "${pathOfExtension vscode-extensions.jmpunktPkgs.vscode-eslint}/server/out/eslintServer.js"
                   "--stdio"
                 ];
                 prettier-js-command = "${nodePackages.prettier}/bin/prettier";
+                tree-sitter-load-path = [ "${treeSitterGrammars}/bin" ];
+                tsc-dyn-dir = "${jmpunkt.tsc-dyn}/lib";
+                # HACK: ensures that elisp-tree-sitter does not download or install anything
+                tree-sitter-langs--testing = true;
               };
               paths = with pkgs; [
                 gitAndTools.delta # magit-delta

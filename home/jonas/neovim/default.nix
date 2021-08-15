@@ -27,7 +27,7 @@
       lexima-vim
       vim-better-whitespace
 
-      jmpunkt.vim-searchindex
+      jmpunktPkgs.vim-searchindex
     ];
   };
 }

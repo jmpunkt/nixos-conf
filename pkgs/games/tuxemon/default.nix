@@ -31,9 +31,9 @@ python3Packages.buildPythonApplication rec {
     pygame
     lxml
 
-    jmpunkt.pytmx
-    jmpunkt.pyscroll
-    jmpunkt.netira
+    jmpunktPkgs.pytmx
+    jmpunktPkgs.pyscroll
+    jmpunktPkgs.netira
   ];
 
   meta = with lib; {

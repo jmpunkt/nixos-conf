@@ -740,6 +740,12 @@
          ("M-b" . bibtex-actions-insert-preset)))
 
 ;;; * Configuration Files
+(use-package tree-sitter
+  :demand t
+  :config
+  (require 'tree-sitter-langs)
+  (global-tree-sitter-mode)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
 
 ;;;; * Dhall
 (use-package dhall-mode

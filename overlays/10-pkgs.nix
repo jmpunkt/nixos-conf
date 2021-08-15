@@ -6,15 +6,15 @@ self: super:
   jmpunkt = (super.jmpunkt or {}) // (super.callPackage ../pkgs {});
 
   python3Packages = (super.python3Packages or {}) // {
-    jmpunkt = super.callPackage ../pkgs/python3Packages {};
+    jmpunktPkgs = super.callPackage ../pkgs/python3Packages {};
   };
 
   vimPlugins = (super.vimPlugins or {}) // {
-    jmpunkt = super.callPackage ../pkgs/vimPlugins {};
+    jmpunktPkgs = super.callPackage ../pkgs/vimPlugins {};
   };
 
   vscode-extensions = (super.vscode-extensions or {}) // {
-    jmpunkt = super.callPackage ../pkgs/vscode-extensions {};
+    jmpunktPkgs = super.callPackage ../pkgs/vscode-extensions {};
   };
 
   emacsPackagesFor = emacs: (
@@ -22,7 +22,7 @@ self: super:
       eself: esuper:
         let
           manualPackages = esuper.manualPackages // {
-            jmpunkt = super.callPackage ../pkgs/emacsPackages {
+            jmpunktPkgs = super.callPackage ../pkgs/emacsPackages {
               inherit emacs;
               emacsTrivialBuild = esuper.trivialBuild;
             };

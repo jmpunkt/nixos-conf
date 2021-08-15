@@ -43,7 +43,6 @@ in
 
       # Org
       org-bullets
-      org-noter
       ob-async
       ob-mermaid
       toc-org
@@ -90,8 +89,6 @@ in
 
       # Completion
       company
-      company-math
-      company-web
 
       # RSS
       elfeed

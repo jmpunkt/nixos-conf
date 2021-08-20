@@ -61,10 +61,6 @@ in
       treemacs-evil
       treemacs-magit
 
-      # Templates
-      yasnippet
-      yasnippet-snippets
-
       # UI
       all-the-icons
       doom-modeline
@@ -86,9 +82,6 @@ in
       # Spelling
       langtool
       flyspell-correct
-
-      # Completion
-      company
 
       # RSS
       elfeed
@@ -117,11 +110,11 @@ in
       # Programming
       rustic
       haskell-mode
-      web-mode
+      typescript-mode
       scala-mode
       prettier-js
     ]
-    ++ (with epkgs.elpaPackages; [ undo-tree seq vertico ])
+    ++ (with epkgs.elpaPackages; [ undo-tree seq vertico corfu ])
     ++ (with epkgs.orgPackages; [ org org-plus-contrib ])
     ++ (
       with epkgs.manualPackages; [

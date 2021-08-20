@@ -76,7 +76,14 @@
                 show-paren-delay 0
                 show-trailing-whitespace t)
 
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
+  (setq read-extended-command-predicate #'command-completion-default-include-p)
+
   (setq indent-line-function 'insert-tab
+        tab-always-indent 'complete
         revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")
         make-backup-files nil
         auto-save-default nil
@@ -132,8 +139,8 @@
   (evil-collection-init `(bookmark
                           calc
                           calendar
-                          company
                           compile
+                          consult
                           dashboard
                           debug
                           dictionary
@@ -154,10 +161,8 @@
                           ,@(when evil-collection-setup-minibuffer '(minibuffer))
                           org-present
                           (pdf pdf-view)
-                          (process-menu simple)
                           profiler
                           js2-mode
-                          tide
                           typescript-mode
                           which-key
                           python
@@ -420,7 +425,7 @@
   :init
   (setq completion-styles '(orderless)
         completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion)))))
+        completion-category-overrides '((file (styles . (partial-completion))))))
 
 (use-package vertico
   :demand t
@@ -465,38 +470,24 @@
         affe-find-command "fd -c never -t f")
   (consult-customize affe-grep :preview-key (kbd "M-.")))
 
-;;;;; * Snippets
-(use-package yasnippet
-  :demand t
+(use-package corfu
+  :custom
+  (corfu-cycle t)
+  (corfu-echo-documentation nil)
+  (corfu-commit-predicate nil)
+  :bind (:map corfu-map
+         ("TAB" . corfu-next)
+         ([tab] . corfu-next)
+         ("S-TAB" . corfu-previous)
+         ([backtab] . corfu-previous))
+  :hook ((prog-mode . corfu-mode)
+         (minibuffer-mode . corfu-mode)
+         (lsp-mode . corfu-mode)
+         (shell-mode . corfu-mode)
+         (eshell-mode . corfu-mode))
   :config
-  (yas-global-mode 1))
+  (corfu-global-mode))
 
-(use-package yasnippet-snippets
-  :after yasnippet
-  :defer 2)
-
-;;;;; * Company
-(use-package company
-  :init
-  (global-company-mode t)
-  (company-tng-configure-default)
-  :config
-  (defun just-one-face (fn &rest args)
-    (let ((orderless-match-faces [completions-common-part]))
-      (apply fn args)))
-
-  (advice-add 'company-capf--candidates :around #'just-one-face)
-  (setq company-idle-delay 0.3
-        company-minimum-prefix-length 1
-        company-show-numbers t
-        company-tooltip-align-annotations t
-        company-tooltip-limit 20
-        company-require-match nil
-        company-backends '(company-files
-                           company-capf
-                           company-yasnippet
-                           company-abbrev
-                           company-dabbrev)))
 ;;;; * Git
 (use-package magit
   :bind (:map global-map

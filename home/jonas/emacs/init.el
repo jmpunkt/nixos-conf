@@ -57,8 +57,7 @@
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
   :config
-  (setq doom-modeline-lsp t
-        doom-modeline-height 30
+  (setq doom-modeline-height 30
         doom-modeline-icon nil
         doom-modeline-major-mode-icon nil
         doom-modeline-buffer-file-name-style 'relative-to-project))
@@ -151,7 +150,6 @@
                           elisp-mode
                           eshell
                           eww
-                          flycheck
                           help
                           info
                           xref
@@ -169,47 +167,14 @@
                           rjsx-mode)))
 
 ;;;; * DirEnv
-(use-package direnv
-  :demand t
-  :config
-  (direnv-mode 1)
-  ;; ensures that direnv is loaded and allowing lsp to find executable
-  (advice-add 'prog-mode :before #'direnv-update-environment))
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
 
 ;;;; * Which-Key
 (use-package which-key
   :demand t
   :config
   (which-key-mode 1))
-
-;;;; * Flycheck
-(use-package flycheck
-  :hook (prog-mode . flycheck-mode)
-  :bind (:map flycheck-mode-map
-              ([f7] . toggle-flycheck-error-buffer))
-  :init
-  ;; https://github.com/flycheck/flycheck/issues/710#issuecomment-290899713
-  (defun toggle-flycheck-error-buffer ()
-    "toggle a flycheck error buffer."
-    (interactive)
-    (if (string-match-p "Flycheck errors" (format "%s" (window-list)))
-        (dolist (w (window-list))
-          (when (string-match-p "*Flycheck errors*" (buffer-name (window-buffer w)))
-            (delete-window w)
-            ))
-      (flycheck-list-errors)
-      )
-    )
-  :config
-  (setq flycheck-check-syntax-automatically '(save mode-enabled)
-        flycheck-display-errors-delay .3)
-  (add-to-list 'display-buffer-alist
-               `(,(rx bos "*Flycheck errors*" eos)
-                 (display-buffer-reuse-window
-                  display-buffer-in-side-window)
-                 (side . bottom)
-                 (reusable-frames . visible)
-                 (window-height . 0.125))))
 
 ;;;; * Spelling
 (use-package flyspell
@@ -334,53 +299,21 @@
   :after (treemacs magit))
 
 ;;;; * Language Server (LSP)
-(use-package lsp-mode
-  :commands lsp
-  :hook (lsp-mode . lsp-enable-which-key-integration)
-  :bind (:map lsp-mode-map
-              ("C-c k d" . lsp-find-declaration)
-              ("C-c k D" . lsp-ui-peek-find-definitions)
-              ("C-c k R" . lsp-ui-peek-find-references)
-              ("C-c k i" . lsp-ui-peek-find-implementation)
-              ("C-c k t" . lsp-find-type-definition)
-              ("C-c k s" . lsp-signature-help)
-              ("C-c k o" . lsp-describe-thing-at-point)
-              ("C-c k r" . lsp-rename)
-              ("C-c C-f" . lsp-format-buffer)
-              ("C-c k m" . lsp-ui-imenu)
-              ("M-RET" . lsp-execute-code-action)
-              ("C-c k S" . lsp-workspace-shutdown))
+(use-package eglot
+  :bind (:map eglot-mode-map
+              ("C-c k r" . eglot-rename)
+              ("C-c C-f" . eglot-format-buffer)
+              ("M-RET" . eglot-code-actions))
   :config
-  (setq lsp-print-performance nil
-        lsp-log-io nil
-        lsp-eldoc-render-all nil
-        lsp-eldoc-enable-hover nil
-        lsp-signature-auto-activate nil
-        lsp-modeline-code-actions-enable nil
-        lsp-ui-sideline-show-code-actions nil
-        lsp-enable-folding nil
-        lsp-enable-on-type-formatting nil
-        lsp-enable-relative-indentation nil
-        lsp-headerline-breadcrumb-enable nil
-        lsp-semantic-tokens-enable nil
+  (setq-default eglot-ignored-server-capabilites '(:hoverProvider))
+  (setq eglot-stay-out-of '(company eldoc)))
 
-        lsp-completion-enable t
-        lsp-enable-xref t
-        lsp-enable-indentation t
-        lsp-enable-snippet t))
-
-(use-package lsp-treemacs
-  :commands lsp-treemacs-errors-list)
-
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :config
-  (setq lsp-ui-sideline-enable t
-        lsp-ui-sideline-show-symbol t
-        lsp-ui-sideline-show-hover t
-        lsp-ui-sideline-show-code-actions t
-        lsp-ui-sideline-update-mode 'point
-        lsp-ui-doc-enable nil))
+;;;; * Flymake
+(use-package flymake
+  :after consult
+  :bind (:map flymake-mode-map
+              ([f7] . consult-flymake))
+  :hook (prog-mode . flymake-mode))
 
 ;;;; RSS
 (use-package elfeed
@@ -482,10 +415,14 @@
          ([backtab] . corfu-previous))
   :hook ((prog-mode . corfu-mode)
          (minibuffer-mode . corfu-mode)
-         (lsp-mode . corfu-mode)
          (shell-mode . corfu-mode)
          (eshell-mode . corfu-mode))
   :config
+  (set-face-background 'corfu-background (doom-color 'bg))
+  (set-face-background 'corfu-bar (doom-color 'base0))
+  (set-face-background 'corfu-border (doom-color 'base4))
+  (set-face-background 'corfu-current (face-attribute 'hl-line :background))
+  (setq corfu-min-width 30)
   (corfu-global-mode))
 
 ;;;; * Git
@@ -620,10 +557,6 @@
 
 (use-package org-src
   :defer t
-  :hook (org-src-mode . (lambda ()
-                          (setq-local
-                           flycheck-disabled-checkers
-                           '(emacs-lisp-checkdoc))))
   :config
   ;; Sets the buffer name of org source blocks properly
   (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
@@ -762,7 +695,7 @@
 
 ;;;; * YAML
 (use-package yaml-mode
-  :hook (yaml-mode . lsp)
+  :hook (yaml-mode . eglot-ensure)
   :mode ("\\.yaml\\'" "\\.yml\\'"))
 
 ;;;; * Meson
@@ -816,35 +749,12 @@
 
 ;;;; * Haskell
 (use-package haskell-mode
-  :hook (haskell-mode . lsp))
-
-(use-package flycheck-haskell
-  :hook (haskell-mode . flycheck-haskell-setup))
-
-;;;; * Scala
-
-(use-package scala-mode
-  :hook  (scala-mode . lsp)
-  :interpreter
-  ("scala" . scala-mode))
-
-(use-package sbt-mode
-  :commands sbt-start sbt-command
-  :config
-  (substitute-key-definition
-   'minibuffer-complete-word
-   'self-insert-command
-   minibuffer-local-completion-map)
-  (setq sbt:program-options '("-Dsbt.supershell=false")))
-
-(use-package lsp-metals
-  :after (lsp scala-mode)
-  :config (setq lsp-metals-treeview-show-when-views-received t))
+  :hook (haskell-mode . eglot-ensure))
 
 ;;;; * Nix
 (use-package nix-mode
   :mode "\\.nix\\'"
-  :hook (nix-mode . lsp)
+  :hook (nix-mode . eglot-ensure)
   :bind (:map nix-mode-map
               ("C-c C-f" . nix-format-buffer))
   :config
@@ -853,7 +763,7 @@
 ;;;; * Python
 (use-package python
   :mode ("\\.py\\'" . python-mode)
-  :hook (python-mode . lsp)
+  :hook (python-mode . eglot-ensure)
   :config (setq python-indent-offset 4))
 
 ;;;; * Rust
@@ -865,7 +775,9 @@
               ("C-c k b" . rustic-compile)
               ("C-c C-f" . rustic-format-buffer))
   :config
-  (setq rustic-lsp-server 'rust-analyzer
+  (setq rustic-lsp-client 'eglot
+        rustic-lsp-server 'rust-analyzer
+        rustic-lsp-format 1
         rustic-rustfmt-config-alist '((edition . "2018"))))
 
 ;;;; * Fish

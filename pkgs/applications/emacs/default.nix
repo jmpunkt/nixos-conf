@@ -34,7 +34,7 @@ in
       smartparens
       which-key
       hl-todo
-      direnv
+      envrc
       dashboard
       projectile
 
@@ -69,9 +69,6 @@ in
       # Bibliography
       bibtex-actions
 
-      # Linter
-      flycheck
-
       # Search/Find
       consult
       orderless
@@ -87,9 +84,7 @@ in
       elfeed
 
       # LSP
-      lsp-ui
-      lsp-treemacs
-      lsp-metals
+      eglot
 
       # Misc
       bazel
@@ -101,7 +96,6 @@ in
       meson-mode
       mermaid-mode
       dhall-mode
-      sbt-mode
 
       # Presentation
       markdown-mode
@@ -111,7 +105,6 @@ in
       rustic
       haskell-mode
       typescript-mode
-      scala-mode
       prettier-js
     ]
     ++ (with epkgs.elpaPackages; [ undo-tree seq vertico corfu ])
@@ -138,6 +131,14 @@ in
                 tree-sitter-langs--testing = true;
               };
               paths = with pkgs; [
+                ccls # LSP
+                rnix-lsp # LSP
+                texlab # LSP
+                yaml-language-server # LSP
+                haskellPackages.haskell-lsp # LSP
+                nodePackages.typescript-language-server # LSP
+                jmpunkt.rustToolchain.nightly # LSP
+
                 gitAndTools.delta # magit-delta
                 inkscape # org-mode:graphs
                 imagemagick # org-mode:graphs
@@ -149,24 +150,15 @@ in
                 zip # org-mode:odt
                 languagetool # spelling
                 nixpkgs-fmt # dev
-                ccls # LSP
-                rnix-lsp # LSP
-                haskellPackages.haskell-lsp # LSP
-                nodePackages.typescript-language-server # LSP
-                texlab # LSP
-                yaml-language-server # LSP
                 nodePackages.typescript # dev
                 discount
                 maven # dev
-                metals # LSP
-                sbt # Scala
                 cargo-outdated # dev
                 git # treemacs
                 fd # affe
                 ripgrep #affe
 
                 jmpunkt.pythonToolchain # overlays/40-toolchains.nix
-                jmpunkt.rustToolchain.nightly # overlays/40-toolchains.nix
                 jmpunkt.latex # custom latex suite
               ];
             }

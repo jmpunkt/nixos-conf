@@ -196,6 +196,12 @@
       calc-mode
       Info-mode))
   :config
+  (setq flyspell-prog-text-faces '(tree-sitter-hl-face:comment
+                                   tree-sitter-hl-face:doc
+                                   tree-sitter-hl-face:string
+                                   font-lock-comment-face
+                                   font-lock-doc-face
+                                   font-lock-string-face))
   (setq-default ispell-program-name "hunspell"
                 ispell-really-hunspell t
                 ;; Hide all default entries which may not be available
@@ -667,9 +673,17 @@
 (use-package tree-sitter
   :demand t
   :config
-  (require 'tree-sitter-langs)
   (global-tree-sitter-mode)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+
+(use-package tree-sitter-langs
+  :after tree-sitter
+  :config
+  (add-to-list 'tree-sitter-major-mode-language-alist '(latex-mode . latex))
+  (add-to-list 'tree-sitter-major-mode-language-alist '(nix-mode . nix))
+  (add-to-list 'tree-sitter-major-mode-language-alist '(markdown-mode . markdown))
+  (add-to-list 'tree-sitter-major-mode-language-alist '(haskell-mode . haskell))
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx)))
 
 ;;;; * Dhall
 (use-package dhall-mode
@@ -784,35 +798,29 @@
 (use-package fish-mode
   :mode "\\.fish\\'")
 
-;;;; * Web Development (TS[X], JS[X], HTML)
-(use-package web-mode
-  :mode (("\\.js\\'" . web-mode)
-         ("\\.jsx\\'" . web-mode)
-         ("\\.ts\\'" . web-mode)
-         ("\\.tsx\\'" . web-mode)
-         ("\\.html\\'" . web-mode))
-  :hook ((web-mode . lsp)
-         (web-mode . prettier-js-mode)
-         (web-mode . (lambda ()
-                       (with-eval-after-load 'lsp-mode
-                         (let ((newmap (copy-keymap lsp-mode-map)))
-                           (define-key newmap (kbd "C-c C-f") 'prettier-js)
-                           (push `(lsp-mode . ,newmap)
-                                 minor-mode-overriding-map-alist))))))
+;;;; * Typescript
+(use-package typescript-mode
+  :mode (("\\.ts\\'" . typescript-mode)
+         ("\\.tsx\\'" . typescript-tsx-mode))
+  :hook ((typescript-mode . eglot-ensure)
+         (typescript-mode . prettier-js-mode))
   :init
-  (setq web-mode-markup-indent-offset 2
-        web-mode-code-indent-offset 2
-        web-mode-css-indent-offset 2
-        web-mode-enable-auto-pairing nil
-        web-mode-enable-auto-quoting nil
-        web-mode-enable-auto-expanding t
-        web-mode-enable-css-colorization t
-        web-mode-enable-current-element-highlight t)
+  (define-derived-mode typescript-tsx-mode typescript-mode "tsx")
   :config
-  (flycheck-add-mode 'javascript-eslint 'web-mode))
+  (setq typescript-indent-level 2))
+
+;;;; * HTML
+(use-package html-mode
+  :mode ("\\.html\\'" . html-mode)
+  :hook ((html-mode . eglot-ensure)
+         (html-mode . prettier-js-mode)))
 
 (use-package prettier-js
   :commands prettier-js)
+
+;;;; * LaTeX
+(use-package latex-mode
+  :mode "\\.tex\\'")
 
 ;;; * PDF
 (use-package pdf-tools

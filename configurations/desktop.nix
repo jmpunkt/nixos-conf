@@ -54,6 +54,7 @@
   };
 
   networking.networkmanager.enable = true;
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   # pipewire (optional)
   security.rtkit.enable = true;

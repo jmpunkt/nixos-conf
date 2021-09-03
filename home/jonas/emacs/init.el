@@ -97,6 +97,7 @@
   (global-hl-line-mode 1)
   (global-undo-tree-mode 1)
   (toggle-scroll-bar -1)
+  (global-so-long-mode 1)
 
   (global-prettify-symbols-mode -1)
   (global-eldoc-mode -1))
@@ -135,6 +136,10 @@
 (use-package evil-collection
   :after evil
   :config
+  (define-key evil-motion-state-map [down-mouse-1] nil)
+  (global-set-key [mouse-1] 'mouse-set-point)
+  (global-unset-key [down-mouse-1])
+  (global-unset-key [drag-mouse-1])
   (evil-collection-init `(bookmark
                           calc
                           calendar
@@ -311,8 +316,17 @@
               ("C-c C-f" . eglot-format-buffer)
               ("M-RET" . eglot-code-actions))
   :config
+
+  ;; disable mouse support for flymake face
+  (cl-loop for i from 1
+           for type in '(eglot-note eglot-warning eglot-error)
+           do (put type 'flymake-overlay-control
+                   `((mouse-face . highlight)
+                     (priority . ,(+ 50 i)))))
+
   (setq-default eglot-ignored-server-capabilites '(:hoverProvider))
-  (setq eglot-stay-out-of '(company eldoc)))
+  (setq eglot-stay-out-of '(company eldoc)
+        eglot-confirm-server-initiated-edits nil))
 
 ;;;; * Flymake
 (use-package flymake
@@ -364,6 +378,7 @@
   :init
   (setq completion-styles '(orderless)
         completion-category-defaults nil
+        orderless-component-separator "[ -/]+"
         completion-category-overrides '((file (styles . (partial-completion))))))
 
 (use-package vertico
@@ -791,7 +806,7 @@
   :config
   (setq rustic-lsp-client 'eglot
         rustic-lsp-server 'rust-analyzer
-        rustic-lsp-format 1
+        rustic-lsp-format t
         rustic-rustfmt-config-alist '((edition . "2018"))))
 
 ;;;; * Fish

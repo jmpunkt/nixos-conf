@@ -1,4 +1,4 @@
-{ callPackage }:
+{ callPackage, libsForQt5 }:
 
 {
   nyan-project = callPackage ../pkgs/games/nyan-project { };
@@ -20,4 +20,5 @@
   pythonToolchain = callPackage ../pkgs/misc/pythonToolchain { };
   hunspellDicts = callPackage ../pkgs/hunspellDicts { };
   verapdf = callPackage ../pkgs/applications/verapdf { };
+  maui = libsForQt5.callPackage ../pkgs/applications/maui { };
 }

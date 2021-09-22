@@ -20,5 +20,6 @@
   pythonToolchain = callPackage ../pkgs/misc/pythonToolchain { };
   hunspellDicts = callPackage ../pkgs/hunspellDicts { };
   verapdf = callPackage ../pkgs/applications/verapdf { };
+  vpaint = libsForQt5.callPackage ../pkgs/misc/vpaint { };
   maui = libsForQt5.callPackage ../pkgs/applications/maui { };
 }

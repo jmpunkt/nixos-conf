@@ -6,12 +6,31 @@ self: super:
   # NOTICE: disabled until discord breaks again
   discord = super.discord.overrideAttrs (
     old: rec {
-      version = "0.0.15";
+      version = "0.0.16";
       src = super.fetchurl {
         url =
           "https://dl.discordapp.net/apps/linux/${version}/discord-${version}.tar.gz";
-        sha256 = "re3pVOnGltluJUdZtTlSeiSrHULw1UjFxDCdGj/Dwl4=";
+        sha256 = "UTVKjs/i7C/m8141bXBsakQRFd/c//EmqqhKhkr1OOk=";
       };
     }
   );
+
+  # pipewire =
+  #   let
+  #     lib = super.lib;
+  #   in
+  #     super.pipewire.overrideAttrs (
+  #       old: rec {
+  #         version = "0.3.29";
+  #         src = super.fetchFromGitLab {
+  #           domain = "gitlab.freedesktop.org";
+  #           owner = "pipewire";
+  #           repo = "pipewire";
+  #           rev = version;
+  #           sha256 = "sha256-8yHvtfDh0srSwg8euyP7HC5/Burcn/O5Yg53qCzrUpo=";
+  #         };
+
+  #         patches = lib.take 4 old.patches;
+  #       }
+  #     );
 }

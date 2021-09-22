@@ -34,6 +34,15 @@
     , unstable
     }:
       let
+        allPackagesOverlay = final: prev:
+          (import ./overlays/10-pkgs.nix final prev);
+
+        overlays = [
+          rust-overlay.overlay
+          allPackagesOverlay
+          emacs.overlay
+        ];
+
         mkSystem = { system, modules }:
           nixpkgs.lib.nixosSystem {
             inherit system;
@@ -45,37 +54,26 @@
                   nix.registry.nixpkgs.flake = nixpkgs;
                   # Allows commands like `nix shell self#jmpunkt.emacs`
                   nix.registry.self.flake = self;
-                  nixpkgs.overlays = overlays ++ [ (unstableOverlay system) ];
+                  nixpkgs.overlays = overlays ++ [ (mkUnstableOverlay system) ];
                 }
               )
             ] ++ modules;
           };
 
-        overlays = [
-          rust-overlay.overlay
-          self.overlay
-          emacs.overlay
-        ];
+        mkPkgs = system: src: additionalOverlays:
+          import src {
+            inherit system;
+            overlays = overlays ++ additionalOverlays;
+            config.allowUnfree = true;
+          };
 
-        unstableOverlay = system: final: prev:
-          let
-            unstablePkgs = final: prev: { unstable = prev.pkgs; };
-          in
-            {
-              unstable = import unstable {
-                inherit system;
-                overlays = overlays ++ [ unstablePkgs ];
-                config.allowUnfree = true;
-              };
-            };
+        mkUnstableOverlay = system:
+          (final: prev: { unstable = mkPkgs system unstable [ ]; });
 
         forAllSystems = utils.lib.eachDefaultSystem
           (
             system: {
-              legacyPackages = import nixpkgs {
-                inherit system;
-                overlays = overlays ++ [ (unstableOverlay system) ];
-              };
+              legacyPackages = mkPkgs system nixpkgs [ (mkUnstableOverlay system) ];
             }
           );
 
@@ -100,7 +98,7 @@
         );
       in
         forAllSystems // forx86Systems // {
-          overlay = (final: prev: (import ./overlays/10-pkgs.nix final prev));
+          overlay = allPackagesOverlay;
 
           nixosModules = {
             home-jonas = (

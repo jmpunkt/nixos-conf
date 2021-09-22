@@ -137,7 +137,6 @@ in
                 yaml-language-server # LSP
                 haskellPackages.haskell-lsp # LSP
                 nodePackages.typescript-language-server # LSP
-                jmpunkt.rustToolchain.nightly # LSP
 
                 gitAndTools.delta # magit-delta
                 inkscape # org-mode:graphs

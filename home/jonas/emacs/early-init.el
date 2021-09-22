@@ -17,5 +17,14 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
+(with-eval-after-load "tsc-dyn-get"
+  ;; Due to NixOS, tsc-dyn should always be present at the most recent
+  ;; version.
+  (advice-add 'tsc-dyn-get-ensure :override
+              (lambda (version)
+                (let ((load-path (nconc `(,tsc-dyn-dir) load-path)))
+                  (message "using advide for tsc")
+                  (require 'tsc-dyn)))))
+
 ;;; * -- End
 ;;; early-init.el ends here

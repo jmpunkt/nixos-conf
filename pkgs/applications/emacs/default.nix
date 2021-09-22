@@ -127,7 +127,7 @@ in
                 prettier-js-command = "${nodePackages.prettier}/bin/prettier";
                 tree-sitter-load-path = [ "${treeSitterGrammars}/bin" ];
                 tsc-dyn-dir = "${jmpunkt.tsc-dyn}/lib";
-                # HACK: ensures that elisp-tree-sitter does not download or install anything
+                # HACK: prevents tree sitter from compiling grammars
                 tree-sitter-langs--testing = true;
               };
               paths = with pkgs; [

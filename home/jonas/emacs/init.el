@@ -324,7 +324,7 @@
                    `((mouse-face . highlight)
                      (priority . ,(+ 50 i)))))
 
-  (setq-default eglot-ignored-server-capabilites '(:hoverProvider))
+  (setq-default eglot-ignored-server-capabilities '(:hoverProvider))
   (setq eglot-stay-out-of '(company eldoc)
         eglot-confirm-server-initiated-edits nil))
 
@@ -797,17 +797,17 @@
 
 ;;;; * Rust
 (use-package rustic
+  :custom
+  (rustic-lsp-client 'eglot)
+  (rustic-lsp-server 'rust-analyzer)
+  (rustic-lsp-format t)
+  (rustic-rustfmt-config-alist '((edition . "2018")))
   :bind (:map rustic-mode-map
               ("C-c k t" . rustic-cargo-test)
               ("C-c k c" . rustic-cargo-clippy)
               ("C-c k o" . rustic-cargo-outdated)
               ("C-c k b" . rustic-compile)
-              ("C-c C-f" . rustic-format-buffer))
-  :config
-  (setq rustic-lsp-client 'eglot
-        rustic-lsp-server 'rust-analyzer
-        rustic-lsp-format t
-        rustic-rustfmt-config-alist '((edition . "2018"))))
+              ("C-c C-f" . rustic-format-buffer)))
 
 ;;;; * Fish
 (use-package fish-mode

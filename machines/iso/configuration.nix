@@ -45,7 +45,7 @@
     };
   };
 
-  services.chrony.enable = true;
+  services.timesyncd.enable = true;
 
   time.timeZone = "Europe/Berlin";
   boot.kernelPackages = pkgs.linuxPackages_latest;

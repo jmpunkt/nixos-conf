@@ -74,6 +74,7 @@ in
       orderless
       affe
       embark
+      embark-consult
       marginalia
 
       # Spelling

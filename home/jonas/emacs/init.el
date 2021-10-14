@@ -369,9 +369,15 @@
 
 ;;;; Search/Find
 (use-package embark
+  :hook (embark-collect-mode . (lambda () (setq show-trailing-whitespace nil)))
   :bind
   (("C-c r" . embark-act)
    ("C-h B" . embark-bindings)))
+
+(use-package embark-consult
+  :after (embark consult)
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package orderless
   :demand t

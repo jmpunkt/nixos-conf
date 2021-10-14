@@ -63,12 +63,35 @@
         mkPkgs = system: src: additionalOverlays:
           import src {
             inherit system;
-            overlays = overlays ++ additionalOverlays;
+            overlays = overlays ++ additionalOverlays ++ [
+              (
+                let
+                  noSysDirs = true;
+                in
+                  final: prev: {
+                    my-cool-gcc = with prev; lowPrio (
+                      wrapCC (
+                        callPackage ./pkgs/gcc7.nix {
+                          inherit noSysDirs;
+                          nixpkgs = src;
+
+                          profiledCompiler = false;
+
+                          libcCross = if stdenv.targetPlatform != stdenv.buildPlatform then libcCross else null;
+                          threadsCross = if stdenv.targetPlatform != stdenv.buildPlatform then threadsCross else null;
+
+                          isl = if !stdenv.isDarwin then isl_0_17 else null;
+                        }
+                      )
+                    );
+                  }
+              )
+            ];
             config.allowUnfree = true;
           };
 
         mkUnstableOverlay = system:
-          (final: prev: { unstable = mkPkgs system unstable [ ]; });
+          (final: prev: { unstable = mkPkgs system unstable []; });
 
         forAllSystems = utils.lib.eachDefaultSystem
           (
@@ -77,25 +100,27 @@
             }
           );
 
-        forx86Systems = utils.lib.eachSystem [ "x86_64-linux" "i686-linux" ] (
-          system: {
-            packages.iso = (
-              mkSystem {
-                inherit system;
-                modules = [ (import ./machines/iso/configuration.nix) ];
-              }
-            ).config.system.build.isoImage;
+        forx86Systems = utils.lib.eachSystem
+          [ "x86_64-linux" "i686-linux" ]
+          (
+            system: {
+              packages.iso = (
+                mkSystem {
+                  inherit system;
+                  modules = [ (import ./machines/iso/configuration.nix) ];
+                }
+              ).config.system.build.isoImage;
 
-            apps.repl = utils.lib.mkApp {
-              drv = nixpkgs.legacyPackages.${system}.writeShellScriptBin "repl" ''
-                confnix=$(mktemp)
-                echo "builtins.getFlake (toString $(git rev-parse --show-toplevel))" >$confnix
-                trap "rm $confnix" EXIT
-                nix repl $confnix
-              '';
-            };
-          }
-        );
+              apps.repl = utils.lib.mkApp {
+                drv = nixpkgs.legacyPackages.${system}.writeShellScriptBin "repl" ''
+                  confnix=$(mktemp)
+                  echo "builtins.getFlake (toString $(git rev-parse --show-toplevel))" >$confnix
+                  trap "rm $confnix" EXIT
+                  nix repl $confnix
+                '';
+              };
+            }
+          );
       in
         forAllSystems // forx86Systems // {
           overlay = allPackagesOverlay;

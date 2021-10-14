@@ -22,4 +22,5 @@
   verapdf = callPackage ../pkgs/applications/verapdf { };
   vpaint = libsForQt5.callPackage ../pkgs/misc/vpaint { };
   maui = libsForQt5.callPackage ../pkgs/applications/maui { };
+  haruna = libsForQt5.callPackage ../pkgs/applications/haruna { };
 }

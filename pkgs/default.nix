@@ -12,7 +12,7 @@
   papyrus-rt = callPackage ../pkgs/applications/papyrus-rt { };
   gamemode = callPackage ../pkgs/applications/gamemode { };
   inih = callPackage ../pkgs/misc/inih { };
-  kaffeine = callPackage ../pkgs/applications/kaffeine { };
+  kaffeine = libsForQt5.callPackage ../pkgs/applications/kaffeine { };
   latex = callPackage ../pkgs/misc/latex { };
   tsc-dyn = callPackage ../pkgs/misc/tsc-dyn { };
   emacs = callPackage ../pkgs/applications/emacs { };

@@ -1,8 +1,27 @@
-{ stdenv, lib, fetchgit, extra-cmake-modules, kdoctools, gettext, isocodes, libX11
-, libXScrnSaver, vlc, sqlite, xorg, qt5, libsForQt5 }:
+{ stdenv
+, lib
+, fetchgit
+, cmake
+, wrapQtAppsHook
+, extra-cmake-modules
+, kdoctools
+, gettext
+, isocodes
+, libX11
+, libXScrnSaver
+, vlc
+, sqlite
+, xorg
+, qtbase
+, qtx11extras
+, ki18n
+, solid
+, kio
+, kdbusaddons
+}:
 
 stdenv.mkDerivation rec {
-  pname = "kaffein";
+  pname = "kaffeine";
   version = "2.0.18";
 
   src = fetchgit {
@@ -11,7 +30,13 @@ stdenv.mkDerivation rec {
     sha256 = "1rxavbv5agyayvzbfc9p10sw5cfd4g638hf3dqjpi41k17v95rhl";
   };
 
-  nativeBuildInputs = [ extra-cmake-modules kdoctools gettext ];
+  nativeBuildInputs = [
+    cmake
+    extra-cmake-modules
+    kdoctools
+    gettext
+    wrapQtAppsHook
+  ];
 
   buildInputs = [
     vlc
@@ -19,19 +44,19 @@ stdenv.mkDerivation rec {
     libXScrnSaver
     sqlite
 
-    qt5.qtbase
-    qt5.qtx11extras
+    qtbase
+    qtx11extras
 
-    libsForQt5.ki18n
-    libsForQt5.solid
-    libsForQt5.kio
-    libsForQt5.kdbusaddons
+    ki18n
+    solid
+    kio
+    kdbusaddons
   ];
 
   meta = with lib; {
     homepage = "https://invent.kde.org/multimedia/kaffeine";
     license = with licenses; [ gpl2 ];
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [];
     platforms = platforms.linux;
   };
 }

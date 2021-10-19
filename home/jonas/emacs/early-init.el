@@ -16,6 +16,7 @@
 ;;; Emacs
 (tool-bar-mode -1)
 (menu-bar-mode -1)
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 (with-eval-after-load "tsc-dyn-get"
   ;; Due to NixOS, tsc-dyn should always be present at the most recent

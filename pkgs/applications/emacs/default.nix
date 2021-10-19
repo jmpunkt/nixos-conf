@@ -103,7 +103,7 @@ in
       graphviz-dot-mode
 
       # Programming
-      rustic
+      rust-mode
       haskell-mode
       typescript-mode
       prettier-js

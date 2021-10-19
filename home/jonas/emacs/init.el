@@ -316,6 +316,10 @@
               ("C-c C-f" . eglot-format-buffer)
               ("M-RET" . eglot-code-actions))
   :config
+  (setq eglot-server-programs
+        (append
+         (assoc-delete-all 'rust-mode eglot-server-programs)
+         '((rust-mode . ("rust-analyzer")))))
 
   ;; disable mouse support for flymake face
   (cl-loop for i from 1
@@ -804,18 +808,15 @@
   :config (setq python-indent-offset 4))
 
 ;;;; * Rust
-(use-package rustic
-  :custom
-  (rustic-lsp-client 'eglot)
-  (rustic-lsp-server 'rust-analyzer)
-  (rustic-lsp-format t)
-  (rustic-rustfmt-config-alist '((edition . "2018")))
-  :bind (:map rustic-mode-map
-              ("C-c k t" . rustic-cargo-test)
-              ("C-c k c" . rustic-cargo-clippy)
-              ("C-c k o" . rustic-cargo-outdated)
-              ("C-c k b" . rustic-compile)
-              ("C-c C-f" . rustic-format-buffer)))
+(use-package rust-mode
+  :hook (rust-mode . eglot-ensure)
+  :bind (:map rust-mode-map
+              ("C-c k t" . rust-test)
+              ("C-c k r" . rust-run)
+              ("C-c k c" . rust-check)
+              ("C-c k C" . rust-clippy)
+              ("C-c k b" . rust-compile)
+              ("C-c C-f" . rust-format-buffer)))
 
 ;;;; * Fish
 (use-package fish-mode

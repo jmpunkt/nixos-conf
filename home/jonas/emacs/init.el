@@ -397,7 +397,18 @@
   :hook (embark-collect-mode . (lambda () (setq show-trailing-whitespace nil)))
   :bind
   (("C-c r" . embark-act)
-   ("C-h B" . embark-bindings)))
+   ("C-h B" . embark-bindings))
+  :config
+  (defun embark-vertico-indicator ()
+    (let ((fr face-remapping-alist))
+      (lambda (&optional keymap _targets prefix)
+        (when (bound-and-true-p vertico--input)
+          (setq-local face-remapping-alist
+                      (if keymap
+                          (cons '(vertico-current . embark-target) fr)
+                        fr))))))
+
+  (add-to-list 'embark-indicators #'embark-vertico-indicator))
 
 (use-package embark-consult
   :after (embark consult)

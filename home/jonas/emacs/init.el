@@ -182,15 +182,19 @@
   (which-key-mode 1))
 
 ;;;; * Spelling
+(use-package ispell
+  :config
+  (setq-default ispell-program-name "aspell"
+                ;; Hide all default entries which may not be available
+                ;; on the system anyways
+                ispell-extra-args '("--sug-mode=ultra"
+                                    "--run-together")
+                ispell-dictionary-base-alist nil
+                ispell-local-dictionary "en"))
+
 (use-package flyspell
-  :hook ((prog-mode . (lambda ()
-                        (when (not (memq major-mode flyspell-disabled-modes))
-                          (flyspell-prog-mode))))
-         (text-mode . (lambda ()
-                        (when (not (memq major-mode flyspell-disabled-modes))
-                          (flyspell-mode 1)))))
   :init
-  (defvar flyspell-disabled-modes
+  (defvar jmpunkt/flyspell-disabled-modes
     '(dired-mode
       log-edit-mode
       compilation-mode
@@ -200,19 +204,36 @@
       gud-mode
       calc-mode
       Info-mode))
+  (defun jmpunkt/flyspell-enabled-for-mode ()
+    (interactive)
+    (not (memq major-mode jmpunkt/flyspell-disabled-modes)))
+  (defun jmpunkt/flyspell-generic-progmode-verify ()
+    "Taken from `flyspell-generic-progmode-verify`, modified to work
+     with item like `(tree-sitter-hl-face:doc tree-sitter-hl-face:comment)`.
+     Didnt work previously because of `memq`, now use `member`."
+    (unless (eql (point) (point-min))
+      (let ((f (get-text-property (1- (point)) 'face)))
+        (member f jmpunkt/flyspell-prog-text-faces))))
+  (setq jmpunkt/flyspell-prog-text-faces
+        '(tree-sitter-hl-face:string
+          tree-sitter-hl-face:doc
+          tree-sitter-hl-face:comment
+          (tree-sitter-hl-face:doc tree-sitter-hl-face:comment)
+          font-lock-comment-face
+          font-lock-doc-face
+          font-lock-string-face))
+  :hook ((prog-mode . (lambda ()
+                        (when (jmpunkt/flyspell-enabled-for-mode)
+                          (setq flyspell-generic-check-word-predicate
+                                #'jmpunkt/flyspell-generic-progmode-verify)
+                          (flyspell-mode 1)
+                          (run-hooks 'flyspell-prog-mode-hook))))
+         (text-mode . (lambda ()
+                        (when (jmpunkt/flyspell-enabled-for-mode)
+                          (flyspell-mode 1)))))
   :config
-  (setq flyspell-prog-text-faces '(tree-sitter-hl-face:comment
-                                   tree-sitter-hl-face:doc
-                                   tree-sitter-hl-face:string
-                                   font-lock-comment-face
-                                   font-lock-doc-face
-                                   font-lock-string-face))
-  (setq-default ispell-program-name "hunspell"
-                ispell-really-hunspell t
-                ;; Hide all default entries which may not be available
-                ;; on the system anyways
-                ispell-dictionary-base-alist nil
-                ispell-local-dictionary "en_US"))
+  (setq flyspell-issue-welcome-flag nil
+        flyspell-issue-message-flag nil))
 
 (use-package flyspell-correct
   :after flyspell

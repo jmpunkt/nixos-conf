@@ -125,6 +125,9 @@
         forAllSystems // forx86Systems // {
           overlay = allPackagesOverlay;
 
+          templates = import ./templates;
+          defaultTemplate = (import ./templates).trivial;
+
           nixosModules = {
             home-jonas = (
               { config, ... }: {

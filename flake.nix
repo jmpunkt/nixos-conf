@@ -63,30 +63,7 @@
         mkPkgs = system: src: additionalOverlays:
           import src {
             inherit system;
-            overlays = overlays ++ additionalOverlays ++ [
-              (
-                let
-                  noSysDirs = true;
-                in
-                  final: prev: {
-                    my-cool-gcc = with prev; lowPrio (
-                      wrapCC (
-                        callPackage ./pkgs/gcc7.nix {
-                          inherit noSysDirs;
-                          nixpkgs = src;
-
-                          profiledCompiler = false;
-
-                          libcCross = if stdenv.targetPlatform != stdenv.buildPlatform then libcCross else null;
-                          threadsCross = if stdenv.targetPlatform != stdenv.buildPlatform then threadsCross else null;
-
-                          isl = if !stdenv.isDarwin then isl_0_17 else null;
-                        }
-                      )
-                    );
-                  }
-              )
-            ];
+            overlays = overlays ++ additionalOverlays;
             config.allowUnfree = true;
           };
 

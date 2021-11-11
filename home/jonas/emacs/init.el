@@ -723,10 +723,10 @@
   :hook (org-mode . org-bullets-mode)
   :config (setq org-bullets-bullet-list '("●" "○" "✸" "✿")))
 
-(use-package bibtex-actions
-  :bind (("C-c b" . bibtex-actions-insert-citation)
+(use-package citar
+  :bind (("C-c b" . citar-insert-citation)
          :map minibuffer-local-map
-         ("M-b" . bibtex-actions-insert-preset)))
+         ("M-b" . citar-insert-preset)))
 
 ;;; * Configuration Files
 (use-package tree-sitter

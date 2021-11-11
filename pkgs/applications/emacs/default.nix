@@ -67,7 +67,7 @@ in
       doom-themes
 
       # Bibliography
-      bibtex-actions
+      citar
 
       # Search/Find
       consult

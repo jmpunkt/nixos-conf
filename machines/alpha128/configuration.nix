@@ -34,16 +34,11 @@
     ];
   };
 
-  users.users.jonas = {
-    extraGroups = [
-      config.users.groups.plugdev.name
-    ];
-  };
-
   hardware.openrazer = {
     enable = true;
     syncEffectsEnabled = false;
     mouseBatteryNotifier = false;
+    users = [ users.users.jonas.name ];
   };
 
   environment.systemPackages = with pkgs; [

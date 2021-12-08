@@ -27,7 +27,6 @@ in
   epkgs:
     with epkgs.melpaPackages; [
       # Core
-      esup
       evil
       evil-collection
       use-package

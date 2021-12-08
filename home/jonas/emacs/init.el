@@ -6,12 +6,6 @@
 (eval-when-compile (require 'use-package))
 (require 'bind-key)
 
-;;; * Profiler
-(use-package esup
-  :commands (esup)
-  :init
-  (setq esup-depth 0))
-
 ;;; * Paths
 (use-package nixos-paths
   :demand t)

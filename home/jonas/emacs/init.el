@@ -859,11 +859,20 @@
   :config
   (setq typescript-indent-level 2))
 
-;;;; * HTML
+;;;; * WEB
 (use-package html-mode
   :mode ("\\.html\\'" . html-mode)
   :hook ((html-mode . eglot-ensure)
          (html-mode . prettier-js-mode)))
+
+(use-package css-mode
+  :hook ((css-mode . eglot-ensure)
+         (scss-mode . prettier-js-mode))
+  :bind (:map css-mode-map
+              ("C-c C-f" . prettier-js))
+
+  :config
+  (setq css-indent-offset 2))
 
 (use-package prettier-js
   :commands prettier-js)

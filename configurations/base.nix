@@ -1,13 +1,9 @@
 { lib, config, pkgs, options, ... }:
 
 {
-  imports = import (../modules/all-nixos.nix);
+  imports = import (../modules/all-nixos.nix) ++ [ ./flakes.nix ];
 
   nix = {
-    package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
     binaryCaches = [
       "https://nix-community.cachix.org"
     ];

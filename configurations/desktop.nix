@@ -5,8 +5,8 @@
     [ ./base.nix ./locale.nix ./shell.nix ./tmux.nix ./fish ./yubico.nix ];
 
   boot = {
-    # Use newer kernel for desktop based machines
-    kernelPackages = pkgs.linuxPackages_latest;
+    # Use zen kernel for desktop based machines
+    kernelPackages = pkgs.linuxPackages_zen;
     supportedFilesystems =
       [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
   };

@@ -387,6 +387,20 @@
   (setq eww-search-prefix "https://duckduckgo.com/html?q="))
 
 ;;;; Search/Find
+(use-package minibuffer
+  :bind (:map minibuffer-local-map
+              ("C-j" . next-line)
+              ("C-k" . previous-line)
+              ("M-j" . scroll-up-command)
+              ("M-k" . scroll-down-command)
+              ("C-S-j" . forward-paragraph)
+              ("C-S-k" . backward-paragraph)
+              ("C-e" . beginning-of-buffer)
+              ("C-b" . end-of-buffer)
+              ("C-n" . next-history-element)
+              ("C-m" . previous-history-element)
+              ([return] . exit-minibuffer)))
+
 (use-package embark
   :hook (embark-collect-mode . (lambda () (setq show-trailing-whitespace nil)))
   :bind
@@ -469,6 +483,8 @@
   (corfu-commit-predicate nil)
   :bind (:map corfu-map
          ("TAB" . corfu-next)
+         ("C-j" . corfu-next)
+         ("C-k" . corfu-previous)
          ([tab] . corfu-next)
          ("S-TAB" . corfu-previous)
          ([backtab] . corfu-previous))

@@ -107,8 +107,7 @@ in
       typescript-mode
       prettier-js
     ]
-    ++ (with epkgs.elpaPackages; [ undo-tree seq vertico corfu ])
-    ++ (with epkgs.orgPackages; [ org org-plus-contrib ])
+    ++ (with epkgs.elpaPackages; [ undo-tree seq vertico corfu org ])
     ++ (
       with epkgs.manualPackages; [
         jmpunktPkgs.ligature

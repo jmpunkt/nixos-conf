@@ -85,7 +85,8 @@
         frame-title-format "Emacs"
         auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
         backup-directory-alist `((".*" . ,temporary-file-directory))
-        display-line-numbers-grow-only t)
+        display-line-numbers-grow-only t
+        compilation-scroll-output t)
   (save-place-mode 1)
   (show-paren-mode 1)
   (global-hl-line-mode 1)
@@ -336,14 +337,14 @@
          (assoc-delete-all 'rust-mode eglot-server-programs)
          '((rust-mode . ("rust-analyzer")))))
 
+  (setq eglot-extend-to-xref t)
+
   ;; disable mouse support for flymake face
   (cl-loop for i from 1
            for type in '(eglot-note eglot-warning eglot-error)
            do (put type 'flymake-overlay-control
                    `((mouse-face . highlight)
                      (priority . ,(+ 50 i)))))
-
-  (setq-default eglot-ignored-server-capabilities '(:hoverProvider))
   (setq eglot-stay-out-of '(company eldoc)
         eglot-confirm-server-initiated-edits nil))
 
@@ -493,7 +494,7 @@
          (shell-mode . corfu-mode)
          (eshell-mode . corfu-mode))
   :config
-  (set-face-background 'corfu-background (doom-color 'bg))
+  (set-face-background 'corfu-default (doom-color 'bg))
   (set-face-background 'corfu-bar (doom-color 'base0))
   (set-face-background 'corfu-border (doom-color 'base4))
   (set-face-background 'corfu-current (face-attribute 'hl-line :background))

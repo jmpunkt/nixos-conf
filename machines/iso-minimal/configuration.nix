@@ -1,0 +1,29 @@
+{ modulesPath, config, lib, pkgs, ... }:
+
+{
+  imports = [
+    "${modulesPath}/installer/cd-dvd/channel.nix"
+    "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
+    ../../configurations/flakes.nix
+  ];
+
+  boot.supportedFilesystems = lib.mkForce
+    [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
+
+  isoImage.volumeID =
+    "nixos-${config.system.nixos.release}-${pkgs.stdenv.hostPlatform.uname.processor}";
+
+  environment.systemPackages = with pkgs; [
+    neovim
+    git
+  ];
+
+  networking.useDHCP = true;
+  programs.fish.enable = true;
+  services.timesyncd.enable = true;
+
+  time.timeZone = "Europe/Berlin";
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  services.xserver.layout = "de";
+  console.keyMap = "de";
+}

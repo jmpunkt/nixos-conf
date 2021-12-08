@@ -83,8 +83,15 @@
           system: {
             packages.iso = (
               mkSystem {
-                inherit system;
+                inherit system nixpkgs;
                 modules = [ (import ./machines/iso/configuration.nix) ];
+              }
+            ).config.system.build.isoImage;
+
+            packages.iso-minimal = (
+              mkSystem {
+                inherit system nixpkgs;
+                modules = [ (import ./machines/iso-minimal/configuration.nix) ];
               }
             ).config.system.build.isoImage;
 

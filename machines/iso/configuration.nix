@@ -4,7 +4,11 @@
   imports = [
     "${modulesPath}/installer/cd-dvd/channel.nix"
     "${modulesPath}/installer/cd-dvd/installation-cd-base.nix"
+    ../../configurations/flakes.nix
   ];
+
+  boot.supportedFilesystems = lib.mkForce
+    [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
 
   isoImage.volumeID =
     "nixos-${config.system.nixos.release}-${pkgs.stdenv.hostPlatform.uname.processor}";

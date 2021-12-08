@@ -38,7 +38,7 @@
     enable = true;
     syncEffectsEnabled = false;
     mouseBatteryNotifier = false;
-    users = [ users.users.jonas.name ];
+    users = [ config.users.users.jonas.name ];
   };
 
   environment.systemPackages = with pkgs; [

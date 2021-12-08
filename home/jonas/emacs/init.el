@@ -852,13 +852,29 @@
 ;;;; * Rust
 (use-package rust-mode
   :hook (rust-mode . eglot-ensure)
+  :init
+  (defun jmpunkt/rust-buffer-project ()
+    "Get project root if possible."
+    (let ((rust-cargo-bin-resolved (executable-find rust-cargo-bin)))
+      (message rust-cargo-bin-resolved)
+      (when (null rust-cargo-bin-resolved)
+        (error "`%s' not found in current path" rust-cargo-bin))
+      (with-temp-buffer
+        (let ((ret (call-process rust-cargo-bin-resolved nil t nil "locate-project")))
+          (when (/= ret 0)
+            (error "`cargo locate-project' returned %s status: %s" ret (buffer-string)))
+          (goto-char 0)
+          (let ((output (json-read)))
+            (cdr (assoc-string "root" output)))))))
   :bind (:map rust-mode-map
               ("C-c k t" . rust-test)
               ("C-c k r" . rust-run)
               ("C-c k c" . rust-check)
               ("C-c k C" . rust-clippy)
               ("C-c k b" . rust-compile)
-              ("C-c C-f" . rust-format-buffer)))
+              ("C-c C-f" . rust-format-buffer))
+  :config
+  (advice-add 'rust-buffer-project :override #'jmpunkt/rust-buffer-project))
 
 ;;;; * Fish
 (use-package fish-mode

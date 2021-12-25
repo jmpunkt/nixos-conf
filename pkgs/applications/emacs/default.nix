@@ -36,6 +36,7 @@ in
       envrc
       dashboard
       projectile
+      smart-jump
 
       tree-sitter
       tree-sitter-langs

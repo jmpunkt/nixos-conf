@@ -176,6 +176,13 @@
   :config
   (which-key-mode 1))
 
+;;;; * xref/jumping
+(use-package smart-jump
+  :demand t
+  :bind (("M-." . smart-jump-go)
+         ("M-," . smart-jump-back)
+         ("M-?" . smart-jump-references)))
+
 ;;;; * Spelling
 (use-package ispell
   :config

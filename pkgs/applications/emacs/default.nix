@@ -29,6 +29,7 @@ in
       # Core
       evil
       evil-collection
+      evil-textobj-tree-sitter
       use-package
       smartparens
       which-key

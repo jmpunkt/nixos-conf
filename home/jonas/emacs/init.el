@@ -87,6 +87,7 @@
         backup-directory-alist `((".*" . ,temporary-file-directory))
         display-line-numbers-grow-only t
         compilation-scroll-output t)
+  (global-set-key "\t" 'completion-at-point)
   (save-place-mode 1)
   (show-paren-mode 1)
   (global-hl-line-mode 1)
@@ -132,6 +133,8 @@
   :after evil
   :config
   (define-key evil-motion-state-map [down-mouse-1] nil)
+  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
   (global-set-key [mouse-1] 'mouse-set-point)
   (global-unset-key [down-mouse-1])
   (global-unset-key [drag-mouse-1])
@@ -356,6 +359,7 @@
          '((rust-mode . ("rust-analyzer")))))
 
   (setq eglot-extend-to-xref t)
+  (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
 
   ;; disable mouse support for flymake face
   (cl-loop for i from 1

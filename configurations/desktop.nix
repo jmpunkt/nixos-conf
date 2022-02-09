@@ -18,6 +18,9 @@
     jfsutils
     f2fs-tools
     ntfs3g
+
+    chromium
+    firefox-bin
   ];
 
   fonts = {

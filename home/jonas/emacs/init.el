@@ -372,8 +372,8 @@
   (cl-loop for i from 1
            for type in '(eglot-note eglot-warning eglot-error)
            do (put type 'flymake-overlay-control
-                   `((mouse-face . highlight)
-                     (priority . ,(+ 50 i)))))
+                   `((priority . ,(+ 50 i))
+                     (face . 'flymake-error))))
   (setq eglot-stay-out-of '(company eldoc)
         eglot-confirm-server-initiated-edits nil))
 
@@ -389,12 +389,12 @@
   :commands (elfeed)
   :init
   (setq elfeed-feeds
-      '("https://rss.golem.de/rss.php?feed=RSS2.0"
-        "https://www.phoronix.com/phoronix-rss.php"
-        "https://www.heise.de/security/rss/alert-news-atom.xml"
-        "https://www.heise.de/rss/heise-atom.xml"
-        "https://www.tagesschau.de/xml/rss2/"
-        "https://weekly.nixos.org/feeds/all.rss.xml")))
+        '("https://rss.golem.de/rss.php?feed=RSS2.0"
+          "https://www.phoronix.com/phoronix-rss.php"
+          "https://www.heise.de/security/rss/alert-news-atom.xml"
+          "https://www.heise.de/rss/heise-atom.xml"
+          "https://www.tagesschau.de/xml/rss2/"
+          "https://weekly.nixos.org/feeds/all.rss.xml")))
 
 ;;;; WWW
 (use-package shr

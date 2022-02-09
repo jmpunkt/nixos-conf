@@ -129,6 +129,7 @@ in
                 tsc-dyn-dir = "${jmpunkt.tsc-dyn}/lib";
                 # HACK: prevents tree sitter from compiling grammars
                 tree-sitter-langs--testing = true;
+                nix-nixfmt-bin = "${unstable.alejandra}/bin/alejandra";
               };
               paths = with pkgs; [
                 ccls # LSP

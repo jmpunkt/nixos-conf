@@ -343,6 +343,22 @@
               ("C-c k r" . eglot-rename)
               ("C-c C-f" . eglot-format-buffer)
               ("M-RET" . eglot-code-actions))
+  :init
+  (defvar jmpunkt/eglot-keys-map (make-keymap)
+    "Keymap which supersedes the default eglot keymap")
+  (define-minor-mode jmpunkt/eglot-keys-mode
+    "Minor mode allows to overwrite the Eglot keybinds for specific major modes."
+    :keymap jmpunkt/eglot-keys-map)
+  (add-to-list 'emulation-mode-map-alists
+               `((jmpunkt/eglot-keys-mode . ,jmpunkt/eglot-keys-map)))
+  (defun jmpunkt/eglot-keys-for (mode-hook)
+    "Enables the Eglot key mode for a specific MODE-HOOK"
+    (add-hook mode-hook
+              (lambda ()
+                (add-hook 'eglot-managed-mode-hook
+                          (lambda () (jmpunkt/eglot-keys-mode))
+                          nil
+                          1))))
   :config
   (setq eglot-server-programs
         (append
@@ -852,10 +868,27 @@
 (use-package nix-mode
   :mode "\\.nix\\'"
   :hook (nix-mode . eglot-ensure)
-  :bind (:map nix-mode-map
-              ("C-c C-f" . nix-format-buffer))
-  :config
-  (setq-default nix-nixfmt-bin "nixpkgs-fmt"))
+  :bind ((:map nix-mode-map
+               ("C-c C-f" . nix-format-buffer))
+         (:map jmpunkt/eglot-keys-map
+               ("C-c C-f" . nix-format-buffer)))
+  :init
+  (jmpunkt/eglot-keys-for 'nix-mode-hook)
+  ;; Added support for alejandra
+  (defun jmpunkt/nix--format-call (buf nixfmt-bin)
+    "Format BUF using alejandra."
+    (let ((stderr (get-buffer-create "*nixfmt-stderr*"))
+          (tempfile (make-temp-file "nixfmt")))
+      (with-current-buffer stderr
+        (erase-buffer))
+      (with-current-buffer (get-buffer-create "*nixfmt*")
+        (erase-buffer)
+        (insert-buffer-substring buf)
+        (if (zerop (call-process-region (point-min) (point-max) nixfmt-bin t '(t nil) nil))
+            ;; (nix--replace-buffer-contents (create-file-buffer tempfile) stderr)
+            (nix--replace-buffer-contents (current-buffer) buf)
+          (error "Nixfmt failed, see *nixfmt* buffer for details")))))
+  (advice-add 'nix--format-call :override #'jmpunkt/nix--format-call))
 
 ;;;; * Python
 (use-package python

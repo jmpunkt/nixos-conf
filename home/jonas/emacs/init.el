@@ -482,12 +482,7 @@
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   :config
-  (setq consult-project-root-function #'projectile-project-root)
-  (consult-customize
-   consult-ripgrep consult-git-grep consult-find
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-file consult--source-project-file consult--source-bookmark
-   :preview-key (kbd "M-.")))
+  (setq consult-project-root-function #'projectile-project-root))
 
 (use-package recentf
   :init (recentf-mode)

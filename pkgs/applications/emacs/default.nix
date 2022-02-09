@@ -31,7 +31,6 @@ in
       evil-collection
       evil-textobj-tree-sitter
       use-package
-      smartparens
       which-key
       hl-todo
       envrc

@@ -285,15 +285,6 @@
         dashboard-items nil)
   (dashboard-setup-startup-hook))
 
-;;;; * Smartparens
-(use-package smartparens
-  :hook (eval-expression-minibuffer-setup . smartparens-mode)
-  :config
-  (smartparens-global-mode t)
-  (show-smartparens-global-mode t)
-  (sp-pair "'" nil :actions :rem)
-  (sp-pair "`" nil :actions :rem))
-
 ;;;; * Projectile
 (use-package projectile
   :demand t

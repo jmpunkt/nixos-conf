@@ -1,20 +1,23 @@
-self: super:
-
+self:
+super:
 # contains patches for machine configuration, normally the overlay is
 # not shared with the machine configuration.
 {
   # NOTICE: disabled until discord breaks again
-  discord = super.discord.overrideAttrs (
-    old: rec {
-      version = "0.0.16";
-      src = super.fetchurl {
-        url =
-          "https://dl.discordapp.net/apps/linux/${version}/discord-${version}.tar.gz";
-        sha256 = "UTVKjs/i7C/m8141bXBsakQRFd/c//EmqqhKhkr1OOk=";
-      };
-    }
-  );
-
+  discord =
+    super.discord.overrideAttrs
+      (
+        old:
+        rec {
+          version = "0.0.17";
+          src =
+            super.fetchurl
+              {
+                url = "https://dl.discordapp.net/apps/linux/${ version }/discord-${ version }.tar.gz";
+                sha256 = "NGJzLl1dm7dfkB98pQR3gv4vlldrII6lOMWTuioDExU=";
+              };
+        }
+      );
   # pipewire =
   #   let
   #     lib = super.lib;
@@ -29,7 +32,6 @@ self: super:
   #           rev = version;
   #           sha256 = "sha256-8yHvtfDh0srSwg8euyP7HC5/Burcn/O5Yg53qCzrUpo=";
   #         };
-
   #         patches = lib.take 4 old.patches;
   #       }
   #     );

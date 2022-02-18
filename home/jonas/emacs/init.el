@@ -880,10 +880,13 @@
       (with-current-buffer (get-buffer-create "*nixfmt*")
         (erase-buffer)
         (insert-buffer-substring buf)
-        (if (zerop (call-process-region (point-min) (point-max) nixfmt-bin t '(t nil) nil))
-            ;; (nix--replace-buffer-contents (create-file-buffer tempfile) stderr)
-            (nix--replace-buffer-contents (current-buffer) buf)
-          (error "Nixfmt failed, see *nixfmt* buffer for details")))))
+        (if (zerop (call-process-region (point-min) (point-max) nixfmt-bin t `(t ,tempfile) nil))
+            (progn
+              (with-current-buffer stderr (replace-buffer-contents (create-file-buffer tempfile)))
+              (nix--replace-buffer-contents (current-buffer) buf))
+          (error "Nixfmt failed, see *nixfmt-stderr* buffer for details")
+          (with-current-buffer stderr
+            (split-window-right))))))
   (advice-add 'nix--format-call :override #'jmpunkt/nix--format-call))
 
 ;;;; * Python

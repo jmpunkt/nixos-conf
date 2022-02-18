@@ -1,5 +1,7 @@
-{ config, pkgs, ... }:
-
+{ config
+, pkgs
+, ...
+}:
 {
   programs.tmux = {
     enable = true;
@@ -9,8 +11,9 @@
     historyLimit = 10000;
     aggressiveResize = true;
     escapeTime = 50;
-    extraConfig = ''
-      run-shell ${pkgs.tmuxPlugins.yank.rtp}
+    extraConfig =
+      ''
+      run-shell ${ pkgs.tmuxPlugins.yank.rtp }
 
       set -g mouse on
       setw -g alternate-screen on
@@ -57,6 +60,6 @@
 
       # bell
       set-window-option -g window-status-bell-style "fg=#393939,bg=#f2777a"
-    '';
+      '';
   };
 }

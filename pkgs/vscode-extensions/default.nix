@@ -1,5 +1,1 @@
-{ pkgs }:
-
-{
-  vscode-eslint = pkgs.callPackage ./vscode-eslint.nix {};
-}
+{ pkgs }: { vscode-eslint = pkgs.callPackage ./vscode-eslint.nix { }; }

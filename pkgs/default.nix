@@ -1,5 +1,6 @@
-{ callPackage, libsForQt5 }:
-
+{ callPackage
+, libsForQt5
+}:
 rec {
   nyan-project = callPackage ../pkgs/games/nyan-project { };
   vcmi = callPackage ../pkgs/games/vcmi { };

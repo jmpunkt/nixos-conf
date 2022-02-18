@@ -1,9 +1,4 @@
 {
-  trivial = {
-    path = ./trivial;
-  };
-
-  rust = {
-    path = ./rust;
-  };
+  trivial = { path = ./trivial; };
+  rust = { path = ./rust; };
 }

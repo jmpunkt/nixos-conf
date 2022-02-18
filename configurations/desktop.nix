@@ -1,67 +1,48 @@
-{ config, pkgs, lib, ... }:
-
+{ config
+, pkgs
+, lib
+, ...
+}:
 {
-  imports =
-    [ ./base.nix ./locale.nix ./shell.nix ./tmux.nix ./fish ./yubico.nix ];
-
+  imports = [ ./base.nix ./locale.nix ./shell.nix ./tmux.nix ./fish ./yubico.nix ];
   boot = {
     # Use zen kernel for desktop based machines
     kernelPackages = pkgs.linuxPackages_zen;
-    supportedFilesystems =
-      [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
+    supportedFilesystems = [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
   };
-
-  environment.systemPackages = with pkgs; [
-    ntfsprogs
-    dosfstools
-    xfsprogs.bin
-    jfsutils
-    f2fs-tools
-    ntfs3g
-
-    chromium
-    firefox-bin
-  ];
-
+  environment.systemPackages =
+    with pkgs; [ ntfsprogs dosfstools xfsprogs.bin jfsutils f2fs-tools ntfs3g chromium firefox-bin epiphany ];
   fonts = {
-    fonts = with pkgs; [
-      corefonts
-      ibm-plex
-      jetbrains-mono
-
-      # Emacs Icons
-      emacs-all-the-icons-fonts
-      symbola
-    ];
-
+    fonts =
+      with pkgs;
+      [
+        corefonts
+        ibm-plex
+        jetbrains-mono
+        # Emacs Icons
+        emacs-all-the-icons-fonts
+        symbola
+      ];
     fontconfig.defaultFonts.monospace = [ "Jetbrains Mono" ];
   };
-
   location = {
     latitude = 50.11;
     longitude = 8.682;
   };
-
   sound.enable = lib.mkForce false;
-
   programs.blender = {
     enable = true;
-    pythonPackages = pkgs.python3.withPackages
-      (ps: with ps; [ certifi numpy ]);
+    pythonPackages = pkgs.python3.withPackages ( ps: with ps; [ certifi numpy ] );
   };
-
   hardware = {
     sane.enable = true;
     opengl.enable = true;
     pulseaudio.enable = lib.mkForce false;
   };
-
   networking.networkmanager.enable = true;
   systemd.services.NetworkManager-wait-online.enable = false;
-
   # pipewire (optional)
   security.rtkit.enable = true;
-
   services = {
     pipewire = {
       enable = true;
@@ -84,7 +65,8 @@
     };
     gamemode = {
       enable = false;
-      ini = ''
+      ini =
+        ''
         [general]
         reaper_freq=5
         desiredgov=performance
@@ -92,7 +74,7 @@
         renice=0
         ioprio=0
         inhibit_screensaver=1
-      '';
+        '';
     };
     printing = {
       enable = true;

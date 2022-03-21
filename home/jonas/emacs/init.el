@@ -117,6 +117,13 @@
   (global-ligature-mode t))
 
 ;;; * Core Packages
+;;;; * undo-tree
+(use-package undo-tree
+  :config
+  (setq undo-tree-visualizer-timestamps t
+        undo-tree-visualizer-diff t
+        undo-tree-auto-save-history nil))
+
 ;;;; * Evil
 (use-package evil
   :demand t

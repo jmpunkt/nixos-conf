@@ -460,7 +460,17 @@
   :init
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
+  (advice-add #'register-preview :override #'consult-register-window)
+  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
   :config
+  (setq consult-narrow-key (kbd "C-+"))
+  (consult-customize
+   affe-grep affe-find
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-recent-file
+   consult--source-project-recent-file
+   :preview-key (kbd "M-."))
   (setq consult-project-root-function #'projectile-project-root))
 
 (use-package recentf
@@ -482,6 +492,7 @@
 (use-package corfu
   :custom
   (corfu-cycle t)
+  (corfu-quit-at-boundary nil)
   (corfu-echo-documentation nil)
   (corfu-preselect-first nil)
   ;; (corfu-preview-current nil)

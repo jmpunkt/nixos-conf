@@ -465,10 +465,9 @@
 (use-package affe
   :after orderless
   :config
-  (defun affe-orderless-regexp-compiler (input _type)
+  (defun affe-orderless-regexp-compiler (input _type _ignorecase)
     (setq input (orderless-pattern-compiler input))
     (cons input (lambda (str) (orderless--highlight input str))))
-
   (setq affe-regexp-compiler #'affe-orderless-regexp-compiler
         affe-find-command "fd -c never -t f")
   (consult-customize affe-grep :preview-key (kbd "M-.")))

@@ -60,6 +60,7 @@
 (use-package emacs
   :demand t
   :hook ((prog-mode . (lambda ()
+                        (electric-indent-local-mode 1)
                         (auto-fill-mode 1)
                         (display-line-numbers-mode 1)
                         (setq-local comment-auto-fill-only-comments t))))
@@ -94,6 +95,7 @@
   (global-undo-tree-mode 1)
   (toggle-scroll-bar -1)
   (global-so-long-mode 1)
+  (electric-indent-mode -1)
 
   (global-prettify-symbols-mode -1)
   (global-eldoc-mode -1))

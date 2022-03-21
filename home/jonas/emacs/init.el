@@ -306,37 +306,6 @@
                                     :test "nix flake check")
   (projectile-mode 1))
 
-;;;; * Treemacs
-(use-package treemacs
-  :bind (:map global-map
-              ([f8] . treemacs)
-              ("C-c f" . treemacs-select-window))
-  :init
-  (setq-default treemacs-python-executable "python3")
-  :config
-  (setq treemacs-follow-after-init t
-        treemacs-width 35
-        treemacs-indentation 2
-        treemacs-collapse-dirs 3
-        treemacs-silent-refresh nil
-        treemacs-sorting 'alphabetic-desc
-        treemacs-show-hidden-files t
-        treemacs-is-never-other-window nil
-        treemacs-eldoc-display nil
-        treemacs-read-string-input 'from-minibuffer)
-  (treemacs-follow-mode t)
-  (treemacs-git-mode 'deferred)
-  (treemacs-filewatch-mode t))
-
-(use-package treemacs-projectile
-  :after (treemacs projectile))
-
-(use-package treemacs-evil
-  :after (treemacs evil))
-
-(use-package treemacs-magit
-  :after (treemacs magit))
-
 ;;;; * Language Server (LSP)
 (use-package eglot
   :bind (:map eglot-mode-map

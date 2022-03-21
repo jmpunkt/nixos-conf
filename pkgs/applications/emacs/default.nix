@@ -64,11 +64,6 @@ in
       magit
       magit-todos
       diff-hl
-      # Tree
-      treemacs
-      treemacs-projectile
-      treemacs-evil
-      treemacs-magit
       # UI
       all-the-icons
       doom-modeline
@@ -177,7 +172,6 @@ in
                     cargo-outdated
                     # dev
                     git
-                    # treemacs
                     fd
                     # affe
                     ripgrep

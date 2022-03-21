@@ -134,6 +134,7 @@
 (use-package evil-collection
   :after evil
   :config
+  (define-key evil-insert-state-map (kbd "C-k") nil)
   (define-key evil-motion-state-map [down-mouse-1] nil)
   (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
   (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)

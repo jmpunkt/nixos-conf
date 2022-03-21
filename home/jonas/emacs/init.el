@@ -541,9 +541,6 @@
   :config
   (setq magit-todos-depth 100))
 
-;; (use-package magit-delta
-;;   :hook (magit-mode . magit-delta-mode))
-
 (use-package diff-hl
   :init (global-diff-hl-mode)
   :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)

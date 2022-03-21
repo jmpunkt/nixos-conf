@@ -1,38 +1,36 @@
-{ config
-, pkgs
-, lib
-, ...
-}:
 {
-  imports = [ ./base.nix ./locale.nix ./shell.nix ./tmux.nix ./fish ./yubico.nix ];
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
+  imports = [./base.nix ./locale.nix ./shell.nix ./tmux.nix ./fish ./yubico.nix];
   boot = {
     # Use zen kernel for desktop based machines
-    kernelPackages = pkgs.linuxPackages_zen;
-    supportedFilesystems = [ "btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs" ];
+    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+    supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
   };
-  environment.systemPackages =
-    with pkgs; [ ntfsprogs dosfstools xfsprogs.bin jfsutils f2fs-tools ntfs3g chromium firefox-bin epiphany ];
+  environment.systemPackages = with pkgs; [ntfsprogs dosfstools xfsprogs.bin jfsutils f2fs-tools ntfs3g chromium firefox-bin epiphany];
   fonts = {
-    fonts =
-      with pkgs;
-      [
-        corefonts
-        ibm-plex
-        jetbrains-mono
-        # Emacs Icons
-        emacs-all-the-icons-fonts
-        symbola
-      ];
-    fontconfig.defaultFonts.monospace = [ "Jetbrains Mono" ];
+    fonts = with pkgs; [
+      corefonts
+      ibm-plex
+      jetbrains-mono
+      # Emacs Icons
+      emacs-all-the-icons-fonts
+      symbola
+    ];
+    fontconfig.defaultFonts.monospace = ["Jetbrains Mono"];
   };
   location = {
     latitude = 50.11;
     longitude = 8.682;
   };
   sound.enable = lib.mkForce false;
-  programs.blender = {
-    enable = true;
-    pythonPackages = pkgs.python3.withPackages ( ps: with ps; [ certifi numpy ] );
+  # programs.blender = {
+  #   enable = true;
+  #   pythonPackages = pkgs.python3.withPackages ( ps: with ps; [ certifi numpy ] );
+  # };
   };
   hardware = {
     sane.enable = true;
@@ -46,7 +44,7 @@
   services = {
     pipewire = {
       enable = true;
-      pulse = { enable = true; };
+      pulse = {enable = true;};
       alsa = {
         enable = true;
         support32Bit = true;
@@ -65,8 +63,7 @@
     };
     gamemode = {
       enable = false;
-      ini =
-        ''
+      ini = ''
         [general]
         reaper_freq=5
         desiredgov=performance
@@ -74,11 +71,11 @@
         renice=0
         ioprio=0
         inhibit_screensaver=1
-        '';
+      '';
     };
     printing = {
       enable = true;
-      drivers = with pkgs; [ gutenprint hplip ];
+      drivers = with pkgs; [gutenprint hplip];
     };
     xserver = {
       enable = true;

@@ -26,7 +26,7 @@ let
       };
 in
 {
-  imports = [ ./neovim/default.nix ] ++ ( import ../../modules/all-home-manager.nix );
+  imports = import ../../modules/all-home-manager.nix;
   home.language = {
     base = "en_US.utf8";
     address = "de_DE.utf8";
@@ -54,10 +54,6 @@ in
       binutils-unwrapped
       dropbox-cli
       pdfpc
-      neochat
-      fractal
-      spectral
-      alacritty
       cryptsetup
       gnupg
       feh
@@ -66,11 +62,9 @@ in
       discord
       tdesktop
       tokei
-      fzf
       git
       gitAndTools.delta
       hyperfine
-      dbeaver
       hunspell
       hunspellDicts.en-us-large
       jmpunkt.hunspellDicts.de-de
@@ -83,7 +77,6 @@ in
       jmpunkt.latex
     ];
   xdg.configFile = {
-    "alacritty/alacritty.yml".text = builtins.readFile ./alacritty/alacritty.yml;
     "emacs/init.el".text = builtins.readFile ./emacs/init.el;
     # since emacs 27.1
     "emacs/early-init.el".text = builtins.readFile ./emacs/early-init.el;
@@ -181,7 +174,7 @@ in
       };
       extraConfig = {
         core = {
-          editor = "nvim";
+          editor = "emacs";
           pager = "delta";
         };
         interactive.diffFilter = "delta --color-only";

@@ -15,7 +15,7 @@
         ];
     loginShellInit =
       ''
-      set -x EDITOR "nvim"
+      set -x EDITOR "emacs"
       set -x BROWSER "firefox"
       set -x TERMINAL "alacritty"
       '';

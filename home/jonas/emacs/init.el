@@ -596,6 +596,10 @@
         org-deadline-warning-days 14
         org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
 
+(use-package ob-sql
+  :defer t
+  :commands (org-babel-execute:sql))
+
 (use-package ob-python
   :defer t
   :commands (org-babel-execute:python))
@@ -845,10 +849,16 @@
 (use-package sql
   :mode ("\\.sql\\'" . sql-mode)
   :config
-  (setq-default sql-database "development"
-                sql-server "localhost")
   (setq-local tab-width 2)
   (sql-highlight-postgres-keywords))
+
+(use-package sqlformat
+  :hook (sql-mode . sqlformat-on-save-mode)
+  :bind (:map sql-mode-map
+              ("C-c C-f" . sqlformat-buffer))
+  :config
+  (setq sqlformat-command 'pgformatter
+        sqlformat-args '("-s2" "-g")))
 
 ;;;; * Haskell
 (use-package haskell-mode

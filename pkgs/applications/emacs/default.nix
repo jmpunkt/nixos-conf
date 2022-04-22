@@ -69,6 +69,8 @@ in
       doom-themes
       # Bibliography
       citar
+      # SQL
+      sqlformat
       # Search/Find
       consult
       orderless
@@ -179,6 +181,8 @@ in
                     # overlays/40-toolchains.nix
                     jmpunkt.latex
                     # custom latex suite
+                    # SQL
+                    pgformatter
                   ];
               }
           )

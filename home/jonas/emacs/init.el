@@ -97,6 +97,7 @@
   (toggle-scroll-bar -1)
   (global-so-long-mode 1)
   (electric-indent-mode -1)
+  (pixel-scroll-precision-mode)
 
   (global-prettify-symbols-mode -1)
   (global-eldoc-mode -1))

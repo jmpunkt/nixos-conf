@@ -297,25 +297,34 @@
   (dashboard-setup-startup-hook))
 
 ;;;; * Projectile
-(use-package projectile
+(use-package project
   :demand t
-  :bind (:map projectile-mode-map
-              ("C-c p b" . projectile-switch-to-buffer)
-              ("C-c p C-b" . projectile-switch-to-buffer-other-window)
-              ("C-c p d" . projectile-find-dir)
-              ("C-c p D" . projectile-dired)
-              ("C-c p f" . affe-find)
-              ("C-c p k" . projectile-kill-buffers)
-              ("C-c p p" . projectile-switch-project)
-              ("C-c p r" . projectile-replace)
-              ("C-c p R" . projectile-replace-regexp)
-              ("C-c p s" . consult-ripgrep)
-              ("C-c p S" . projectile-save-project-buffers))
+  :bind-keymap ("C-c p" . project-prefix-map)
+  :bind (:map project-prefix-map
+              ("f" . jmpunkt/project-affe-find)
+              ("p" . project-switch-project)
+              ("r" . project-query-replace-regexp)
+              ("g" . magit-project-status)
+              ("s" . consult-ripgrep))
   :config
-  (projectile-register-project-type 'nix-flake '("flake.nix")
-                                    :project-file "flake.nix"
-                                    :test "nix flake check")
-  (projectile-mode 1))
+  (setq project-switch-commands
+        '((jmpunkt/project-affe-find "file")
+          (consult-ripgrep "search")
+          (project-find-dir "directory")
+          (project-dired "browse")
+          (magit-project-status "vc")
+          (project-eshell "shell")))
+  :init
+  (defun jmpunkt/project-affe-find ()
+    "Runs `affe-find` in the current project directory."
+    (interactive)
+    (affe-find (project-root (project-current t))))
+  (defun jmpunkt/project-compile-setup (proc)
+    "Adds the project root path to the search path for compilation-mode"
+    (let ((root (project-root (project-current t))))
+      (when root
+        (setq-local compilation-search-path `(,root)))))
+  (add-hook 'compilation-start-hook #'jmpunkt/project-compile-setup))
 
 ;;;; * Language Server (LSP)
 (use-package eglot
@@ -452,7 +461,6 @@
 
 (use-package consult
   :demand t
-  :after (projectile)
   :bind (:map global-map
               ("C-x b" . consult-buffer)
               ("C-x C-b" . consult-buffer-other-window)
@@ -471,8 +479,7 @@
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
-   :preview-key (kbd "M-."))
-  (setq consult-project-root-function #'projectile-project-root))
+   :preview-key (kbd "M-.")))
 
 (use-package recentf
   :init (recentf-mode)

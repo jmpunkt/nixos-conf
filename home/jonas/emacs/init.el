@@ -83,7 +83,8 @@
         auto-save-default nil
         column-number-mode t
         delete-by-moving-to-trash t
-        frame-title-format "Emacs"
+        frame-title-format "%b"
+        icon-title-format "%b"
         auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
         backup-directory-alist `((".*" . ,temporary-file-directory))
         display-line-numbers-grow-only t

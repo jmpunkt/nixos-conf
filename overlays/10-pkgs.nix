@@ -9,27 +9,26 @@ super:
   vimPlugins = ( super.vimPlugins or { } ) // { jmpunktPkgs = super.callPackage ../pkgs/vimPlugins { }; };
   vscode-extensions =
     ( super.vscode-extensions or { } ) // { jmpunktPkgs = super.callPackage ../pkgs/vscode-extensions { }; };
-  emacsPackagesFor =
-    emacs:
+    (super.vscode-extensions or {}) // {jmpunktPkgs = super.callPackage ../pkgs/vscode-extensions {};};
+  emacsPackagesFor = emacs: (
+    (super.emacsPackagesFor emacs).overrideScope'
     (
-      ( super.emacsPackagesFor emacs ).overrideScope'
-        (
-          eself:
-          esuper:
-          let
-            manualPackages =
-              esuper.manualPackages
-                // {
-                  jmpunktPkgs =
-                    super.callPackage
-                      ../pkgs/emacsPackages
-                      {
-                        inherit emacs;
-                        emacsTrivialBuild = esuper.trivialBuild;
-                      };
-                };
-          in
-          esuper.override { inherit manualPackages; }
-        )
-    );
+      eself: esuper: let
+        manualPackages =
+          esuper.manualPackages
+          // {
+            jmpunktPkgs =
+              super.callPackage
+              ../pkgs/emacsPackages
+              {
+                inherit emacs;
+                inherit (esuper) melpaBuild;
+                passedPackages = esuper;
+                emacsTrivialBuild = esuper.trivialBuild;
+              };
+          };
+      in
+        esuper.override {inherit manualPackages;}
+    )
+  );
 }

@@ -367,6 +367,8 @@
   (setq eglot-stay-out-of '(company eldoc)
         eglot-confirm-server-initiated-edits nil))
 
+(use-package eglot-x)
+
 ;;;; * Flymake
 (use-package flymake
   :after consult

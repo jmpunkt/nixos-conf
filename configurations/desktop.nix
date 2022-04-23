@@ -10,7 +10,7 @@
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
   };
-  environment.systemPackages = with pkgs; [ntfsprogs dosfstools xfsprogs.bin jfsutils f2fs-tools ntfs3g chromium firefox-bin epiphany];
+  environment.systemPackages = with pkgs; [ntfsprogs dosfstools xfsprogs.bin jfsutils f2fs-tools ntfs3g chromium firefox-bin epiphany nyxt];
   fonts = {
     fonts = with pkgs; [
       corefonts

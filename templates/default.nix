@@ -1,5 +1,5 @@
 {
-  trivial = { path = ./trivial; };
-  rust = { path = ./rust; };
-  shell = { path = ./shell; };
+  trivial = {path = ./trivial;};
+  rust = {path = ./rust;};
+  shell = {path = ./shell;};
 }

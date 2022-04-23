@@ -1,15 +1,14 @@
-{ lib
-, config
-, pkgs
-, options
-, ...
-}:
 {
+  lib,
+  config,
+  pkgs,
+  options,
+  ...
+}: {
   nix = {
     package = pkgs.nixFlakes;
-    extraOptions =
-      ''
+    extraOptions = ''
       experimental-features = nix-command flakes
-      '';
+    '';
   };
 }

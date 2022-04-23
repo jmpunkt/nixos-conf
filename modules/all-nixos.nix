@@ -1,1 +1,1 @@
-[ ./gamemode/nixos.nix ./blender/nixos.nix ]
+[./gamemode/nixos.nix ./blender/nixos.nix]

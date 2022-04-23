@@ -1,31 +1,28 @@
-{ config
-, pkgs
-, lib
-, xdgData
-, ...
-}:
-let
+{
+  config,
+  pkgs,
+  lib,
+  xdgData,
+  ...
+}: let
   ge =
     pkgs.stdenv.mkDerivation
-      rec {
-        name = "proton-ge";
-        version = "7.0rc3-GE-1";
-        src =
-          pkgs.fetchzip
-            {
-              url =
-                "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${ version }/Proton-${ version }.tar.gz";
-              sha256 = "j+Cqq2+VKhsPk8yOHKWVotTcvucDkxDSd6K+pV1ceds=";
-            };
-        nativeBuildInputs = [ ];
-        installPhase =
-          ''
-          mkdir -p $out
-          mv * $out/
-          '';
-      };
-in
-{
+    rec {
+      name = "proton-ge";
+      version = "7.0rc3-GE-1";
+      src =
+        pkgs.fetchzip
+        {
+          url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${version}/Proton-${version}.tar.gz";
+          sha256 = "j+Cqq2+VKhsPk8yOHKWVotTcvucDkxDSd6K+pV1ceds=";
+        };
+      nativeBuildInputs = [];
+      installPhase = ''
+        mkdir -p $out
+        mv * $out/
+      '';
+    };
+in {
   imports = import ../../modules/all-home-manager.nix;
   home.language = {
     base = "en_US.utf8";
@@ -48,34 +45,32 @@ in
   #       fi
   #     '');
   #   };
-  home.packages =
-    with pkgs;
-    [
-      binutils-unwrapped
-      dropbox-cli
-      pdfpc
-      cryptsetup
-      gnupg
-      feh
-      thunderbird
-      audacious
-      discord
-      tdesktop
-      tokei
-      git
-      gitAndTools.delta
-      hyperfine
-      hunspell
-      hunspellDicts.en-us-large
-      jmpunkt.hunspellDicts.de-de
-      aspell
-      aspellDicts.de
-      aspellDicts.en
-      aspellDicts.en-computers
-      aspellDicts.en-science
-      jmpunkt.emacs
-      jmpunkt.latex
-    ];
+  home.packages = with pkgs; [
+    binutils-unwrapped
+    dropbox-cli
+    pdfpc
+    cryptsetup
+    gnupg
+    feh
+    thunderbird
+    audacious
+    discord
+    tdesktop
+    tokei
+    git
+    gitAndTools.delta
+    hyperfine
+    hunspell
+    hunspellDicts.en-us-large
+    jmpunkt.hunspellDicts.de-de
+    aspell
+    aspellDicts.de
+    aspellDicts.en
+    aspellDicts.en-computers
+    aspellDicts.en-science
+    jmpunkt.emacs
+    jmpunkt.latex
+  ];
   xdg.configFile = {
     "emacs/init.el".text = builtins.readFile ./emacs/init.el;
     # since emacs 27.1
@@ -84,7 +79,7 @@ in
   home.file = {
     ".ssh/id_rsa.pub".text = builtins.readFile ./ssh/yubikey.pub;
     ".ssh/config".text = builtins.readFile ./ssh/config;
-    ".steam/root/compatibilitytools.d/Proton-${ ge.version }" = { source = ge; };
+    ".steam/root/compatibilitytools.d/Proton-${ge.version}" = {source = ge;};
   };
   programs = {
     firefox = {

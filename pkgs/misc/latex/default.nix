@@ -1,28 +1,27 @@
-{ python3Packages
-, texlive
-}:
-let
+{
+  python3Packages,
+  texlive,
+}: let
   # Create pygments Texlive package which
   pygments-tex.pkgs = [
     (
       python3Packages.pygments.overrideAttrs
-        (
-          oldAttrs:
-          {
-            pname = "${ oldAttrs.pname }-tex";
-            tlType = "bin";
-          }
-        )
+      (
+        oldAttrs: {
+          pname = "${oldAttrs.pname}-tex";
+          tlType = "bin";
+        }
+      )
     )
   ];
 in
-texlive.combine
+  texlive.combine
   {
     # add custom package
     inherit pygments-tex;
     # add packages provided by NixOS
     inherit
-      ( texlive )
+      (texlive)
       scheme-tetex
       ec
       adjustbox

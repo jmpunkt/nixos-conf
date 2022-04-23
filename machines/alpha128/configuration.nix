@@ -1,9 +1,9 @@
-{ config
-, pkgs
-, options
-, ...
-}:
 {
+  config,
+  pkgs,
+  options,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ./../../configurations/kde.nix
@@ -23,37 +23,37 @@
       # Disable: https://bbs.archlinux.org/viewtopic.php?id=239075
       "sp5100_tco"
     ];
-    kernelParams = [ "processor.max_cstate=1" ];
-    initrd.kernelModules = [ "amdgpu" ];
+    kernelParams = ["processor.max_cstate=1"];
+    initrd.kernelModules = ["amdgpu"];
   };
   networking.hostName = "alpha128";
-  hardware = { opengl.extraPackages = with pkgs; [ rocm-opencl-icd ]; };
+  hardware = {opengl.extraPackages = with pkgs; [rocm-opencl-icd];};
   hardware.openrazer = {
     enable = true;
     syncEffectsEnabled = false;
     mouseBatteryNotifier = false;
-    users = [ config.users.users.jonas.name ];
+    users = [config.users.users.jonas.name];
   };
-  environment.systemPackages = with pkgs; [ razergenie ];
-  services.xserver.videoDrivers = [ "amdgpu" ];
+  environment.systemPackages = with pkgs; [razergenie];
+  services.xserver.videoDrivers = ["amdgpu"];
   systemd.services.amdgpu-profile-low = {
     description = "Sets the power profile to low within the AMDGPU driver.";
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
     serviceConfig = {
       Type = "oneshot";
       User = "root";
       ExecStart =
         pkgs.writers.writeBash
-          "enable-profile"
-          ''
+        "enable-profile"
+        ''
           echo "low" > /sys/class/drm/card0/device/power_dpm_force_performance_level
-          '';
+        '';
       ExecStop =
         pkgs.writers.writeBash
-          "disable-profile"
-          ''
+        "disable-profile"
+        ''
           echo "auto" > /sys/class/drm/card0/device/power_dpm_force_performance_level
-          '';
+        '';
       RemainAfterExit = "yes";
     };
   };

@@ -426,7 +426,7 @@
 (use-package embark
   :hook (embark-collect-mode . (lambda () (setq show-trailing-whitespace nil)))
   :bind
-  (("C-c r" . embark-act)
+  (("C-c C-r" . embark-act)
    ("C-h B" . embark-bindings))
   :config
   (defun embark-vertico-indicator ()
@@ -475,6 +475,25 @@
   (advice-add #'register-preview :override #'consult-register-window)
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
   :config
+  (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
+  ;; ++ https://github.com/minad/consult/wiki#narrowing-which-key-help-without-delay
+  (defun immediate-which-key-for-narrow (fun &rest args)
+    (let* ((refresh t)
+           (timer (and consult-narrow-key
+                       (memq :narrow args)
+                       (run-at-time 0.05 0.05
+                                    (lambda ()
+                                      (if (eq last-input-event (elt consult-narrow-key 0))
+                                          (when refresh
+                                            (setq refresh nil)
+                                            (which-key--update))
+                                        (setq refresh t)))))))
+      (unwind-protect
+          (apply fun args)
+        (when timer
+          (cancel-timer timer)))))
+  (advice-add #'consult--read :around #'immediate-which-key-for-narrow)
+  ;; --
   (setq consult-narrow-key (kbd "C-+"))
   (consult-customize
    affe-grep affe-find
@@ -506,8 +525,10 @@
   (corfu-quit-at-boundary nil)
   (corfu-echo-documentation nil)
   (corfu-preselect-first nil)
-  ;; (corfu-preview-current nil)
+  (corfu-quit-no-match 'separator)
   :bind (:map corfu-map
+              ("<escape>". corfu-quit)
+              ("<return>" . corfu-insert)
               ("TAB" . corfu-next)
               ("C-j" . corfu-next)
               ("C-k" . corfu-previous)
@@ -529,7 +550,8 @@
 ;;;; * Git
 (use-package magit
   :bind (:map global-map
-              ("C-x g" . magit-status))
+              ("C-x g" . magit-status)
+              ("C-x G" . magit-status-here))
   :config
   (setq magit-status-sections-hook
         '(magit-insert-status-headers

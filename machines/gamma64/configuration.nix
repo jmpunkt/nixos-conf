@@ -30,7 +30,7 @@
       enable = true;
       settings = {"RUNTIME_PM_BLACKLIST" = "05:00.3 05:00.4";};
     };
-    xserver.libinput = {
+    xserver.libinput.touchpad = {
       naturalScrolling = true;
       tapping = true;
     };

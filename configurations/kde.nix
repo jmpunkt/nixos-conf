@@ -6,7 +6,7 @@
 }: {
   imports = [./desktop.nix];
   nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;
-  environment.systemPackages = with pkgs; [ark okular kate gwenview spectacle mpv smplayer ktouch kdialog libreoffice krita skanlite pinentry_qt5];
+  environment.systemPackages = with pkgs; [ark okular kate gwenview spectacle mpv smplayer ktouch kdialog libreoffice krita skanlite pinentry_qt5 partition-manager];
   programs.firejail = {
     enable = true;
     wrappedBinaries = {

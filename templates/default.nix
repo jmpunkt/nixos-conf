@@ -1,5 +1,15 @@
-{
-  trivial = {path = ./trivial;};
-  rust = {path = ./rust;};
-  shell = {path = ./shell;};
+rec {
+  default = trivial;
+  trivial = {
+    path = ./trivial;
+    description = "minimal example";
+  };
+  rust = {
+    path = ./rust;
+    description = "rust environment";
+  };
+  shell = {
+    path = ./shell;
+    description = "shell environemnt";
+  };
 }

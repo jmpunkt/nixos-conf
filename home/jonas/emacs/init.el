@@ -790,6 +790,8 @@
 ;;; * Configuration Files
 (use-package tree-sitter
   :demand t
+  :init
+  (setq tsc-dyn-get-from nil)
   :config
   (global-tree-sitter-mode)
   (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))

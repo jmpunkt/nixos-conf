@@ -121,7 +121,6 @@ in
                   ];
                   prettier-js-command = "${nodePackages.prettier}/bin/prettier";
                   tree-sitter-load-path = ["${treeSitterGrammars}/bin"];
-                  tsc-dyn-dir = "${jmpunkt.tsc-dyn}/lib";
                   # HACK: prevents tree sitter from compiling grammars
                   tree-sitter-langs--testing = true;
                   nix-nixfmt-bin = "${unstable.alejandra}/bin/alejandra";

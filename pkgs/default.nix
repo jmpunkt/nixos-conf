@@ -14,7 +14,6 @@
   inih = callPackage ../pkgs/misc/inih {};
   kaffeine = libsForQt5.callPackage ../pkgs/applications/kaffeine {};
   latex = callPackage ../pkgs/misc/latex {};
-  tsc-dyn = callPackage ../pkgs/misc/tsc-dyn {};
   emacs = callPackage ../pkgs/applications/emacs {};
   rustToolchain = callPackage ../pkgs/misc/rustToolchain {};
   pythonToolchain = callPackage ../pkgs/misc/pythonToolchain {};

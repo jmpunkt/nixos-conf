@@ -607,6 +607,23 @@
 ;;;; * Org
 (use-package org
   :mode ("\\.org\\'" . org-mode)
+  :init
+  (defun jmpunkt/org-delegate-keybind (key)
+    "Tries delegating a key sequence to the underlying org-edit-special block.
+
+ Mimics the behavior of entering the block, pressing a single key command, and then exiting."
+    (when (org-in-src-block-p)
+      (org-edit-special)
+      (let ((formatter (key-binding key)))
+        (when formatter
+          (funcall formatter)))
+      (org-edit-src-exit)))
+  (defun jmpunkt/format-org-src ()
+    "Formats the org-src-block with `jmpunkt/org-delegate-keybind`."
+    (interactive)
+    (jmpunkt/org-delegate-keybind (kbd "C-c C-f")))
+  :bind (:map org-mode-map
+              ("C-c C-f" . jmpunkt/format-org-src))
   :hook ((org-mode . (lambda ()
                        (setq-local tab-width 2)
                        (auto-fill-mode 1)

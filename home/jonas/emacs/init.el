@@ -555,6 +555,20 @@
   (setq corfu-min-width 30)
   (corfu-global-mode))
 
+(use-package cape
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  :config
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
+  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
+  (add-hook 'eshell-mode-hook
+            (lambda ()
+              (setq-local corfu-quit-at-boundary t
+                          corfu-quit-no-match t
+                          corfu-auto nil)
+              (corfu-mode))))
+
 ;;;; * Git
 (use-package magit
   :bind (:map global-map

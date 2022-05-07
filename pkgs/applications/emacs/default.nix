@@ -77,6 +77,7 @@ in
           embark
           embark-consult
           marginalia
+          cape
           # Spelling
           langtool
           flyspell-correct

@@ -10,6 +10,15 @@
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
   };
+  xdg = {
+    portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-kde
+      ];
+      gtkUsePortal = true;
+    };
+  };
   environment.systemPackages = with pkgs; [
     ntfsprogs
     dosfstools

@@ -118,6 +118,12 @@
                             ":=" "::=" "/=" "//=" "/==" ))
   (global-ligature-mode t))
 
+(use-package vterm
+  :commands vterm
+  :custom (vterm-max-scrollback 10000)
+  :hook (vterm-mode . (lambda () (setq-local global-hl-line-mode nil)))
+  :config (setq vterm-timer-delay 0.01))
+
 ;;; * Core Packages
 ;;;; * undo-tree
 (use-package undo-tree
@@ -164,6 +170,7 @@
                           elfeed
                           elisp-mode
                           eshell
+                          term
                           eww
                           help
                           info

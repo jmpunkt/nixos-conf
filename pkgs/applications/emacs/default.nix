@@ -50,6 +50,7 @@ in
           smart-jump
           tree-sitter
           tree-sitter-langs
+          vterm
           # Org
           org-bullets
           ob-async

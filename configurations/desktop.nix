@@ -52,7 +52,6 @@
   #   enable = true;
   #   pythonPackages = pkgs.python3.withPackages ( ps: with ps; [ certifi numpy ] );
   # };
-  };
   hardware = {
     sane.enable = true;
     opengl.enable = true;

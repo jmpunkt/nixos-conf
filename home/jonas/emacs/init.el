@@ -842,6 +842,8 @@
   (add-to-list 'tree-sitter-major-mode-language-alist '(nix-mode . nix))
   (add-to-list 'tree-sitter-major-mode-language-alist '(markdown-mode . markdown))
   (add-to-list 'tree-sitter-major-mode-language-alist '(haskell-mode . haskell))
+  (add-to-list 'tree-sitter-major-mode-language-alist '(yaml-mode . yaml))
+  (add-to-list 'tree-sitter-major-mode-language-alist '(toml-mode . toml))
   (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx)))
 
 ;;;; * Dhall
@@ -870,6 +872,12 @@
 (use-package yaml-mode
   :hook (yaml-mode . eglot-ensure)
   :mode ("\\.yaml\\'" "\\.yml\\'"))
+
+;;;; * TOML
+(use-package conf-mode
+  :mode (("\\.toml\\'" . toml-mode))
+  :init
+  (define-derived-mode toml-mode conf-toml-mode "TOML"))
 
 ;;;; * Meson
 (use-package meson-mode

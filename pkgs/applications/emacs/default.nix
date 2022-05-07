@@ -14,6 +14,34 @@
 }: let
   emacs = pkgs.emacsPgtkNativeComp;
   pathOfExtension = ext: "${ext}/share/vscode/extensions/${ext.vscodeExtUniqueId}";
+  tomlHighlights =
+    pkgs.writeText "toml-highlights.scm"
+    ''
+      (bare_key) @property
+      (quoted_key) @string
+
+      (boolean) @keyword
+      (comment) @comment
+      (string) @string
+      (integer) @number
+      (float) @number
+      (offset_date_time) @string.special
+      (local_date_time) @string.special
+      (local_date) @string.special
+      (local_time) @string.special
+
+      "." @punctuation.delimiter
+      "," @punctuation.delimiter
+
+      "=" @operator
+
+      "[" @punctuation.bracket
+      "]" @punctuation.bracket
+      "[[" @punctuation.bracket
+      "]]" @punctuation.bracket
+      "{" @punctuation.bracket
+      "}" @punctuation.bracket
+    '';
   treeSitterGrammars =
     pkgs.runCommandLocal
     "tree-sitter-grammars-bundle"
@@ -49,7 +77,14 @@ in
           dashboard
           smart-jump
           tree-sitter
-          tree-sitter-langs
+          (tree-sitter-langs.overrideAttrs (old: rec {
+            postInstall =
+              (old.postInstall or "")
+              + ''
+                mkdir $out/share/emacs/site-lisp/elpa/${old.pname}-${old.version}/queries/toml
+                ln -s ${tomlHighlights} $out/share/emacs/site-lisp/elpa/${old.pname}-${old.version}/queries/toml/highlights.scm
+              '';
+          }))
           vterm
           # Org
           org-bullets

@@ -12,7 +12,7 @@
   unstable,
   jmpunkt,
 }: let
-  emacs = pkgs.emacsPgtkGcc;
+  emacs = pkgs.emacsPgtkNativeComp;
   pathOfExtension = ext: "${ext}/share/vscode/extensions/${ext.vscodeExtUniqueId}";
   treeSitterGrammars =
     pkgs.runCommandLocal

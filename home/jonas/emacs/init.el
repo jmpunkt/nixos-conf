@@ -204,10 +204,13 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
+  (setq evil-want-C-w-delete nil)
+  (setq evil-want-fine-undo t)
   :config
   (evil-mode 1)
   (evil-set-undo-system 'undo-tree)
   ;; use Xref to find references
+  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
   (define-key evil-normal-state-map (kbd "M-.") nil)
   (define-key evil-motion-state-map "gd" nil)
   (define-key evil-motion-state-map "n" nil))
@@ -267,7 +270,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (define-key evil-inner-text-objects-map "o" (evil-textobj-tree-sitter-get-textobj "loop.inner"))
   (define-key evil-outer-text-objects-map "n" (evil-textobj-tree-sitter-get-textobj "conditional.outer"))
   (define-key evil-inner-text-objects-map "n" (evil-textobj-tree-sitter-get-textobj "conditional.inner")))
-
 
 ;;;; * DirEnv
 (use-package envrc

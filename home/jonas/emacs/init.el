@@ -164,6 +164,16 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 
 ;;; * Core Packages
+;;;; * helpful
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind (:map global-map
+              ("C-h F" . helpful-callable)
+              ("C-h f" . helpful-function)
+              ("C-h v" . helpful-variable)
+              ("C-h k" . helpful-key)))
 
 ;;;; * undo-tree
 (use-package undo-tree

@@ -119,6 +119,7 @@ in
           dashboard
           smart-jump
           tree-sitter-langs
+          helpful
           xterm-color
           # Org
           org-bullets

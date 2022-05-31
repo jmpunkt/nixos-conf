@@ -250,6 +250,7 @@ in
                   # custom latex suite
                   # SQL
                   pgformatter
+                  sqlite
                 ];
               }
             )

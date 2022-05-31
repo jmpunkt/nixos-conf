@@ -739,6 +739,10 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :defer t
   :commands (org-babel-execute:sql))
 
+(use-package ob-sqlite
+  :defer t
+  :commands (org-babel-execute:sqlite))
+
 (use-package ob-python
   :defer t
   :commands (org-babel-execute:python))

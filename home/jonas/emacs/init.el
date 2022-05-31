@@ -59,17 +59,19 @@
 ;;; * Emacs
 (use-package emacs
   :demand t
-  :hook ((prog-mode . (lambda ()
-                        (electric-indent-local-mode 1)
-                        (auto-fill-mode 1)
-                        (display-line-numbers-mode 1)
-                        (setq-local comment-auto-fill-only-comments t))))
+  :hook ((prog-mode . jmpunkt/text-or-prog-init)
+         (text-mode . jmpunkt/text-or-prog-init))
   :init
-  (setq-default tab-width 4
+  (defun jmpunkt/text-or-prog-init ()
+    (subword-mode 1)
+    (electric-indent-local-mode 1)
+    (auto-fill-mode 1)
+    (show-paren-mode 1)
+    (display-line-numbers-mode 1)
+    (setq-local comment-auto-fill-only-comments t
+                tab-width 4
                 indent-tabs-mode nil
-                show-paren-delay 0
-                show-trailing-whitespace t)
-
+                show-trailing-whitespace t))
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
@@ -100,6 +102,14 @@
 
   (global-prettify-symbols-mode -1)
   (global-eldoc-mode -1))
+
+(use-package paren
+  :config
+  (setq show-paren-delay 0
+        show-paren-style 'expression)
+  (custom-set-faces
+   `(show-paren-match-expression
+     ((t (:background ,(doom-lighten 'bg 0.1) :foreground nil))))))
 
 (use-package ligature
   :hook (prog-mode . ligature-mode)
@@ -467,7 +477,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
                               ("." . eww-browse-url))))
 (use-package eww
   :commands (eww eww-follow-link)
-  :hook (eww-mode . (lambda () (setq-local show-trailing-whitespace nil)))
   :config
   (setq eww-search-prefix "https://duckduckgo.com/html?q="))
 
@@ -487,7 +496,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
               ([return] . exit-minibuffer)))
 
 (use-package embark
-  :hook (embark-collect-mode . (lambda () (setq show-trailing-whitespace nil)))
   :bind
   (("C-c C-r" . embark-act)
    ("C-h B" . embark-bindings))

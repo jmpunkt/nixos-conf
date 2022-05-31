@@ -80,7 +80,30 @@
       };
     '';
 in
-  (emacsPackagesFor emacs).emacsWithPackages
+  ((emacsPackagesFor emacs).overrideScope' (self: super: {
+    # TODO: remove when https://github.com/NixOS/nixpkgs/pull/174178 lands?
+    tree-sitter =
+      super
+      .tree-sitter
+      .overrideAttrs (old: rec {
+        recipe = pkgs.writeText "recipe" ''
+          (tree-sitter :repo "emacs-tree-sitter/elisp-tree-sitter"
+                       :fetcher github
+                       :branch "release"
+                       :files ("lisp/*.el"
+                              (:exclude "lisp/tree-sitter-tests.el")))
+        '';
+      });
+    tree-sitter-langs = super.tree-sitter-langs.overrideAttrs (old: rec {
+      postInstall =
+        (old.postInstall or "")
+        + ''
+          mkdir $out/share/emacs/site-lisp/elpa/${old.pname}-${old.version}/queries/toml
+          ln -s ${tomlHighlights} $out/share/emacs/site-lisp/elpa/${old.pname}-${old.version}/queries/toml/highlights.scm
+        '';
+    });
+  }))
+  .emacsWithPackages
   (
     epkgs:
       with epkgs.melpaPackages;
@@ -95,16 +118,7 @@ in
           envrc
           dashboard
           smart-jump
-          tree-sitter
-          (tree-sitter-langs.overrideAttrs (old: rec {
-            postInstall =
-              (old.postInstall or "")
-              + ''
-                mkdir $out/share/emacs/site-lisp/elpa/${old.pname}-${old.version}/queries/toml
-                ln -s ${tomlHighlights} $out/share/emacs/site-lisp/elpa/${old.pname}-${old.version}/queries/toml/highlights.scm
-              '';
-          }))
-          vterm
+          tree-sitter-langs
           xterm-color
           # Org
           org-bullets

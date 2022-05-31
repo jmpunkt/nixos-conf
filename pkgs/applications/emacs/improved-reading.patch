@@ -1,0 +1,29 @@
+From 784a9fd3d511b7f6794f713a8d0b1370ab1b2401 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?G=C3=A9za=20Herman?= <geza.herman@gmail.com>
+Date: Thu, 19 Nov 2020 11:42:41 +0100
+Subject: [PATCH] read as much as possible in emacs_intr_read
+
+---
+ src/sysdep.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/src/sysdep.c b/src/sysdep.c
+index 1632f46d13ed..eca5ab2a4ba1 100644
+--- a/src/sysdep.c
++++ b/src/sysdep.c
+@@ -2523,6 +2523,15 @@ emacs_intr_read (int fd, void *buf, ptrdiff_t nbyte, bool interruptible)
+     }
+   while (result < 0 && errno == EINTR);
+ 
++  if (result > 0) {
++      for (;;) {
++          ssize_t r = read(fd, buf + result, nbyte - result);
++          if (r <= 0) break;
++          if (interruptible) maybe_quit ();
++          result += r;
++      }
++  }
++
+   return result;
+ }
+ 

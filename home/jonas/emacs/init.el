@@ -88,12 +88,11 @@
         auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
         backup-directory-alist `((".*" . ,temporary-file-directory))
         display-line-numbers-grow-only t
-        compilation-scroll-output t)
+        compilation-scroll-output t
+        auth-source-save-behavior nil)
   (global-set-key "\t" 'completion-at-point)
   (save-place-mode 1)
-  (show-paren-mode 1)
   (global-hl-line-mode 1)
-  (global-undo-tree-mode 1)
   (toggle-scroll-bar -1)
   (global-so-long-mode 1)
   (electric-indent-mode -1)
@@ -103,6 +102,7 @@
   (global-eldoc-mode -1))
 
 (use-package ligature
+  :hook (prog-mode . ligature-mode)
   :config
   (ligature-set-ligatures 'prog-mode
                           '("==" "===" "!=" "!==" "=!=" "=:=" "=/="
@@ -115,18 +115,60 @@
                             "|->" "<->" "<~~" "<~" "<~>" "~~" "~~>"
                             "~>" "[||]" "|]" "[|" "|}" "{|" "[<" ">]"
                             "|>" "<|" "||>" "<||" "|||>" "<|||" "<|>"
-                            ":=" "::=" "/=" "//=" "/==" ))
-  (global-ligature-mode t))
+                            ":=" "::=" "/=" "//=" "/==" )))
 
-(use-package vterm
-  :commands vterm
-  :custom (vterm-max-scrollback 10000)
-  :hook (vterm-mode . (lambda () (setq-local global-hl-line-mode nil)))
-  :config (setq vterm-timer-delay 0.01))
+;;;; Shell
+(use-package xterm-color)
+
+(use-package esh-mode
+  :after xterm-color
+  :init
+  (defun jmpunkt/evil-collection-eshell-goto-end-or-here ()
+    "Smart eshell goto promt for evil.
+
+If the cursor is in the history of eshell, then we want to go to the end of buffer.
+If the cursor is on the promt of the eshell, then we want to go to the first writable position.
+If the cursor is on the last promt, then we want to insert at the current position."
+    (if (< (point) eshell-last-output-start)
+        (end-of-buffer)
+      (let ((pos (point)))
+        (progn
+          (while (get-text-property pos 'read-only)
+            (setq pos (+ pos 1)))
+          (goto-char pos)))))
+  (defun jmpunkt/evil-collection-eshell-goto-end-on-insert ()
+    "Go to next prompt on `evil' replace/insert enter."
+    (dolist (hook '(evil-replace-state-entry-hook evil-insert-state-entry-hook))
+      (add-hook hook 'jmpunkt/evil-collection-eshell-goto-end-or-here nil t)))
+  :hook
+  (eshell-mode . (lambda ()
+                   (jmpunkt/evil-collection-eshell-goto-end-on-insert)))
+  (eshell-before-prompt . (lambda ()
+                            (setq-local xterm-color-preserve-properties t)))
+  (eshell-pre-command . (lambda ()
+                          (setq-local process-environment (copy-sequence process-environment))
+                          (setenv "TERM" "xterm-256color")
+                          (setenv "PAGER" "cat")))
+  :config
+  (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+  (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
+  (setq eshell-history-size 10000
+        eshell-hist-ignoredups t))
+
+(use-package compile
+  :config
+  (setq compilation-environment '("TERM=xterm-256color"))
+  (defun jmpunkt/advice-compilation-filter (f proc string)
+    (funcall f proc (xterm-color-filter string)))
+  (advice-add 'compilation-filter :around #'jmpunkt/advice-compilation-filter))
+
 
 ;;; * Core Packages
+
 ;;;; * undo-tree
 (use-package undo-tree
+  :hook ((prog-mode . undo-tree-mode)
+         (text-mode . undo-tree-mode))
   :config
   (setq undo-tree-visualizer-timestamps t
         undo-tree-visualizer-diff t
@@ -156,7 +198,10 @@
   (global-set-key [mouse-1] 'mouse-set-point)
   (global-unset-key [down-mouse-1])
   (global-unset-key [drag-mouse-1])
-  (evil-collection-init `(bookmark
+  (evil-collection-init `(
+                          (pdf pdf-view)
+                          ,@(when evil-collection-setup-minibuffer '(minibuffer))
+                          bookmark
                           calc
                           calendar
                           compile
@@ -170,23 +215,24 @@
                           elfeed
                           elisp-mode
                           eshell
-                          term
                           eww
+                          flymake
+                          help
                           help
                           info
-                          xref
-                          man
+                          js2-mode
                           magit
                           magit-todos
-                          ,@(when evil-collection-setup-minibuffer '(minibuffer))
+                          man
+                          org
                           org-present
-                          (pdf pdf-view)
                           profiler
-                          js2-mode
+                          python
+                          rjsx-mode
+                          term
                           typescript-mode
                           which-key
-                          python
-                          rjsx-mode)))
+                          xref)))
 
 (use-package evil-textobj-tree-sitter
   :after tree-sitter
@@ -829,11 +875,9 @@
 ;;; * Configuration Files
 (use-package tree-sitter
   :demand t
-  :init
-  (setq tsc-dyn-get-from nil)
-  :config
-  (global-tree-sitter-mode)
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+  :init (setq tsc-dyn-get-from nil)
+  :hook ((prog-mode . (lambda () (turn-on-tree-sitter-mode)))
+         (text-mode . (lambda () (turn-on-tree-sitter-mode)))))
 
 (use-package tree-sitter-langs
   :after tree-sitter

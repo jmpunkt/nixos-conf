@@ -526,7 +526,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (setq completion-styles '(orderless)
         completion-category-defaults nil
         orderless-component-separator "[ -/]+"
-        completion-category-overrides '((file (styles . (partial-completion))))))
+        completion-category-overrides '((file (styles . (partial-completion)))
+                                        (eglot (styles . (orderless flex))))))
 
 (use-package vertico
   :demand t
@@ -615,13 +616,14 @@ If the cursor is on the last promt, then we want to insert at the current positi
          (minibuffer-mode . corfu-mode)
          (shell-mode . corfu-mode)
          (eshell-mode . corfu-mode))
+  :init
+  (global-corfu-mode)
   :config
   (custom-set-faces '(corfu-current ((t (:inherit vertico-current :background nil :foreground nil)))))
   (set-face-background 'corfu-default (doom-color 'bg))
   (set-face-background 'corfu-bar (doom-color 'base0))
   (set-face-background 'corfu-border (doom-color 'base4))
-  (setq corfu-min-width 30)
-  (corfu-global-mode))
+  (setq corfu-min-width 30))
 
 (use-package cape
   :init
@@ -635,13 +637,16 @@ If the cursor is on the last promt, then we want to insert at the current positi
               (setq-local corfu-quit-at-boundary t
                           corfu-quit-no-match t
                           corfu-auto nil)
-              (corfu-mode))))
+              (corfu-mode)))
+  (setq cape-dabbrev-min-length 3)
+  (dolist (backend '(cape-symbol cape-keyword cape-file cape-dabbrev))
+    (add-to-list 'completion-at-point-functions backend)))
 
 ;;;; * Git
 (use-package magit
   :bind (:map global-map
               ("C-x g" . magit-status)
-              ("C-x G" . magit-status-here))
+              ("C-x C-g" . magit-status-here))
   :config
   (setq magit-status-sections-hook
         '(magit-insert-status-headers

@@ -103,6 +103,10 @@
   (global-prettify-symbols-mode -1)
   (global-eldoc-mode -1))
 
+(use-package eldoc
+  :config
+  (setq eldoc-echo-area-use-multiline-p nil))
+
 (use-package paren
   :config
   (setq show-paren-delay 0
@@ -437,7 +441,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
            do (put type 'flymake-overlay-control
                    `((priority . ,(+ 50 i))
                      (face . 'flymake-error))))
-  (setq eglot-stay-out-of '(company eldoc)
+  (setq eglot-stay-out-of '(company)
         eglot-confirm-server-initiated-edits nil))
 
 (use-package eglot-x)

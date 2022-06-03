@@ -928,9 +928,18 @@ This session ignores the remote shell and uses /bin/sh."
 ;;; * Configuration Files
 (use-package tree-sitter
   :demand t
-  :init (setq tsc-dyn-get-from nil)
-  :hook ((prog-mode . (lambda () (turn-on-tree-sitter-mode)))
-         (text-mode . (lambda () (turn-on-tree-sitter-mode)))))
+  :init
+  (setq tsc-dyn-get-from nil)
+  (defun jmpunkt/tree-sitter-local-mode ()
+    "Tries to enable tree-sitter-mode and tree-sitter-hl-mode.
+
+If enabling one of the mods results in an error, both modes are disabled again."
+    (condition-case nil
+        (progn (tree-sitter-mode 1)
+               (tree-sitter-hl-mode 1))
+        (error (tree-sitter-mode -1))))
+  :hook ((prog-mode . jmpunkt/tree-sitter-local-mode)
+         (text-mode . jmpunkt/tree-sitter-local-mode)))
 
 (use-package tree-sitter-langs
   :after tree-sitter

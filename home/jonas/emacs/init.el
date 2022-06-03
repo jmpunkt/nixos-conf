@@ -270,6 +270,7 @@ This session ignores the remote shell and uses /bin/sh."
                           js2-mode
                           magit
                           magit-todos
+                          magit-section
                           man
                           org
                           org-present

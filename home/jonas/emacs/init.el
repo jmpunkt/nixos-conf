@@ -554,6 +554,10 @@ This session ignores the remote shell and uses /bin/sh."
 
 (use-package vertico
   :demand t
+  :bind (:map vertico-map
+              ("M-?" . minibuffer-completion-help)
+              ("M-RET" . minibuffer-force-complete-and-exit)
+              ("M-TAB" . minibuffer-complete))
   :init
   (vertico-mode))
 
@@ -594,6 +598,12 @@ This session ignores the remote shell and uses /bin/sh."
   (advice-add #'consult--read :around #'immediate-which-key-for-narrow)
   ;; --
   (setq consult-narrow-key (kbd "C-+"))
+  (setq completion-in-region-function
+        (lambda (&rest args)
+          (apply (if vertico-mode
+                     #'consult-completion-in-region
+                   #'completion--in-region)
+                 args)))
   (consult-customize
    affe-grep affe-find
    consult-ripgrep consult-git-grep consult-grep
@@ -618,36 +628,6 @@ This session ignores the remote shell and uses /bin/sh."
         affe-find-command "fd -c never -t f")
   (consult-customize affe-grep :preview-key (kbd "M-.")))
 
-(use-package corfu
-  :custom
-  (corfu-cycle t)
-  (corfu-quit-at-boundary nil)
-  (corfu-echo-documentation nil)
-  (corfu-preselect-first nil)
-  (corfu-quit-no-match 'separator)
-  :bind (:map corfu-map
-              ("<escape>". corfu-quit)
-              ("<return>" . corfu-insert)
-              ("SPC" . corfu-insert-separator)
-              ("C-j" . corfu-next)
-              ("C-k" . corfu-previous)
-              ("TAB" . corfu-next)
-              ([tab] . corfu-next)
-              ("S-TAB" . corfu-previous)
-              ([backtab] . corfu-previous))
-  :hook ((prog-mode . corfu-mode)
-         (minibuffer-mode . corfu-mode)
-         (shell-mode . corfu-mode)
-         (eshell-mode . corfu-mode))
-  :init
-  (global-corfu-mode)
-  :config
-  (custom-set-faces '(corfu-current ((t (:inherit vertico-current :background nil :foreground nil)))))
-  (set-face-background 'corfu-default (doom-color 'bg))
-  (set-face-background 'corfu-bar (doom-color 'base0))
-  (set-face-background 'corfu-border (doom-color 'base4))
-  (setq corfu-min-width 30))
-
 (use-package cape
   :init
   (add-to-list 'completion-at-point-functions #'cape-file)
@@ -655,21 +635,18 @@ This session ignores the remote shell and uses /bin/sh."
   :config
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
-  (add-hook 'eshell-mode-hook
-            (lambda ()
-              (setq-local corfu-quit-at-boundary t
-                          corfu-quit-no-match t
-                          corfu-auto nil)
-              (corfu-mode)))
   (setq cape-dabbrev-min-length 3)
   (dolist (backend '(cape-symbol cape-keyword cape-file cape-dabbrev))
     (add-to-list 'completion-at-point-functions backend)))
+
+(use-package yasnippet
+  :hook (prog-mode . yas-minor-mode))
 
 ;;;; * Git
 (use-package magit
   :bind (:map global-map
               ("C-x g" . magit-status)
-              ("C-x C-g" . magit-status-here))
+              ("C-x G" . magit-status-here))
   :config
   (setq magit-status-sections-hook
         '(magit-insert-status-headers

@@ -148,6 +148,7 @@ in
           embark-consult
           marginalia
           cape
+          yasnippet
           # Spelling
           langtool
           flyspell-correct
@@ -174,7 +175,7 @@ in
           typescript-mode
           prettier-js
         ]
-        ++ (with epkgs.elpaPackages; [undo-tree seq vertico corfu org])
+        ++ (with epkgs.elpaPackages; [undo-tree seq vertico org])
         ++ (
           with epkgs.manualPackages; [
             jmpunktPkgs.ligature

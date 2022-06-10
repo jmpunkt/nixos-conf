@@ -80,21 +80,8 @@
       };
     '';
 in
-  ((emacsPackagesFor emacs).overrideScope' (self: super: {
-    # TODO: remove when https://github.com/NixOS/nixpkgs/pull/174178 lands?
-    tree-sitter =
-      super
-      .tree-sitter
-      .overrideAttrs (old: rec {
-        recipe = pkgs.writeText "recipe" ''
-          (tree-sitter :repo "emacs-tree-sitter/elisp-tree-sitter"
-                       :fetcher github
-                       :branch "release"
-                       :files ("lisp/*.el"
-                              (:exclude "lisp/tree-sitter-tests.el")))
-        '';
-      });
-    tree-sitter-langs = super.tree-sitter-langs.overrideAttrs (old: rec {
+  ((emacsPackagesFor emacs).overrideScope' (eself: esuper: {
+    tree-sitter-langs = esuper.tree-sitter-langs.overrideAttrs (old: rec {
       postInstall =
         (old.postInstall or "")
         + ''

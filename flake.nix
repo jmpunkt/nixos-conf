@@ -2,7 +2,7 @@
   description = "My configuration as a flake";
   inputs = {
     stable.url = "github:NixOS/nixpkgs/nixos-21.05";
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    unstable.url = "github:NixOS/nixpkgs?rev=b70152ec071689a11c9d20acdb7cf60ce5202fad";
     hardware.url = "github:NixOS/nixos-hardware";
     home-manager = {
       url = "github:nix-community/home-manager/release-21.05";
@@ -12,7 +12,7 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "stable";
     };
-    emacs.url = "github:nix-community/emacs-overlay";
+    emacs-overlay.url = "github:nix-community/emacs-overlay";
     utils.url = "github:numtide/flake-utils";
   };
   outputs = {
@@ -22,11 +22,11 @@
     hardware,
     home-manager,
     rust-overlay,
-    emacs,
+    emacs-overlay,
     utils,
   }: let
     allPackagesOverlay = final: prev: (import ./overlays/10-pkgs.nix final prev);
-    overlays = [rust-overlay.overlay allPackagesOverlay emacs.overlay];
+    overlays = [rust-overlay.overlay allPackagesOverlay emacs-overlay.overlay];
     mkSystemCross = {
       host,
       target,

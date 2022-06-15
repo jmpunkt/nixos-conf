@@ -1008,8 +1008,8 @@ If enabling one of the mods results in an error, both modes are disabled again."
 ;;;; * SQL
 (use-package sql
   :mode ("\\.sql\\'" . sql-mode)
+  :hook (sql-mode . (lambda () (setq-local tab-width 2)))
   :config
-  (setq-local tab-width 2)
   (sql-highlight-postgres-keywords))
 
 (use-package sqlformat
@@ -1027,7 +1027,9 @@ If enabling one of the mods results in an error, both modes are disabled again."
 ;;;; * Nix
 (use-package nix-mode
   :mode "\\.nix\\'"
-  :hook (nix-mode . eglot-ensure)
+  :hook ((nix-mode . eglot-ensure)
+         (nix-mode . (lambda ()
+                       (setq-local tab-width 2))))
   :bind ((:map nix-mode-map
                ("C-c C-f" . nix-format-buffer))
          (:map jmpunkt/eglot-keys-map

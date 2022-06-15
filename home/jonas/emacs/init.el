@@ -153,7 +153,10 @@ If the cursor is on the last promt, then we want to insert at the current positi
       (add-hook hook 'jmpunkt/evil-collection-eshell-goto-end-or-here nil t)))
   :hook
   (eshell-mode . (lambda ()
-                   (jmpunkt/evil-collection-eshell-goto-end-on-insert)))
+                   (jmpunkt/evil-collection-eshell-goto-end-on-insert)
+                   (evil-define-key* '(normal visual motion insert) eshell-mode-map
+                     (kbd "C-j") 'eshell-next-matching-input-from-input
+                     (kbd "C-k") 'eshell-previous-matching-input-from-input)))
   (eshell-before-prompt . (lambda ()
                             (setq-local xterm-color-preserve-properties t)))
   (eshell-pre-command . (lambda ()

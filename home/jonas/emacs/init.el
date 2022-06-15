@@ -74,7 +74,7 @@
                 indent-tabs-mode nil
                 show-trailing-whitespace t))
 
-  (setq indent-line-function 'insert-tab
+  (setq indent-line-function 'indent-relative
         tab-always-indent 'complete
         revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")
         make-backup-files nil

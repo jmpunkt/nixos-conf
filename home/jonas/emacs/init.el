@@ -72,11 +72,6 @@
                 tab-width 4
                 indent-tabs-mode nil
                 show-trailing-whitespace t))
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
-  (setq read-extended-command-predicate #'command-completion-default-include-p)
 
   (setq indent-line-function 'insert-tab
         tab-always-indent 'complete
@@ -91,7 +86,8 @@
         backup-directory-alist `((".*" . ,temporary-file-directory))
         display-line-numbers-grow-only t
         compilation-scroll-output t
-        auth-source-save-behavior nil)
+        auth-source-save-behavior nil
+        read-extended-command-predicate #'command-completion-default-include-p)
   (global-set-key "\t" 'completion-at-point)
   (save-place-mode 1)
   (global-hl-line-mode 1)
@@ -520,7 +516,11 @@ This session ignores the remote shell and uses /bin/sh."
               ("C-e" . end-of-buffer)
               ("C-n" . next-history-element)
               ("C-m" . previous-history-element)
-              ([return] . exit-minibuffer)))
+              ([return] . exit-minibuffer))
+  :config
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
 
 (use-package embark
   :bind
@@ -549,8 +549,7 @@ This session ignores the remote shell and uses /bin/sh."
   (setq completion-styles '(orderless)
         completion-category-defaults nil
         orderless-component-separator "[ -/]+"
-        completion-category-overrides '((file (styles . (partial-completion)))
-                                        (eglot (styles . (orderless flex))))))
+        completion-category-overrides '((eglot (styles . (orderless flex))))))
 
 (use-package vertico
   :demand t
@@ -576,7 +575,6 @@ This session ignores the remote shell and uses /bin/sh."
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
-  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
   :config
   (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
   ;; ++ https://github.com/minad/consult/wiki#narrowing-which-key-help-without-delay

@@ -2,7 +2,7 @@
   description = "My configuration as a flake";
   inputs = {
     stable.url = "github:NixOS/nixpkgs/nixos-21.05";
-    unstable.url = "github:NixOS/nixpkgs?rev=b70152ec071689a11c9d20acdb7cf60ce5202fad";
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
     home-manager = {
       url = "github:nix-community/home-manager/release-21.05";

@@ -24,7 +24,7 @@
         nightly = buildShell pkgs (rustOverwrite pkgs.rust-bin.nightly.latest.default);
         beta = buildShell pkgs (rustOverwrite pkgs.rust-bin.beta.latest.default);
       };
-      devShell = self.devShells.${system}.stable;
+      devShell = self.devShells.${system}.nightly;
       legacyPackages = pkgs;
     };
   in (utils.lib.eachDefaultSystem buildForSystem);

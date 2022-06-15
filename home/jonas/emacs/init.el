@@ -648,6 +648,7 @@ This session ignores the remote shell and uses /bin/sh."
               ("C-x g" . magit-status)
               ("C-x G" . magit-status-here))
   :config
+  (setq magit-slow-confirm '(magit-discard))
   (setq magit-status-sections-hook
         '(magit-insert-status-headers
           magit-insert-merge-log

@@ -60,6 +60,7 @@
 (use-package emacs
   :demand t
   :hook ((prog-mode . jmpunkt/text-or-prog-init)
+         (conf-mode . jmpunkt/text-or-prog-init)
          (text-mode . jmpunkt/text-or-prog-init))
   :init
   (defun jmpunkt/text-or-prog-init ()
@@ -208,6 +209,7 @@ This session ignores the remote shell and uses /bin/sh."
 ;;;; * undo-tree
 (use-package undo-tree
   :hook ((prog-mode . undo-tree-mode)
+         (conf-mode . undo-tree-mode)
          (text-mode . undo-tree-mode))
   :config
   (setq undo-tree-visualizer-timestamps t
@@ -915,6 +917,7 @@ If enabling one of the mods results in an error, both modes are disabled again."
                (tree-sitter-hl-mode 1))
         (error (tree-sitter-mode -1))))
   :hook ((prog-mode . jmpunkt/tree-sitter-local-mode)
+         (conf-mode . jmpunkt/tree-sitter-local-mode)
          (text-mode . jmpunkt/tree-sitter-local-mode)))
 
 (use-package tree-sitter-langs

@@ -464,7 +464,7 @@ This session ignores the remote shell and uses /bin/sh."
            for type in '(eglot-note eglot-warning eglot-error)
            do (put type 'flymake-overlay-control
                    `((priority . ,(+ 50 i))
-                     (face . 'flymake-error))))
+                     (face . flymake-error))))
   (setq eglot-stay-out-of '(company)
         eglot-confirm-server-initiated-edits nil))
 

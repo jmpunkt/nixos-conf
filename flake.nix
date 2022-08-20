@@ -1,19 +1,27 @@
 {
   description = "My configuration as a flake";
   inputs = {
-    stable.url = "github:NixOS/nixpkgs/nixos-21.05";
+    stable.url = "github:NixOS/nixpkgs/nixos-22.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
     home-manager = {
-      url = "github:nix-community/home-manager/release-21.05";
+      url = "github:nix-community/home-manager/release-22.05";
       inputs.nixpkgs.follows = "stable";
     };
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "stable";
+      inputs.nixpkgs.follows = "unstable";
     };
-    emacs-overlay.url = "github:nix-community/emacs-overlay";
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "unstable";
+    };
     utils.url = "github:numtide/flake-utils";
+    tsi = {
+      url = "git+file:///home/jonas/workspace/tree-sitter-indexer";
+      inputs.nixpkgs.follows = "unstable";
+      inputs.rust-overlay.follows = "rust-overlay";
+    };
   };
   outputs = {
     self,
@@ -23,10 +31,20 @@
     home-manager,
     rust-overlay,
     emacs-overlay,
+    tsi,
     utils,
   }: let
-    allPackagesOverlay = final: prev: (import ./overlays/10-pkgs.nix final prev);
-    overlays = [rust-overlay.overlay allPackagesOverlay emacs-overlay.overlay];
+    allPackagesOverlay = final: prev:
+      (import ./overlays/10-pkgs.nix final prev)
+      // {
+        inherit tsi;
+      };
+    overlays = [
+      rust-overlay.overlays.default
+      allPackagesOverlay
+      emacs-overlay.overlay
+      tsi.overlays.default
+    ];
     mkSystemCross = {
       host,
       target,

@@ -104,11 +104,7 @@
 
 (use-package paren
   :config
-  (setq show-paren-delay 0
-        show-paren-style 'expression)
-  (custom-set-faces
-   `(show-paren-match-expression
-     ((t (:background ,(doom-lighten 'bg 0.1) :foreground nil))))))
+  (setq show-paren-delay 0))
 
 (use-package ligature
   :hook (prog-mode . ligature-mode)

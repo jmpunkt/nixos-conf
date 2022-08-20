@@ -56,7 +56,7 @@
                       :height 1.0))
 
 (use-package doom-modeline
-  :init (doom-modeline-mode 1)
+  :hook (after-init . doom-modeline-mode)
   :config
   (setq doom-modeline-height 30
         doom-modeline-icon nil
@@ -117,14 +117,20 @@
   (global-eldoc-mode -1))
 
 (use-package eldoc
+  :defer t
+  :commands eldoc-mode
   :config
   (setq eldoc-echo-area-use-multiline-p nil))
 
 (use-package paren
+  :defer t
+  :commands show-paren-mode
   :config
   (setq show-paren-delay 0))
 
 (use-package ligature
+  :defer t
+  :commands ligature-mode
   :hook (prog-mode . ligature-mode)
   :config
   (ligature-set-ligatures 'prog-mode
@@ -141,10 +147,9 @@
                             ":=" "::=" "/=" "//=" "/==" )))
 
 ;;;; Shell
-(use-package xterm-color)
-
 (use-package esh-mode
-  :after xterm-color
+  :defer t
+  :commands esh-mode
   :init
   (defun jmpunkt/eshell-goto-end-or-here ()
     "Smart eshell goto promt for evil.
@@ -180,13 +185,17 @@ If the cursor is on the last promt, then we want to insert at the current positi
                           (setenv "TERM" "xterm-256color")
                           (setenv "PAGER" "cat")))
   :config
+  (require 'xterm-color)
   (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
   (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
   (setq eshell-history-size 10000
         eshell-hist-ignoredups t))
 
 (use-package compile
+  :defer t
+  :commands compilation-mode
   :config
+  (require 'xterm-color)
   (setq compilation-environment '("TERM=xterm-256color"))
   (defun jmpunkt/advice-compilation-filter (f proc string)
     (funcall f proc (xterm-color-filter string)))
@@ -227,6 +236,8 @@ This session ignores the remote shell and uses /bin/sh."
 
 ;;;; * undo-tree
 (use-package undo-tree
+  :defer t
+  :commands undo-tree-mode
   :hook ((prog-mode . undo-tree-mode)
          (conf-mode . undo-tree-mode)
          (text-mode . undo-tree-mode))
@@ -415,6 +426,7 @@ This session ignores the remote shell and uses /bin/sh."
 
 ;;;; * Spelling
 (use-package ispell
+  :defer t
   :config
   (setq-default ispell-program-name "aspell"
                 ;; Hide all default entries which may not be available
@@ -425,6 +437,8 @@ This session ignores the remote shell and uses /bin/sh."
                 ispell-local-dictionary "en"))
 
 (use-package flyspell
+  :defer t
+  :commands flyspell-mode
   :init
   (defvar jmpunkt/flyspell-disabled-modes
     '(dired-mode
@@ -581,17 +595,20 @@ This session ignores the remote shell and uses /bin/sh."
   (setq eglot-stay-out-of '(company)
         eglot-confirm-server-initiated-edits nil))
 
-(use-package eglot-x)
+(use-package eglot-x
+  :after eglot)
 
 ;;;; * Flymake
 (use-package flymake
   :after consult
+  :commands flymake-mode
   :bind (:map flymake-mode-map
               ([f7] . consult-flymake))
   :hook (prog-mode . flymake-mode))
 
 ;;;; RSS
 (use-package elfeed
+  :defer t
   :commands (elfeed)
   :init
   (setq elfeed-feeds
@@ -617,6 +634,7 @@ This session ignores the remote shell and uses /bin/sh."
                               (".*github.*" . browse-url-firefox)
                               ("." . eww-browse-url))))
 (use-package eww
+  :defer t
   :commands (eww eww-follow-link)
   :config
   (setq eww-search-prefix "https://duckduckgo.com/html?q="))
@@ -815,6 +833,7 @@ This session ignores the remote shell and uses /bin/sh."
 
 ;;;; * Org
 (use-package org
+  :defer t
   :mode ("\\.org\\'" . org-mode)
   :init
   (defun jmpunkt/org-delegate-keybind (key)
@@ -856,50 +875,61 @@ This session ignores the remote shell and uses /bin/sh."
         org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
 
 (use-package ob-sql
+  :after org
   :defer t
   :commands (org-babel-execute:sql))
 
 (use-package ob-sqlite
+  :after org
   :defer t
   :commands (org-babel-execute:sqlite))
 
 (use-package ob-python
+  :after org
   :defer t
   :commands (org-babel-execute:python))
 
 (use-package ob-latex
+  :after org
   :defer t
   :commands (org-babel-execute:latex
              org-babel-expand-body:latex))
 
 (use-package ob-gnuplot
+  :after org
   :defer t
   :commands (org-babel-expand-body:gnuplot))
 
 (use-package ob-dot
+  :after org
   :defer t
   :commands (org-babel-execute:dot
              org-babel-expand-body:dot))
 
 (use-package ob-emacs-lisp
   :defer t
+  :after org
   :commands (org-babel-execute:emacs-lisp
              org-babel-expand-body:emacs-lisp))
 
 (use-package ob-plantuml
+  :after org
   :defer t
   :commands (org-babel-execute:plantuml))
 
 (use-package ob-async
+  :after org
   :commands (ob-async-org-babel-execute-src-block
              org-babel-execute-src-block:async))
 
 (use-package org-agenda
+  :after org
   :defer t
   :config
   (setq org-agenda-files (list org-agenda-dir)))
 
 (use-package org-capture
+  :defer t
   :commands (org-capture)
   :config
   (setq org-capture-templates
@@ -915,9 +945,12 @@ This session ignores the remote shell and uses /bin/sh."
            "* %? %^G \n  %^t"))))
 
 (use-package org-indent
+  :defer t
+  :after org
   :hook (org-mode . org-indent-mode))
 
 (use-package org-src
+  :after org
   :defer t
   :config
   ;; Sets the buffer name of org source blocks properly
@@ -929,6 +962,7 @@ This session ignores the remote shell and uses /bin/sh."
         org-src-tab-acts-natively t))
 
 (use-package ox-latex
+  :after org
   :defer t
   :config
   (setq org-latex-listings 'minted
@@ -1014,9 +1048,12 @@ This session ignores the remote shell and uses /bin/sh."
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package toc-org
+  :defer t
+  :after org
   :hook ((org-mode . toc-org-mode)))
 
 (use-package org-bullets
+  :after org
   :hook (org-mode . org-bullets-mode)
   :config (setq org-bullets-bullet-list '("●" "○" "✸" "✿")))
 
@@ -1027,7 +1064,6 @@ This session ignores the remote shell and uses /bin/sh."
 
 ;;; * Configuration Files
 (use-package tree-sitter
-  :demand t
   :init
   (setq tsc-dyn-get-from nil)
   (defun jmpunkt/tree-sitter-local-mode ()
@@ -1055,6 +1091,7 @@ If enabling one of the mods results in an error, both modes are disabled again."
 
 ;;;; * Dhall
 (use-package dhall-mode
+  :defer t
   :mode "\\.dhall\\'")
 
 ;;;; * Mermaid
@@ -1063,12 +1100,14 @@ If enabling one of the mods results in an error, both modes are disabled again."
 
 ;;;; * Bazel
 (use-package bazel
+  :defer t
   :mode ("BUILD\\'" "\\.bzl\\'")
   :bind (:map bazel-mode-map
               ("C-c C-f" . bazel-mode-buildifier)))
 
 ;;;; * JSON
 (use-package json-mode
+  :defer t
   :mode "\\.json\\'"
   :bind (:map json-mode-map
               ("C-c C-f" . json-pretty-print-buffer))
@@ -1077,23 +1116,27 @@ If enabling one of the mods results in an error, both modes are disabled again."
 
 ;;;; * YAML
 (use-package yaml-mode
+  :defer t
   :hook (yaml-mode . eglot-ensure)
   :mode ("\\.yaml\\'" "\\.yml\\'"))
 
 ;;;; * TOML
 (use-package conf-mode
+  :defer t
   :mode (("\\.toml\\'" . toml-mode))
   :init
   (define-derived-mode toml-mode conf-toml-mode "TOML"))
 
 ;;;; * Meson
 (use-package meson-mode
+  :defer t
   :mode ("meson.build\\'")
   :init
   (setq meson-indent-basic 4))
 
 ;;;; * GraphQL
 (use-package graphql-mode
+  :defer t
   :bind (:map graphql-mode-map
               ("C-c C-f" . prettier-js))
   :mode ("\\.graphql\\'"))
@@ -1101,12 +1144,14 @@ If enabling one of the mods results in an error, both modes are disabled again."
 ;;; * Text Files
 ;;;; * reStructuredText
 (use-package rst
+  :defer t
   :mode (("\\.txt\\'" . rst-mode)
          ("\\.rst\\'" . rst-mode)
          ("\\.rest\\'" . rst-mode)))
 
 ;;;; * Markdown
 (use-package markdown-mode
+  :defer t
   :bind (:map markdown-mode-map
               ("C-c C-o" . toc-org-markdown-follow-thing-at-point))
   :hook ((markdown-mode . toc-org-mode)
@@ -1122,18 +1167,22 @@ If enabling one of the mods results in an error, both modes are disabled again."
 
 ;;;; * Graphivz
 (use-package graphviz-dot-mode
+  :defer t
   :mode "\\.dot\\'")
 
 ;;; * Programming Languages
 
 ;;;; * SQL
 (use-package sql
+  :defer t
   :mode ("\\.sql\\'" . sql-mode)
   :hook (sql-mode . (lambda () (setq-local tab-width 2)))
   :config
   (sql-highlight-postgres-keywords))
 
 (use-package sqlformat
+  :after sql
+  :defer t
   :bind (:map sql-mode-map
               ("C-c C-f" . sqlformat-buffer))
   :config
@@ -1142,10 +1191,13 @@ If enabling one of the mods results in an error, both modes are disabled again."
 
 ;;;; * Haskell
 (use-package haskell-mode
+  :defer t
+  :mode "\\.hs\\'"
   :hook (haskell-mode . eglot-ensure))
 
 ;;;; * Nix
 (use-package nix-mode
+  :defer t
   :mode "\\.nix\\'"
   :hook ((nix-mode . eglot-ensure)
          (nix-mode . (lambda ()
@@ -1177,6 +1229,7 @@ If enabling one of the mods results in an error, both modes are disabled again."
 
 ;;;; * Python
 (use-package python
+  :defer t
   :mode ("\\.py\\'" . python-mode)
   :hook (python-mode . eglot-ensure)
   :config (setq python-indent-offset 4))
@@ -1184,6 +1237,8 @@ If enabling one of the mods results in an error, both modes are disabled again."
 ;;;; * Rust
 (use-package rust-mode
   :hook (rust-mode . eglot-ensure)
+  :defer t
+  :mode "\\.rs\\'"
   :init
   (defun jmpunkt/rust-buffer-project ()
     "Get project root if possible."
@@ -1206,19 +1261,25 @@ If enabling one of the mods results in an error, both modes are disabled again."
               ("C-c k b" . rust-compile)
               ("C-c C-f" . rust-format-buffer))
   :config
+  (require 'eglot)
   (advice-add 'rust-buffer-project :override #'jmpunkt/rust-buffer-project))
 
 ;;;; * Fish
 (use-package fish-mode
+  :defer t
   :mode "\\.fish\\'")
 
 ;;;; * WEB
 (use-package html-mode
+  :defer t
   :mode ("\\.html\\'" . html-mode)
   :hook ((html-mode . eglot-ensure)
          (html-mode . prettier-js-mode)))
 
 (use-package css-mode
+  :defer t
+  :mode (("\\.css\\'" . css-mode)
+         ("\\.scss\\'" . scss-mode))
   :hook ((css-mode . eglot-ensure)
          (scss-mode . prettier-js-mode))
   :bind (:map css-mode-map
@@ -1242,14 +1303,17 @@ If enabling one of the mods results in an error, both modes are disabled again."
   (setq js-indent-level 2))
 
 (use-package prettier-js
+  :defer t
   :commands prettier-js)
 
 ;;;; * LaTeX
 (use-package latex-mode
+  :defer t
   :mode "\\.tex\\'")
 
 ;;; * PDF
 (use-package pdf-tools
+  :defer t
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :hook (pdf-view-mode . (lambda ()
                            (pdf-misc-size-indication-minor-mode)

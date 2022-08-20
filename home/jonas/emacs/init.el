@@ -60,7 +60,16 @@
   :hook ((prog-mode . jmpunkt/text-or-prog-init)
          (conf-mode . jmpunkt/text-or-prog-init)
          (text-mode . jmpunkt/text-or-prog-init))
+  :bind (:map global-map
+              ("C-d" . meow-page-down)
+              ("C-u" . meow-page-up)
+              ("C-j" . jmpunkt/join-line))
   :init
+  (defun jmpunkt/join-line ()
+    (interactive)
+    (end-of-line)
+    (delete-char 1)
+    (delete-horizontal-space))
   (defun jmpunkt/text-or-prog-init ()
     (subword-mode 1)
     (electric-indent-local-mode 1)
@@ -128,7 +137,7 @@
 (use-package esh-mode
   :after xterm-color
   :init
-  (defun jmpunkt/evil-collection-eshell-goto-end-or-here ()
+  (defun jmpunkt/eshell-goto-end-or-here ()
     "Smart eshell goto promt for evil.
 
 If the cursor is in the history of eshell, then we want to go to the end of buffer.
@@ -140,17 +149,21 @@ If the cursor is on the last promt, then we want to insert at the current positi
         (progn
           (while (get-text-property pos 'read-only)
             (setq pos (+ pos 1)))
-          (goto-char pos)))))
-  (defun jmpunkt/evil-collection-eshell-goto-end-on-insert ()
-    "Go to next prompt on `evil' replace/insert enter."
-    (dolist (hook '(evil-replace-state-entry-hook evil-insert-state-entry-hook))
-      (add-hook hook 'jmpunkt/evil-collection-eshell-goto-end-or-here nil t)))
+          (when (not (eq (point) pos))
+            (goto-char pos))))))
+  (defun jmpunkt/eshell-goto-end-or-here-advice (&rest args)
+    (jmpunkt/eshell-goto-end-or-here))
+  ;; Before history selection, goto the insertion line of the
+  ;; shell. This way the search string for history selection will not
+  ;; select anything in the previous output.
+  (advice-add 'eshell-next-matching-input-from-input :before #'jmpunkt/eshell-goto-end-or-here-advice)
+  (advice-add 'eshell-previous-matching-input-from-input :before #'jmpunkt/eshell-goto-end-or-here-advice)
+  :bind (:map eshell-mode-map
+              ("C-j" . eshell-next-matching-input-from-input)
+              ("C-k" . eshell-previous-matching-input-from-input))
   :hook
   (eshell-mode . (lambda ()
-                   (jmpunkt/evil-collection-eshell-goto-end-on-insert)
-                   (evil-define-key* '(normal visual motion insert) eshell-mode-map
-                     (kbd "C-j") 'eshell-next-matching-input-from-input
-                     (kbd "C-k") 'eshell-previous-matching-input-from-input)))
+                   (add-hook 'meow-insert-enter-hook #'jmpunkt/eshell-goto-end-or-here nil t)))
   (eshell-before-prompt . (lambda ()
                             (setq-local xterm-color-preserve-properties t)))
   (eshell-pre-command . (lambda ()
@@ -214,78 +227,165 @@ This session ignores the remote shell and uses /bin/sh."
         undo-tree-auto-save-history nil))
 
 ;;;; * Evil
-(use-package evil
+(use-package meow
   :demand t
+  :bind (:map global-map
+              ("M-." . jmpunkt/meow-find-definitions)
+              ("M-?" . jmpunkt/meow-find-references))
   :init
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-want-C-w-delete nil)
-  (setq evil-want-fine-undo t)
-  :config
-  (evil-mode 1)
-  (evil-set-undo-system 'undo-tree)
-  ;; use Xref to find references
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-normal-state-map (kbd "M-.") nil)
-  (define-key evil-motion-state-map "gd" nil)
-  (define-key evil-motion-state-map "n" nil))
+  (defvar jmpunkt/tree-sitter-thing-lookup-table
+    '((rust-mode . ((function . ((function_item block)))))
+      ((typescript-tsx-mode typescript-mode) . ((function . ((method_definition statement_block)
+                                                            (arrow_function statement_block)))))))
+  (defun jmpunkt/tree-sitter-thing-for-mode (mode kind)
+    (when-let* ((declarations (alist-get mode jmpunkt/tree-sitter-thing-lookup-table nil nil
+                                         (lambda (key mode) (if (sequencep key) (seq-contains key mode) (eq key mode))))))
+      (alist-get kind declarations)))
+  (defun jmpunkt/meow--bounds-of-tree-sitter (symbol)
+    (when-let* ((node (tree-sitter-node-at-pos symbol)))
+      (tsc-node-position-range node)))
+  (defun jmpunkt/meow--inner-of-tree-sitter (symbol inner)
+    (when-let* ((node (tree-sitter-node-at-pos symbol))
+                (child (cl-loop for child-idx from 0 below (tsc-count-named-children node)
+                                do (when (eq (tsc-node-type (tsc-get-nth-named-child node child-idx)) inner)
+                                     (cl-return (tsc-get-nth-named-child node child-idx))))))
+      (tsc-node-position-range child)))
+  (defun jmpunkt/meow--bound-of-function ()
+    (when-let* ((names (jmpunkt/tree-sitter-thing-for-mode major-mode 'function)))
+      (cl-loop for outer-inner in names
+               do (when-let* ((obj (jmpunkt/meow--bounds-of-tree-sitter (car outer-inner))))
+                    (cl-return obj)))))
+  (defun jmpunkt/meow--inner-of-function ()
+    (when-let* ((names (jmpunkt/tree-sitter-thing-for-mode major-mode 'function)))
+      (cl-loop for outer-inner in names
+               do (when-let* ((obj (jmpunkt/meow--inner-of-tree-sitter (car outer-inner) (car (cdr outer-inner)))))
+                    (cl-return obj)))))
+  (defun jmpunkt/meow-find-references ()
+    "Xref definition."
+    (interactive)
+    (meow--cancel-selection)
+    (smart-jump-references))
+  (defun jmpunkt/meow-find-definitions ()
+    "Xref definition."
+    (interactive)
+    (meow--cancel-selection)
+    (smart-jump-go))
+  (defun jmpunkt/meow-setup ()
+    (meow-thing-register 'function #'jmpunkt/meow--inner-of-function #'jmpunkt/meow--bound-of-function)
+    (add-to-list 'meow-char-thing-table '(?f . function))
 
-(use-package evil-collection
-  :after evil
+    ;; setup basic selection mode
+    (setq meow-selection-keymap (make-keymap))
+    (meow-define-state selection
+      "meow state for basic moving and selection operations"
+      :lighter " [S]"
+      :keymap meow-selection-keymap)
+    (setq meow-cursor-type-selection 'hollow)
+    (meow-define-keys 'selection
+      '("j" . meow-next)
+      '("k" . meow-prev)
+      '("h" . meow-left)
+      '("l" . meow-right)
+      '("x" . meow-line)
+      '(";" . meow-reverse)
+      '("," . meow-inner-of-thing)
+      '("." . meow-bounds-of-thing))
+    (add-to-list 'meow-mode-state-list '(magit-status-mode . selection))
+    (add-to-list 'meow-replace-state-name-list '(selection . "SELECTION"))
+    (add-to-list 'meow-indicator-face-alist '(selection . meow-normal-indicator))
+    ;; default meow setup
+    (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
+          meow-use-clipboard t
+          meow-expand-hint-remove-delay 5.0
+          meow-selection-command-fallback'((meow-kill . meow-C-k)
+                                           (meow-cancel-selection . keyboard-quit)
+                                           (meow-pop-selection . meow-pop-grab)
+                                           (meow-beacon-change . meow-beacon-change-char)))
+    (meow-motion-overwrite-define-key
+     '("j" . meow-next)
+     '("k" . meow-prev)
+     '("h" . meow-left)
+     '("l" . meow-right)
+     '("<escape>" . ignore))
+    (meow-leader-define-key
+     ;; SPC j/k will run the original command in MOTION state.
+     '("j" . "H-j")
+     '("k" . "H-k")
+     ;; Use SPC (0-9) for digit arguments.
+     '("1" . meow-digit-argument)
+     '("2" . meow-digit-argument)
+     '("3" . meow-digit-argument)
+     '("4" . meow-digit-argument)
+     '("5" . meow-digit-argument)
+     '("6" . meow-digit-argument)
+     '("7" . meow-digit-argument)
+     '("8" . meow-digit-argument)
+     '("9" . meow-digit-argument)
+     '("0" . meow-digit-argument))
+    (meow-normal-define-key
+     '("0" . meow-expand-0)
+     '("9" . meow-expand-9)
+     '("8" . meow-expand-8)
+     '("7" . meow-expand-7)
+     '("6" . meow-expand-6)
+     '("5" . meow-expand-5)
+     '("4" . meow-expand-4)
+     '("3" . meow-expand-3)
+     '("2" . meow-expand-2)
+     '("1" . meow-expand-1)
+     '("-" . negative-argument)
+     '(";" . meow-reverse)
+     '("," . meow-inner-of-thing)
+     '("." . meow-bounds-of-thing)
+     '("(" . meow-beginning-of-thing)
+     '(")" . meow-end-of-thing)
+     '("a" . meow-append)
+     '("A" . meow-open-below)
+     '("b" . meow-back-word)
+     '("B" . meow-back-symbol)
+     '("c" . meow-change)
+     '("d" . delete-char)
+     '("D" . backward-delete-char)
+     '("e" . meow-next-word)
+     '("E" . meow-next-symbol)
+     '("f" . meow-find)
+     '("h" . meow-left)
+     '("H" . meow-left-expand)
+     '("i" . meow-insert)
+     '("I" . meow-open-above)
+     '("j" . meow-next)
+     '("J" . meow-next-expand)
+     '("k" . meow-prev)
+     '("K" . meow-prev-expand)
+     '("l" . meow-right)
+     '("L" . meow-right-expand)
+     '("m" . meow-join)
+     '("o" . meow-block)
+     '("g" . meow-cancel-selection)
+     '("G" . meow-grab)
+     '("O" . meow-to-block)
+     '("p" . meow-yank)
+     '("Q" . meow-goto-line)
+     '("r" . meow-replace)
+     '("R" . meow-swap-grab)
+     '("s" . meow-kill)
+     '("t" . meow-till)
+     '("u" . meow-undo)
+     '("U" . meow-undo-in-selection)
+     '("w" . meow-mark-word)
+     '("W" . meow-mark-symbol)
+     '("x" . meow-line)
+     '("X" . meow-goto-line)
+     '("y" . meow-save)
+     '("Y" . meow-sync-grab)
+     '("z" . meow-pop-selection)
+     '("'" . repeat)
+     '("<escape>" . ignore)
+     '("C-r" . undo-tree-redo)
+     '("=" . indent-region)))
   :config
-  (define-key evil-insert-state-map (kbd "C-k") nil)
-  (define-key evil-motion-state-map [down-mouse-1] nil)
-  (define-key evil-normal-state-map (kbd "j") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "k") 'evil-previous-visual-line)
-  (global-set-key [mouse-1] 'mouse-set-point)
-  (global-unset-key [down-mouse-1])
-  (global-unset-key [drag-mouse-1])
-  (evil-collection-init `(
-                          (pdf pdf-view)
-                          ,@(when evil-collection-setup-minibuffer '(minibuffer))
-                          bookmark
-                          calc
-                          calendar
-                          compile
-                          consult
-                          dashboard
-                          debug
-                          dictionary
-                          diff-mode
-                          dired
-                          ediff
-                          elfeed
-                          elisp-mode
-                          eshell
-                          eww
-                          flymake
-                          help
-                          help
-                          info
-                          js2-mode
-                          magit
-                          magit-todos
-                          magit-section
-                          man
-                          org
-                          org-present
-                          profiler
-                          python
-                          rjsx-mode
-                          term
-                          typescript-mode
-                          which-key
-                          xref)))
-
-(use-package evil-textobj-tree-sitter
-  :after tree-sitter
-  :config
-  (define-key evil-outer-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.outer"))
-  (define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.inner"))
-  (define-key evil-outer-text-objects-map "o" (evil-textobj-tree-sitter-get-textobj "loop.outer"))
-  (define-key evil-inner-text-objects-map "o" (evil-textobj-tree-sitter-get-textobj "loop.inner"))
-  (define-key evil-outer-text-objects-map "n" (evil-textobj-tree-sitter-get-textobj "conditional.outer"))
-  (define-key evil-inner-text-objects-map "n" (evil-textobj-tree-sitter-get-textobj "conditional.inner")))
+  (jmpunkt/meow-setup)
+  (meow-global-mode 1))
 
 ;;;; * DirEnv
 (use-package envrc
@@ -424,11 +524,21 @@ This session ignores the remote shell and uses /bin/sh."
 
 ;;;; * Language Server (LSP)
 (use-package eglot
+  :defer t
+  :commands eglot-ensure
   :bind (:map eglot-mode-map
-              ("C-c k r" . eglot-rename)
+              ("C-c k r" . jmpunkt/eglot-rename)
               ("C-c C-f" . eglot-format-buffer)
-              ("M-RET" . eglot-code-actions))
+              ("M-RET" . jmpunkt/eglot-code-actions))
   :init
+  (defun jmpunkt/eglot-rename ()
+    (interactive)
+    (meow-cancel)
+    (eglot-rename))
+  (defun jmpunkt/eglot-code-actions ()
+    (interactive)
+    (meow-cancel)
+    (eglot-code-actions))
   (defvar jmpunkt/eglot-keys-map (make-keymap)
     "Keymap which supersedes the default eglot keymap")
   (define-minor-mode jmpunkt/eglot-keys-mode
@@ -641,9 +751,12 @@ This session ignores the remote shell and uses /bin/sh."
 
 ;;;; * Git
 (use-package magit
-  :bind (:map global-map
-              ("C-x g" . magit-status)
-              ("C-x G" . magit-status-here))
+  :bind ((:map global-map
+               ("C-x g" . magit-status)
+               ("C-x G" . magit-status-here))
+         (:map magit-status-mode-map
+               ("t" . magit-discard)
+               ("T" . magit-tag)))
   :config
   (setq magit-slow-confirm '(magit-discard))
   (setq magit-status-sections-hook
@@ -680,6 +793,8 @@ This session ignores the remote shell and uses /bin/sh."
   (add-to-list 'hl-todo-keyword-faces '("HACK" . "DarkOrange1")))
 
 (use-package magit-todos
+  :defer t
+  :after magit
   :hook (magit-mode . magit-todos-mode)
   :config
   (setq magit-todos-depth 100))
@@ -1130,29 +1245,27 @@ If enabling one of the mods results in an error, both modes are disabled again."
                            (pdf-links-minor-mode)
                            (pdf-isearch-minor-mode)
                            (cua-mode -1)))
-  :bind
-  (:map pdf-view-mode-map
-        ("/" . my-hydra-pdftools/body)
-        ("C-s" . isearch-forward)
-        ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
-        ("g"  . pdf-view-first-page)
-        ("G"  . pdf-view-last-page)
-        ("l"  . image-forward-hscroll)
-        ("h"  . image-backward-hscroll)
-        ("j"  . pdf-view-next-page)
-        ("k"  . pdf-view-previous-page)
-        ("e"  . pdf-view-goto-page)
-        ("u"  . pdf-view-revert-buffer)
-        ("al" . pdf-annot-list-annotations)
-        ("ad" . pdf-annot-delete)
-        ("aa" . pdf-annot-attachment-dired)
-        ("am" . pdf-annot-add-markup-annotation)
-        ("at" . pdf-annot-add-text-annotation)
-        ("y"  . pdf-view-kill-ring-save)
-        ("i"  . pdf-misc-display-metadata)
-        ("s"  . pdf-occur)
-        ("b"  . pdf-view-set-slice-from-bounding-box)
-        ("r"  . pdf-view-reset-slice))
+  :bind (:map pdf-view-mode-map
+              ("C-s" . isearch-forward)
+              ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
+              ("g"  . pdf-view-first-page)
+              ("G"  . pdf-view-last-page)
+              ("l"  . image-forward-hscroll)
+              ("h"  . image-backward-hscroll)
+              ("j"  . pdf-view-next-page)
+              ("k"  . pdf-view-previous-page)
+              ("e"  . pdf-view-goto-page)
+              ("u"  . pdf-view-revert-buffer)
+              ("al" . pdf-annot-list-annotations)
+              ("ad" . pdf-annot-delete)
+              ("aa" . pdf-annot-attachment-dired)
+              ("am" . pdf-annot-add-markup-annotation)
+              ("at" . pdf-annot-add-text-annotation)
+              ("y"  . pdf-view-kill-ring-save)
+              ("i"  . pdf-misc-display-metadata)
+              ("s"  . pdf-occur)
+              ("b"  . pdf-view-set-slice-from-bounding-box)
+              ("r"  . pdf-view-reset-slice))
   :config
   (pdf-tools-install)
   (setq-default pdf-view-display-size 'fit-page)

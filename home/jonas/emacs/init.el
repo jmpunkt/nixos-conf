@@ -82,6 +82,7 @@
   (defun jmpunkt/text-or-prog-init ()
     (subword-mode 1)
     (electric-indent-local-mode 1)
+    (electric-pair-local-mode 1)
     (auto-fill-mode 1)
     (show-paren-mode 1)
     (display-line-numbers-mode 1)

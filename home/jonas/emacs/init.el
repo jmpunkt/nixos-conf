@@ -1134,7 +1134,6 @@ If enabling one of the mods results in an error, both modes are disabled again."
   (sql-highlight-postgres-keywords))
 
 (use-package sqlformat
-  :hook (sql-mode . sqlformat-on-save-mode)
   :bind (:map sql-mode-map
               ("C-c C-f" . sqlformat-buffer))
   :config

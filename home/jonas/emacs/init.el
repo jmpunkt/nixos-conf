@@ -27,9 +27,7 @@
         doom-themes-enable-italic t
         doom-themes-treemacs-theme "doom-colors"
         doom-themes-treemacs-enable-variable-pitch nil)
-  (doom-themes-treemacs-config)
   (doom-themes-org-config)
-
   (custom-set-variables
    '(custom-safe-themes
      (quote

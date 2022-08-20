@@ -5,11 +5,20 @@
 ;;; Packages
 (eval-when-compile (require 'use-package))
 (require 'bind-key)
+(require 'nixos-paths)
+
+(use-package esup
+  :defer t
+  :commands esup
+  :config
+  (setq esup-depth 0)
+  ;; HACK: For NixOS its not possible using the built-in way to
+  ;; determine the executable path for Emacs. The built-in method
+  ;; finds the Emacs executable/script which does not provide the
+  ;; libraries.
+  (setq esup-emacs-path (s-trim (shell-command-to-string "command -v emacs"))))
 
 ;;; * Paths
-(use-package nixos-paths
-  :demand t)
-
 (defconst org-remote-dir (expand-file-name "~/Dropbox"))
 (defconst org-agenda-dir (expand-file-name "agenda" org-remote-dir))
 (defconst org-papers-dir (expand-file-name "papers" org-remote-dir))

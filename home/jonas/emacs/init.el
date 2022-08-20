@@ -1213,17 +1213,6 @@ If enabling one of the mods results in an error, both modes are disabled again."
 (use-package fish-mode
   :mode "\\.fish\\'")
 
-;;;; * Typescript
-(use-package typescript-mode
-  :mode (("\\.ts\\'" . typescript-mode)
-         ("\\.tsx\\'" . typescript-tsx-mode))
-  :hook ((typescript-mode . eglot-ensure)
-         (typescript-mode . prettier-js-mode))
-  :init
-  (define-derived-mode typescript-tsx-mode typescript-mode "tsx")
-  :config
-  (setq typescript-indent-level 2))
-
 ;;;; * WEB
 (use-package html-mode
   :mode ("\\.html\\'" . html-mode)
@@ -1238,6 +1227,20 @@ If enabling one of the mods results in an error, both modes are disabled again."
 
   :config
   (setq css-indent-offset 2))
+
+(use-package js
+  :defer t
+  :mode (("\\.ts\\'" . typescript-mode)
+         ("\\.tsx\\'" . typescript-tsx-mode))
+  :hook ((js-mode . eglot-ensure)
+         (js-mode . prettier-js-mode))
+  :init
+  (define-derived-mode typescript-mode js-mode "ts")
+  (define-derived-mode typescript-tsx-mode typescript-mode "tsx")
+  :bind (:map js-mode-map
+              ("C-c C-f" . prettier-js))
+  :config
+  (setq js-indent-level 2))
 
 (use-package prettier-js
   :commands prettier-js)

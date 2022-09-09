@@ -76,10 +76,8 @@
   :init
   (defun jmpunkt/join-line ()
     (interactive)
-    (end-of-line)
-    (delete-char 1)
-    (delete-horizontal-space))
-  (defun jmpunkt/text-or-prog-init ()
+    (next-line)
+    (delete-indentation))
   (defun jmpunkt/default-init ()
     (subword-mode 1)
     (electric-indent-local-mode 1)

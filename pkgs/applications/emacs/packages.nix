@@ -49,14 +49,11 @@ in
         # LSP
         eglot
         # Misc
-        bazel
         yaml-mode
         fish-mode
         nix-mode
         graphql-mode
-        meson-mode
         mermaid-mode
-        dhall-mode
         # Presentation
         markdown-mode
         graphviz-dot-mode

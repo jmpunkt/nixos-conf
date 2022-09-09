@@ -1109,24 +1109,13 @@ If enabling one of the mods results in an error, both modes are disabled again."
   (add-to-list 'tree-sitter-major-mode-language-alist '(markdown-mode . markdown))
   (add-to-list 'tree-sitter-major-mode-language-alist '(haskell-mode . haskell))
   (add-to-list 'tree-sitter-major-mode-language-alist '(yaml-mode . yaml))
-  (add-to-list 'tree-sitter-major-mode-language-alist '(toml-mode . toml))
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx)))
-
-;;;; * Dhall
-(use-package dhall-mode
-  :defer t
-  :mode "\\.dhall\\'")
+  (add-to-list 'tree-sitter-major-mode-language-alist '(conf-toml-mode . toml))
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
+  (add-to-list 'tree-sitter-major-mode-language-alist '(js-json-mode . json)))
 
 ;;;; * Mermaid
 (use-package mermaid-mode
   :defer t)
-
-;;;; * Bazel
-(use-package bazel
-  :defer t
-  :mode ("BUILD\\'" "\\.bzl\\'")
-  :bind (:map bazel-mode-map
-              ("C-c C-f" . bazel-mode-buildifier)))
 
 ;;;; * YAML
 (use-package yaml-mode
@@ -1134,19 +1123,10 @@ If enabling one of the mods results in an error, both modes are disabled again."
   :hook (yaml-mode . eglot-ensure)
   :mode ("\\.yaml\\'" "\\.yml\\'"))
 
-;;;; * TOML
+;;;; * Conf{TOML}
 (use-package conf-mode
   :defer t
-  :mode (("\\.toml\\'" . toml-mode))
-  :init
-  (define-derived-mode toml-mode conf-toml-mode "TOML"))
-
-;;;; * Meson
-(use-package meson-mode
-  :defer t
-  :mode ("meson.build\\'")
-  :init
-  (setq meson-indent-basic 4))
+  :mode (("\\.toml\\'" . conf-toml-mode)))
 
 ;;;; * GraphQL
 (use-package graphql-mode

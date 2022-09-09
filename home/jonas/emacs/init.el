@@ -417,6 +417,11 @@ This session ignores the remote shell and uses /bin/sh."
   (jmpunkt/meow-setup)
   (meow-global-mode 1))
 
+;;;; * Dired
+(use-package dired
+  :config
+  (setq dired-kill-when-opening-new-dired-buffer t))
+
 ;;;; * DirEnv
 (use-package envrc
   :bind-keymap ("C-c e" . envrc-command-map)

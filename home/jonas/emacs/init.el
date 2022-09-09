@@ -641,6 +641,7 @@ This session ignores the remote shell and uses /bin/sh."
   :defer t
   :config
   (setq browse-url-handlers '((".*youtube.*" . browse-url-firefox)
+                              (".*raw\.githubusercontent.*" . browse-url-emacs)
                               (".*github.*" . browse-url-firefox)
                               ("." . eww-browse-url))))
 (use-package eww

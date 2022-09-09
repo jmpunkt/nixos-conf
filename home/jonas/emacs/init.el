@@ -1152,12 +1152,13 @@ If enabling one of the mods results in an error, both modes are disabled again."
 (use-package markdown-mode
   :defer t
   :mode
-  ("INSTALL\\'"
-   "CONTRIBUTORS\\'"
-   "LICENSE\\'"
-   "README\\'"
-   "\\.markdown\\'"
-   "\\.md\\'"))
+  (("INSTALL\\.md\\\'". gfm-mode)
+   ("CONTRIBUTORS\\.md\\\'". gfm-mode)
+   ("LICENSE\\.md\\\'". gfm-mode)
+   ("README\\.md\\\'". gfm-mode)
+   ("README\\.md\\'". gfm-mode)
+   ("\\.markdown\\'" . markdown-mode)
+   ("\\.md\\'" . markdown-mode)))
 
 ;;;; * Graphivz
 (use-package graphviz-dot-mode

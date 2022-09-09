@@ -158,7 +158,7 @@
 ;;;; Shell
 (use-package esh-mode
   :defer t
-  :commands esh-mode
+  :commands eshell-mode
   :init
   (defun jmpunkt/eshell-goto-end-or-here ()
     "Smart eshell goto promt for evil.
@@ -418,13 +418,13 @@ This session ignores the remote shell and uses /bin/sh."
 
 ;;;; * DirEnv
 (use-package envrc
-  :hook (after-init . envrc-global-mode))
+  :bind-keymap ("C-c e" . envrc-command-map)
+  :hook ((prog-mode . envrc-mode)
+         (org-mode . envrc-mode)))
 
 ;;;; * Which-Key
 (use-package which-key
-  :demand t
-  :config
-  (which-key-mode 1))
+  :hook (after-init . which-key-mode))
 
 ;;;; * xref/jumping
 (use-package smart-jump
@@ -515,6 +515,7 @@ This session ignores the remote shell and uses /bin/sh."
 
 ;;;; * Dashboard
 (use-package dashboard
+  :hook (after-init . dashboard-refresh-buffer)
   :config
   (setq dashboard-center-content t
         dashboard-startup-banner t
@@ -668,9 +669,8 @@ This session ignores the remote shell and uses /bin/sh."
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
 
 (use-package embark
-  :bind
-  (("C-c C-r" . embark-act)
-   ("C-h B" . embark-bindings))
+  :bind (("C-c C-r" . embark-act)
+         ("C-h B" . embark-bindings))
   :config
   (defun embark-vertico-indicator ()
     (let ((fr face-remapping-alist))
@@ -685,8 +685,7 @@ This session ignores the remote shell and uses /bin/sh."
 
 (use-package embark-consult
   :after (embark consult)
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
+  :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package orderless
   :demand t
@@ -697,17 +696,14 @@ This session ignores the remote shell and uses /bin/sh."
         completion-category-overrides '((eglot (styles . (orderless flex))))))
 
 (use-package vertico
-  :demand t
+  :hook (after-init . vertico-mode)
   :bind (:map vertico-map
               ("M-?" . minibuffer-completion-help)
               ("M-RET" . minibuffer-force-complete-and-exit)
-              ("M-TAB" . minibuffer-complete))
-  :init
-  (vertico-mode))
+              ("M-TAB" . minibuffer-complete)))
 
 (use-package marginalia
-  :init
-  (marginalia-mode))
+  :hook (after-init . marginalia-mode))
 
 (use-package consult
   :demand t
@@ -756,7 +752,7 @@ This session ignores the remote shell and uses /bin/sh."
    :preview-key (kbd "M-.")))
 
 (use-package recentf
-  :init (recentf-mode)
+  :hook (after-init . recentf-mode)
   :config
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15))
@@ -819,26 +815,12 @@ This session ignores the remote shell and uses /bin/sh."
   (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-upstream))
 
 (use-package hl-todo
-  :demand t
-  :config
-  (global-hl-todo-mode 1)
-  (add-to-list 'hl-todo-keyword-faces '("TODO" . "gold1"))
-  (add-to-list 'hl-todo-keyword-faces '("TEST" . "SpringGreen1"))
-  (add-to-list 'hl-todo-keyword-faces '("NOTICE" . "chartreuse3"))
-  (add-to-list 'hl-todo-keyword-faces '("FIXME" . "gold1"))
-  (add-to-list 'hl-todo-keyword-faces '("HACK" . "DarkOrange1")))
-
-(use-package magit-todos
-  :defer t
-  :after magit
-  :hook (magit-mode . magit-todos-mode)
-  :config
-  (setq magit-todos-depth 100))
+  :hook (after-init . global-hl-todo-mode))
 
 (use-package diff-hl
-  :init (global-diff-hl-mode)
   :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
-         (magit-post-refresh . diff-hl-magit-post-refresh)))
+         (magit-post-refresh . diff-hl-magit-post-refresh)
+         (after-init . global-diff-hl-mode)))
 
 ;;;; * Org
 (use-package org
@@ -1073,6 +1055,7 @@ This session ignores the remote shell and uses /bin/sh."
 
 ;;; * Configuration Files
 (use-package tree-sitter
+  :defer t
   :init
   (setq tsc-dyn-get-from nil)
   (defun jmpunkt/tree-sitter-local-mode ()
@@ -1088,7 +1071,6 @@ If enabling one of the mods results in an error, both modes are disabled again."
          (text-mode . jmpunkt/tree-sitter-local-mode)))
 
 (use-package tree-sitter-langs
-  :after tree-sitter
   :config
   (add-to-list 'tree-sitter-major-mode-language-alist '(latex-mode . latex))
   (add-to-list 'tree-sitter-major-mode-language-alist '(nix-mode . nix))

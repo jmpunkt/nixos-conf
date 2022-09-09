@@ -24,7 +24,6 @@ in
         pdf-tools
         # Git
         magit
-        magit-todos
         diff-hl
         # UI
         all-the-icons

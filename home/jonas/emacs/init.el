@@ -775,15 +775,46 @@ This session ignores the remote shell and uses /bin/sh."
   (consult-customize affe-grep :preview-key (kbd "M-.")))
 
 (use-package cape
+  :demand t
+  :bind (:map global-map
+              ("C-c c p" . completion-at-point)
+              ("C-c c t" . complete-tag)
+              ("C-c c d" . cape-dabbrev)
+              ("C-c c f" . cape-file)
+              ("C-c c h" . cape-history)
+              ("C-c c k" . cape-keyword)
+              ("C-c c s" . cape-symbol)
+              ("C-c c a" . cape-abbrev)
+              ("C-c c i" . cape-ispell)
+              ("C-c c l" . cape-line)
+              ("C-c c w" . cape-dict)
+              ("C-c c _" . cape-tex)
+              ("C-c c &" . cape-sgml)
+              ("C-c c r" . cape-rfc1345))
   :init
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (defalias 'cape-symbol+dabbrev
+    (cape-super-capf #'cape-symbol #'cape-dabbrev))
+  (defun jmpunkt/cape-setup-git-commit ()
+    (add-to-list 'completion-at-point-functions 'cape-dabbrev))
+  (defun jmpunkt/cape-setup-eshell ()
+    (add-to-list 'completion-at-point-functions 'cape-file))
+  (defun jmpunkt/cape-setup-eglot ()
+    (add-to-list 'completion-at-point-functions 'cape-dabbrev)
+    (add-to-list 'completion-at-point-functions 'cape-file))
+  (defun jmpunkt/cape-setup-elisp ()
+    (add-to-list 'completion-at-point-functions 'cape-symbol+dabbrev)
+    (add-to-list 'completion-at-point-functions 'cape-file))
+  (defun jmpunkt/cape-setup-comint ()
+    (add-to-list 'completion-at-point-functions 'cape-symbol+dabbrev)
+    (add-to-list 'completion-at-point-functions 'cape-file))
+  :hook ((git-commit-mode . jmpunkt/cape-setup-git-commit)
+         (eshell-mode . jmpunkt/cape-setup-eshell)
+         (emacs-lisp-mode . jmpunkt/cape-setup-elisp)
+         (eglot--managed-mode . jmpunkt/cape-setup-eglot))
   :config
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
-  (setq cape-dabbrev-min-length 3)
-  (dolist (backend '(cape-symbol cape-keyword cape-file cape-dabbrev))
-    (add-to-list 'completion-at-point-functions backend)))
+  (setq cape-dabbrev-min-length 3))
 
 (use-package yasnippet
   :hook (prog-mode . yas-minor-mode))

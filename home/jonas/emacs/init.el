@@ -1127,15 +1127,6 @@ If enabling one of the mods results in an error, both modes are disabled again."
   :bind (:map bazel-mode-map
               ("C-c C-f" . bazel-mode-buildifier)))
 
-;;;; * JSON
-(use-package json-mode
-  :defer t
-  :mode "\\.json\\'"
-  :bind (:map json-mode-map
-              ("C-c C-f" . json-pretty-print-buffer))
-  :config
-  (setq js-indent-level 2))
-
 ;;;; * YAML
 (use-package yaml-mode
   :defer t
@@ -1307,13 +1298,21 @@ If enabling one of the mods results in an error, both modes are disabled again."
 
 (use-package js
   :defer t
-  :mode (("\\.ts\\'" . typescript-mode)
-         ("\\.tsx\\'" . typescript-tsx-mode))
+  :mode (
+         ("\\.js\\'" . js-mode)
+         ("\\.jsx\\'" . js-jsx-mode)
+         ("\\.json\\'" . js-json-mode)
+         ("\\.jsonc\\'" . js-json-mode)
+         ("\\.ts\\'" . js-ts-mode)
+         ("\\.tsx\\'" . js-tsx-mode))
   :hook ((js-mode . eglot-ensure)
          (js-mode . prettier-js-mode))
   :init
-  (define-derived-mode typescript-mode js-mode "ts")
-  (define-derived-mode typescript-tsx-mode typescript-mode "tsx")
+  (define-derived-mode js-ts-mode js-mode "ts"
+    :group 'ts)
+  (define-derived-mode js-tsx-mode js-ts-mode "tsx"
+    :group 'ts
+    (setq-local comment-region-function #'js-jsx--comment-region))
   :bind (:map js-mode-map
               ("C-c C-f" . prettier-js))
   :config

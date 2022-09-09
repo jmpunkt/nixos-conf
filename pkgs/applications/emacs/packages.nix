@@ -51,7 +51,6 @@ in
         # Misc
         bazel
         yaml-mode
-        json-mode
         fish-mode
         nix-mode
         graphql-mode

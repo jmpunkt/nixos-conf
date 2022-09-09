@@ -309,7 +309,7 @@ This session ignores the remote shell and uses /bin/sh."
       "meow state for basic moving and selection operations"
       :lighter " [S]"
       :keymap meow-selection-keymap)
-    (setq meow-cursor-type-selection 'hollow)
+    (setq meow-cursor-type-selection 'box)
     (meow-define-keys 'selection
       '("j" . meow-next)
       '("k" . meow-prev)
@@ -390,9 +390,9 @@ This session ignores the remote shell and uses /bin/sh."
      '("L" . meow-right-expand)
      '("m" . meow-join)
      '("o" . meow-block)
+     '("O" . meow-to-block)
      '("g" . meow-cancel-selection)
      '("G" . meow-grab)
-     '("O" . meow-to-block)
      '("p" . meow-yank)
      '("Q" . meow-goto-line)
      '("r" . meow-replace)
@@ -566,12 +566,12 @@ This session ignores the remote shell and uses /bin/sh."
   :init
   (defun jmpunkt/eglot-rename ()
     (interactive)
-    (meow-cancel)
-    (eglot-rename))
+    (meow--cancel-selection)
+    (call-interactively 'eglot-rename))
   (defun jmpunkt/eglot-code-actions ()
     (interactive)
-    (meow-cancel)
-    (eglot-code-actions))
+    (meow--cancel-selection)
+    (call-interactively 'eglot-code-actions))
   (defvar jmpunkt/eglot-keys-map (make-keymap)
     "Keymap which supersedes the default eglot keymap")
   (define-minor-mode jmpunkt/eglot-keys-mode

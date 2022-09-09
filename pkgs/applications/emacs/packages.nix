@@ -19,7 +19,6 @@ in
         org-bullets
         ob-async
         ob-mermaid
-        toc-org
         # PDF
         pdf-tools
         # Git

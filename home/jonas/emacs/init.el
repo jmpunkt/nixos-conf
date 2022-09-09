@@ -880,11 +880,10 @@ This session ignores the remote shell and uses /bin/sh."
     (interactive)
     (jmpunkt/org-delegate-keybind (kbd "C-c C-f")))
   :bind (:map org-mode-map
-              ("C-c C-f" . jmpunkt/format-org-src))
+              ("C-c C-f" . jmpunkt/format-org-src)
+              ("C-j" . nil))
   :hook ((org-mode . (lambda ()
                        (setq-local tab-width 2)
-                       (auto-fill-mode 1)
-                       (display-line-numbers-mode 1)
                        (add-to-list 'ispell-skip-region-alist
                                     '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
                        (add-to-list 'ispell-skip-region-alist
@@ -1040,34 +1039,6 @@ This session ignores the remote shell and uses /bin/sh."
      ("\\subsection{%s}" . "\\subsection*{%s}")
      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
      ("\\paragraph{%s}" . "\\paragraph*{%s}")
-     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  (add-to-list
-   'org-latex-classes
-   '("tud-report"
-     "\\documentclass{tudapub}
-      \\usepackage[AUTO]{babel}
-      \\usepackage[botto1]{footmisc}
-      \\usepackage{amsbsy,amscd,amsfonts,amstext,amsmath,latexsym,theorem}
-      \\pagestyle{plain}
-      \\bibliographystyle{alpha}"
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*{%s}")
-     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  (add-to-list
-   'org-latex-classes
-   '("tud-exercise"
-     "\\documentclass{tudaexercise}
-      \\usepackage[AUTO]{babel}
-      \\usepackage[botto1]{footmisc}
-      \\usepackage{amsbsy,amscd,amsfonts,amstext,amsmath,latexsym,theorem}
-      \\pagestyle{plain}
-      \\bibliographystyle{alpha}"
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*{%s}")
-     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-     ("\\paragraph{%s}" . "\\paragraph*{%s}")
      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (use-package ox-extra
@@ -1075,11 +1046,6 @@ This session ignores the remote shell and uses /bin/sh."
   :defer t
   :config
   (ox-extras-activate '(ignore-headlines)))
-
-(use-package toc-org
-  :defer t
-  :after org
-  :hook ((org-mode . toc-org-mode)))
 
 (use-package org-bullets
   :after org
@@ -1181,11 +1147,6 @@ If enabling one of the mods results in an error, both modes are disabled again."
 ;;;; * Markdown
 (use-package markdown-mode
   :defer t
-  :bind (:map markdown-mode-map
-              ("C-c C-o" . toc-org-markdown-follow-thing-at-point))
-  :hook ((markdown-mode . toc-org-mode)
-         (markdown-mode . (lambda ()
-                            (display-line-numbers-mode 1))))
   :mode
   ("INSTALL\\'"
    "CONTRIBUTORS\\'"

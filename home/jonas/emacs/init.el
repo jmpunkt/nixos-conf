@@ -66,9 +66,9 @@
 ;;; * Emacs
 (use-package emacs
   :demand t
-  :hook ((prog-mode . jmpunkt/text-or-prog-init)
-         (conf-mode . jmpunkt/text-or-prog-init)
-         (text-mode . jmpunkt/text-or-prog-init))
+  :hook ((prog-mode . jmpunkt/prog-init)
+         (conf-mode . jmpunkt/conf-init)
+         (text-mode . jmpunkt/text-init))
   :bind (:map global-map
               ("C-d" . meow-page-down)
               ("C-u" . meow-page-up)
@@ -80,17 +80,25 @@
     (delete-char 1)
     (delete-horizontal-space))
   (defun jmpunkt/text-or-prog-init ()
+  (defun jmpunkt/default-init ()
     (subword-mode 1)
     (electric-indent-local-mode 1)
     (electric-pair-local-mode 1)
     (auto-fill-mode 1)
     (show-paren-mode 1)
     (display-line-numbers-mode 1)
-    (setq-local comment-auto-fill-only-comments t
-                tab-width 4
+    (setq-local tab-width 4
                 indent-tabs-mode nil
                 show-trailing-whitespace t))
-
+  (defun jmpunkt/prog-init ()
+    (jmpunkt/default-init)
+    (setq-local comment-auto-fill-only-comments t))
+  (defun jmpunkt/conf-init ()
+    (jmpunkt/default-init)
+    (setq-local comment-auto-fill-only-comments t))
+  (defun jmpunkt/text-init ()
+    (jmpunkt/default-init)
+    (setq-local comment-auto-fill-only-comments nil))
   (setq indent-line-function 'indent-relative
         tab-always-indent 'complete
         revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")

@@ -39,59 +39,40 @@ in {
     tree-sitter-indexer-bin = "${pkgs.tree-sitter-indexer}/bin/tree-sitter-indexer";
     tree-sitter-indexer-search-path = "${treeSitterGrammars}/bin";
   };
-  paths = with pkgs; [
-    ccls
-    # LSP
-    rnix-lsp
-    # LSP
-    texlab
-    # LSP
-    yaml-language-server
-    # LSP
-    # haskellPackages.haskell-lsp
-    # LSP
-    nodePackages.typescript-language-server
-    # LSP
-    gitAndTools.delta
-    # magit-delta
-    inkscape
-    # org-mode:graphs
-    imagemagick
-    # org-mode:graphs
-    graphviz-nox
-    # org-mode:graphs
-    unstable.nodePackages.mermaid-cli
-    # org-mode:graphs
-    jre
-    # required by plantuml
-    ghostscript
-    # LaTex EPS files
-    unoconv
-    # org-mode:odt
-    zip
-    # org-mode:odt
-    languagetool
-    # spelling
-    nixpkgs-fmt
-    # dev
-    nodePackages.typescript
-    # dev
-    discount
-    maven
-    # dev
-    cargo-outdated
-    # dev
-    git
-    fd
-    # affe
-    ripgrep
-    #affe
-    jmpunkt.pythonToolchain
-    # overlays/40-toolchains.nix
-    jmpunkt.latex
-    # custom latex suite
-    # SQL
-    pgformatter
-    sqlite
-  ];
+  paths = let
+    core = with pkgs; [
+      fd # find file
+      ripgrep # search
+      pandoc # markdown, etc
+      git
+      gitAndTools.delta # git better diff
+      languagetool # spelling
+    ];
+    lsp = with pkgs; [
+      ccls
+      rnix-lsp
+      texlab
+      yaml-language-server
+      # haskellPackages.haskell-lsp
+      nodePackages.typescript-language-server
+      jmpunkt.pythonToolchain
+      jmpunkt.latex
+    ];
+    org = with pkgs; [
+      # graphs
+      inkscape
+      imagemagick
+      graphviz-nox
+      unstable.nodePackages.mermaid-cli
+      ghostscript
+      # odt-export
+      unoconv
+      zip
+    ];
+    formatter = with pkgs; [
+      nixpkgs-fmt
+      pgformatter
+    ];
+  in
+    core ++ org ++ lsp ++ formatter;
 }

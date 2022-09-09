@@ -320,6 +320,7 @@ This session ignores the remote shell and uses /bin/sh."
       '("," . meow-inner-of-thing)
       '("." . meow-bounds-of-thing))
     (add-to-list 'meow-mode-state-list '(magit-status-mode . selection))
+    (add-to-list 'meow-mode-state-list '(magit-revision-mode . selection))
     (add-to-list 'meow-replace-state-name-list '(selection . "SELECTION"))
     (add-to-list 'meow-indicator-face-alist '(selection . meow-normal-indicator))
     ;; default meow setup

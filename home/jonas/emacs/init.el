@@ -70,6 +70,9 @@
          (conf-mode . jmpunkt/conf-init)
          (text-mode . jmpunkt/text-init))
   :bind (:map global-map
+              ("TAB" . completion-at-point)
+              ("C-+" . text-scale-increase)
+              ("C--" . text-scale-decrease)
               ("C-d" . meow-page-down)
               ("C-u" . meow-page-up)
               ("C-j" . jmpunkt/join-line))
@@ -112,7 +115,6 @@
         compilation-scroll-output t
         auth-source-save-behavior nil
         read-extended-command-predicate #'command-completion-default-include-p)
-  (global-set-key "\t" 'completion-at-point)
   (save-place-mode 1)
   (global-hl-line-mode 1)
   (toggle-scroll-bar -1)

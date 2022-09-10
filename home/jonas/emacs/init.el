@@ -661,6 +661,9 @@ This session ignores the remote shell and uses /bin/sh."
   :hook ((minibuffer-setup . cursor-intangible-mode)
          (minibuffer-setup . minibuffer-depth-indicate-mode))
   :bind (:map minibuffer-local-map
+              ("<escape>" . minibuffer-exit)
+              ([return] . minibuffer-force-complete-and-exit)
+              ([tab] . minibuffer-force-complete)
               ("C-j" . next-line)
               ("C-k" . previous-line)
               ("M-j" . scroll-up-command)
@@ -738,9 +741,7 @@ This session ignores the remote shell and uses /bin/sh."
 (use-package vertico
   :hook (after-init . vertico-mode)
   :bind (:map vertico-map
-              ("M-?" . minibuffer-completion-help)
-              ("M-RET" . minibuffer-force-complete-and-exit)
-              ("M-TAB" . minibuffer-complete)))
+              ([remap minibuffer-force-complete-and-exit] . vertico-exit)))
 
 (use-package marginalia
   :hook (after-init . marginalia-mode))

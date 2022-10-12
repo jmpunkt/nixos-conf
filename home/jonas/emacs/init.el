@@ -73,8 +73,6 @@
               ("TAB" . completion-at-point)
               ("C-+" . text-scale-increase)
               ("C--" . text-scale-decrease)
-              ("C-d" . meow-page-down)
-              ("C-u" . meow-page-up)
               ("C-j" . jmpunkt/join-line))
   :init
   (defun jmpunkt/join-line ()
@@ -302,7 +300,9 @@ This session ignores the remote shell and uses /bin/sh."
   :demand t
   :bind (:map global-map
               ("M-." . jmpunkt/meow-find-definitions)
-              ("M-?" . jmpunkt/meow-find-references))
+              ("M-?" . jmpunkt/meow-find-references)
+              ("C-d" . meow-page-down)
+              ("C-u" . meow-page-up))
   :init
   (defvar jmpunkt/tree-sitter-thing-lookup-table
     '((rust-mode . ((function . ((function_item block)))))

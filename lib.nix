@@ -1,8 +1,10 @@
 {
+  self,
   # stable version nixpkgs
   stable,
   # unstable version nixpkgs
   unstable,
+  minimumOverlays,
 }: let
   inherit (builtins) typeOf;
 in rec {
@@ -37,7 +39,7 @@ in rec {
               nix.registry.nixpkgs.flake = nixpkgs;
               # Allows commands like `nix shell self#jmpunkt.emacs`
               nix.registry.self.flake = self;
-              nixpkgs.overlays = overlays ++ [(mkUnstableOverlay system)];
+              nixpkgs.overlays = minimumOverlays ++ [(mkUnstableOverlay system)];
             }
           )
         ]
@@ -61,7 +63,7 @@ in rec {
               nix.registry.nixpkgs.flake = nixpkgs;
               # Allows commands like `nix shell self#jmpunkt.emacs`
               nix.registry.self.flake = self;
-              nixpkgs.overlays = overlays ++ [(mkUnstableOverlay system)];
+              nixpkgs.overlays = minimumOverlays ++ [(mkUnstableOverlay system)];
             }
           )
         ]
@@ -72,7 +74,7 @@ in rec {
     nixpkgs
     {
       inherit system;
-      overlays = overlays ++ additionalOverlays;
+      overlays = minimumOverlays ++ additionalOverlays;
       config.allowUnfree = true;
     };
   # Creates an overlay for a system which includes an attribute

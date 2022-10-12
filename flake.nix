@@ -39,132 +39,29 @@
       // {
         inherit tsi;
       };
-    overlays = [
-      rust-overlay.overlays.default
-      allPackagesOverlay
-      emacs-overlay.overlay
-      tsi.overlays.default
-    ];
-    mkSystemCross = {
-      host,
-      target,
-      system,
-      modules,
-      nixpkgs,
-    }: let
-      pkgs =
-        (import
-          nixpkgs
-          {
-            system = host;
-          })
-        .pkgs
-        .pkgsCross
-        ."${target}";
-    in
-      nixpkgs.lib.nixosSystem
-      {
-        inherit system;
-        inherit pkgs;
-        modules =
-          [
-            nixpkgs.nixosModules.notDetected
-            (
-              {config, ...}: {
-                # Pins nixpkgs of system to `inputs.nixpkgs`.
-                nix.registry.nixpkgs.flake = nixpkgs;
-                # Allows commands like `nix shell self#jmpunkt.emacs`
-                nix.registry.self.flake = self;
-                nixpkgs.overlays = overlays ++ [(mkUnstableOverlay system)];
-              }
-            )
-          ]
-          ++ modules;
-      };
-    mkSystem = {
-      system,
-      modules,
-      nixpkgs,
-    }:
-      nixpkgs.lib.nixosSystem
-      {
-        inherit system;
-        modules =
-          [
-            nixpkgs.nixosModules.notDetected
-            (
-              {config, ...}: {
-                # Pins nixpkgs of system to `inputs.nixpkgs`.
-                nix.registry.nixpkgs.flake = nixpkgs;
-                # Allows commands like `nix shell self#jmpunkt.emacs`
-                nix.registry.self.flake = self;
-                nixpkgs.overlays = overlays ++ [(mkUnstableOverlay system)];
-              }
-            )
-          ]
-          ++ modules;
-      };
-    mkPkgs = system: nixpkgs: additionalOverlays:
-      import
-      nixpkgs
-      {
-        inherit system;
-        overlays = overlays ++ additionalOverlays;
-        config.allowUnfree = true;
-      };
-    mkUnstableOverlay = system: (final: prev: {unstable = mkPkgs system unstable [];});
+    lib = import ./lib.nix {
+      inherit self unstable stable;
+      minimumOverlays = [
+        rust-overlay.overlays.default
+        allPackagesOverlay
+        emacs-overlay.overlay
+        tsi.overlays.default
+      ];
+    };
+    inherit (lib) mkUnstableOverlay mkSystem mkSystemCross mkPkgs packageSD packageISO packageSystem;
     forAllSystems =
       utils.lib.eachDefaultSystem
       (system: {legacyPackages = mkPkgs system stable [(mkUnstableOverlay system)];});
-    forx86Systems = nixpkgs:
+    forx86Systems =
       utils.lib.eachSystem
       ["x86_64-linux" "i686-linux"]
-      (
-        system: {
-          packages.iso =
-            (
-              mkSystem
-              {
-                inherit system nixpkgs;
-                modules = [(import ./machines/iso/configuration.nix)];
-              }
-            )
-            .config
-            .system
-            .build
-            .isoImage;
-          packages.sd-rpi2 =
-            (mkSystemCross
-              {
-                host = "x86_64-linux";
-                target = "armv7l-hf-multiplatform";
-                system = "armv7l-linux";
-                nixpkgs = unstable;
-                modules = [
-                  ./machines/rpi2b/configuration.nix
-                ];
-              })
-            .config
-            .system
-            .build
-            .sdImage;
-          packages.iso-minimal =
-            (
-              mkSystem
-              {
-                inherit system nixpkgs;
-                modules = [(import ./machines/iso-minimal/configuration.nix)];
-              }
-            )
-            .config
-            .system
-            .build
-            .isoImage;
-          apps.repl =
+      (system: {
+        apps = {
+          repl =
             utils.lib.mkApp
             {
               drv =
-                nixpkgs.legacyPackages.${system}.writeShellScriptBin
+                unstable.legacyPackages.${system}.writeShellScriptBin
                 "repl"
                 ''
                   confnix=$(mktemp)
@@ -173,12 +70,124 @@
                   nix repl $confnix
                 '';
             };
-        }
-      );
+
+          # switch the current live system (not persistent)
+          switch-live =
+            utils.lib.mkApp
+            {
+              drv =
+                unstable.legacyPackages.${system}.writeShellScriptBin
+                "switch-local"
+                  ''
+
+tmpDir=/tmp/$(date +%s)-nix-flake-builder
+mkdir "$tmp
+name=$(hostname)
+nix build ${self}#$name
+
+rm -r "$tmpdir"
+                  # doas result/bin/switch-to-configuration switch
+                '';
+            };
+          # switch the system for next boot (persistent)
+          switch-boot =
+            utils.lib.mkApp
+            {
+              drv =
+                unstable.legacyPackages.${system}.writeShellScriptBin
+                "switch-boot"
+                ''
+                  doas nix-env -p /nix/var/nix/profiles/system --set ./result
+                  doas result/bin/switch-to-configuration boot
+                '';
+            };
+          # switch the live system and keep changes for next boot (persistent)
+          switch-live-boot =
+            utils.lib.mkApp
+            {
+              drv =
+                unstable.legacyPackages.${system}.writeShellScriptBin
+                "switch-local"
+                ''
+                  doas result/bin/switch-to-configuration boot
+                '';
+            };
+        };
+        packages = {
+          sd-rpi2 = packageSD (mkSystemCross
+            {
+              host = system;
+              target = "armv7l-hf-multiplatform";
+              system = "armv7l-linux";
+              nixpkgs = unstable;
+              modules = [
+                ./machines/rpi2b/configuration.nix
+              ];
+            });
+          iso-minimal = packageISO (
+            mkSystem
+            {
+              inherit system;
+              nixpkgs = stable;
+              modules = [(import ./machines/iso-minimal/configuration.nix)];
+            }
+          );
+          iso = packageISO (
+            mkSystem
+            {
+              inherit system;
+              nixpkgs = stable;
+              modules = [(import ./machines/iso/configuration.nix)];
+            }
+          );
+        };
+      });
+    forx86_64Systems =
+      utils.lib.eachSystem
+      ["x86_64-linux"]
+      (system: {
+        packages = {
+          alpha128 = packageSystem (
+            mkSystem
+            {
+              inherit system;
+              nixpkgs = unstable;
+              modules = [
+                ./machines/alpha128/configuration.nix
+                hardware.nixosModules.common-pc
+                hardware.nixosModules.common-cpu-amd
+                hardware.nixosModules.common-pc-ssd
+                self.nixosModules.home-jonas
+                home-manager.nixosModules.home-manager
+              ];
+            }
+          );
+          gamma64 = packageSystem (mkSystem
+            {
+              inherit system;
+              nixpkgs = unstable;
+              modules = [
+                ./machines/gamma64/configuration.nix
+                hardware.nixosModules.lenovo-thinkpad-e495
+                hardware.nixosModules.common-pc-laptop-acpi_call
+                hardware.nixosModules.common-pc-laptop-ssd
+                self.nixosModules.home-jonas
+                home-manager.nixosModules.home-manager
+              ];
+            });
+        };
+      });
   in
-    forAllSystems
-    // (forx86Systems stable)
-    // rec {
+    (
+      stable.lib.attrsets.recursiveUpdate
+      forAllSystems
+      (
+        stable.lib.attrsets.recursiveUpdate
+        forx86Systems
+        forx86_64Systems
+      )
+    )
+    // {
       overlays.default = allPackagesOverlay;
       templates = import ./templates;
       nixosModules = {
@@ -189,36 +198,6 @@
             home-manager.users.jonas = ./home/jonas/home.nix;
           }
         );
-      };
-      nixosConfigurations = {
-        alpha128 =
-          mkSystem
-          {
-            system = "x86_64-linux";
-            nixpkgs = unstable;
-            modules = [
-              ./machines/alpha128/configuration.nix
-              hardware.nixosModules.common-pc
-              hardware.nixosModules.common-cpu-amd
-              hardware.nixosModules.common-pc-ssd
-              self.nixosModules.home-jonas
-              home-manager.nixosModules.home-manager
-            ];
-          };
-        gamma64 =
-          mkSystem
-          {
-            system = "x86_64-linux";
-            nixpkgs = unstable;
-            modules = [
-              ./machines/gamma64/configuration.nix
-              hardware.nixosModules.lenovo-thinkpad-e495
-              hardware.nixosModules.common-pc-laptop-acpi_call
-              hardware.nixosModules.common-pc-laptop-ssd
-              self.nixosModules.home-jonas
-              home-manager.nixosModules.home-manager
-            ];
-          };
       };
     };
 }

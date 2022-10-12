@@ -156,12 +156,59 @@
                             ":=" "::=" "/=" "//=" "/==" )))
 
 ;;;; Shell
+(use-package term
+  :hook
+  (term-mode . (lambda ()
+                 (add-hook 'meow-insert-enter-hook #'term-char-mode nil t)
+                 (add-hook 'meow-insert-exit-hook #'term-line-mode nil t))))
+(use-package comint
+  :bind (:map comint-mode-map
+              ("C-j" . comint-next-matching-input-from-input)
+              ("C-k" . comint-previous-matching-input-from-input))
+  :init
+  (defun jmpunkt/comint-goto-end-or-here ()
+    "Smart comint goto promt.
+
+Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
+    (interactive)
+    (unless (comint-after-pmark-p)
+      (let ((line (current-line)))
+        (end-of-line)
+        (if (comint-after-pmark-p)
+            (comint-bol)
+          (end-of-buffer)))))
+  (define-advice meow-yank
+      (:before (&rest args) comint-advice)
+    (when (derived-mode-p 'comint-mode)
+      (jmpunkt/comint-goto-end-or-here)))
+  (define-advice comint-send-input
+      (:before (&rest args) comint-advice)
+      (jmpunkt/comint-goto-end-or-here))
+  :config
+  (defun jmpunkt/comint-goto-end-or-here-advice (&rest args)
+    (jmpunkt/comint-goto-end-or-here))
+
+  (advice-add 'comint-next-matching-input-from-input :before #'jmpunkt/comint-goto-end-or-here-advice)
+  (advice-add 'comint-previous-matching-input-from-input :before #'jmpunkt/comint-goto-end-or-here-advice))
+
 (use-package esh-mode
   :defer t
-  :commands eshell-mode
+  :commands eshell-mode eshell
+  :bind (:map eshell-mode-map
+              ("C-j" . eshell-next-matching-input-from-input)
+              ("C-k" . eshell-previous-matching-input-from-input))
+  :hook
+  (eshell-mode . (lambda ()
+                   (add-hook 'meow-insert-enter-hook #'jmpunkt/eshell-goto-end-or-here nil t)))
+  (eshell-before-prompt . (lambda ()
+                            (setq-local xterm-color-preserve-properties t)))
+  (eshell-pre-command . (lambda ()
+                          (setq-local process-environment (copy-sequence process-environment))
+                          (setenv "TERM" "xterm-256color")
+                          (setenv "PAGER" "cat")))
   :init
   (defun jmpunkt/eshell-goto-end-or-here ()
-    "Smart eshell goto promt for evil.
+    "Smart eshell goto promt.
 
 If the cursor is in the history of eshell, then we want to go to the end of buffer.
 If the cursor is on the promt of the eshell, then we want to go to the first writable position.
@@ -181,18 +228,13 @@ If the cursor is on the last promt, then we want to insert at the current positi
   ;; select anything in the previous output.
   (advice-add 'eshell-next-matching-input-from-input :before #'jmpunkt/eshell-goto-end-or-here-advice)
   (advice-add 'eshell-previous-matching-input-from-input :before #'jmpunkt/eshell-goto-end-or-here-advice)
-  :bind (:map eshell-mode-map
-              ("C-j" . eshell-next-matching-input-from-input)
-              ("C-k" . eshell-previous-matching-input-from-input))
-  :hook
-  (eshell-mode . (lambda ()
-                   (add-hook 'meow-insert-enter-hook #'jmpunkt/eshell-goto-end-or-here nil t)))
-  (eshell-before-prompt . (lambda ()
-                            (setq-local xterm-color-preserve-properties t)))
-  (eshell-pre-command . (lambda ()
-                          (setq-local process-environment (copy-sequence process-environment))
-                          (setenv "TERM" "xterm-256color")
-                          (setenv "PAGER" "cat")))
+  (define-advice meow-yank
+      (:before (&rest args) eshell-advice)
+    (when (derived-mode-p 'eshell-mode)
+      (jmpunkt/eshell-goto-end-or-here)))
+  (define-advice eshell-send-input
+      (:before (&rest args) eshell-advice)
+    (jmpunkt/eshell-goto-end-or-here))
   :config
   (require 'xterm-color)
   (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
@@ -426,7 +468,9 @@ This session ignores the remote shell and uses /bin/sh."
 (use-package envrc
   :bind-keymap ("C-c e" . envrc-command-map)
   :hook ((prog-mode . envrc-mode)
-         (org-mode . envrc-mode)))
+         (org-mode . envrc-mode)
+         (eshell-mode . envrc-mode)
+         (comint-mode . envrc-mode)))
 
 ;;;; * Which-Key
 (use-package which-key

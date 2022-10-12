@@ -1119,12 +1119,6 @@ This session ignores the remote shell and uses /bin/sh."
      ("\\paragraph{%s}" . "\\paragraph*{%s}")
      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
-(use-package ox-extra
-  :after org
-  :defer t
-  :config
-  (ox-extras-activate '(ignore-headlines)))
-
 (use-package org-bullets
   :after org
   :hook (org-mode . org-bullets-mode)
@@ -1310,7 +1304,7 @@ If enabling one of the mods results in an error, both modes are disabled again."
   :mode "\\.fish\\'")
 
 ;;;; * WEB
-(use-package html-mode
+(use-package sgml-mode
   :defer t
   :mode ("\\.html\\'" . html-mode)
   :hook ((html-mode . eglot-ensure)
@@ -1355,9 +1349,9 @@ If enabling one of the mods results in an error, both modes are disabled again."
   :commands prettier-js)
 
 ;;;; * LaTeX
-(use-package latex-mode
+(use-package tex-mode
   :defer t
-  :mode "\\.tex\\'")
+  :mode ("\\.tex\\'" . latex-mode))
 
 ;;; * PDF
 (use-package pdf-tools

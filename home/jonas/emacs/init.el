@@ -304,27 +304,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
     (funcall f proc (xterm-color-filter string)))
   (advice-add 'compilation-filter :around #'jmpunkt/advice-compilation-filter))
 
-;;; * System Commands
-(defmacro jmpunkt/with-doas (&rest body)
- "Evaluates a body within the context of a doas session.
-
-This session ignores the remote shell and uses /bin/sh."
- `(with-temp-buffer
-   (setq-local process-environment (copy-sequence process-environment))
-   (setenv "SHELL" "/bin/sh")
-   (cd "/doas::/tmp")
-   ,@body))
-
-(defun jmpunkt/switch-system ()
- "Switch to the next generation of the host NixOS system."
- (interactive)
- (jmpunkt/with-doas
-   (start-process
-    "nixos-switch"
-    (get-buffer-create "*switch-local-system*")
-    "nixos-rebuild"
-    "switch" "--flake" "/home/jonas/workspace/nixos-conf/#" "-L" "--keep-going")))
-
 ;;; * Core Packages
 ;;;; * helpful
 (use-package helpful

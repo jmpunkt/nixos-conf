@@ -760,9 +760,10 @@ This session ignores the remote shell and uses /bin/sh."
   :hook ((minibuffer-setup . cursor-intangible-mode)
          (minibuffer-setup . minibuffer-depth-indicate-mode))
   :bind (:map minibuffer-local-map
+              ([remap keyboard-quit] . minibuffer-keyboard-quit)
               ("<escape>" . minibuffer-exit)
-              ([return] . minibuffer-force-complete-and-exit)
-              ([tab] . minibuffer-force-complete)
+              ("<return>" . exit-minibuffer)
+              ("\t" . minibuffer-force-complete)
               ("C-j" . next-line)
               ("C-k" . previous-line)
               ("M-j" . scroll-up-command)
@@ -774,7 +775,8 @@ This session ignores the remote shell and uses /bin/sh."
               ("C-n" . next-history-element)
               ("C-m" . previous-history-element))
   :config
-  (setq minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
+  (setq minibuffer-local-map (make-sparse-keymap)
+        minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
         read-buffer-completion-ignore-case t
         read-file-name-completion-ignore-case t
         enable-recursive-minibuffers t
@@ -798,6 +800,7 @@ This session ignores the remote shell and uses /bin/sh."
   ;; skip all icomplete maps and inherit directly from minibuffer
   (setq icomplete-vertical-mode-minibuffer-map (make-composed-keymap nil minibuffer-local-map))
   :bind (:map icomplete-vertical-mode-minibuffer-map
+              ("<return>". icomplete-force-complete-and-exit)
               ([remap minibuffer-force-complete-and-exit] . icomplete-force-complete-and-exit)
               ([remap minibuffer-force-complete] . icomplete-force-complete)
               ([remap next-line] . icomplete-forward-completions)
@@ -838,9 +841,7 @@ This session ignores the remote shell and uses /bin/sh."
         completion-category-overrides '((eglot (styles . (orderless flex))))))
 
 (use-package vertico
-  :hook (after-init . vertico-mode)
-  :bind (:map vertico-map
-              ([remap minibuffer-force-complete-and-exit] . vertico-exit)))
+  :hook (after-init . vertico-mode))
 
 (use-package marginalia
   :hook (after-init . marginalia-mode))

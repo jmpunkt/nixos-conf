@@ -42,7 +42,6 @@ in
         cape
         yasnippet
         # Spelling
-        langtool
         flyspell-correct
         # RSS
         elfeed

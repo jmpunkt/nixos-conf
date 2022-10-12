@@ -551,18 +551,6 @@ This session ignores the remote shell and uses /bin/sh."
   :config
   (setq flyspell-correct-interface #'flyspell-correct-dummy))
 
-(use-package langtool
-  :bind (:map global-map
-              ("C-c l <" . langtool-goto-previous-error)
-              ("C-c l >" . langtool-goto-next-error)
-              ("C-c l c" . langtool-correct-buffer)
-              ("C-c l q" . langtool-check-done)
-              ("C-c l m" . langtool-show-message-at-point)
-              ("C-c l f" . langtool-check))
-  :config
-  ;; for NixOS use languagetool-commandline?
-  (setq langtool-bin "languagetool-commandline"))
-
 ;;;; * Dashboard
 (use-package dashboard
   :hook (after-init . dashboard-refresh-buffer)

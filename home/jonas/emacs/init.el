@@ -359,8 +359,8 @@ This session ignores the remote shell and uses /bin/sh."
   :init
   (defvar jmpunkt/tree-sitter-thing-lookup-table
     '((rust-mode . ((function . ((function_item block)))))
-      ((typescript-tsx-mode typescript-mode) . ((function . ((method_definition statement_block)
-                                                            (arrow_function statement_block)))))))
+      ((js-mode js-tsx-mode js-ts-mode) . ((function . ((method_definition statement_block)
+                                                        (arrow_function statement_block)))))))
   (defun jmpunkt/tree-sitter-thing-for-mode (mode kind)
     (when-let* ((declarations (alist-get mode jmpunkt/tree-sitter-thing-lookup-table nil nil
                                          (lambda (key mode) (if (sequencep key) (seq-contains key mode) (eq key mode))))))
@@ -1201,18 +1201,24 @@ If enabling one of the mods results in an error, both modes are disabled again."
         (error (tree-sitter-mode -1))))
   :hook ((prog-mode . jmpunkt/tree-sitter-local-mode)
          (conf-mode . jmpunkt/tree-sitter-local-mode)
-         (text-mode . jmpunkt/tree-sitter-local-mode)))
-
-(use-package tree-sitter-langs
+         (text-mode . jmpunkt/tree-sitter-local-mode))
   :config
-  (add-to-list 'tree-sitter-major-mode-language-alist '(latex-mode . latex))
-  (add-to-list 'tree-sitter-major-mode-language-alist '(nix-mode . nix))
-  (add-to-list 'tree-sitter-major-mode-language-alist '(markdown-mode . markdown))
-  (add-to-list 'tree-sitter-major-mode-language-alist '(haskell-mode . haskell))
-  (add-to-list 'tree-sitter-major-mode-language-alist '(yaml-mode . yaml))
-  (add-to-list 'tree-sitter-major-mode-language-alist '(conf-toml-mode . toml))
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
-  (add-to-list 'tree-sitter-major-mode-language-alist '(js-json-mode . json)))
+  (setq tree-sitter-major-mode-language-alist '((latex-mode . latex)
+                                                (nix-mode . nix)
+                                                (markdown-mode . markdown)
+                                                (haskell-mode . haskell)
+                                                (yaml-mode . yaml)
+                                                (nix-mode . nix)
+                                                (python-mode .python)
+                                                (conf-toml-mode . toml)
+                                                (html-mode . html)
+                                                (mhtml-mode . html)
+                                                (css-mode . css)
+                                                (js-mode . javascript)
+                                                (js-json-mode . json)
+                                                (js-ts-mode . typescript)
+                                                (js-tsx-mode . tsx))))
+(use-package tree-sitter-langs)
 
 ;;;; * Mermaid
 (use-package mermaid-mode
@@ -1391,6 +1397,7 @@ If enabling one of the mods results in an error, both modes are disabled again."
   :hook ((js-mode . eglot-ensure)
          (js-mode . prettier-js-mode))
   :init
+  (setq js-mode-map (make-sparse-keymap))
   (define-derived-mode js-ts-mode js-mode "ts"
     :group 'ts)
   (define-derived-mode js-tsx-mode js-ts-mode "tsx"

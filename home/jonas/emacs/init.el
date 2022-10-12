@@ -684,6 +684,13 @@ This session ignores the remote shell and uses /bin/sh."
                           (lambda () (jmpunkt/eglot-keys-mode))
                           nil
                           1))))
+  (defun jmpunkt/eglot-disable-mouse()
+    ;; disable mouse support for flymake face
+    (cl-loop for i from 1
+             for type in '(eglot-note eglot-warning eglot-error)
+             do (put type 'flymake-overlay-control
+                     `((priority . ,(+ 50 i))
+                       (face . flymake-error)))))
   :config
   (setq eglot-server-programs
         (append
@@ -693,12 +700,7 @@ This session ignores the remote shell and uses /bin/sh."
   (setq eglot-extend-to-xref t)
   (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
 
-  ;; disable mouse support for flymake face
-  (cl-loop for i from 1
-           for type in '(eglot-note eglot-warning eglot-error)
-           do (put type 'flymake-overlay-control
-                   `((priority . ,(+ 50 i))
-                     (face . flymake-error))))
+  (jmpunkt/eglot-disable-mouse)
   (setq eglot-stay-out-of '(company)
         eglot-confirm-server-initiated-edits nil))
 

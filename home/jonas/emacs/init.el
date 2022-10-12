@@ -55,14 +55,6 @@
                       :font "JetBrains Mono"
                       :height 1.0))
 
-(use-package doom-modeline
-  :hook (after-init . doom-modeline-mode)
-  :config
-  (setq doom-modeline-height 30
-        doom-modeline-icon nil
-        doom-modeline-major-mode-icon nil
-        doom-modeline-buffer-file-name-style 'relative-to-project))
-
 ;;; * Emacs
 (use-package emacs
   :demand t
@@ -98,21 +90,82 @@
   (defun jmpunkt/text-init ()
     (jmpunkt/default-init)
     (setq-local comment-auto-fill-only-comments nil))
+  (defun simple-mode-line-render (left right)
+    "Return a string of `window-width' length containing LEFT, and RIGHT
+ aligned respectively."
+    (let* ((available-width (- (window-width) (length left) 2)))
+      (format (format " %%s %%%ds " available-width) left right)))
+  (defun jmpunkt/mode-line-file-info ()
+    (let ((eol (pcase (coding-system-eol-type buffer-file-coding-system)
+                 (0 "LF  ")
+                 (1 "CRLF  ")
+                 (2 "CR  ")))
+          (encoding (coding-system-type buffer-file-coding-system)))
+      (format " %s/%s " encoding eol)))
+  (defun jmpunkt/mode-line-vc ()
+    (when-let* ((backend (vc-backend (buffer-file-name))))
+      (format " %s " (replace-regexp-in-string
+                      (format "^ %s:" backend)
+                      " "
+                      vc-mode))))
+  (defun jmpunkt/mode-line-buffer-name ()
+    (if (and (not buffer-read-only) (buffer-modified-p (current-buffer)))
+        (propertize " %b " 'face `(:foreground ,(doom-color 'red) :weight bold))
+      (propertize " %b " 'face `(:weight bold))))
+  (defun jmpunkt/mode-line-position ()
+    (when line-number-mode
+      (if column-number-mode
+          " %l:%c "
+        " %lL ")))
+  (defun jmpunkt/mode-line-region ()
+    (when (use-region-p)
+      (format "%sC" (- (use-region-end) (use-region-beginning)))))
+  (defun jmpunkt/mode-line-flymake ()
+    (with-eval-after-load 'flymake
+      (when flymake-mode flymake-mode-line-counter-format)))
+  (defun jmpunkt/mode-line-major-mode ()
+    (format-mode-line '(" " mode-name " ")))
   (setq indent-line-function 'indent-relative
         tab-always-indent 'complete
         revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")
         make-backup-files nil
         auto-save-default nil
+        auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
+        backup-directory-alist `((".*" . ,temporary-file-directory))
         column-number-mode t
+        read-extended-command-predicate #'command-completion-default-include-p
         delete-by-moving-to-trash t
         frame-title-format "%b"
         icon-title-format "%b"
-        auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
-        backup-directory-alist `((".*" . ,temporary-file-directory))
         display-line-numbers-grow-only t
-        compilation-scroll-output t
         auth-source-save-behavior nil
-        read-extended-command-predicate #'command-completion-default-include-p)
+        uniquify-buffer-name-style 'forward)
+  (setq-default mode-line-format
+                '((:eval
+                   (simple-mode-line-render
+                    (format-mode-line
+                     '((:eval meow--indicator)
+                       " %* "
+                       (:eval (jmpunkt/mode-line-buffer-name))
+                       (:eval (jmpunkt/mode-line-position))
+                       (:eval (jmpunkt/mode-line-region))))
+                    (format-mode-line
+                     '((:eval (jmpunkt/mode-line-file-info))
+                       (:eval (jmpunkt/mode-line-vc))
+                       (:eval (jmpunkt/mode-line-flymake))
+                       (:eval (jmpunkt/mode-line-major-mode))))))))
+  (set-face-attribute 'mode-line nil
+                      :background (doom-color 'modeline-bg)
+                      :foreground (doom-color 'modeline-fg)
+                      :box `(:line-width 6 :color ,(doom-color 'modeline-bg))
+                      :overline nil
+                      :underline nil)
+  (set-face-attribute 'mode-line-inactive nil
+                      :background (doom-color 'modeline-bg-inactive)
+                      :foreground (doom-color 'modeline-fg-inactive)
+                      :box `(:line-width 6 :color ,(doom-color 'modeline-bg-inactive))
+                      :overline nil
+                      :underline nil)
   (save-place-mode 1)
   (global-hl-line-mode 1)
   (toggle-scroll-bar -1)
@@ -344,7 +397,13 @@ This session ignores the remote shell and uses /bin/sh."
   (defun jmpunkt/meow-setup ()
     (meow-thing-register 'function #'jmpunkt/meow--inner-of-function #'jmpunkt/meow--bound-of-function)
     (add-to-list 'meow-char-thing-table '(?f . function))
-
+    (setq meow-replace-state-name-list
+          '((normal . "N")
+            (motion . "M")
+            (keypad . "K")
+            (insert . "I")
+            (beacon . "B")
+            (selection . "S")))
     ;; setup basic selection mode
     (setq meow-selection-keymap (make-keymap))
     (meow-define-state selection
@@ -652,7 +711,13 @@ This session ignores the remote shell and uses /bin/sh."
   :commands flymake-mode
   :bind (:map flymake-mode-map
               ([f7] . consult-flymake))
-  :hook (prog-mode . flymake-mode))
+  :hook (prog-mode . flymake-mode)
+  :config
+  (setq flymake-mode-line-counter-format
+        '(" " flymake-mode-line-error-counter
+          " " flymake-mode-line-warning-counter
+          " " flymake-mode-line-note-counter
+          " ")))
 
 ;;;; RSS
 (use-package elfeed

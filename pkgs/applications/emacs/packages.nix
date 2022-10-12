@@ -26,7 +26,6 @@ in
         diff-hl
         # UI
         all-the-icons
-        doom-modeline
         doom-themes
         # Bibliography
         citar

@@ -298,6 +298,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :commands compilation-mode
   :config
   (require 'xterm-color)
+  (setq compilation-scroll-output t)
   (setq compilation-environment '("TERM=xterm-256color"))
   (defun jmpunkt/advice-compilation-filter (f proc string)
     (funcall f proc (xterm-color-filter string)))

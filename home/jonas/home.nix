@@ -68,6 +68,7 @@ in {
     aspellDicts.en
     aspellDicts.en-computers
     aspellDicts.en-science
+    jmpunkt.chatterino2-nigthly
     jmpunkt.emacs
     jmpunkt.latex
   ];

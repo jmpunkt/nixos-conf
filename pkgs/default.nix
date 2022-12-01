@@ -22,4 +22,5 @@
   vpaint = libsForQt5.callPackage ../pkgs/misc/vpaint {};
   maui = libsForQt5.callPackage ../pkgs/applications/maui {};
   haruna = libsForQt5.callPackage ../pkgs/applications/haruna {};
+  chatterino2-nigthly = libsForQt5.callPackage ../pkgs/applications/chatterino2 {};
 }

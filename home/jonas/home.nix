@@ -58,7 +58,6 @@ in {
     tdesktop
     tokei
     git
-    gitAndTools.delta
     hyperfine
     hunspell
     hunspellDicts.en-us-large
@@ -170,17 +169,6 @@ in {
       extraConfig = {
         core = {
           editor = "emacs";
-          pager = "delta";
-        };
-        interactive.diffFilter = "delta --color-only";
-        delta = {
-          features = "line-numbers";
-          whitespace-error-style = "22 reverse";
-          decorations = {
-            commit-decoration-style = "bold yellow box ul";
-            file-style = "bold yellow ul";
-            file-decoration-style = "none";
-          };
         };
       };
     };

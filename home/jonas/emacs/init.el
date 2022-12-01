@@ -694,11 +694,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
                      `((priority . ,(+ 50 i))
                        (face . flymake-error)))))
   :config
-  (setq eglot-server-programs
-        (append
-         (assoc-delete-all 'rust-mode eglot-server-programs)
-         '((rust-mode . ("rust-analyzer")))))
-
   (setq eglot-extend-to-xref t)
   (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
 

@@ -934,23 +934,13 @@ If the cursor is on the last promt, then we want to insert at the current positi
     (add-to-list 'completion-at-point-functions 'cape-dabbrev))
   (defun jmpunkt/cape-setup-eshell ()
     (add-to-list 'completion-at-point-functions 'cape-file))
-  (defun jmpunkt/cape-setup-eglot ()
-    ;; eglot will override this variable
-    (setq completion-category-defaults nil)
-    (setq-local completion-at-point-functions (list
-                                               (cape-capf-buster
-                                                (cape-super-capf
-                                                 #'eglot-completion-at-point
-                                                 #'cape-dabbrev)
-                                                'equal))))
   (defun jmpunkt/cape-setup-elisp ()
     (add-to-list 'completion-at-point-functions 'cape-symbol+dabbrev))
   (defun jmpunkt/cape-setup-comint ()
     (add-to-list 'completion-at-point-functions 'cape-symbol+dabbrev))
   :hook ((git-commit-mode . jmpunkt/cape-setup-git-commit)
          (eshell-mode . jmpunkt/cape-setup-eshell)
-         (emacs-lisp-mode . jmpunkt/cape-setup-elisp)
-         (eglot-managed-mode . jmpunkt/cape-setup-eglot))
+         (emacs-lisp-mode . jmpunkt/cape-setup-elisp))
   :config
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)

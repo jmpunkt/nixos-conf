@@ -6,6 +6,7 @@
 (eval-when-compile (require 'use-package))
 (require 'bind-key)
 (require 'nixos-paths)
+(require 'treesit)
 
 (use-package esup
   :defer t
@@ -206,6 +207,58 @@
                             "|>" "<|" "||>" "<||" "|||>" "<|||" "<|>"
                             ":=" "::=" "/=" "//=" "/==" )))
 
+(use-package treesit
+  :init
+  (defvar jmpunkt/treesit-thing-lookup-table
+    '((rust-mode . ((function . ((function_item block)))))
+      ((js-mode js-jsx-mode ts-mode) . ((function . ((method_definition statement_block)
+                                                     (arrow_function statement_block)))))
+      (python-ts-mode . ((function . ((function_definition block))))))
+
+    "A lookup table in the form of (mode . (( kind . ((inner1 outer1)
+ (inner2 outer2)) )).
+
+KIND is a chosen symbol which is describes the object.
+INNER and OUTER are symbols which are defined by their grammar
+definition.
+
+Informal description: for a mode, it describes how to lookup a kind
+where different syntax constructs describe the same kind. Each syntax
+construct contains of an inner and outer, where inner must always be
+contained by outer.")
+  (defun jmpunkt/treesit--thing-for-mode (mode kind)
+    (when-let* ((declarations (alist-get mode jmpunkt/treesit-thing-lookup-table nil nil
+                                         (lambda (key mode) (if (sequencep key) (seq-contains key mode) (eq key mode))))))
+      (alist-get kind declarations)))
+  (defun jmpunkt/treesit--node-find-type (type &optional node)
+    "Search for the closest treesit node with TYPE.
+
+Either start at the current position or at NODE."
+    (let ((current-node (or node (treesit-node-at (point)))))
+      (while
+          (and
+           (not (treesit-node-eq (treesit-buffer-root-node) current-node))
+           (not (string-equal (treesit-node-type current-node) type)))
+          (setq current-node (treesit-node-parent current-node)))
+      (when
+          (and
+           (not (treesit-node-eq (treesit-buffer-root-node) current-node))
+           (string-equal (treesit-node-type current-node) type))
+        current-node)))
+  (defun jmpunkt/treesit-thing-at-point (kind &optional mode)
+    "Return the OUTER and INNER node for the given KIND in MODE.
+
+The INNER must be contained by the outer. See
+`jmpunkt/trees-thing-lookup-table' for more information."
+    (let ((definitions (jmpunkt/treesit--thing-for-mode (or mode major-mode) kind)))
+      (cl-some (lambda (definition)
+                 (if-let* ((outer-type (car definition))
+                           (inner-type (cadr definition))
+                           (inner-node (jmpunkt/treesit--node-find-type (symbol-name inner-type)))
+                           (outer-node (jmpunkt/treesit--node-find-type (symbol-name outer-type) inner-node)))
+                     `(,inner-node ,outer-node)))
+               definitions))))
+
 ;;;; Shell
 (use-package term
   :hook
@@ -337,33 +390,16 @@ If the cursor is on the last promt, then we want to insert at the current positi
               ("C-d" . meow-page-down)
               ("C-u" . meow-page-up))
   :init
-  (defvar jmpunkt/tree-sitter-thing-lookup-table
-    '((rust-mode . ((function . ((function_item block)))))
-      ((js-mode js-tsx-mode js-ts-mode) . ((function . ((method_definition statement_block)
-                                                        (arrow_function statement_block)))))))
-  (defun jmpunkt/tree-sitter-thing-for-mode (mode kind)
-    (when-let* ((declarations (alist-get mode jmpunkt/tree-sitter-thing-lookup-table nil nil
-                                         (lambda (key mode) (if (sequencep key) (seq-contains key mode) (eq key mode))))))
-      (alist-get kind declarations)))
-  (defun jmpunkt/meow--bounds-of-tree-sitter (symbol)
-    (when-let* ((node (tree-sitter-node-at-pos symbol)))
-      (tsc-node-position-range node)))
-  (defun jmpunkt/meow--inner-of-tree-sitter (symbol inner)
-    (when-let* ((node (tree-sitter-node-at-pos symbol))
-                (child (cl-loop for child-idx from 0 below (tsc-count-named-children node)
-                                do (when (eq (tsc-node-type (tsc-get-nth-named-child node child-idx)) inner)
-                                     (cl-return (tsc-get-nth-named-child node child-idx))))))
-      (tsc-node-position-range child)))
+  (defun jmpunkt/meow--bound-of-treesit (symbol)
+    (if-let ((node (cadr (jmpunkt/treesit-thing-at-point symbol))))
+        `(,(treesit-node-start node) . ,(treesit-node-end node))))
+  (defun jmpunkt/meow--inner-of-treesit (symbol)
+    (if-let ((node (car (jmpunkt/treesit-thing-at-point symbol))))
+        `(,(treesit-node-start node) . ,(treesit-node-end node))))
   (defun jmpunkt/meow--bound-of-function ()
-    (when-let* ((names (jmpunkt/tree-sitter-thing-for-mode major-mode 'function)))
-      (cl-loop for outer-inner in names
-               do (when-let* ((obj (jmpunkt/meow--bounds-of-tree-sitter (car outer-inner))))
-                    (cl-return obj)))))
+    (jmpunkt/meow--bound-of-treesit 'function))
   (defun jmpunkt/meow--inner-of-function ()
-    (when-let* ((names (jmpunkt/tree-sitter-thing-for-mode major-mode 'function)))
-      (cl-loop for outer-inner in names
-               do (when-let* ((obj (jmpunkt/meow--inner-of-tree-sitter (car outer-inner) (car (cdr outer-inner)))))
-                    (cl-return obj)))))
+    (jmpunkt/meow--inner-of-treesit 'function))
   (defun jmpunkt/meow-find-references ()
     "Xref definition."
     (interactive)
@@ -551,25 +587,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (defun jmpunkt/flyspell-enabled-for-mode ()
     (interactive)
     (not (memq major-mode jmpunkt/flyspell-disabled-modes)))
-  (defun jmpunkt/flyspell-generic-progmode-verify ()
-    "Taken from `flyspell-generic-progmode-verify`, modified to work
-     with item like `(tree-sitter-hl-face:doc tree-sitter-hl-face:comment)`.
-     Didnt work previously because of `memq`, now use `member`."
-    (unless (eql (point) (point-min))
-      (let ((f (get-text-property (1- (point)) 'face)))
-        (member f jmpunkt/flyspell-prog-text-faces))))
-  (setq jmpunkt/flyspell-prog-text-faces
-        '(tree-sitter-hl-face:string
-          tree-sitter-hl-face:doc
-          tree-sitter-hl-face:comment
-          (tree-sitter-hl-face:doc tree-sitter-hl-face:comment)
-          font-lock-comment-face
-          font-lock-doc-face
-          font-lock-string-face))
   :hook ((prog-mode . (lambda ()
                         (when (jmpunkt/flyspell-enabled-for-mode)
-                          (setq flyspell-generic-check-word-predicate
-                                #'jmpunkt/flyspell-generic-progmode-verify)
                           (flyspell-mode 1)
                           (run-hooks 'flyspell-prog-mode-hook))))
          (text-mode . (lambda ()
@@ -1170,39 +1189,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
          ("M-b" . citar-insert-preset)))
 
 ;;; * Configuration Files
-(use-package tree-sitter
-  :defer t
-  :init
-  (setq tsc-dyn-get-from nil)
-  (defun jmpunkt/tree-sitter-local-mode ()
-    "Tries to enable tree-sitter-mode and tree-sitter-hl-mode.
-
-If enabling one of the mods results in an error, both modes are disabled again."
-    (condition-case nil
-        (progn (tree-sitter-mode 1)
-               (tree-sitter-hl-mode 1))
-        (error (tree-sitter-mode -1))))
-  :hook ((prog-mode . jmpunkt/tree-sitter-local-mode)
-         (conf-mode . jmpunkt/tree-sitter-local-mode)
-         (text-mode . jmpunkt/tree-sitter-local-mode))
-  :config
-  (setq tree-sitter-major-mode-language-alist '((latex-mode . latex)
-                                                (nix-mode . nix)
-                                                (markdown-mode . markdown)
-                                                (haskell-mode . haskell)
-                                                (yaml-mode . yaml)
-                                                (nix-mode . nix)
-                                                (python-mode .python)
-                                                (conf-toml-mode . toml)
-                                                (html-mode . html)
-                                                (mhtml-mode . html)
-                                                (css-mode . css)
-                                                (js-mode . javascript)
-                                                (js-json-mode . json)
-                                                (js-ts-mode . typescript)
-                                                (js-tsx-mode . tsx))))
-(use-package tree-sitter-langs)
-
 ;;;; * Mermaid
 (use-package mermaid-mode
   :defer t)
@@ -1216,7 +1202,60 @@ If enabling one of the mods results in an error, both modes are disabled again."
 ;;;; * Conf{TOML}
 (use-package conf-mode
   :defer t
-  :mode (("\\.toml\\'" . conf-toml-mode)))
+  :mode (("\\.toml\\'" . conf-toml-mode))
+  :hook (conf-toml-mode . conf-toml-mode-treesit-setup)
+  :config
+  ;; (add-to-list 'treesit-settings '(conf-toml-mode t t))
+  :init
+  (defvar conf-toml-mode--treesit-settings
+    (treesit-font-lock-rules
+     :language 'toml
+     :feature 'table-key
+     '((table [(quoted_key) (dotted_key) (bare_key)] @font-lock-type-face))
+     :language 'toml
+     :feature 'bare-key
+     '((bare_key) @font-lock-variable-name-face)
+     :language 'toml
+     :feature 'quoted-key
+     '((quoted_key) @font-lock-variable-name-face)
+     :language 'toml
+     :feature 'boolean
+     '((boolean) @font-lock-constant-face)
+     :language 'toml
+     :feature 'comment
+     '((comment) @font-lock-comment-face)
+     :language 'toml
+     :feature 'string
+     '((string) @font-lock-string-face)
+     :language 'toml
+     :feature 'integer
+     '((integer) @font-lock-constant-face)
+     :language 'toml
+     :feature 'float
+     '((float) @font-lock-constant-face)
+     :language 'toml
+     :feature 'offset-date-time
+     '((offset_date_time) @font-lock-constant-face)
+     :language 'toml
+     :feature 'local-date-time
+     '((local_date_time) @font-lock-constant-face)
+     :language 'toml
+     :feature 'local-date
+     '((local_date) @font-lock-constant-face)
+     :language 'toml
+     :feature 'local-time
+     '((local_time) @font-lock-constant-face)
+     ))
+  (defun conf-toml-mode-treesit-setup ()
+    (require 'treesit)
+    (cond
+     ((treesit-ready-p 'conf-toml-mode 'toml)
+      (setq-local treesit-font-lock-feature-list
+                  '((comment string table-key quoted-key bare-key)
+                    (float integer string boolean)
+                    (offset-date-time local-date-time local-date local-time)))
+      (setq-local treesit-font-lock-settings conf-toml-mode--treesit-settings)
+      (treesit-major-mode-setup)))))
 
 ;;;; * GraphQL
 (use-package graphql-mode
@@ -1368,24 +1407,26 @@ If enabling one of the mods results in an error, both modes are disabled again."
   :config
   (setq css-indent-offset 2))
 
+(use-package ts-mode
+  :init
+  ;; (add-to-list 'treesit-settings '(ts-mode t t))
+  :hook ((ts-mode . eglot-ensure)
+         (ts-mode . prettier-js-mode))
+  :bind (:map ts-mode-map
+              ("C-c C-f" . prettier-js))
+  :config
+  (add-to-list 'eglot-server-programs '(ts-mode . ("typescript-language-server" "--stdio"))))
+
 (use-package js
   :defer t
-  :mode (
-         ("\\.js\\'" . js-mode)
+  :mode (("\\.js\\'" . js-mode)
          ("\\.jsx\\'" . js-jsx-mode)
          ("\\.json\\'" . js-json-mode)
-         ("\\.jsonc\\'" . js-json-mode)
-         ("\\.ts\\'" . js-ts-mode)
-         ("\\.tsx\\'" . js-tsx-mode))
+         ("\\.jsonc\\'" . js-json-mode))
   :hook ((js-mode . eglot-ensure)
          (js-mode . prettier-js-mode))
   :init
-  (setq js-mode-map (make-sparse-keymap))
-  (define-derived-mode js-ts-mode js-mode "ts"
-    :group 'ts)
-  (define-derived-mode js-tsx-mode js-ts-mode "tsx"
-    :group 'ts
-    (setq-local comment-region-function #'js-jsx--comment-region))
+  ;; (add-to-list 'treesit-settings '(js-mode t t))
   :bind (:map js-mode-map
               ("C-c C-f" . prettier-js))
   :config

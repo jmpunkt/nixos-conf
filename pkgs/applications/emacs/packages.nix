@@ -12,7 +12,6 @@ in
         envrc
         dashboard
         smart-jump
-        tree-sitter-langs
         helpful
         xterm-color
         # Org
@@ -63,7 +62,6 @@ in
       ++ (with epkgs.elpaPackages; [undo-tree seq vertico org])
       ++ (
         with epkgs.manualPackages; [
-          tree-sitter-indexer-elisp # custom package
           jmpunktPkgs.ligature
           jmpunktPkgs.eglot-x
           (jmpunktPkgs.nixosPaths (import ./variables.nix {inherit pkgs;}))

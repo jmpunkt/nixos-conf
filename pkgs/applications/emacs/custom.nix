@@ -2,12 +2,29 @@
   pkgs,
   lib,
 }:
-(pkgs.emacsGit.override {
+(pkgs.emacsGitTreeSitter.override {
   withXinput2 = true;
-  withPgtk = true;
   nativeComp = true;
   withWebP = true;
   withGTK3 = true;
+  withTreeSitterPlugins = plugins:
+    with plugins; [
+      tree-sitter-python
+      tree-sitter-rust
+      tree-sitter-nix
+
+      tree-sitter-typescript
+      tree-sitter-javascript
+      tree-sitter-tsx
+      tree-sitter-css
+      tree-sitter-scss
+      tree-sitter-html
+
+      tree-sitter-json
+      tree-sitter-toml
+      tree-sitter-graphql
+      tree-sitter-fish
+    ];
 })
 .overrideAttrs (old: rec {
   patches = [
@@ -16,7 +33,9 @@
     # taken from https://github.com/geza-herman/emacs/commit/784a9fd3d511b7f6794f713a8d0b1370ab1b2401
     ./improved-reading.patch
   ];
+
   configureFlags =
-    old.configureFlags
+    (lib.remove "--with-xft" old.configureFlags)
+    ++ lib.singleton "--with-pgtk"
     ++ lib.singleton "--enable-link-time-optimization";
 })

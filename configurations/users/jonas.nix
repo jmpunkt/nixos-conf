@@ -9,6 +9,7 @@
     uid = 1000;
     extraGroups =
       [
+        "libvirtd"
         config.users.groups.wheel.name
         config.users.groups.audio.name
         config.users.groups.users.name

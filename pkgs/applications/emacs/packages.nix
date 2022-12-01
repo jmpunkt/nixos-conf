@@ -18,6 +18,7 @@ in
         org-bullets
         ob-async
         ob-mermaid
+        ob-graphql
         # PDF
         pdf-tools
         # Git

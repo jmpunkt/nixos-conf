@@ -47,6 +47,10 @@
     ".ssh/id_rsa.pub".text = builtins.readFile ./ssh/yubikey.pub;
     ".ssh/config".text = builtins.readFile ./ssh/config;
   };
+  manual.manpages.enable = false;
+  home.sessionVariables = {
+    MOZ_ENABLE_WAYLAND = 1;
+  };
   programs = {
     firefox = {
       enable = false;
@@ -116,6 +120,11 @@
             "ui.use_standins_for_native_colors" = true;
             "webgl.enable-debug-renderer-info" = false;
             "app.update.auto" = false;
+            "widget.use-xdg-desktop-portal.file-picker" = 1;
+            "widget.use-xdg-desktop-portal.location" = 1;
+            "widget.use-xdg-desktop-portal.mime-handler" = 1;
+            "widget.use-xdg-desktop-portal.open-uri" = 1;
+            "widget.use-xdg-desktop-portal.settings" = 1;
           };
         };
       };

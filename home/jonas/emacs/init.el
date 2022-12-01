@@ -1128,6 +1128,16 @@ If the cursor is on the last promt, then we want to insert at the current positi
         org-latex-pdf-process '("latexmk -g -pdf -pdflatex=\"%latex -synctex=1 -shell-escape -interaction=nonstopmode\" -outdir=%o %f"))
   (add-to-list
    'org-latex-classes
+   '("informal"
+     "\\documentclass{scrartcl}
+      \\usepackage[parfill]{parskip}
+      \\pagenumbering{gobble}"
+     ("\\section{%s}" . "\\section*{%s}")
+     ("\\subsection{%s}" . "\\subsection*{%s}")
+     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+  (add-to-list
+   'org-latex-classes
    '("tufte-book"
      "\\documentclass{tufte-book}
 \\ifxetex

@@ -15,6 +15,7 @@ in {
     ];
     prettier-js-command = "${nodePackages.prettier}/bin/prettier";
     nix-nixfmt-bin = "${unstable.alejandra}/bin/alejandra";
+    eglot-languagetool-server-path = "${pkgs.ltex-ls}";
   };
   paths = let
     core = with pkgs; [

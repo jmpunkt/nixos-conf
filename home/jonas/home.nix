@@ -29,6 +29,7 @@
     hunspell
     hunspellDicts.en-us-large
     jmpunkt.hunspellDicts.de-de
+    ltex-ls
     aspell
     aspellDicts.de
     aspellDicts.en

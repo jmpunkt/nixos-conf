@@ -63,6 +63,7 @@ in
       ++ (with epkgs.elpaPackages; [undo-tree seq vertico org])
       ++ (
         with epkgs.manualPackages; [
+          jmpunktPkgs.eglot-ltex
           jmpunktPkgs.ligature
           jmpunktPkgs.eglot-x
           (jmpunktPkgs.nixosPaths (import ./variables.nix {inherit pkgs;}))

@@ -11,4 +11,8 @@
     inherit melpaBuild;
     eglot = passedPackages.eglot;
   };
+  eglot-ltex = pkgs.callPackage ./eglot-ltex.nix {
+    inherit melpaBuild;
+    eglot = passedPackages.eglot;
+  };
 }

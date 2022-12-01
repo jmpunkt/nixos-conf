@@ -1,28 +1,10 @@
+{ config
+, pkgs
+, lib
+, xdgData
+, ...
+}:
 {
-  config,
-  pkgs,
-  lib,
-  xdgData,
-  ...
-}: let
-  ge =
-    pkgs.stdenv.mkDerivation
-    rec {
-      name = "proton-ge";
-      version = "7.0rc3-GE-1";
-      src =
-        pkgs.fetchzip
-        {
-          url = "https://github.com/GloriousEggroll/proton-ge-custom/releases/download/${version}/Proton-${version}.tar.gz";
-          sha256 = "j+Cqq2+VKhsPk8yOHKWVotTcvucDkxDSd6K+pV1ceds=";
-        };
-      nativeBuildInputs = [];
-      installPhase = ''
-        mkdir -p $out
-        mv * $out/
-      '';
-    };
-in {
   imports = import ../../modules/all-home-manager.nix;
   home.language = {
     base = "en_US.utf8";
@@ -31,24 +13,9 @@ in {
     paper = "de_DE.utf8";
     time = "de_DE.utf8";
   };
-  # home.activation =
-  #   {
-  #     proton-ge = (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-  #       target_dir="/home/jonas/.steam/root/compatibilitytools.d"
-  #       if ! [ -d "$target_dir" ]; then
-  #         mkdir -p $target_dir
-  #       fi
-  #       target="$target_dir/Proton-${ge.version}"
-  #       if ! [ -d "$target" ]; then
-  #         cp -R ${ge} "$target"
-  #         chmod -R u+w "$target" # not strictly necessary...
-  #       fi
-  #     '');
-  #   };
   home.packages = with pkgs; [
     binutils-unwrapped
     dropbox-cli
-    pdfpc
     cryptsetup
     gnupg
     feh
@@ -79,7 +46,6 @@ in {
   home.file = {
     ".ssh/id_rsa.pub".text = builtins.readFile ./ssh/yubikey.pub;
     ".ssh/config".text = builtins.readFile ./ssh/config;
-    ".steam/root/compatibilitytools.d/Proton-${ge.version}" = {source = ge;};
   };
   programs = {
     firefox = {
@@ -154,9 +120,9 @@ in {
         };
       };
     };
-    direnv.enable = true;
-    direnv.nix-direnv = {
+    direnv = {
       enable = true;
+      nix-direnv.enable = true;
     };
     git = {
       enable = true;

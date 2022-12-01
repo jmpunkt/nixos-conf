@@ -362,6 +362,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
 ;;; * Core Packages
 ;;;; * helpful
 (use-package helpful
+  :hook (helpful-mode . button-mode)
   :custom
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable)

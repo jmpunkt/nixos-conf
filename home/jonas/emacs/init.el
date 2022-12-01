@@ -1157,7 +1157,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (add-to-list
    'org-latex-classes
    '("koma-article"
-     "\\documentclass{scrartcl}"
+     "\\documentclass{scrartcl}
+      \\usepackage[parfill]{parskip}"
      ("\\section{%s}" . "\\section*{%s}")
      ("\\subsection{%s}" . "\\subsection*{%s}")
      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")

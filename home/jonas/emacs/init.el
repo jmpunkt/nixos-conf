@@ -1025,6 +1025,11 @@ If the cursor is on the last promt, then we want to insert at the current positi
         org-deadline-warning-days 14
         org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
 
+(use-package ob-shell
+  :after org
+  :defer t
+  :commands (org-babel-execute:shell))
+
 (use-package ob-graphql
   :after org
   :defer t

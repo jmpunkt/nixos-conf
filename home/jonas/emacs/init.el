@@ -972,16 +972,9 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (setq magit-status-sections-hook
         '(magit-insert-status-headers
           magit-insert-merge-log
-          magit-insert-rebase-sequence
-          magit-insert-am-sequence
-          magit-insert-sequencer-sequence
-          magit-insert-bisect-output
-          magit-insert-bisect-rest
-          magit-insert-bisect-log
           magit-insert-untracked-files
           magit-insert-unstaged-changes
           magit-insert-staged-changes
-          magit-insert-stashes
           magit-insert-unpulled-from-upstream
           magit-insert-unpulled-from-pushremote
           magit-insert-unpushed-to-upstream

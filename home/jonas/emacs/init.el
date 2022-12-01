@@ -120,7 +120,9 @@
         " %lL ")))
   (defun jmpunkt/mode-line-region ()
     (when (use-region-p)
-      (format "%sC" (- (use-region-end) (use-region-beginning)))))
+      (format "%sC %sL"
+              (- (use-region-end) (use-region-beginning))
+              (count-lines (use-region-beginning) (use-region-end)))))
   (defun jmpunkt/mode-line-flymake ()
     (with-eval-after-load 'flymake
       (when flymake-mode flymake-mode-line-counter-format)))

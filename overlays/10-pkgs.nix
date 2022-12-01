@@ -5,7 +5,6 @@ self: super:
   jmpunkt = (super.jmpunkt or {}) // (super.callPackage ../pkgs {});
   python3Packages =
     (super.python3Packages or {}) // {jmpunktPkgs = super.callPackage ../pkgs/python3Packages {};};
-  vimPlugins = (super.vimPlugins or {}) // {jmpunktPkgs = super.callPackage ../pkgs/vimPlugins {};};
   vscode-extensions =
     (super.vscode-extensions or {}) // {jmpunktPkgs = super.callPackage ../pkgs/vscode-extensions {};};
   emacsPackagesFor = emacs: (

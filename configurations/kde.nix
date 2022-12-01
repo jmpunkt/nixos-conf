@@ -6,20 +6,20 @@
 }: {
   imports = [./desktop.nix];
   nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;
-  environment.systemPackages = with pkgs; [ark okular kate gwenview spectacle mpv smplayer ktouch kdialog libreoffice krita skanlite pinentry-qt partition-manager];
-  programs.firejail = {
-    enable = true;
-    wrappedBinaries = {
-      # mpv = {
-      #   executable = "${lib.getBin pkgs.mpv}/bin/mpv";
-      #   profile = "${pkgs.firejail}/etc/firejail/mpv.profile";
-      # };
-      # smplayer = {
-      #   executable = "${lib.getBin pkgs.smplayer}/bin/smplayer";
-      #   profile = "${pkgs.firejail}/etc/firejail/smplayer.profile";
-      # };
-    };
-  };
+  environment.systemPackages = with pkgs; [
+    ark
+    okular
+    kate
+    gwenview
+    spectacle
+    ktouch
+    kdialog
+    libreoffice
+    krita
+    skanlite
+    pinentry-qt
+    partition-manager
+  ];
   services.xserver = {
     # + WAYLAND
     desktopManager.plasma5.runUsingSystemd = true;

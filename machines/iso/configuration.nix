@@ -12,7 +12,7 @@
   ];
   boot.supportedFilesystems = lib.mkForce ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
   isoImage.volumeID = "nixos-${config.system.nixos.release}-${pkgs.stdenv.hostPlatform.uname.processor}";
-  environment.systemPackages = with pkgs; [ungoogled-chromium gparted neovim alacritty];
+  environment.systemPackages = with pkgs; [ungoogled-chromium gparted neovim];
   security.polkit.extraConfig = ''
     polkit.addRule(function(action, subject) {
       if (subject.isInGroup("wheel")) {

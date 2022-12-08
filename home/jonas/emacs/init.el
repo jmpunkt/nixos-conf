@@ -668,17 +668,13 @@ If the cursor is on the last promt, then we want to insert at the current positi
     "Keymap which supersedes the default eglot keymap")
   (define-minor-mode jmpunkt/eglot-keys-mode
     "Minor mode allows to overwrite the Eglot keybinds for specific major modes."
-    :keymap jmpunkt/eglot-keys-map)
-  (add-to-list 'emulation-mode-map-alists
-               `((jmpunkt/eglot-keys-mode . ,jmpunkt/eglot-keys-map)))
-  (defun jmpunkt/eglot-keys-for (mode-hook)
-    "Enables the Eglot key mode for a specific MODE-HOOK"
-    (add-hook mode-hook
-              (lambda ()
-                (add-hook 'eglot-managed-mode-hook
-                          (lambda () (jmpunkt/eglot-keys-mode))
-                          nil
-                          1))))
+    :keymap jmpunkt/eglot-keys-map
+    (add-hook 'eglot-managed-mode-hook
+              (lambda () (jmpunkt/eglot-keys-mode))
+              nil
+              1)
+    (add-to-list 'emulation-mode-map-alists
+                 `((jmpunkt/eglot-keys-mode . ,jmpunkt/eglot-keys-map))))
   (defun jmpunkt/eglot-disable-mouse()
     ;; disable mouse support for flymake face
     (cl-loop for i from 1
@@ -1312,6 +1308,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :defer t
   :mode "\\.nix\\'"
   :hook ((nix-mode . eglot-ensure)
+         (nix-mode . jmpunkt/eglot-keys-mode)
          (nix-mode . (lambda ()
                        (setq-local tab-width 2))))
   :bind ((:map nix-mode-map

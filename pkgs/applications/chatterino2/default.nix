@@ -1,18 +1,19 @@
-{ mkDerivation
-, stdenv
-, lib
-, pkg-config
-, fetchFromGitHub
-, qtbase
-, qtsvg
-, qtmultimedia
-, qtkeychain
-, cmake
-, boost
-, openssl
-, wrapQtAppsHook
-, qttools
-, qtimageformats
+{
+  mkDerivation,
+  stdenv,
+  lib,
+  pkg-config,
+  fetchFromGitHub,
+  qtbase,
+  qtsvg,
+  qtmultimedia,
+  qtkeychain,
+  cmake,
+  boost,
+  openssl,
+  wrapQtAppsHook,
+  qttools,
+  qtimageformats,
 }:
 mkDerivation rec {
   pname = "chatterino2";
@@ -24,7 +25,7 @@ mkDerivation rec {
     sha256 = "sha256-iVxR2dc+dYAEfDOLZvjyJv131JEPnnfqyML59vxKQVs=";
     fetchSubmodules = true;
   };
-  nativeBuildInputs = [ cmake pkg-config wrapQtAppsHook ];
+  nativeBuildInputs = [cmake pkg-config wrapQtAppsHook];
   buildInputs = [
     qtbase
     qtsvg

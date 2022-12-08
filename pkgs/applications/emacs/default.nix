@@ -6,9 +6,10 @@
   builder = callPackage ./build-init.nix {};
 in
   emacsBundle.withPackages packageFn
-  # builder {
-  #   name = "jmpunkt-init";
-  #   emacsBuilder = emacsBundle;
-  #   emacsPackageFn = packageFn;
-  #   initFile = ./jmpunkt-init.el;
-  # }
+# builder {
+#   name = "jmpunkt-init";
+#   emacsBuilder = emacsBundle;
+#   emacsPackageFn = packageFn;
+#   initFile = ./jmpunkt-init.el;
+# }
+

@@ -80,12 +80,14 @@
   networking = {
     firewall.enable = true;
     hostName = "rpi2";
-    interfaces.enp1s0.ipv4.addresses = [{
-      address = "192.168.178.4";
-      prefixLength = 24;
-    }];
+    interfaces.enp1s0.ipv4.addresses = [
+      {
+        address = "192.168.178.4";
+        prefixLength = 24;
+      }
+    ];
     defaultGateway.address = "192.168.178.1";
-    nameservers = [ "192.168.178.1" ];
+    nameservers = ["192.168.178.1"];
   };
 
   documentation.enable = lib.mkForce false;

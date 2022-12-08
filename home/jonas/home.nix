@@ -1,10 +1,10 @@
-{ config
-, pkgs
-, lib
-, xdgData
-, ...
-}:
 {
+  config,
+  pkgs,
+  lib,
+  xdgData,
+  ...
+}: {
   imports = import ../../modules/all-home-manager.nix;
   home.language = {
     base = "en_US.utf8";

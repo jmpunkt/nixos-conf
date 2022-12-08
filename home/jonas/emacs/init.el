@@ -1209,8 +1209,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :defer t
   :mode (("\\.toml\\'" . conf-toml-mode))
   :hook (conf-toml-mode . conf-toml-mode-treesit-setup)
-  :config
-  ;; (add-to-list 'treesit-settings '(conf-toml-mode t t))
   :init
   (defvar conf-toml-mode--treesit-settings
     (treesit-font-lock-rules
@@ -1331,7 +1329,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
          (:map jmpunkt/eglot-keys-map
                ("C-c C-f" . nix-format-buffer)))
   :init
-  (jmpunkt/eglot-keys-for 'nix-mode-hook)
   ;; Added support for alejandra
   (defun jmpunkt/nix--format-call (buf nixfmt-bin)
     "Format BUF using alejandra."
@@ -1354,8 +1351,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
 ;;;; * Python
 (use-package python
   :defer t
-  :mode ("\\.py\\'" . python-mode)
-  :hook (python-mode . eglot-ensure)
+  :mode ("\\.py\\'" . python-ts-mode)
+  :hook (python-base-mode . eglot-ensure)
   :config (setq python-indent-offset 4))
 
 ;;;; * Rust
@@ -1385,37 +1382,37 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 (use-package css-mode
   :defer t
-  :mode (("\\.css\\'" . css-mode)
+  :mode (("\\.css\\'" . css-ts-mode)
          ("\\.scss\\'" . scss-mode))
-  :hook ((css-mode . eglot-ensure)
+  :hook ((css-base-mode . eglot-ensure)
+         (css-base-mode . prettier-js-mode)
+         (scss-base-mode . eglot-ensure)
          (scss-mode . prettier-js-mode))
-  :bind (:map css-mode-map
+  :bind (:map css-base-mode-map
               ("C-c C-f" . prettier-js))
 
   :config
   (setq css-indent-offset 2))
 
-(use-package ts-mode
-  :init
-  ;; (add-to-list 'treesit-settings '(ts-mode t t))
-  :hook ((ts-mode . eglot-ensure)
-         (ts-mode . prettier-js-mode))
-  :bind (:map ts-mode-map
+(use-package typescript-ts-mode
+  :hook ((typescript-ts-base-mode . eglot-ensure)
+         (typescript-ts-base-mode . prettier-js-mode))
+  :bind (:map typescript-ts-base-mode-map
               ("C-c C-f" . prettier-js))
   :config
-  (add-to-list 'eglot-server-programs '(ts-mode . ("typescript-language-server" "--stdio"))))
+  (add-to-list 'eglot-server-programs '(tsx-ts-mode . ("typescript-language-server" "--stdio")))
+  (add-to-list 'eglot-server-programs '(typescript-ts-mode . ("typescript-language-server" "--stdio"))))
 
 (use-package js
   :defer t
-  :mode (("\\.js\\'" . js-mode)
+  :mode (("\\.js\\'" . js-ts-mode)
          ("\\.jsx\\'" . js-jsx-mode)
          ("\\.json\\'" . js-json-mode)
          ("\\.jsonc\\'" . js-json-mode))
-  :hook ((js-mode . eglot-ensure)
-         (js-mode . prettier-js-mode))
+  :hook ((js-base-mode . eglot-ensure)
+         (js-base-mode . prettier-js-mode))
   :init
-  ;; (add-to-list 'treesit-settings '(js-mode t t))
-  :bind (:map js-mode-map
+  :bind (:map js-base-mode-map
               ("C-c C-f" . prettier-js))
   :config
   (setq js-indent-level 2))

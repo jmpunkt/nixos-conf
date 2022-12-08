@@ -27,7 +27,7 @@
     initrd.kernelModules = ["amdgpu"];
   };
   networking.hostName = "alpha128";
-  hardware = {opengl.extraPackages = with pkgs; [rocm-opencl-icd];};
+  # hardware = {opengl.extraPackages = with pkgs; [rocm-opencl-icd];};
   hardware.openrazer = {
     enable = true;
     syncEffectsEnabled = false;

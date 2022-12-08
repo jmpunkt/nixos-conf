@@ -78,14 +78,14 @@
               drv =
                 unstable.legacyPackages.${system}.writeShellScriptBin
                 "switch-local"
-                  ''
+                ''
 
-tmpDir=/tmp/$(date +%s)-nix-flake-builder
-mkdir "$tmp
-name=$(hostname)
-nix build ${self}#$name
+                  tmpDir=/tmp/$(date +%s)-nix-flake-builder
+                  mkdir "$tmp
+                  name=$(hostname)
+                  nix build ${self}#$name
 
-rm -r "$tmpdir"
+                  rm -r "$tmpdir"
                   # doas result/bin/switch-to-configuration switch
                 '';
             };

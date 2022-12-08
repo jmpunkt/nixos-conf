@@ -2,29 +2,29 @@
   pkgs,
   lib,
 }:
-(pkgs.emacsGitTreeSitter.override {
+(pkgs.emacsGit.override {
   withXinput2 = true;
   nativeComp = true;
   withWebP = true;
   withGTK3 = true;
-  withTreeSitterPlugins = plugins:
-    with plugins; [
-      tree-sitter-python
-      tree-sitter-rust
-      tree-sitter-nix
+  # withTreeSitterPlugins = plugins:
+  #   with plugins; [
+  #     tree-sitter-python
+  #     tree-sitter-rust
+  #     tree-sitter-nix
 
-      tree-sitter-typescript
-      tree-sitter-javascript
-      tree-sitter-tsx
-      tree-sitter-css
-      tree-sitter-scss
-      tree-sitter-html
+  #     tree-sitter-typescript
+  #     tree-sitter-javascript
+  #     tree-sitter-tsx
+  #     tree-sitter-css
+  #     tree-sitter-scss
+  #     tree-sitter-html
 
-      tree-sitter-json
-      tree-sitter-toml
-      tree-sitter-graphql
-      tree-sitter-fish
-    ];
+  #     tree-sitter-json
+  #     tree-sitter-toml
+  #     tree-sitter-graphql
+  #     tree-sitter-fish
+  #   ];
 })
 .overrideAttrs (old: rec {
   patches = [

@@ -3,29 +3,52 @@
   stdenv,
   fetchFromGitHub,
   meson,
-  wrapGAppsHook,
-  gtk3,
+  ninja,
+  cmake,
+  pkg-config,
+  wrapGAppsHook4,
+  gtk4,
   glib,
+  gjs,
+  appstream-glib,
+  desktop-file-utils,
+  gobject-introspection,
+  libadwaita,
 }:
 stdenv.mkDerivation rec {
   pname = "oh-my-svg";
   version = "nightly";
 
+  # dontPatchShebangs = true;
+
   src = fetchFromGitHub {
-    repo = "sonnyp";
-    owner = "OhMySVG";
+    owner = "sonnyp";
+    repo = "OhMySVG";
     rev = "3ad34251919beabc60d2aeae802e019b7bafcfdd";
-    sha256 = "sha256-/tef881ZusYvJxVcm91p7vh1hwuXHm3LCqOMCT0TGXE=";
+    sha256 = "sha256-6Tn1dr+K9XC7Nf2Wap0eFjOJtDmWfk/oDoWn4Cu6Yvo=";
   };
 
   nativeBuildInputs = [
     meson
-    wrapGAppsHook
+    cmake
+    ninja
+    pkg-config
+    wrapGAppsHook4
+    desktop-file-utils
+    gobject-introspection
+    appstream-glib
   ];
+
+  patchPhase = ''
+    # sed -i 's;#!/usr/bin/env -S gjs -m;#!/usr/bin/env -S ${gjs}/bin/gjs -m;g' ./**/re.sonny.OhMySVG
+    sed -i 's;#!/usr/bin/env -S gjs -m;#!/usr/bin/env gjs -m;g' ./**/re.sonny.OhMySVG
+  '';
 
   buildInputs = [
     glib
-    gtk3
+    gtk4
+    gjs
+    libadwaita
   ];
 
   meta = with lib; {
@@ -33,5 +56,6 @@ stdenv.mkDerivation rec {
     homepage = "https://github.com/sonnyp/OhMySVG";
     license = licenses.gpl3;
     platforms = platforms.unix;
+    mainProgram = "re.sonny.OhMySVG";
   };
 }

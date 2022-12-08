@@ -23,4 +23,5 @@
   maui = libsForQt5.callPackage ../pkgs/applications/maui {};
   haruna = libsForQt5.callPackage ../pkgs/applications/haruna {};
   chatterino2-nigthly = libsForQt5.callPackage ../pkgs/applications/chatterino2 {};
+  oh-my-svg = libsForQt5.callPackage ./applications/oh-my-svg {};
 }

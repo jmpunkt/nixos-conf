@@ -232,21 +232,6 @@ contained by outer.")
     (when-let* ((declarations (alist-get mode jmpunkt/treesit-thing-lookup-table nil nil
                                          (lambda (key mode) (if (sequencep key) (seq-contains key mode) (eq key mode))))))
       (alist-get kind declarations)))
-  (defun jmpunkt/treesit--node-find-type (type &optional node)
-    "Search for the closest treesit node with TYPE.
-
-Either start at the current position or at NODE."
-    (let ((current-node (or node (treesit-node-at (point)))))
-      (while
-          (and
-           (not (treesit-node-eq (treesit-buffer-root-node) current-node))
-           (not (string-equal (treesit-node-type current-node) type)))
-          (setq current-node (treesit-node-parent current-node)))
-      (when
-          (and
-           (not (treesit-node-eq (treesit-buffer-root-node) current-node))
-           (string-equal (treesit-node-type current-node) type))
-        current-node)))
   (defun jmpunkt/treesit-thing-at-point (kind &optional mode)
     "Return the OUTER and INNER node for the given KIND in MODE.
 
@@ -256,11 +241,16 @@ The INNER must be contained by the outer. See
       (cl-some (lambda (definition)
                  (if-let* ((outer-type (car definition))
                            (inner-type (cadr definition))
-                           (inner-node (jmpunkt/treesit--node-find-type (symbol-name inner-type)))
-                           (outer-node (jmpunkt/treesit--node-find-type (symbol-name outer-type) inner-node)))
+                           (outer-node (treesit-parent-until
+                                        (treesit-node-at (point))
+                                        (lambda (node)
+                                          (string-equal (treesit-node-type node) outer-type))))
+                           (inner-node (car (treesit-filter-child
+                                             outer-node
+                                             (lambda (node)
+                                               (string-equal (treesit-node-type node) inner-type))))))
                      `(,inner-node ,outer-node)))
                definitions))))
-
 ;;;; Shell
 (use-package term
   :hook

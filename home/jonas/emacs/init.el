@@ -209,6 +209,11 @@
                             "|>" "<|" "||>" "<||" "|||>" "<|||" "<|>"
                             ":=" "::=" "/=" "//=" "/==" )))
 
+(use-package editorconfig
+  :ensure t
+  :config
+  (editorconfig-mode 1))
+
 (use-package treesit
   :init
   (defvar jmpunkt/treesit-thing-lookup-table

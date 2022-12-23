@@ -13,6 +13,7 @@ in
         smart-jump
         helpful
         xterm-color
+        editorconfig
         # Org
         org-bullets
         ob-async

@@ -36,6 +36,7 @@
   }: let
     allPackagesOverlay = final: prev:
       (import ./overlays/10-pkgs.nix final prev)
+      // ((import ./overlays/emacs-overlay-glue.nix {inherit emacs-overlay;}) final prev)
       // {
         inherit tsi;
       };
@@ -44,7 +45,7 @@
       minimumOverlays = [
         rust-overlay.overlays.default
         allPackagesOverlay
-        emacs-overlay.overlay
+        emacs-overlay.overlays.package
         tsi.overlays.default
       ];
     };

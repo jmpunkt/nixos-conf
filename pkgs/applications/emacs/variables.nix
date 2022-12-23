@@ -1,6 +1,33 @@
 {pkgs}: let
   inherit (pkgs) lib;
   pathOfExtension = ext: "${ext}/share/vscode/extensions/${ext.vscodeExtUniqueId}";
+
+  tree-sitter-grammars =
+    pkgs.emacs-overlay.bundleTreeSitterGrammars
+    (with pkgs.tree-sitter-grammars; [
+      # NOTE: upstream
+      tree-sitter-bash
+      tree-sitter-c
+      tree-sitter-c-sharp
+      tree-sitter-cpp
+      tree-sitter-css
+      tree-sitter-dockerfile
+      tree-sitter-java
+      tree-sitter-python
+      tree-sitter-javascript
+      tree-sitter-json
+      tree-sitter-tsx
+      tree-sitter-typescript
+
+      # NOTE: added by me
+      tree-sitter-rust
+      tree-sitter-nix
+      tree-sitter-scss
+      tree-sitter-html
+      tree-sitter-toml
+      tree-sitter-graphql
+      tree-sitter-fish
+    ]);
 in {
   variables = let
     inherit (pkgs) plantuml unstable vscode-extensions nodePackages nodejs;
@@ -15,6 +42,7 @@ in {
     ];
     prettier-js-command = "${nodePackages.prettier}/bin/prettier";
     nix-nixfmt-bin = "${unstable.alejandra}/bin/alejandra";
+    treesit-extra-load-path = [ "${tree-sitter-grammars}/lib" ];
   };
   paths = let
     core = with pkgs; [
@@ -22,7 +50,6 @@ in {
       ripgrep # search
       pandoc # markdown, etc
       git
-      gitAndTools.delta # git better diff
       languagetool # spelling
     ];
     lsp = with pkgs; [

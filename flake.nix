@@ -102,20 +102,28 @@
                   doas result/bin/switch-to-configuration boot
                 '';
             };
-          # switch the live system and keep changes for next boot (persistent)
-          switch-live-boot =
+          deploy-remote =
             utils.lib.mkApp
             {
               drv =
                 unstable.legacyPackages.${system}.writeShellScriptBin
-                "switch-local"
+                "switch-remote"
                 ''
-                  doas result/bin/switch-to-configuration boot
+                  set -e
+                  echo "building paths ..."
+                  drv=$(nix eval --raw "$1.drvPath")
+                  nix copy --to "ssh://$2" "$drv"
+                  echo "adding to environment ..."
+                  path=$(nix path-info "$drv")
+                  ssh "$2" nix-env -p /nix/var/nix/profiles/system --set "$path"
+                  echo "switching system ..."
+                  ssh "$2" "$path/bin/switch-to-configuration switch"
                 '';
             };
         };
-        packages = {
-          sd-rpi2 = packageSD (mkSystemCross
+        packages = let
+          rpi2System =
+            mkSystemCross
             {
               host = system;
               target = "armv7l-hf-multiplatform";
@@ -124,7 +132,10 @@
               modules = [
                 ./machines/rpi2b/configuration.nix
               ];
-            });
+            };
+        in {
+          sd-rpi2 = packageSD rpi2System;
+          rpi2 = packageSystem rpi2System;
           iso-minimal = packageISO (
             mkSystem
             {

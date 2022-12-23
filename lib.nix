@@ -21,6 +21,7 @@ in rec {
         nixpkgs
         {
           system = host;
+          overlays = minimumOverlays;
         })
       .pkgs
       .pkgsCross
@@ -28,8 +29,7 @@ in rec {
   in
     nixpkgs.lib.nixosSystem
     {
-      inherit system;
-      inherit pkgs;
+      inherit system pkgs;
       modules =
         [
           nixpkgs.nixosModules.notDetected

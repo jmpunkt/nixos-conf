@@ -6,7 +6,6 @@ in
         esup
         # Core
         meow
-        use-package
         which-key
         hl-todo
         envrc

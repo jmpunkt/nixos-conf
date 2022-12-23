@@ -7,7 +7,7 @@
     yubikey-manager-qt
     yubikey-personalization
     yubikey-personalization-gui
-    # yubioath-flutter
+    yubioath-flutter
     gnupg
   ];
   services = {

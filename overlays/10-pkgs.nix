@@ -44,17 +44,4 @@ self: super:
       });
     };
 
-  # FIXME: remove when merged https://github.com/NixOS/nixpkgs/pull/164668
-  cask = super.cask.overrideAttrs (oldAttrs: rec {
-    installPhase = ''
-      runHook preInstall
-      mkdir -p $out/bin
-      dir=$out/share/emacs/site-lisp/cask
-      install -Dm444 -t $dir     *.el *.elc
-      install -Dm555 -t $dir/bin bin/cask
-      touch $out/.no-upgrade
-      ln -s $dir/bin/cask $out/bin/cask
-      runHook postInstall
-    '';
-  });
 }

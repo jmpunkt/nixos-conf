@@ -618,7 +618,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
               ("p" . project-switch-project)
               ("r" . project-query-replace-regexp)
               ("g" . magit-project-status)
-              ("s" . consult-ripgrep))
+              ("s" . consult-ripgrep)
+              ("?" . flymake-show-project-diagnostics))
   :config
   (setq project-switch-commands
         '((jmpunkt/project-affe-find "file")
@@ -690,7 +691,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :after consult
   :commands flymake-mode
   :bind (:map flymake-mode-map
-              ([f7] . consult-flymake))
+              ([f7] . consult-flymake)
+              ([f8] . flymake-show-buffer-diagnostics))
   :hook (prog-mode . flymake-mode)
   :config
   (setq flymake-mode-line-counter-format

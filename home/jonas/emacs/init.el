@@ -603,17 +603,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (setq flyspell-correct-interface #'flyspell-correct-dummy))
 
 
-;;;; * Dashboard
-(use-package dashboard
-  :hook (after-init . dashboard-refresh-buffer)
-  :config
-  (setq dashboard-center-content t
-        dashboard-startup-banner t
-        dashboard-set-heading-icons t
-        dashboard-set-file-icons t
-        dashboard-set-footer nil
-        dashboard-items nil)
-  (dashboard-setup-startup-hook))
 
 ;;;; * Projectile
 (use-package project

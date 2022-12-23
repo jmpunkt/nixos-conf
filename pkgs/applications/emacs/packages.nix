@@ -10,7 +10,6 @@ in
         which-key
         hl-todo
         envrc
-        dashboard
         smart-jump
         helpful
         xterm-color

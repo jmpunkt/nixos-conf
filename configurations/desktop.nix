@@ -10,6 +10,11 @@
     kernelPackages = pkgs.linuxKernel.packages.linux_zen;
     supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
   };
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
   xdg = {
     portal = {
       enable = true;

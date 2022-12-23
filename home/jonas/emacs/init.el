@@ -602,8 +602,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :config
   (setq flyspell-correct-interface #'flyspell-correct-dummy))
 
-(use-package eglot-ltex
-  :ensure t)
 
 ;;;; * Dashboard
 (use-package dashboard

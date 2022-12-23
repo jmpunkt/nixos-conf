@@ -1,2 +1,7 @@
 Host *
     IdentityFile ~/.ssh/id_rsa.pub
+Host qemu
+    HostName 127.0.0.1
+    Port 11111
+    User root
+    CheckHostIP no

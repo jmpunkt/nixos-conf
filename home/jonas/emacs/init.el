@@ -1376,11 +1376,14 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (setq css-indent-offset 2))
 
 (use-package typescript-ts-mode
+  :mode (("\\.ts\\'" . typescript-ts-mode)
+         ("\\.tsx\\'" . tsx-ts-mode))
   :hook ((typescript-ts-base-mode . eglot-ensure)
          (typescript-ts-base-mode . prettier-js-mode))
   :bind (:map typescript-ts-base-mode-map
               ("C-c C-f" . prettier-js))
   :config
+  (require 'eglot)
   (add-to-list 'eglot-server-programs '(tsx-ts-mode . ("typescript-language-server" "--stdio")))
   (add-to-list 'eglot-server-programs '(typescript-ts-mode . ("typescript-language-server" "--stdio"))))
 

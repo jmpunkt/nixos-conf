@@ -157,6 +157,18 @@ in {
           }
         );
 
+      # Enable debuggin with GDB
+      enableDebug = drv:
+        drv.overrideAttrs (
+          old: rec {
+            dontStrip = true;
+            CFLAGS = "-O0 -ggdb " + (old.CFLAGS or "");
+            configureFlags =
+              old.configureFlags
+              ++ (lib.singleton "--enable-check-lisp-object-type");
+          }
+        );
+
       # Creates a bundle of tree-sitter grammars which are readable by
       # Emacs.
       bundleTreeSitterGrammars = plugins: let

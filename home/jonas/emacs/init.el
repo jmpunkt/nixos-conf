@@ -1327,7 +1327,10 @@ If the cursor is on the last promt, then we want to insert at the current positi
           (error "Nixfmt failed, see *nixfmt-stderr* buffer for details")
           (with-current-buffer stderr
             (split-window-right))))))
-  (advice-add 'nix--format-call :override #'jmpunkt/nix--format-call))
+  (advice-add 'nix--format-call :override #'jmpunkt/nix--format-call)
+  :config
+  (require 'eglot)
+  (add-to-list 'eglot-server-programs '(nix-mode . ("nil"))))
 
 ;;;; * Python
 (use-package python

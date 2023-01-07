@@ -61,6 +61,7 @@ in {
       nodePackages.typescript-language-server
       jmpunkt.pythonToolchain
       jmpunkt.latex
+      nil
     ];
     org = with pkgs; [
       # graphs

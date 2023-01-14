@@ -36,7 +36,6 @@ with epkgs.melpaPackages;
     embark-consult
     marginalia
     cape
-    yasnippet
     # Spelling
     flyspell-correct
     # RSS
@@ -57,7 +56,7 @@ with epkgs.melpaPackages;
     haskell-mode
     prettier-js
   ]
-  ++ (with epkgs.elpaPackages; [undo-tree seq vertico org])
+  ++ (with epkgs.elpaPackages; [undo-tree vertico org])
   ++ (
     with epkgs.manualPackages; [
       jmpunktPkgs.ligature

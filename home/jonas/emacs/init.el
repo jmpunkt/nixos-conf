@@ -924,9 +924,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
   (setq cape-dabbrev-min-length 3))
 
-(use-package yasnippet
-  :hook (prog-mode . yas-minor-mode))
-
 ;;;; * Git
 (use-package magit
   :bind ((:map global-map

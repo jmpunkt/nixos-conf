@@ -6,7 +6,7 @@
   ...
 }: {
   nix = {
-    package = pkgs.nixVersions.nix_2_9;
+    package = pkgs.nixVersions.nix_2_11;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';

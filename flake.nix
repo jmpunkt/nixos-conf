@@ -71,35 +71,35 @@
                   nix repl $confnix
                 '';
             };
-
           # switch the current live system (not persistent)
-          switch-live =
+          deploy-test =
             utils.lib.mkApp
             {
               drv =
                 unstable.legacyPackages.${system}.writeShellScriptBin
-                "switch-local"
+                "deploy-test"
                 ''
-
-                  tmpDir=/tmp/$(date +%s)-nix-flake-builder
-                  mkdir "$tmp
-                  name=$(hostname)
-                  nix build ${self}#$name
-
-                  rm -r "$tmpdir"
-                  # doas result/bin/switch-to-configuration switch
+                  set -e
+                  drv=$(nix eval --raw "$1.drvPath")
+                  nix build "$drv"
+                  path=$(nix path-info "$drv")
+                  sh "$path/bin/switch-to-configuration" switch
                 '';
             };
-          # switch the system for next boot (persistent)
-          switch-boot =
+          # switch the live system and keep changes for next boot (persistent)
+          deploy-local =
             utils.lib.mkApp
             {
               drv =
                 unstable.legacyPackages.${system}.writeShellScriptBin
-                "switch-boot"
+                "deploy-local"
                 ''
-                  doas nix-env -p /nix/var/nix/profiles/system --set ./result
-                  doas result/bin/switch-to-configuration boot
+                  set -e
+                  drv=$(nix eval --raw "$1.drvPath")
+                  nix build "$drv"
+                  path=$(nix path-info "$drv")
+                  nix-env -p /nix/var/nix/profiles/system --set "$drv"
+                  sh "$path/bin/switch-to-configuration" boot
                 '';
             };
           deploy-remote =

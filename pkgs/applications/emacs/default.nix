@@ -1,7 +1,6 @@
 {callPackage}: let
   emacsBinary = callPackage ./custom.nix {};
-  emacsBundleFn = callPackage ./overrides.nix {};
-  emacsBundle = emacsBundleFn emacsBinary;
+  emacsBundle = (callPackage ./overrides.nix {}) emacsBinary;
   packageFn = callPackage ./packages.nix {};
   builder = callPackage ./build-init.nix {};
 in

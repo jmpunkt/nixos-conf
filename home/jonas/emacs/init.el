@@ -1367,10 +1367,15 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :config (setq python-indent-offset 4))
 
 ;;;; * Rust
+(use-package rust-ts-mode
+  :config
+  (setq auto-mode-alist (cl-remove 'rust-ts-mode auto-mode-alist :key #'cdr :test #'eq))
+  (require 'eglot)
+  (add-to-list 'eglot-server-programs '(rust-ts-mode . ("rust-analyzer"))))
+
 (use-package rust-mode
-  :hook (rust-mode . eglot-ensure)
-  :defer t
   :mode "\\.rs\\'"
+  :hook (rust-mode . eglot-ensure)
   :bind (:map rust-mode-map
               ("C-c k t" . rust-test)
               ("C-c k r" . rust-run)

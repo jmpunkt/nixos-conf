@@ -11,6 +11,7 @@ with epkgs.melpaPackages;
     helpful
     xterm-color
     editorconfig
+    reformatter
     # Org
     org-bullets
     ob-async
@@ -54,7 +55,6 @@ with epkgs.melpaPackages;
     # Programming
     rust-mode
     haskell-mode
-    prettier-js
   ]
   ++ (with epkgs.elpaPackages; [undo-tree vertico org])
   ++ (

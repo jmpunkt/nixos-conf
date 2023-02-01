@@ -554,6 +554,31 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (jmpunkt/meow-setup)
   (meow-global-mode 1))
 
+;;;; * Formatter
+(use-package reformatter
+  :init
+  (defcustom nix-alejandra-bin "alejandra"
+    "Path to alejandra binary.")
+  (reformatter-define alejandra
+    :program nix-alejandra-bin
+    :args (list input-file)
+    :stdin nil
+    :stdout nil
+    :input-file (reformatter-temp-file-in-current-directory)
+    :group 'nix)
+  (defcustom nix-nixpkgs-fmt-bin "nixpkgs-fmt"
+    "Path to nixpkgs-fmt binary.")
+  (reformatter-define nixpkgs-fmt
+    :program nix-nixpkgs-fmt-bin
+    :group 'nix)
+  (defcustom web-prettier-bin "prettier"
+    "Path to prettier binary.")
+  (reformatter-define prettier
+    :program web-prettier-bin
+    :args (when (buffer-file-name)
+             (list "--stdin-filepath" (buffer-file-name)))
+    :group 'web))
+
 ;;;; * Dired
 (use-package dired
   :config
@@ -1263,7 +1288,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
 (use-package graphql-mode
   :defer t
   :bind (:map graphql-mode-map
-              ("C-c C-f" . prettier-js))
+              ("C-c C-f" . prettier-buffer))
   :mode ("\\.graphql\\'"))
 
 ;;; * Text Files
@@ -1321,32 +1346,15 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :defer t
   :mode "\\.nix\\'"
   :hook ((nix-mode . eglot-ensure)
+         (nix-mode . alejandra-on-save-mode)
          (nix-mode . jmpunkt/eglot-keys-mode)
          (nix-mode . (lambda ()
                        (setq-local tab-width 2))))
   :bind ((:map nix-mode-map
-               ("C-c C-f" . nix-format-buffer))
+               ("C-c C-f" . alejandra-buffer))
          (:map jmpunkt/eglot-keys-map
-               ("C-c C-f" . nix-format-buffer)))
+               ("C-c C-f" . alejandra-buffer)))
   :init
-  ;; Added support for alejandra
-  (defun jmpunkt/nix--format-call (buf nixfmt-bin)
-    "Format BUF using alejandra."
-    (let ((stderr (get-buffer-create "*nixfmt-stderr*"))
-          (tempfile (make-temp-file "nixfmt")))
-      (with-current-buffer stderr
-        (erase-buffer))
-      (with-current-buffer (get-buffer-create "*nixfmt*")
-        (erase-buffer)
-        (insert-buffer-substring buf)
-        (if (zerop (call-process-region (point-min) (point-max) nixfmt-bin t `(t ,tempfile) nil))
-            (progn
-              (with-current-buffer stderr (replace-buffer-contents (create-file-buffer tempfile)))
-              (nix--replace-buffer-contents (current-buffer) buf))
-          (error "Nixfmt failed, see *nixfmt-stderr* buffer for details")
-          (with-current-buffer stderr
-            (split-window-right))))))
-  (advice-add 'nix--format-call :override #'jmpunkt/nix--format-call)
   :config
   (require 'eglot)
   (add-to-list 'eglot-server-programs '(nix-mode . ("nil"))))
@@ -1381,18 +1389,18 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :defer t
   :mode ("\\.html\\'" . html-mode)
   :hook ((html-mode . eglot-ensure)
-         (html-mode . prettier-js-mode)))
+         (html-mode . prettier-on-save-mode)))
 
 (use-package css-mode
   :defer t
   :mode (("\\.css\\'" . css-ts-mode)
          ("\\.scss\\'" . scss-mode))
   :hook ((css-base-mode . eglot-ensure)
-         (css-base-mode . prettier-js-mode)
+         (css-base-mode . prettier-on-save-mode)
          (scss-base-mode . eglot-ensure)
-         (scss-mode . prettier-js-mode))
+         (scss-mode . prettier-on-save-mode))
   :bind (:map css-base-mode-map
-              ("C-c C-f" . prettier-js))
+              ("C-c C-f" . prettier-buffer))
 
   :config
   (setq css-indent-offset 2))
@@ -1401,9 +1409,9 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :mode (("\\.ts\\'" . typescript-ts-mode)
          ("\\.tsx\\'" . tsx-ts-mode))
   :hook ((typescript-ts-base-mode . eglot-ensure)
-         (typescript-ts-base-mode . prettier-js-mode))
+         (typescript-ts-base-mode . prettier-on-save-mode))
   :bind (:map typescript-ts-base-mode-map
-              ("C-c C-f" . prettier-js))
+              ("C-c C-f" . prettier-buffer))
   :config
   (require 'eglot)
   (add-to-list 'eglot-server-programs '(tsx-ts-mode . ("typescript-language-server" "--stdio")))
@@ -1416,16 +1424,12 @@ If the cursor is on the last promt, then we want to insert at the current positi
          ("\\.json\\'" . js-json-mode)
          ("\\.jsonc\\'" . js-json-mode))
   :hook ((js-base-mode . eglot-ensure)
-         (js-base-mode . prettier-js-mode))
+         (js-base-mode . prettier-on-save-mode))
   :init
   :bind (:map js-base-mode-map
-              ("C-c C-f" . prettier-js))
+              ("C-c C-f" . prettier-buffer))
   :config
   (setq js-indent-level 2))
-
-(use-package prettier-js
-  :defer t
-  :commands prettier-js)
 
 ;;;; * LaTeX
 (use-package tex-mode

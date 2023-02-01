@@ -40,9 +40,7 @@ in {
       "${pathOfExtension vscode-extensions.jmpunktPkgs.vscode-eslint}/server/out/eslintServer.js"
       "--stdio"
     ];
-    prettier-js-command = "${nodePackages.prettier}/bin/prettier";
-    nix-nixfmt-bin = "${unstable.alejandra}/bin/alejandra";
-    treesit-extra-load-path = [ "${tree-sitter-grammars}/lib" ];
+    treesit-extra-load-path = ["${tree-sitter-grammars}/lib"];
   };
   paths = let
     core = with pkgs; [
@@ -77,6 +75,8 @@ in {
     formatter = with pkgs; [
       nixpkgs-fmt
       pgformatter
+      nodePackages.prettier
+      unstable.alejandra
     ];
   in
     core ++ org ++ lsp ++ formatter;

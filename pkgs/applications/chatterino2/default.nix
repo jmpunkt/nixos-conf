@@ -14,6 +14,7 @@
   wrapQtAppsHook,
   qttools,
   qtimageformats,
+  libsecret,
 }:
 mkDerivation rec {
   pname = "chatterino2";
@@ -21,8 +22,8 @@ mkDerivation rec {
   src = fetchFromGitHub {
     owner = "Chatterino";
     repo = pname;
-    rev = "82797898c12e173e8300941eee04d4038fd01352";
-    sha256 = "sha256-iVxR2dc+dYAEfDOLZvjyJv131JEPnnfqyML59vxKQVs=";
+    rev = "adf58d2770c8d6894bebcbb3c2435279493bd385";
+    sha256 = "sha256-+CdHP+yrixVBiCBSvXHRqyfV5WhWig6Q1fHBeTqpu1Q=";
     fetchSubmodules = true;
   };
   nativeBuildInputs = [cmake pkg-config wrapQtAppsHook];
@@ -37,6 +38,7 @@ mkDerivation rec {
     # NOTE: not required for building, but required for 7TV emotes
     #       (includes webp format)
     qtimageformats
+    libsecret
   ];
   postInstall =
     lib.optionalString stdenv.isDarwin ''

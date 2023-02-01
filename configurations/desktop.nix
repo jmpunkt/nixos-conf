@@ -62,6 +62,8 @@
   systemd.services.NetworkManager-wait-online.enable = false;
   security.rtkit.enable = true;
   services = {
+    resolved.enable = true;
+    nscd.enableNsncd = true;
     pipewire = {
       enable = true;
       pulse = {enable = true;};

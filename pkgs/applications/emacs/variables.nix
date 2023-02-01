@@ -1,7 +1,9 @@
 {pkgs}: let
-  inherit (pkgs) lib;
   pathOfExtension = ext: "${ext}/share/vscode/extensions/${ext.vscodeExtUniqueId}";
-
+  vscode-eslint = pkgs.vscode-extensions.jmpunktPkgs.vscode-eslint;
+  eslint-lsp = pkgs.writeShellScriptBin "eslint-lsp" ''
+    "${pkgs.nodejs}/bin/node" "${pathOfExtension vscode-eslint}/server/out/eslintServer.js" "--stdio"
+  '';
   tree-sitter-grammars =
     pkgs.emacs-overlay.bundleTreeSitterGrammars
     (with pkgs.tree-sitter-grammars; [
@@ -30,16 +32,11 @@
     ]);
 in {
   variables = let
-    inherit (pkgs) plantuml unstable vscode-extensions nodePackages nodejs;
+    inherit (pkgs) plantuml unstable;
   in {
     org-plantuml-jar-path = "${plantuml}/lib/plantuml.jar";
     ob-mermaid-cli-path = "${unstable.nodePackages.mermaid-cli}/bin/mmdc";
     mermaid-mmdc-location = "${unstable.nodePackages.mermaid-cli}/bin/mmdc";
-    lsp-eslint-server-command = [
-      "${nodejs}/bin/node"
-      "${pathOfExtension vscode-extensions.jmpunktPkgs.vscode-eslint}/server/out/eslintServer.js"
-      "--stdio"
-    ];
     treesit-extra-load-path = ["${tree-sitter-grammars}/lib"];
   };
   paths = let
@@ -59,6 +56,7 @@ in {
       nodePackages.typescript-language-server
       jmpunkt.pythonToolchain
       jmpunkt.latex
+      eslint-lsp
       nil
     ];
     org = with pkgs; [

@@ -5,3 +5,4 @@ Host qemu
     Port 11111
     User root
     StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null

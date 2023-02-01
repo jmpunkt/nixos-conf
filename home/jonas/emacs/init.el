@@ -338,7 +338,25 @@ If the cursor is on the last promt, then we want to insert at the current positi
     (jmpunkt/eshell-goto-end-or-here))
   :config
   (require 'xterm-color)
-  (add-to-list 'eshell-preoutput-filter-functions 'xterm-color-filter)
+  (add-to-list 'eshell-preoutput-filter-functions 'jmpunkt/xterm-color-propertized-filter)
+  (defun jmpunkt/strip-properties (propertized-string)
+    "Strips all properties of a string."
+    (let* ((string (substring propertized-string))
+           (start 0)
+           (end (length string)))
+      (set-text-properties start end nil string)
+      string))
+  (defun jmpunkt/xterm-color-propertized-filter (string)
+    "Filter propertized strings with xterm-color-filter."
+    (let* ((filtered (xterm-color-filter (jmpunkt/strip-properties string)))
+           (new-length (length filtered)))
+      (cl-loop for prop in (object-intervals string)
+               do
+               (add-text-properties (car prop)
+                                    (min (cadr prop) new-length)
+                                    (caddr prop)
+                                    filtered))
+    filtered))
   (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
   (setq eshell-history-size 10000
         eshell-hist-ignoredups t))

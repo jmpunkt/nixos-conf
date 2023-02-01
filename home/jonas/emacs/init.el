@@ -411,6 +411,10 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (defun jmpunkt/meow-setup ()
     (meow-thing-register 'function #'jmpunkt/meow--inner-of-function #'jmpunkt/meow--bound-of-function)
     (add-to-list 'meow-char-thing-table '(?f . function))
+    (meow-thing-register 'angle
+                         '(pair ("<") (">"))
+                         '(pair ("<") (">")))
+    (add-to-list 'meow-char-thing-table '(?a . angle))
     (setq meow-replace-state-name-list
           '((normal . "N")
             (motion . "M")

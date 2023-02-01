@@ -800,7 +800,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
               ("C-b" . beginning-of-buffer)
               ("C-e" . end-of-buffer)
               ("C-n" . next-history-element)
-              ("C-m" . previous-history-element))
+              ("C-p" . previous-history-element))
   :config
   (setq minibuffer-local-map (make-sparse-keymap)
         minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)

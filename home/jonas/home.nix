@@ -26,6 +26,7 @@
     tokei
     git
     hyperfine
+    enchant
     hunspell
     hunspellDicts.en-us-large
     jmpunkt.hunspellDicts.de-de

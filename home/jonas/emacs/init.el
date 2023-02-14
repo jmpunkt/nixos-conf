@@ -608,11 +608,9 @@ If the cursor is on the last promt, then we want to insert at the current positi
 (use-package ispell
   :defer t
   :config
-  (setq-default ispell-program-name "aspell"
+  (setq-default ispell-program-name "enchant-2"
                 ;; Hide all default entries which may not be available
                 ;; on the system anyways
-                ispell-extra-args '("--sug-mode=ultra"
-                                    "--run-together")
                 ispell-dictionary-base-alist nil
                 ispell-local-dictionary "en"))
 

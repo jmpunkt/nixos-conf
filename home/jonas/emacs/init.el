@@ -675,6 +675,25 @@ If the cursor is on the last promt, then we want to insert at the current positi
           (magit-project-status "vc")
           (project-eshell "shell")))
   :init
+  (defun jmpunkt/project-new ()
+    (interactive)
+    (require 'nix-flake)
+    ;; NOTICE: Use specific registry instead of querying all
+    ;; registries for templates. Querying all registries would require
+    ;; to download them all, which would slow down the creation
+    ;; process. The optimal way would be to bundle all used templates
+    ;; under one registry.
+    (let* ((flake-ref (completing-read "Registry: "
+                                       (mapcar #'cadr (nix-flake--registry-list))))
+           (template-name (completing-read "Template: "
+                                           (mapcar #'car
+                                                   (nix--process-json "eval" (format-message "%s#templates" flake-ref) "--json"))))
+           (dir (read-directory-name "Target directory: "))
+           (name (read-string (format-message "Project name [creating new folder in %s]: " dir))))
+      (cd dir)
+      (make-directory name)
+      (cd name)
+      (nix-flake--init flake-ref template-name)))
   (defun jmpunkt/project-affe-find ()
     "Runs `affe-find` in the current project directory."
     (interactive)

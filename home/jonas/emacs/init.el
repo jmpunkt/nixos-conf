@@ -886,7 +886,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
         xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
   :config
-  (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
   ;; ++ https://github.com/minad/consult/wiki#narrowing-which-key-help-without-delay
   (defun immediate-which-key-for-narrow (fun &rest args)
     (let* ((refresh t)
@@ -905,7 +904,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
           (cancel-timer timer)))))
   (advice-add #'consult--read :around #'immediate-which-key-for-narrow)
   ;; --
-  (setq consult-narrow-key (kbd "C-+"))
   (setq completion-in-region-function
         (lambda (&rest args)
           (apply (if (or vertico-mode icomplete-vertical-mode)
@@ -918,7 +916,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
-   :preview-key (kbd "M-.")))
+   :preview-key "M-."))
 
 (use-package recentf
   :hook (after-init . recentf-mode)

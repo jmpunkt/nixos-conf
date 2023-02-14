@@ -582,7 +582,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
 ;;;; * Dired
 (use-package dired
   :config
-  (setq dired-kill-when-opening-new-dired-buffer t))
+  (setq dired-listing-switches "-alh"
+        dired-kill-when-opening-new-dired-buffer t))
 
 ;;;; * DirEnv
 (use-package envrc

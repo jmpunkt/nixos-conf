@@ -70,19 +70,20 @@
       "inputs": {
         "nixpkgs": [
           "stable"
-        ]
+        ],
+        "utils": "utils"
       },
       "locked": {
-        "lastModified": 1667907331,
-        "narHash": "sha256-bHkAwkYlBjkupPUFcQjimNS8gxWSWjOTevEuwdnp5m0=",
+        "lastModified": 1674440933,
+        "narHash": "sha256-CASRcD/rK3fn5vUCti3jzry7zi0GsqRsBohNq9wPgLs=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "6639e3a837fc5deb6f99554072789724997bc8e5",
+        "rev": "65c47ced082e3353113614f77b1bc18822dc731f",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
-        "ref": "release-22.05",
+        "ref": "release-22.11",
         "repo": "home-manager",
         "type": "github"
       }
@@ -94,7 +95,6 @@
         "home-manager": "home-manager",
         "rust-overlay": "rust-overlay",
         "stable": "stable",
-        "tsi": "tsi",
         "unstable": "unstable",
         "utils": "utils_2"
       }
@@ -122,39 +122,18 @@
     },
     "stable": {
       "locked": {
-        "lastModified": 1672580127,
-        "narHash": "sha256-3lW3xZslREhJogoOkjeZtlBtvFMyxHku7I/9IVehhT8=",
+        "lastModified": 1676375384,
+        "narHash": "sha256-6HI3jZiuJX+KLz05cocYy2mBAWlISEKHU84ftYfxHZ8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "0874168639713f547c05947c76124f78441ea46c",
+        "rev": "c43f676c938662072772339be6269226c77b51b8",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-22.05",
+        "ref": "nixos-22.11",
         "repo": "nixpkgs",
         "type": "github"
-      }
-    },
-    "tsi": {
-      "inputs": {
-        "nixpkgs": [
-          "unstable"
-        ],
-        "rust-overlay": [
-          "rust-overlay"
-        ],
-        "utils": "utils"
-      },
-      "locked": {
-        "lastModified": 0,
-        "narHash": "sha256-R2Id+GFRqhqhXLix9Hp6FMXTndQgjcmyvb8xFT4Vrec=",
-        "type": "git",
-        "url": "file:///home/jonas/workspace/tree-sitter-indexer"
-      },
-      "original": {
-        "type": "git",
-        "url": "file:///home/jonas/workspace/tree-sitter-indexer"
       }
     },
     "unstable": {
@@ -175,11 +154,11 @@
     },
     "utils": {
       "locked": {
-        "lastModified": 1656928814,
-        "narHash": "sha256-RIFfgBuKz6Hp89yRr7+NR5tzIAbn52h8vT6vXkYjZoM=",
+        "lastModified": 1676283394,
+        "narHash": "sha256-XX2f9c3iySLCw54rJ/CZs+ZK6IQy7GXNY4nSOyu2QG4=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "7e2a3b3dfd9af950a856d66b0a7d01e3c18aa249",
+        "rev": "3db36a8b464d0c4532ba1c7dda728f4576d6d073",
         "type": "github"
       },
       "original": {

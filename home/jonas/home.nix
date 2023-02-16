@@ -151,4 +151,5 @@
     };
   };
   services.dropbox.enable = true;
+  home.stateVersion = "18.09";
 }

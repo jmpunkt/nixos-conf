@@ -4,32 +4,7 @@
   lib,
   xdgData,
   ...
-}: let
-  battle-net = let
-    wine = pkgs.wineWowPackages.full.override {
-      wineRelease = "staging";
-      mingwSupport = true;
-      tlsSupport = true;
-      pulseaudioSupport = true;
-      vulkanSupport = true;
-      waylandSupport = true;
-    };
-  in
-    pkgs.writeScriptBin "battle-net" ''
-      export WINEARCH=win64
-      export WINEPREFIX=$HOME/.wine-battlenet
-      export PATH="${wine}/bin:${pkgs.winetricks}/bin:$PATH"
-
-      battleNet="$WINEPREFIX/drive_c/Program Files (x86)/Battle.net/Battle.net.exe"
-
-      if [ -f "$battleNet" ]; then
-        wine64 "$battleNet" "$@"
-      else
-        winetricks dxvk
-        wine64 "$@"
-      fi
-    '';
-in {
+}: {
   imports = import ../../modules/all-home-manager.nix;
   home.language = {
     base = "en_US.utf8";
@@ -48,7 +23,6 @@ in {
     audacious
     discord
     tdesktop
-    battle-net
     tokei
     git
     hyperfine

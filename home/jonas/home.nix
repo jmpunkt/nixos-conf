@@ -24,6 +24,7 @@
     discord
     tdesktop
     tokei
+    sqlite
     git
     hyperfine
     enchant

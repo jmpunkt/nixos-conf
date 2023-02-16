@@ -66,8 +66,6 @@ in {
       graphviz-nox
       unstable.nodePackages.mermaid-cli
       ghostscript
-      # odt-export
-      unoconv
       zip
     ];
     formatter = with pkgs; [

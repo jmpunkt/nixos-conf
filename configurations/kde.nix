@@ -14,7 +14,6 @@
     spectacle
     ktouch
     kdialog
-    libreoffice
     krita
     skanlite
     pinentry-qt

@@ -33,7 +33,6 @@
     ntfs3g
     chromium
     firefox-bin
-    nyxt
     nix-tree
     mpv
   ];

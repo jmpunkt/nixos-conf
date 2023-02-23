@@ -41,8 +41,6 @@ with epkgs.melpaPackages;
     flyspell-correct
     # RSS
     elfeed
-    # LSP
-    eglot
     # Misc
     yaml-mode
     fish-mode

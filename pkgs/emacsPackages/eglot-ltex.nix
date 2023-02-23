@@ -5,7 +5,6 @@
   fetchFromGitHub,
   melpaBuild,
   writeText,
-  eglot,
 }: let
   rev = "dbf45608aaa9bb61d540ce64f8b081cfa9876dd4";
   pname = "eglot-ltex";
@@ -15,8 +14,6 @@ in
     version = "20221114.0";
 
     commit = rev;
-
-    packageRequires = [eglot];
 
     src = fetchFromGitHub {
       inherit rev;

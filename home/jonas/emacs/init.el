@@ -741,6 +741,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
                      `((priority . ,(+ 50 i))
                        (face . flymake-error)))))
   :config
+  (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
   (setq eglot-extend-to-xref t)
   (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
 

@@ -679,7 +679,14 @@ If the cursor is on the last promt, then we want to insert at the current positi
           (magit-project-status "vc")
           (project-eshell "shell")))
   :init
+  (defun jmpunkt/nix-read-template (flake-ref)
+    "Selects one of the provided Nix templates by FLAKE-REF."
+    (completing-read "Template: " (mapcar #'car (nix--process-json "eval" (format-message "%s#templates" flake-ref) "--json"))))
+  (defun jmpunkt/nix-read-registry ()
+    "Selects one of the available Nix registries."
+    (completing-read "Registry: " (mapcar #'cadr (nix-flake--registry-list))))
   (defun jmpunkt/project-new ()
+    "Creates a new Nix project with a interactively selected template."
     (interactive)
     (require 'nix-flake)
     ;; NOTICE: Use specific registry instead of querying all
@@ -687,17 +694,30 @@ If the cursor is on the last promt, then we want to insert at the current positi
     ;; to download them all, which would slow down the creation
     ;; process. The optimal way would be to bundle all used templates
     ;; under one registry.
-    (let* ((flake-ref (completing-read "Registry: "
-                                       (mapcar #'cadr (nix-flake--registry-list))))
-           (template-name (completing-read "Template: "
-                                           (mapcar #'car
-                                                   (nix--process-json "eval" (format-message "%s#templates" flake-ref) "--json"))))
+    (let* ((flake-ref (jmpunkt/nix-read-registry))
+           (template-name (jmpunkt/nix-read-template flake-ref))
            (dir (read-directory-name "Target directory: "))
            (name (read-string (format-message "Project name [creating new folder in %s]: " dir))))
-      (cd dir)
-      (make-directory name)
-      (cd name)
-      (nix-flake--init flake-ref template-name)))
+      (with-temp-buffer
+        (cd dir)
+        (make-directory name)
+        (cd name)
+        (nix-flake--init flake-ref template-name))))
+  (defun jmpunkt/project-init ()
+    ""
+    (interactive)
+    (require 'nix-flake)
+    ;; NOTICE: Use specific registry instead of querying all
+    ;; registries for templates. Querying all registries would require
+    ;; to download them all, which would slow down the creation
+    ;; process. The optimal way would be to bundle all used templates
+    ;; under one registry.
+    (let* ((flake-ref (jmpunkt/nix-read-registry))
+           (template-name (jmpunkt/nix-read-template flake-ref))
+           (dir (project-root (project-current t))))
+      (with-temp-buffer
+        (cd dir)
+        (nix-flake--init flake-ref template-name))))
   (defun jmpunkt/project-affe-find ()
     "Runs `affe-find` in the current project directory."
     (interactive)

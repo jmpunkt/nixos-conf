@@ -1103,6 +1103,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
         org-log-done 'time
         org-catch-invisible-edits 'smart
         org-deadline-warning-days 14
+        org-edit-src-content-indentation 0
         org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
 
 (use-package ob-shell

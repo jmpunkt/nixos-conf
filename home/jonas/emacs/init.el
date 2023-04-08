@@ -386,6 +386,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
               ("C-h F" . helpful-callable)
               ("C-h f" . helpful-function)
               ("C-h v" . helpful-variable)
+              ("C-h M" . helpful-macro)
               ("C-h k" . helpful-key)))
 
 ;;;; * undo-tree

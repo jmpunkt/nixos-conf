@@ -178,6 +178,9 @@
 
   (global-prettify-symbols-mode -1)
   (global-eldoc-mode -1))
+(use-package tempel
+  :bind (:map tempel-map
+              ("M-n" . tempel-next)))
 
 (use-package eldoc
   :defer t
@@ -714,6 +717,22 @@ If the cursor is on the last promt, then we want to insert at the current positi
               ("C-c C-f" . eglot-format-buffer)
               ("M-RET" . jmpunkt/eglot-code-actions))
   :init
+  (defun jmpunkt/lsp-snippet-to-tempel (snippet)
+    "Convert Language Server Protocol snippet into Tempel snippet."
+    (let ((regex (rx (or
+                      (and (group-n 10 "$") (group (+ digit)))
+                      (and (group-n 10 "${") (group (+ digit)) ":" (+? anychar) "}")))))
+      (save-match-data
+        (setq last-match 0
+              template '())
+        (while (string-match regex snippet last-match)
+          (setq template (append template `(,(substring snippet last-match (or (when (match-beginning 1) (1- (match-beginning 1))) (match-beginning 10)))
+                                             p)))
+          (setq last-match (match-end 0)))
+        (add-to-list 'template (substring snippet last-match (length snippet)) 1)
+        template)))
+  (defun jmpunkt/eglot--snippet-expansion-fn ()
+    (lambda (snippet) (tempel-insert (jmpunkt/lsp-snippet-to-tempel snippet))))
   (defun jmpunkt/eglot-rename ()
     (interactive)
     (meow--cancel-selection)
@@ -741,7 +760,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
                      `((priority . ,(+ 50 i))
                        (face . flymake-error)))))
   :config
-  (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
+  (require 'tempel)
+  (advice-add 'eglot--snippet-expansion-fn :override  #'jmpunkt/eglot--snippet-expansion-fn)
   (setq eglot-extend-to-xref t)
   (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
 

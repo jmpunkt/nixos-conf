@@ -37,6 +37,7 @@ with epkgs.melpaPackages;
     embark-consult
     marginalia
     cape
+    tempel
     # Spelling
     flyspell-correct
     # RSS

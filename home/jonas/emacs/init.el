@@ -1260,66 +1260,14 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :defer t)
 
 ;;;; * YAML
-(use-package yaml-mode
+(use-package yaml-ts-mode
   :defer t
-  :hook (yaml-mode . eglot-ensure)
+  :hook (yaml-ts-mode . eglot-ensure)
   :mode ("\\.yaml\\'" "\\.yml\\'"))
 
-;;;; * Conf{TOML}
-(use-package conf-mode
-  :defer t
-  :mode (("\\.toml\\'" . conf-toml-mode))
-  :hook (conf-toml-mode . conf-toml-mode-treesit-setup)
-  :init
-  (defvar conf-toml-mode--treesit-settings
-    (treesit-font-lock-rules
-     :language 'toml
-     :feature 'table-key
-     '((table [(quoted_key) (dotted_key) (bare_key)] @font-lock-type-face))
-     :language 'toml
-     :feature 'bare-key
-     '((bare_key) @font-lock-variable-name-face)
-     :language 'toml
-     :feature 'quoted-key
-     '((quoted_key) @font-lock-variable-name-face)
-     :language 'toml
-     :feature 'boolean
-     '((boolean) @font-lock-constant-face)
-     :language 'toml
-     :feature 'comment
-     '((comment) @font-lock-comment-face)
-     :language 'toml
-     :feature 'string
-     '((string) @font-lock-string-face)
-     :language 'toml
-     :feature 'integer
-     '((integer) @font-lock-constant-face)
-     :language 'toml
-     :feature 'float
-     '((float) @font-lock-constant-face)
-     :language 'toml
-     :feature 'offset-date-time
-     '((offset_date_time) @font-lock-constant-face)
-     :language 'toml
-     :feature 'local-date-time
-     '((local_date_time) @font-lock-constant-face)
-     :language 'toml
-     :feature 'local-date
-     '((local_date) @font-lock-constant-face)
-     :language 'toml
-     :feature 'local-time
-     '((local_time) @font-lock-constant-face)
-     ))
-  (defun conf-toml-mode-treesit-setup ()
-    (require 'treesit)
-    (cond
-     ((treesit-ready-p 'conf-toml-mode 'toml)
-      (setq-local treesit-font-lock-feature-list
-                  '((comment string table-key quoted-key bare-key)
-                    (float integer string boolean)
-                    (offset-date-time local-date-time local-date local-time)))
-      (setq-local treesit-font-lock-settings conf-toml-mode--treesit-settings)
-      (treesit-major-mode-setup)))))
+;;;; * TOML
+(use-package toml-ts-mode
+  :mode ("\\.toml\\'"))
 
 ;;;; * GraphQL
 (use-package graphql-mode

@@ -27,14 +27,23 @@
         (old: {passthru.providedSessions = ["plasmawayland"];}))
     ];
     # - WAYLAND
-    displayManager = {
-      sddm.enable = true;
-      defaultSession = "plasmawayland";
-      autoLogin = {
-        enable = true;
+    desktopManager.plasma5.enable = true;
+  };
+  # enables auto-login and starts plasma wayland
+  # NOTE: removes dependency on SDDM which currently required X11.
+  services.greetd = let
+    cmd = "dbus-run-session startplasma-wayland";
+  in {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd \"${cmd}\"";
+        user = "greeter";
+      };
+      initial_session = {
+        command = "${cmd}";
         user = "jonas";
       };
     };
-    desktopManager.plasma5.enable = true;
   };
 }

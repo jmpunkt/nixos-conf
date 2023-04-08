@@ -723,10 +723,14 @@ If the cursor is on the last promt, then we want to insert at the current positi
     (interactive)
     (affe-find (project-root (project-current t))))
   (defun jmpunkt/project-compile-setup (proc)
-    "Adds the project root path to the search path for compilation-mode"
-    (let ((root (project-root (project-current t))))
+    "Adds the project root directory to the `compilation-search-path'.
+
+Added at the end of the list (`compilation-search-path'). If the
+compilation-mode can not jump to the reference with the previous
+paths, it will fallback to the project root path."
+    (let ((root (project-root (project-current nil))))
       (when root
-        (setq-local compilation-search-path `(,root)))))
+        (add-to-list 'compilation-search-path root 1))))
   (add-hook 'compilation-start-hook #'jmpunkt/project-compile-setup))
 
 ;;;; * Language Server (LSP)

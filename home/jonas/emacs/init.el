@@ -1084,7 +1084,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
     (jmpunkt/org-delegate-keybind (kbd "C-c C-f")))
   :bind (:map org-mode-map
               ("C-c C-f" . jmpunkt/format-org-src)
-              ("C-j" . nil))
+              ("C-j" . nil)
+              ("C-c <return>" . org-edit-src-exit))
   :hook ((org-mode . (lambda ()
                        (setq-local tab-width 2)
                        (add-to-list 'ispell-skip-region-alist

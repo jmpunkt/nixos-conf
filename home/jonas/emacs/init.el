@@ -177,7 +177,9 @@
   (pixel-scroll-precision-mode)
 
   (global-prettify-symbols-mode -1)
-  (global-eldoc-mode -1))
+  (global-eldoc-mode -1)
+  (put 'narrow-to-region 'disabled nil))
+
 (use-package tempel
   :bind (:map tempel-map
               ("M-n" . tempel-next)))

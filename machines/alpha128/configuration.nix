@@ -18,7 +18,7 @@
       efi.canTouchEfiVariables = true;
       efi.efiSysMountPoint = "/boot/efi";
     };
-    cleanTmpDir = true;
+    tmp.cleanOnBoot = true;
     blacklistedKernelModules = [
       # Disable: https://bbs.archlinux.org/viewtopic.php?id=239075
       "sp5100_tco"

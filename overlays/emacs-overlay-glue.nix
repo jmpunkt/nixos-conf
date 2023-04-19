@@ -102,17 +102,22 @@ in {
               (let
                 backendPath =
                   lib.concatStringsSep " "
-                  (builtins.map (x: ''\"-B${x}\"'') [
-                    # Paths necessary so the JIT compiler finds its libraries:
-                    "${lib.getLib pkgs.libgccjit}/lib"
-                    "${lib.getLib pkgs.libgccjit}/lib/gcc"
-                    "${lib.getLib stdenv.cc.libc}/lib"
+                  (builtins.map (x: ''\"-B${x}\"'') (
+                    [
+                      # Paths necessary so the JIT compiler finds its libraries:
+                      "${lib.getLib pkgs.libgccjit}/lib"
+                      "${lib.getLib pkgs.libgccjit}/lib/gcc"
+                      "${lib.getLib stdenv.cc.libc}/lib"
 
-                    # Executable paths necessary for compilation (ld, as):
-                    "${lib.getBin stdenv.cc.cc}/bin"
-                    "${lib.getBin stdenv.cc.bintools}/bin"
-                    "${lib.getBin stdenv.cc.bintools.bintools}/bin"
-                  ]);
+                      # Executable paths necessary for compilation (ld, as):
+                      "${lib.getBin stdenv.cc.cc}/bin"
+                      "${lib.getBin stdenv.cc.bintools}/bin"
+                      "${lib.getBin stdenv.cc.bintools.bintools}/bin"
+                    ]
+                    ++ lib.optionals (stdenv.cc ? cc.libgcc) [
+                      "${lib.getLib stdenv.cc.cc.libgcc}/lib"
+                    ]
+                  ));
               in ''
                 substituteInPlace lisp/emacs-lisp/comp.el --replace \
                     "(defcustom comp-libgccjit-reproducer nil" \

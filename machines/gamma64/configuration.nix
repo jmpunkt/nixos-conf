@@ -18,7 +18,7 @@
       efi.canTouchEfiVariables = true;
       efi.efiSysMountPoint = "/boot/efi";
     };
-    cleanTmpDir = true;
+    tmp.cleanOnBoot = true;
     kernelParams = [
       "acpi_backlight=native"
       "ivrs_ioapic[32]=00:14.0"

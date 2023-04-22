@@ -19,12 +19,12 @@
       overlays = [rust-overlay.overlay];
       pkgs = import nixpkgs {inherit system overlays;};
     in {
-      devShells = {
+      devShells = rec {
+        default = nightly;
         stable = buildShell pkgs (rustOverwrite pkgs.rust-bin.stable.latest.default);
         nightly = buildShell pkgs (rustOverwrite pkgs.rust-bin.nightly.latest.default);
         beta = buildShell pkgs (rustOverwrite pkgs.rust-bin.beta.latest.default);
       };
-      devShell = self.devShells.${system}.nightly;
       legacyPackages = pkgs;
     };
   in (utils.lib.eachDefaultSystem buildForSystem);

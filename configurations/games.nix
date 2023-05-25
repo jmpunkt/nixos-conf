@@ -4,31 +4,46 @@
   lib,
   ...
 }: let
+  # NOTE: do not enable wayland (currently it detects two monitors as
+  # one and launches all battle-net related with twice the width by
+  # same height.)
   wine = pkgs.wineWowPackages.staging;
-  battle-net = let
-    wine = pkgs.wineWowPackages.full.override {
-      wineRelease = "staging";
-      mingwSupport = true;
-      tlsSupport = true;
-      pulseaudioSupport = true;
-      vulkanSupport = true;
-      waylandSupport = true;
-    };
-  in
-    pkgs.writeScriptBin "battle-net" ''
-      export WINEARCH=win64
-      export WINEPREFIX=$HOME/.wine-battlenet
-      export PATH="${wine}/bin:${pkgs.winetricks}/bin:$PATH"
+  battle-net = pkgs.writeScriptBin "battle-net" ''
+    export WINEARCH=win64
+    export WINEPREFIX=$HOME/.wine-battlenet
+    export PATH="${pkgs.wineWowPackages.staging}/bin:${pkgs.winetricks}/bin:$PATH"
 
-      battleNet="$WINEPREFIX/drive_c/Program Files (x86)/Battle.net/Battle.net.exe"
+    battleNet="$WINEPREFIX/drive_c/Program Files (x86)/Battle.net/Battle.net.exe"
 
+    if [[ $# -eq 0 ]]; then
       if [ -f "$battleNet" ]; then
-        wine64 "$battleNet" "$@"
+        # HACK: fixes failed starting battle-net because of missing QT
+        find "$WINEPREFIX/drive_c/Program Files (x86)/Battle.net" -name "qwindows.dll" -exec setfattr -x user.DOSATTRIB "{}" \;
+        wine "$battleNet" "$@"
       else
-        winetricks dxvk
-        wine64 "$@"
+        echo "Battl-net not installed. Run battle-net -i <PATH_TO_BATTLENT_INSTALLER>"
+        exit 1
       fi
-    '';
+    else
+      case "$1" in
+        install)
+          winetricks dxvk
+          wine "''${@:2}"
+        ;;
+        run)
+          wine "''${@:2}"
+        ;;
+        winetricks)
+          winetricks "''${@:2}"
+        ;;
+        *)
+          echo "only install or run allowed."
+          exit 1
+        ;;
+      esac
+    fi
+
+  '';
 in {
   programs.firejail = {
     wrappedBinaries = {

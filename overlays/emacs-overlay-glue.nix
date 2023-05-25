@@ -5,7 +5,6 @@
   inherit
     (super)
     pkgs
-    callPackage
     stdenv
     lib
     ;
@@ -22,7 +21,7 @@
 in {
   emacs-overlay =
     (super.emacs-overlay or {})
-    // rec {
+    // {
       repos = let
         inherit
           (super)
@@ -91,7 +90,7 @@ in {
           ++ features
           ++ [forwardPkgs]);
 
-      # Enable nativ comp feature for Emacs.
+      # Enable native comp feature for Emacs.
       enableNativeCompilation = drv:
         (drv.overrideAttrs (
           old: {
@@ -142,7 +141,7 @@ in {
       # Enable PGTK feature.
       enablePgtk = drv:
         (drv.overrideAttrs (
-          old: rec {
+          old: {
             configureFlags =
               (lib.remove "--with-xft" old.configureFlags)
               ++ lib.singleton "--with-pgtk";
@@ -155,7 +154,7 @@ in {
       # Enable link-time optimization
       enableLTO = drv:
         drv.overrideAttrs (
-          old: rec {
+          old: {
             configureFlags =
               old.configureFlags
               ++ lib.singleton "--enable-link-time-optimization";
@@ -165,7 +164,7 @@ in {
       # Enable debuggin with GDB
       enableDebug = drv:
         drv.overrideAttrs (
-          old: rec {
+          old: {
             dontStrip = true;
             CFLAGS = "-O0 -ggdb " + (old.CFLAGS or "");
             configureFlags =

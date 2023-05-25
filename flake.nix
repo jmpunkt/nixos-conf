@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "unstable";
     };
     emacs-overlay = {
-      url = "github:nix-community/emacs-overlay";
+      url = "github:nix-community/emacs-overlay?rev=082c2c3775c7fba9642e02106cc19dee1f997e54";
       inputs.nixpkgs.follows = "unstable";
     };
     utils.url = "github:numtide/flake-utils";

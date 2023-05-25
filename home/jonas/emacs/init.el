@@ -44,6 +44,8 @@
       ("c865644bfc16c7a43e847828139b74d1117a6077a845d16e71da38c8413a5aaa" default))))
   (load-theme 'doom-vibrant)
 
+  (set-face-attribute 'secondary-selection nil
+                      :background "grey")
   (set-face-attribute 'default nil
                       :font "JetBrains Mono"
                       :height 110

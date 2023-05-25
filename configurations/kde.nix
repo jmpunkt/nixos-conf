@@ -5,7 +5,6 @@
   ...
 }: {
   imports = [./desktop.nix];
-  nixpkgs.config.firefox.enablePlasmaBrowserIntegration = true;
   environment.systemPackages = with pkgs; [
     ark
     okular

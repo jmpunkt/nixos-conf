@@ -42,7 +42,7 @@
     inherit (lib) mkUnstableOverlay mkSystem mkSystemCross mkPkgs packageSD packageISO packageSystem;
     forAllSystems =
       utils.lib.eachDefaultSystem
-      (system: {legacyPackages = mkPkgs system stable [(mkUnstableOverlay system)];});
+      (system: {legacyPackages = mkPkgs system unstable [(mkUnstableOverlay system)];});
     forx86Systems =
       utils.lib.eachSystem
       ["x86_64-linux" "i686-linux"]

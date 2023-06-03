@@ -94,61 +94,31 @@ in {
       enableNativeCompilation = drv:
         (drv.overrideAttrs (
           old: {
-            patches = [];
-            postPatch =
-              # XXX: remove when https://github.com/NixOS/nixpkgs/pull/193621 is merged
-              lib.optionalString (old ? NATIVE_FULL_AOT)
-              (let
+            patches = [
+              (pkgs.substituteAll {
+                src = ./glue.patch;
                 backendPath =
                   lib.concatStringsSep " "
-                  (builtins.map (x: ''\"-B${x}\"'') (
-                    [
+                  (
+                    builtins.map (x: ''"-B${x}"'') [
                       # Paths necessary so the JIT compiler finds its libraries:
                       "${lib.getLib pkgs.libgccjit}/lib"
-                      "${lib.getLib pkgs.libgccjit}/lib/gcc"
+                      "${lib.getLib pkgs.libgccjit}/lib/gcc/${stdenv.targetPlatform.config}/${pkgs.libgccjit.version}/"
                       "${lib.getLib stdenv.cc.libc}/lib"
+                      "${lib.getLib stdenv.cc.cc.libgcc}/lib"
 
                       # Executable paths necessary for compilation (ld, as):
                       "${lib.getBin stdenv.cc.cc}/bin"
                       "${lib.getBin stdenv.cc.bintools}/bin"
                       "${lib.getBin stdenv.cc.bintools.bintools}/bin"
                     ]
-                    ++ lib.optionals (stdenv.cc ? cc.libgcc) [
-                      "${lib.getLib stdenv.cc.cc.libgcc}/lib"
-                    ]
-                  ));
-              in ''
-                substituteInPlace lisp/emacs-lisp/comp.el --replace \
-                    "(defcustom comp-libgccjit-reproducer nil" \
-                    "(setq native-comp-driver-options '(${backendPath}))
-                    (defcustom comp-libgccjit-reproducer nil"
-              '');
+                  );
+              })
+            ];
           }
         ))
         .override {
           nativeComp = true;
-        };
-
-      # Enable tree-sitter support without language grammars.
-      enableTreeSitter = drv:
-        drv.overrideAttrs (
-          old: {
-            buildInputs = old.buildInputs ++ [pkgs.tree-sitter];
-            TREE_SITTER_LIBS = "-ltree-sitter";
-          }
-        );
-
-      # Enable PGTK feature.
-      enablePgtk = drv:
-        (drv.overrideAttrs (
-          old: {
-            configureFlags =
-              (lib.remove "--with-xft" old.configureFlags)
-              ++ lib.singleton "--with-pgtk";
-          }
-        ))
-        .override {
-          withGTK3 = true;
         };
 
       # Enable link-time optimization
@@ -172,29 +142,5 @@ in {
               ++ (lib.singleton "--enable-check-lisp-object-type");
           }
         );
-
-      # Creates a bundle of tree-sitter grammars which are readable by
-      # Emacs.
-      bundleTreeSitterGrammars = plugins: let
-        libName = drv: lib.removeSuffix "-grammar" drv.pname;
-        libSuffix =
-          if stdenv.isDarwin
-          then "dylib"
-          else "so";
-        libFileName = drv: ''lib${libName drv}.${libSuffix}'';
-        linkCmd = drv:
-          if stdenv.isDarwin
-          then ''
-            cp ${drv}/parser $out/lib/${lib drv}
-            # FIXME: Is this kosher?
-            /usr/bin/install_name_tool -id $out/lib/${libFileName drv} $out/lib/${libFileName drv}
-            /usr/bin/codesign -s - -f $out/lib/${libFileName drv}
-          ''
-          else ''ln -s ${drv}/parser $out/lib/${libFileName drv}'';
-      in
-        pkgs.runCommand
-        "tree-sitter-grammars"
-        {}
-        (lib.concatStringsSep "\n" (["mkdir -p $out/lib"] ++ (map linkCmd plugins)));
     };
 }

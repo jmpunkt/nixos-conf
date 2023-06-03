@@ -1,7 +1,7 @@
 {
   description = "My configuration as a flake";
   inputs = {
-    stable.url = "github:NixOS/nixpkgs/nixos-22.11";
+    stable.url = "github:NixOS/nixpkgs/nixos-23.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
     home-manager = {
@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "unstable";
     };
     emacs-overlay = {
-      url = "github:nix-community/emacs-overlay?rev=082c2c3775c7fba9642e02106cc19dee1f997e54";
+      url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "unstable";
     };
     utils.url = "github:numtide/flake-utils";

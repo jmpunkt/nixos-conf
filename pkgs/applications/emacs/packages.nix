@@ -57,9 +57,13 @@ with epkgs.melpaPackages;
   ]
   ++ (with epkgs.elpaPackages; [undo-tree vertico org])
   ++ (
-    with epkgs.manualPackages; [
-      jmpunktPkgs.ligature
-      jmpunktPkgs.eglot-x
-      (jmpunktPkgs.nixosPaths (import ./variables.nix {inherit pkgs;}))
-    ]
+    with epkgs.manualPackages;
+      [
+        jmpunktPkgs.ligature
+        jmpunktPkgs.eglot-x
+        (jmpunktPkgs.nixosPaths (import ./variables.nix {inherit pkgs;}))
+      ]
+      ++ [
+        treesit-grammars.with-all-grammars
+      ]
   )

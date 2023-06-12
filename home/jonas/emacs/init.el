@@ -65,7 +65,6 @@
          (conf-mode . jmpunkt/conf-init)
          (text-mode . jmpunkt/text-init))
   :bind (:map global-map
-              ("TAB" . completion-at-point)
               ("C-+" . text-scale-increase)
               ("C--" . text-scale-decrease)
               ("C-j" . jmpunkt/join-line))
@@ -131,7 +130,7 @@
   (defun jmpunkt/mode-line-major-mode ()
     (format-mode-line '(" " mode-name " ")))
   (setq indent-line-function 'indent-relative
-        tab-always-indent 'complete
+        tab-always-indent t
         revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")
         make-backup-files nil
         auto-save-default nil
@@ -673,7 +672,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
 ;;;; * Projectile
 (use-package project
   :demand t
-  :bind-keymap ("C-c p" . project-prefix-map)
+  :bind-keymap ("C-x p" . project-prefix-map)
   :bind (:map project-prefix-map
               ("f" . jmpunkt/project-affe-find)
               ("p" . project-switch-project)
@@ -1011,20 +1010,19 @@ paths, it will fallback to the project root path."
 (use-package cape
   :demand t
   :bind (:map global-map
-              ("C-c c p" . completion-at-point)
-              ("C-c c t" . complete-tag)
-              ("C-c c d" . cape-dabbrev)
-              ("C-c c f" . cape-file)
-              ("C-c c h" . cape-history)
-              ("C-c c k" . cape-keyword)
-              ("C-c c s" . cape-symbol)
-              ("C-c c a" . cape-abbrev)
-              ("C-c c i" . cape-ispell)
-              ("C-c c l" . cape-line)
-              ("C-c c w" . cape-dict)
-              ("C-c c _" . cape-tex)
-              ("C-c c &" . cape-sgml)
-              ("C-c c r" . cape-rfc1345))
+              ("C-c p t" . complete-tag)
+              ("C-c p d" . cape-dabbrev)
+              ("C-c p f" . cape-file)
+              ("C-c p h" . cape-history)
+              ("C-c p k" . cape-keyword)
+              ("C-c p s" . cape-symbol)
+              ("C-c p a" . cape-abbrev)
+              ("C-c p i" . cape-ispell)
+              ("C-c p l" . cape-line)
+              ("C-c p w" . cape-dict)
+              ("C-c p _" . cape-tex)
+              ("C-c p &" . cape-sgml)
+              ("C-c p r" . cape-rfc1345))
   :init
   (defalias 'cape-symbol+dabbrev
     (cape-super-capf #'cape-symbol #'cape-dabbrev))

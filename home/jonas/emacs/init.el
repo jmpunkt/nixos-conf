@@ -47,16 +47,16 @@
   (set-face-attribute 'secondary-selection nil
                       :background "grey")
   (set-face-attribute 'default nil
-                      :font "JetBrains Mono"
-                      :height 110
-                      :weight 'light
+                      :font "Cascadia Code PL"
+                      :height 120
+                      :weight 'regular
                       :width 'normal)
   (set-face-attribute 'variable-pitch nil
-                      :font "JetBrains Mono"
-                      :height 1.0)
+                      :font "Cascadia Code PL"
+                      :height 120)
   (set-face-attribute 'fixed-pitch nil
-                      :font "JetBrains Mono"
-                      :height 1.0))
+                      :font "Cascadia Code PL"
+                      :height 120))
 
 ;;; * Emacs
 (use-package emacs

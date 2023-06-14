@@ -41,6 +41,8 @@
       corefonts
       ibm-plex
       jetbrains-mono
+      fantasque-sans-mono
+      cascadia-code
       # Emacs Icons
       emacs-all-the-icons-fonts
       symbola

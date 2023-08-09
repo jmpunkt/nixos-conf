@@ -118,7 +118,7 @@ in {
           }
         ))
         .override {
-          nativeComp = true;
+          withNativeCompilation = true;
         };
 
       # Enable link-time optimization

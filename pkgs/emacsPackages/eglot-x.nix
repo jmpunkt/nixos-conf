@@ -6,7 +6,7 @@
   melpaBuild,
   writeText,
 }: let
-  rev = "08cbd4369618e60576c95c194e63403f080328ba";
+  rev = "7d1724adf444bb0ddcf0c191c61365b1903031f0";
   pname = "eglot-x";
 in
   melpaBuild {
@@ -19,13 +19,11 @@ in
       inherit rev;
       owner = "nemethf";
       repo = pname;
-      sha256 = "sha256-cWicqHYR/XU+71a8OFgF8vc6dmT/Fy0EEgzX0xvYiDc=";
+      sha256 = "sha256-MACRQnLH3bnZdtdDBsziIf6+IrArf0hykRLgwHhSiSE=";
     };
 
     recipe = writeText "recipe" ''
-      (eglot-x
-      :repo "nemethf/eglot-x"
-      :fetcher github)
+      (eglot-x :repo "nemethf/eglot-x" :fetcher github)
     '';
 
     meta = with lib; {

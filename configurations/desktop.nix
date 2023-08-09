@@ -6,8 +6,7 @@
 }: {
   imports = [./base.nix ./locale.nix ./shell.nix ./fish ./yubico.nix];
   boot = {
-    # Use zen kernel for desktop based machines
-    kernelPackages = pkgs.linuxKernel.packages.linux_zen;
+    kernelPackages = pkgs.linuxPackages_latest;
     supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
   };
   nix.gc = {
@@ -37,9 +36,9 @@
     mpv
   ];
   fonts = {
-    fonts = with pkgs; [
+    packages = with pkgs; [
       corefonts
-      ibm-plex
+      # ibm-plex
       jetbrains-mono
       fantasque-sans-mono
       cascadia-code

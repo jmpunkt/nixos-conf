@@ -31,32 +31,10 @@
   :init
   (setq inhibit-compacting-font-caches t))
 
-(use-package doom-themes
-  :config
-  (setq doom-themes-enable-bold t
-        doom-themes-enable-italic t
-        doom-themes-treemacs-theme "doom-colors"
-        doom-themes-treemacs-enable-variable-pitch nil)
-  (doom-themes-org-config)
-  (custom-set-variables
-   '(custom-safe-themes
-     (quote
-      ("c865644bfc16c7a43e847828139b74d1117a6077a845d16e71da38c8413a5aaa" default))))
-  (load-theme 'doom-vibrant)
-
-  (set-face-attribute 'secondary-selection nil
-                      :background "grey")
-  (set-face-attribute 'default nil
-                      :font "Cascadia Code PL"
-                      :height 120
-                      :weight 'regular
-                      :width 'normal)
-  (set-face-attribute 'variable-pitch nil
-                      :font "Cascadia Code PL"
-                      :height 120)
-  (set-face-attribute 'fixed-pitch nil
-                      :font "Cascadia Code PL"
-                      :height 120))
+(use-package modus-themes
+  :init
+  (load-theme 'modus-vivendi-tinted t)
+  (set-face-attribute 'line-number-current-line nil :box nil))
 
 ;;; * Emacs
 (use-package emacs
@@ -112,7 +90,7 @@
                       vc-mode))))
   (defun jmpunkt/mode-line-buffer-name ()
     (if (and (not buffer-read-only) (buffer-modified-p (current-buffer)))
-        (propertize " %b " 'face `(:foreground ,(doom-color 'red) :weight bold))
+        (propertize " %b " 'face 'error)
       (propertize " %b " 'face `(:weight bold))))
   (defun jmpunkt/mode-line-position ()
     (when line-number-mode
@@ -159,17 +137,15 @@
                        (:eval (jmpunkt/mode-line-flymake))
                        (:eval (jmpunkt/mode-line-major-mode))))))))
   (set-face-attribute 'mode-line nil
-                      :background (doom-color 'modeline-bg)
-                      :foreground (doom-color 'modeline-fg)
-                      :box `(:line-width 6 :color ,(doom-color 'modeline-bg))
-                      :overline nil
-                      :underline nil)
-  (set-face-attribute 'mode-line-inactive nil
-                      :background (doom-color 'modeline-bg-inactive)
-                      :foreground (doom-color 'modeline-fg-inactive)
-                      :box `(:line-width 6 :color ,(doom-color 'modeline-bg-inactive))
-                      :overline nil
-                      :underline nil)
+                      :height 1.0)
+  (set-face-attribute 'default nil
+                      :font "Cascadia Code PL"
+                      :weight 'regular
+                      :width 'normal)
+  (set-face-attribute 'variable-pitch nil
+                      :font "Cascadia Code PL")
+  (set-face-attribute 'fixed-pitch nil
+                      :font "Cascadia Code PL")
   (save-place-mode 1)
   (global-hl-line-mode 1)
   (toggle-scroll-bar -1)

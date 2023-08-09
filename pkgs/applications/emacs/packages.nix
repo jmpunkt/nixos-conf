@@ -24,7 +24,7 @@ with epkgs.melpaPackages;
     diff-hl
     # UI
     all-the-icons
-    doom-themes
+    modus-themes
     # Bibliography
     citar
     # SQL

@@ -108,7 +108,7 @@
   (defun jmpunkt/mode-line-major-mode ()
     (format-mode-line '(" " mode-name " ")))
   (setq indent-line-function 'indent-relative
-        tab-always-indent 'compile
+        tab-always-indent 'complete
         revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")
         make-backup-files nil
         auto-save-default nil

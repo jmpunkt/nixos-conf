@@ -1416,7 +1416,8 @@ paths, it will fallback to the project root path."
   :mode (("\\.js\\'" . js-ts-mode)
          ("\\.jsx\\'" . js-jsx-mode)
          ("\\.json\\'" . js-json-mode)
-         ("\\.jsonc\\'" . js-json-mode))
+         ("\\.jsonc\\'" . js-json-mode)
+         ("flake.lock\\'" . js-json-mode))
   :hook ((js-base-mode . eglot-ensure)
          (js-base-mode . prettier-on-save-mode))
   :init

@@ -3,10 +3,8 @@
 
 ;;; Code:
 ;;; Packages
-(eval-when-compile (require 'use-package))
 (require 'bind-key)
 (require 'nixos-paths)
-(require 'treesit)
 
 (use-package esup
   :defer t
@@ -1364,12 +1362,6 @@ paths, it will fallback to the project root path."
   :config (setq python-indent-offset 4))
 
 ;;;; * Rust
-(use-package rust-ts-mode
-  :config
-  (setq auto-mode-alist (cl-remove 'rust-ts-mode auto-mode-alist :key #'cdr :test #'eq))
-  (require 'eglot)
-  (add-to-list 'eglot-server-programs '(rust-ts-mode . ("rust-analyzer"))))
-
 (use-package rust-mode
   :mode "\\.rs\\'"
   :hook (rust-mode . eglot-ensure)

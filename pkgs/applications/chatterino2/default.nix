@@ -1,5 +1,4 @@
 {
-  mkDerivation,
   stdenv,
   lib,
   pkg-config,
@@ -13,23 +12,26 @@
   openssl,
   wrapQtAppsHook,
   qttools,
+  qt5compat,
   qtimageformats,
   libsecret,
 }:
-mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "chatterino2";
   version = "nightly";
   src = fetchFromGitHub {
-    owner = "Chatterino";
+    owner = "Nerixyz";
     repo = pname;
-    rev = "adf58d2770c8d6894bebcbb3c2435279493bd385";
-    sha256 = "sha256-+CdHP+yrixVBiCBSvXHRqyfV5WhWig6Q1fHBeTqpu1Q=";
+    rev = "e3e14781f379388ba7a831634c51ea7f1f7f7aa5";
+    sha256 = "sha256-I5rD28CvZGpjTKotq2D3djKiSUIbYC9YKXYkaM3yd90=";
     fetchSubmodules = true;
   };
   nativeBuildInputs = [cmake pkg-config wrapQtAppsHook];
+  cmakeFlags = ["-DBUILD_WITH_QT6=on"];
   buildInputs = [
     qtbase
     qtsvg
+    qt5compat
     qtmultimedia
     boost
     openssl

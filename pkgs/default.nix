@@ -1,6 +1,7 @@
 {
   callPackage,
   libsForQt5,
+  qt6Packages,
 }: rec {
   nyan-project = callPackage ../pkgs/games/nyan-project {};
   vcmi = callPackage ../pkgs/games/vcmi {};
@@ -22,6 +23,6 @@
   vpaint = libsForQt5.callPackage ../pkgs/misc/vpaint {};
   maui = libsForQt5.callPackage ../pkgs/applications/maui {};
   haruna = libsForQt5.callPackage ../pkgs/applications/haruna {};
-  chatterino2-nigthly = libsForQt5.callPackage ../pkgs/applications/chatterino2 {};
+  chatterino2-nigthly = qt6Packages.callPackage ../pkgs/applications/chatterino2 {};
   oh-my-svg = libsForQt5.callPackage ./applications/oh-my-svg {};
 }

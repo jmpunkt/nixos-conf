@@ -72,10 +72,15 @@
         support32Bit = true;
       };
     };
+
     printing = {
       enable = true;
       drivers = with pkgs; [gutenprint hplip];
     };
+    avahi.enable = true;
+    avahi.nssmdns = true;
+    avahi.openFirewall = true;
+
     xserver = {
       enable = true;
       libinput = {

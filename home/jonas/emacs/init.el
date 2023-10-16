@@ -263,13 +263,13 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
       (jmpunkt/comint-goto-end-or-here)))
   (define-advice comint-send-input
       (:before (&rest args) comint-advice)
-      (jmpunkt/comint-goto-end-or-here))
-  :config
-  (defun jmpunkt/comint-goto-end-or-here-advice (&rest args)
     (jmpunkt/comint-goto-end-or-here))
-
-  (advice-add 'comint-next-matching-input-from-input :before #'jmpunkt/comint-goto-end-or-here-advice)
-  (advice-add 'comint-previous-matching-input-from-input :before #'jmpunkt/comint-goto-end-or-here-advice))
+  (define-advice comint-next-matching-input-from-input
+      (:before (&rest args) comint-advice)
+    (jmpunkt/comint-goto-end-or-here))
+  (define-advice comint-previous-matching-input-from-input
+      (:before (&rest args) comint-advice)
+    (jmpunkt/comint-goto-end-or-here)))
 
 (use-package esh-mode
   :defer t
@@ -301,13 +301,15 @@ If the cursor is on the last promt, then we want to insert at the current positi
             (setq pos (+ pos 1)))
           (when (not (eq (point) pos))
             (goto-char pos))))))
-  (defun jmpunkt/eshell-goto-end-or-here-advice (&rest args)
-    (jmpunkt/eshell-goto-end-or-here))
   ;; Before history selection, goto the insertion line of the
   ;; shell. This way the search string for history selection will not
   ;; select anything in the previous output.
-  (advice-add 'eshell-next-matching-input-from-input :before #'jmpunkt/eshell-goto-end-or-here-advice)
-  (advice-add 'eshell-previous-matching-input-from-input :before #'jmpunkt/eshell-goto-end-or-here-advice)
+  (define-advice eshell-next-matching-input-from-input
+      (:before (&rest args) eshell-advice)
+    (jmpunkt/eshell-goto-end-or-here))
+  (define-advice eshell-previous-matching-input-from-input
+      (:before (&rest args) eshell-advice)
+      (jmpunkt/eshell-goto-end-or-here))
   (define-advice meow-yank
       (:before (&rest args) eshell-advice)
     (when (derived-mode-p 'eshell-mode)
@@ -347,9 +349,9 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (require 'xterm-color)
   (setq compilation-scroll-output t)
   (setq compilation-environment '("TERM=xterm-256color"))
-  (defun jmpunkt/advice-compilation-filter (f proc string)
-    (funcall f proc (xterm-color-filter string)))
-  (advice-add 'compilation-filter :around #'jmpunkt/advice-compilation-filter))
+  (define-advice compilation-filter
+      (:around (f proc string) xterm-color-advice)
+    (funcall f proc (xterm-color-filter string))))
 
 ;;; * Core Packages
 ;;;; * helpful

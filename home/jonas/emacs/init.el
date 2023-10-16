@@ -770,8 +770,7 @@ paths, it will fallback to the project root path."
   (require 'tempel)
   (advice-add 'eglot--snippet-expansion-fn :override  #'jmpunkt/eglot--snippet-expansion-fn)
   (setq eglot-extend-to-xref t)
-  (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'highlight)
-
+  (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'eldoc-highlight-function-argument)
   (jmpunkt/eglot-disable-mouse)
   (setq eglot-stay-out-of '(company)
         eglot-confirm-server-initiated-edits nil))

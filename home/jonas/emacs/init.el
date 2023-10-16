@@ -274,9 +274,6 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
 (use-package esh-mode
   :defer t
   :commands eshell-mode eshell
-  :bind (:map eshell-mode-map
-              ("C-j" . eshell-next-matching-input-from-input)
-              ("C-k" . eshell-previous-matching-input-from-input))
   :hook
   (eshell-mode . (lambda ()
                    (add-hook 'meow-insert-enter-hook #'jmpunkt/eshell-goto-end-or-here nil t)))

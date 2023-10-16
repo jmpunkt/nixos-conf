@@ -738,8 +738,6 @@ paths, it will fallback to the project root path."
           (setq last-match (match-end 0)))
         (add-to-list 'template (substring snippet last-match (length snippet)) 1)
         template)))
-  (defun jmpunkt/eglot--snippet-expansion-fn ()
-    (lambda (snippet) (tempel-insert (jmpunkt/lsp-snippet-to-tempel snippet))))
   (defun jmpunkt/eglot-rename ()
     (interactive)
     (meow--cancel-selection)
@@ -766,9 +764,11 @@ paths, it will fallback to the project root path."
              do (put type 'flymake-overlay-control
                      `((priority . ,(+ 50 i))
                        (face . flymake-error)))))
+  (define-advice eglot--snippet-expansion-fn
+      (:override (&rest args) tempel-advice)
+    (require 'tempel)
+    (lambda (snippet) (tempel-insert (jmpunkt/lsp-snippet-to-tempel snippet))))
   :config
-  (require 'tempel)
-  (advice-add 'eglot--snippet-expansion-fn :override  #'jmpunkt/eglot--snippet-expansion-fn)
   (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'eldoc-highlight-function-argument)
   (jmpunkt/eglot-disable-mouse)
   (setq eglot-extend-to-xref t

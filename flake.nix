@@ -157,8 +157,10 @@
               modules = [
                 ./machines/alpha128/configuration.nix
                 hardware.nixosModules.common-pc
-                hardware.nixosModules.common-cpu-amd
                 hardware.nixosModules.common-pc-ssd
+                hardware.nixosModules.common-cpu-amd
+                hardware.nixosModules.common-cpu-amd-pstate
+                hardware.nixosModules.common-gpu-amd
                 self.nixosModules.home-jonas
                 home-manager.nixosModules.home-manager
               ];

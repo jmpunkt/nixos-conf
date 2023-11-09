@@ -33,6 +33,7 @@
   networking.hostName = "gamma64";
   hardware.cpu.amd.updateMicrocode = true;
   environment.systemPackages = with pkgs; [tlp powertop s-tui config.boot.kernelPackages.cpupower];
+  hardware.bluetooth.enable = true;
   services = {
     power-profiles-daemon.enable = lib.mkForce false;
     tlp = {

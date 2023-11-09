@@ -12,7 +12,7 @@
   environment.systemPackages = with pkgs; [srm curl unzip htop inetutils fd eza ripgrep git sdparm hdparm smartmontools pciutils usbutils];
   networking.firewall.enable = true;
   security.doas.enable = true;
-  services.timesyncd.enable = true;
+  services.timesyncd.enable = lib.mkForce true;
   programs = {
     fish.enable = true;
   };

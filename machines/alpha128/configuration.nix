@@ -31,7 +31,7 @@
     mouseBatteryNotifier = false;
     users = [config.users.users.jonas.name];
   };
-  environment.systemPackages = with pkgs; [razergenie];
+  environment.systemPackages = with pkgs; [razergenie nvtop-amd];
   systemd.services.amdgpu-profile-low = {
     description = "Sets the power profile to low within the AMDGPU driver.";
     wantedBy = ["multi-user.target"];

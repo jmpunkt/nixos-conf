@@ -32,7 +32,6 @@ with epkgs.melpaPackages;
     # Search/Find
     consult
     orderless
-    affe
     embark
     embark-consult
     marginalia

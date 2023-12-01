@@ -669,7 +669,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :demand t
   :bind-keymap ("C-x p" . project-prefix-map)
   :bind (:map project-prefix-map
-              ("f" . jmpunkt/project-affe-find)
+              ("f" . project-find-file)
+              ("d" . project-find-dir)
               ("p" . project-switch-project)
               ("r" . project-query-replace-regexp)
               ("g" . magit-project-status)
@@ -677,7 +678,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
               ("?" . flymake-show-project-diagnostics))
   :config
   (setq project-switch-commands
-        '((jmpunkt/project-affe-find "file")
+        '((project-find-file "file")
           (consult-ripgrep "search")
           (project-find-dir "directory")
           (project-dired "browse")
@@ -723,10 +724,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
       (with-temp-buffer
         (cd dir)
         (nix-flake--init flake-ref template-name))))
-  (defun jmpunkt/project-affe-find ()
-    "Runs `affe-find` in the current project directory."
-    (interactive)
-    (affe-find (project-root (project-current t))))
   (defun jmpunkt/project-compile-setup (proc)
     "Adds the project root directory to the `compilation-search-path'.
 
@@ -979,7 +976,6 @@ paths, it will fallback to the project root path."
                    #'completion--in-region)
                  args)))
   (consult-customize
-   affe-grep affe-find
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-recent-file
@@ -991,16 +987,6 @@ paths, it will fallback to the project root path."
   :config
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15))
-
-(use-package affe
-  :after orderless
-  :config
-  (defun affe-orderless-regexp-compiler (input _type _ignorecase)
-    (setq input (orderless-pattern-compiler input))
-    (cons input (lambda (str) (orderless--highlight input str))))
-  (setq affe-regexp-compiler #'affe-orderless-regexp-compiler
-        affe-find-command "fd -c never -t f")
-  (consult-customize affe-grep :preview-key (kbd "M-.")))
 
 (use-package cape
   :demand t

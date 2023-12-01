@@ -690,6 +690,37 @@ If the cursor is on the last promt, then we want to insert at the current positi
           (magit-project-status "vc")
           (project-eshell "shell")))
   :init
+  (defun jmpunkt/project-smylink-in-dir? (file)
+    "Check if a given file is inside the project directory.
+
+If the file is a symlink, then it is resolved and then check if that
+link points into the project root. If the file is not a symlink, then
+it is assumed it is already inside the project root. "
+    (let ((project (project-current))
+          (symlink-resolved (file-symlink-p file)))
+      (if symlink-resolved
+          (if project
+              (file-in-directory-p symlink-resolved (project-root project))
+            t)
+        t)))
+  (define-advice project-query-replace-regexp
+      (:around (orig from to) symlink-filter)
+    ;; remember old project-files
+    (let ((orig-project-files (symbol-function 'project-files)))
+      ;; overwrite project-files with symlink filtering
+      (cl-letf (((symbol-function 'project-files)
+                 (lambda (project)
+                   (seq-filter #'jmpunkt/project-smylink-in-dir? (funcall orig-project-files project)))))
+        (funcall orig from to))))
+  (define-advice project-search
+      (:around (orig from to) symlink-filter)
+    ;; remember old project-files
+    (let ((orig-project-files (symbol-function 'project-files)))
+      ;; overwrite project-files with symlink filtering
+      (cl-letf (((symbol-function 'project-files)
+                 (lambda (project)
+                   (seq-filter #'jmpunkt/project-smylink-in-dir? (funcall orig-project-files project)))))
+        (funcall orig from to))))
   (defun jmpunkt/nix-read-template (flake-ref)
     "Selects one of the provided Nix templates by FLAKE-REF."
     (completing-read "Template: " (mapcar #'car (nix--process-json "eval" (format-message "%s#templates" flake-ref) "--json"))))

@@ -590,6 +590,11 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 ;;;; * Dired
 (use-package dired
+  :init
+  (defun dired-open-file ()
+    "In dired, open the file named on this line."
+    (interactive)
+    (call-process "xdg-open" nil 0 nil (dired-get-filename nil t)))
   :config
   (setq dired-listing-switches "-alh"
         dired-kill-when-opening-new-dired-buffer t))

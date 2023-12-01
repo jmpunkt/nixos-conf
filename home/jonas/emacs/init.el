@@ -954,23 +954,13 @@ paths, it will fallback to the project root path."
   :after (embark consult)
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
-(use-package orderless
-  :demand t
-  :init
-  (defun jmpunkt/flex-if-twiddle (pattern _index _total)
-    (when (string-suffix-p "~" pattern)
-      `(orderless-flex . ,(substring pattern 0 -1))))
-  (defun jmpunkt/literal-if-eq (pattern _index _total)
-    (when (string-suffix-p "=" pattern)
-      `(orderless-literal . ,(substring pattern 0 -1))))
-  (setq completion-styles '(orderless)
-        completion-category-defaults nil
-        orderless-style-dispatchers '(jmpunkt/flex-if-twiddle jmpunkt/literal-if-eq)
-        orderless-matching-styles '(orderless-literal orderless-regexp orderless-initialism)
-        completion-category-overrides '((eglot (styles . (orderless flex))))))
-
 (use-package vertico
   :hook (after-init . vertico-mode))
+
+(use-package vertico-prescient
+  :config
+  (vertico-prescient-mode 1)
+  (setq prescient-filter-method '(literal regexp initialism)))
 
 (use-package marginalia
   :hook (after-init . marginalia-mode))

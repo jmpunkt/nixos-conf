@@ -31,7 +31,7 @@ with epkgs.melpaPackages;
     sqlformat
     # Search/Find
     consult
-    orderless
+    vertico-prescient
     embark
     embark-consult
     marginalia

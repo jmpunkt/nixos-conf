@@ -1,7 +1,7 @@
 {
   description = "My configuration as a flake";
   inputs = {
-    stable.url = "github:NixOS/nixpkgs/nixos-23.05";
+    stable.url = "github:NixOS/nixpkgs/nixos-23.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
     home-manager = {
@@ -153,7 +153,7 @@
             mkSystem
             {
               inherit system;
-              nixpkgs = unstable;
+              nixpkgs = stable;
               modules = [
                 ./machines/alpha128/configuration.nix
                 hardware.nixosModules.common-pc

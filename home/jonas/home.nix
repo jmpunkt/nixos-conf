@@ -21,7 +21,7 @@
     feh
     thunderbird
     audacious
-    discord-ptb
+    discord
     tdesktop
     tokei
     sqlite

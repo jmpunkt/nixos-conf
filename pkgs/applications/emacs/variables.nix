@@ -31,6 +31,7 @@ in {
       jmpunkt.latex
       eslint-lsp
       nil
+      typst
     ];
     org = with pkgs; [
       # graphs

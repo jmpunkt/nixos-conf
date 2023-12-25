@@ -1369,6 +1369,10 @@ paths, it will fallback to the project root path."
   :mode "\\.hs\\'"
   :hook (haskell-mode . eglot-ensure))
 
+;;;; * Typst
+
+(use-package typst-ts-mode)
+
 ;;;; * Nix
 (use-package nix-mode
   :defer t

@@ -13,4 +13,7 @@
   eglot-ltex = pkgs.callPackage ./eglot-ltex.nix {
     inherit melpaBuild;
   };
+  typst-ts-mode = pkgs.callPackage ./typst-ts-mode.nix {
+    inherit melpaBuild;
+  };
 }

@@ -61,6 +61,9 @@ in rec {
             {config, ...}: {
               # Pins nixpkgs of system to `inputs.nixpkgs`.
               nix.registry.nixpkgs.flake = nixpkgs;
+              # pin system nixpkgs to the same version as the flake
+              # input (https://github.com/nix-community/nix-index/issues/167#issuecomment-989849343)
+              nix.nixPath = ["nixpkgs=${nixpkgs}"];
               # Allows commands like `nix shell self#jmpunkt.emacs`
               nix.registry.self.flake = self;
               nixpkgs.overlays = minimumOverlays ++ [(mkUnstableOverlay system)];

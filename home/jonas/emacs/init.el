@@ -1442,11 +1442,7 @@ paths, it will fallback to the project root path."
   :hook ((typescript-ts-base-mode . eglot-ensure)
          (typescript-ts-base-mode . prettier-on-save-mode))
   :bind (:map typescript-ts-base-mode-map
-              ("C-c C-f" . prettier-buffer))
-  :config
-  (require 'eglot)
-  (add-to-list 'eglot-server-programs '(tsx-ts-mode . ("typescript-language-server" "--stdio")))
-  (add-to-list 'eglot-server-programs '(typescript-ts-mode . ("typescript-language-server" "--stdio"))))
+              ("C-c C-f" . prettier-buffer)))
 
 (use-package js
   :defer t

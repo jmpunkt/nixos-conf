@@ -822,6 +822,7 @@ paths, it will fallback to the project root path."
   (setq eglot-extend-to-xref t
         eglot-stay-out-of '(company)
         eglot-events-buffer-size 0
+        eglot-sync-connect 0
         eglot-confirm-server-initiated-edits nil))
 
 (use-package eglot-x

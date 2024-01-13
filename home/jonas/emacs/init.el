@@ -1006,7 +1006,7 @@ paths, it will fallback to the project root path."
    consult-bookmark consult-recent-file consult-xref
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
-   :preview-key "M-."))
+   :preview-key "C-."))
 
 (use-package recentf
   :hook (after-init . recentf-mode)
@@ -1022,7 +1022,7 @@ paths, it will fallback to the project root path."
               ("C-c p f" . cape-file)
               ("C-c p h" . cape-history)
               ("C-c p k" . cape-keyword)
-              ("C-c p s" . cape-symbol)
+              ("C-c p s" . cape-elisp-symbol)
               ("C-c p a" . cape-abbrev)
               ("C-c p i" . cape-ispell)
               ("C-c p l" . cape-line)
@@ -1032,7 +1032,7 @@ paths, it will fallback to the project root path."
               ("C-c p r" . cape-rfc1345))
   :init
   (defalias 'cape-symbol+dabbrev
-    (cape-super-capf #'cape-symbol #'cape-dabbrev))
+    (cape-capf-super #'cape-elisp-symbol #'cape-dabbrev))
   (defun jmpunkt/cape-setup-git-commit ()
     (add-to-list 'completion-at-point-functions 'cape-dabbrev))
   (defun jmpunkt/cape-setup-eshell ()

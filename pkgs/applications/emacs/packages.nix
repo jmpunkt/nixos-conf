@@ -31,6 +31,7 @@ with epkgs.melpaPackages;
     sqlformat
     # Search/Find
     consult
+    vertico
     vertico-prescient
     embark
     embark-consult
@@ -54,7 +55,7 @@ with epkgs.melpaPackages;
     rust-mode
     haskell-mode
   ]
-  ++ (with epkgs.elpaPackages; [undo-tree vertico org])
+  ++ (with epkgs.elpaPackages; [undo-tree org])
   ++ (
     with epkgs.manualPackages;
       [

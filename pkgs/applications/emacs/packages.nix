@@ -1,7 +1,6 @@
 {pkgs}: epkgs:
 with epkgs.melpaPackages;
   [
-    esup
     # Core
     meow
     which-key

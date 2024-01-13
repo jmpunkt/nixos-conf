@@ -5,19 +5,10 @@
 ;;; Packages
 ;;; Startup Improvements
 ;; temporary settings
-(setq message-log-max 16384
-      gc-cons-threshold most-positive-fixnum
-      gc-cons-percentage 1.0)
-
 ;; persistent  settings
 (setq read-process-output-max (* 1024 1024)
-      process-adaptive-read-buffering t)
-
-(add-hook 'emacs-startup-hook
-          `(lambda ()
-             (setq gc-cons-threshold 1600000
-                   gc-cons-percentage 0.1)
-             (garbage-collect)) t)
+      process-adaptive-read-buffering t
+      gc-cons-threshold (* 128 1024 1024))
 
 ;;; Packages
 (defun jmpunkt/use-package-statistics-convert (package)

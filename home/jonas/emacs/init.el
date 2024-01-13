@@ -6,6 +6,8 @@
 (require 'bind-key)
 (require 'nixos-paths)
 
+(use-package gcmh-mode
+   :hook (emacs-startup . gcmh-mode))
 
 ;;; * Paths
 (defconst org-remote-dir (expand-file-name "~/Dropbox"))

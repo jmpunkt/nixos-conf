@@ -11,6 +11,7 @@ with epkgs.melpaPackages;
     xterm-color
     editorconfig
     reformatter
+    gcmh
     # Org
     org-bullets
     ob-async

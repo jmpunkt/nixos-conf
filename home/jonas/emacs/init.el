@@ -689,7 +689,11 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :config
   (setq flyspell-correct-interface #'flyspell-correct-dummy))
 
-
+(use-package flymake-languagetool
+  :ensure t
+  :hook ((text-mode . flymake-languagetool-load)
+         (org-mode . flymake-languagetool-load)
+         (markdown-mode . flymake-languagetool-load)))
 
 ;;;; * Projectile
 (use-package project
@@ -865,7 +869,9 @@ paths, it will fallback to the project root path."
   :bind (:map flymake-mode-map
               ([f7] . consult-flymake)
               ([f8] . flymake-show-buffer-diagnostics))
-  :hook (prog-mode . flymake-mode)
+  :hook ((prog-mode . flymake-mode)
+         (markdown-mode . flymake-mode)
+         (text-mode . flymake-mode))
   :config
   (setq flymake-mode-line-counter-format
         '(" " flymake-mode-line-error-counter

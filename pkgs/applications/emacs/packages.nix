@@ -40,6 +40,7 @@ with epkgs.melpaPackages;
     tempel
     # Spelling
     flyspell-correct
+    flymake-languagetool
     # RSS
     elfeed
     # Misc

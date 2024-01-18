@@ -9,6 +9,7 @@ in {
     org-plantuml-jar-path = "${pkgs.plantuml}/lib/plantuml.jar";
     ob-mermaid-cli-path = "${pkgs.nodePackages.mermaid-cli}/bin/mmdc";
     mermaid-mmdc-location = "${pkgs.nodePackages.mermaid-cli}/bin/mmdc";
+    flymake-languagetool-server-command = ["${pkgs.languagetool}/bin/languagetool-http-server"];
   };
   paths = let
     core = with pkgs; [
@@ -16,7 +17,6 @@ in {
       ripgrep # search
       pandoc # markdown, etc
       git
-      languagetool # spelling
     ];
     lsp = with pkgs; [
       ccls

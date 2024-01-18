@@ -125,7 +125,8 @@
                      '((:eval (jmpunkt/mode-line-file-info))
                        (:eval (jmpunkt/mode-line-vc))
                        (:eval (jmpunkt/mode-line-flymake))
-                       (:eval (jmpunkt/mode-line-major-mode))))))))
+                       (:eval (jmpunkt/mode-line-major-mode))
+                       (:eval mode-line-misc-info)))))))
   (set-face-attribute 'mode-line nil
                       :height 1.0)
   (set-face-attribute 'default nil

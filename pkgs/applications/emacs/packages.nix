@@ -60,6 +60,7 @@ with epkgs.melpaPackages;
   ++ (
     with epkgs.manualPackages;
       [
+        jmpunktPkgs.dart-ts-mode
         jmpunktPkgs.ligature
         jmpunktPkgs.eglot-x
         jmpunktPkgs.typst-ts-mode

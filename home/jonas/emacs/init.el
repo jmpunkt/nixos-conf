@@ -1427,6 +1427,11 @@ paths, it will fallback to the project root path."
   :hook (python-base-mode . eglot-ensure)
   :config (setq python-indent-offset 4))
 
+;;;; * Dart
+(use-package dart-ts-mode
+  :mode ("\\.dart\\'" . dart-ts-mode)
+  :hook (dart-ts-mode . eglot-ensure))
+
 ;;;; * Rust
 (use-package rust-mode
   :mode "\\.rs\\'"

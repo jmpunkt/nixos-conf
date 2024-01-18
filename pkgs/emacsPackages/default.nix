@@ -16,4 +16,7 @@
   typst-ts-mode = pkgs.callPackage ./typst-ts-mode.nix {
     inherit melpaBuild;
   };
+  dart-ts-mode = pkgs.callPackage ./dart-ts-mode.nix {
+    inherit melpaBuild;
+  };
 }

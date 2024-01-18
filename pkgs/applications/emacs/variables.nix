@@ -5,12 +5,10 @@
     "${pkgs.nodejs}/bin/node" "${pathOfExtension vscode-eslint}/server/out/eslintServer.js" "--stdio"
   '';
 in {
-  variables = let
-    inherit (pkgs) plantuml unstable;
-  in {
-    org-plantuml-jar-path = "${plantuml}/lib/plantuml.jar";
-    ob-mermaid-cli-path = "${unstable.nodePackages.mermaid-cli}/bin/mmdc";
-    mermaid-mmdc-location = "${unstable.nodePackages.mermaid-cli}/bin/mmdc";
+  variables = {
+    org-plantuml-jar-path = "${pkgs.plantuml}/lib/plantuml.jar";
+    ob-mermaid-cli-path = "${pkgs.nodePackages.mermaid-cli}/bin/mmdc";
+    mermaid-mmdc-location = "${pkgs.nodePackages.mermaid-cli}/bin/mmdc";
   };
   paths = let
     core = with pkgs; [
@@ -38,7 +36,7 @@ in {
       inkscape
       imagemagick
       graphviz-nox
-      unstable.nodePackages.mermaid-cli
+      pkgs.nodePackages.mermaid-cli
       ghostscript
       zip
     ];
@@ -46,7 +44,7 @@ in {
       nixpkgs-fmt
       pgformatter
       nodePackages.prettier
-      unstable.alejandra
+      pkgs.alejandra
     ];
   in
     core ++ org ++ lsp ++ formatter;

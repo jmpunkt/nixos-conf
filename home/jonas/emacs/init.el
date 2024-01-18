@@ -97,6 +97,35 @@
       (when flymake-mode flymake-mode-line-counter-format)))
   (defun jmpunkt/mode-line-major-mode ()
     (format-mode-line '(" " mode-name " ")))
+  (define-advice eglot--mode-line-format
+      (:override () jmpunkt)
+    (let* ((server (eglot-current-server))
+           (nick (and server (eglot-project-nickname server)))
+           (pending (and server (hash-table-count
+                                 (jsonrpc--request-continuations server))))
+           (last-error (and server (jsonrpc-last-error server)))
+           (is-pending (cl-plusp pending))
+           (is-error (or last-error nil))
+           (reports (eglot--progress-reporters server))
+           (has-reports (cl-plusp (hash-table-count reports))))
+      (append
+       `(,(propertize "eglot" 'face 'eglot-mode-line))
+       (when (or is-error is-pending has-reports)
+         `(":"
+           ,@(when is-error
+               `(,(propertize "error" 'face 'compilation-mode-line-fail)))
+           ,@(when is-pending
+               `(,(when is-error "/") ,(propertize (format "%d" pending) 'warning)))
+           ,@(cl-loop for pr hash-values of reports
+                      when (eq (car pr)  'eglot--mode-line-reporter)
+                      append (progn (message "%s" pr)
+                                    `(,(when (or is-error is-pending) "/")
+                                      ,(propertize
+                                        (format "[%s]" (or (nth 4 pr) "?"))
+                                        'face 'eglot-mode-line)
+                                      ,(propertize
+                                        (format "%s" (or (nth 3 pr) (nth 2 pr) (nth 1 pr)))
+                                        'face 'eglot-mode-line)))))))))
   (setq indent-line-function 'indent-relative
         tab-always-indent 'complete
         revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")

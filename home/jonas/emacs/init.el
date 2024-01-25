@@ -297,6 +297,7 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
   :defer t
   :commands eshell-mode eshell
   :hook
+  (eshell-mode . eshell-hist-mode)
   (eshell-mode . (lambda ()
                    (add-hook 'meow-insert-enter-hook #'jmpunkt/eshell-goto-end-or-here nil t)))
   (eshell-before-prompt . (lambda ()
@@ -358,7 +359,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
                                     filtered))
     filtered))
   (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
-  (setq eshell-history-size 10000
+  (setq eshell-history-size 1000
         eshell-hist-ignoredups t))
 
 (use-package compile

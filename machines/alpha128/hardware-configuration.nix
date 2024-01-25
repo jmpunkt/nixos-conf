@@ -16,5 +16,14 @@
     fsType = "vfat";
   };
   swapDevices = [];
+  environment.variables = {
+    # Enable rcom support even if the GPU is not officially supported anymore
+    ROC_ENABLE_PRE_VEGA = "1";
+  };
+  hardware.amdgpu = {
+    loadInInitrd = true;
+    amdvlk = true;
+    opencl = true;
+  };
   nix.settings.max-jobs = lib.mkDefault 14;
 }

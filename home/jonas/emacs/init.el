@@ -115,17 +115,16 @@
            ,@(when is-error
                `(,(propertize "error" 'face 'compilation-mode-line-fail)))
            ,@(when is-pending
-               `(,(when is-error "/") ,(propertize (format "%d" pending) 'warning)))
+               `(,(when is-error "/") ,(propertize (format "%d" pending) 'face 'warning)))
            ,@(cl-loop for pr hash-values of reports
                       when (eq (car pr)  'eglot--mode-line-reporter)
-                      append (progn (message "%s" pr)
-                                    `(,(when (or is-error is-pending) "/")
-                                      ,(propertize
-                                        (format "[%s]" (or (nth 4 pr) "?"))
-                                        'face 'eglot-mode-line)
-                                      ,(propertize
-                                        (format "%s" (or (nth 3 pr) (nth 2 pr) (nth 1 pr)))
-                                        'face 'eglot-mode-line)))))))))
+                      append `(,(when (or is-error is-pending) "/")
+                               ,(propertize
+                                 (format "[%s]" (or (nth 4 pr) "?"))
+                                 'face 'eglot-mode-line)
+                               ,(propertize
+                                 (format "%s" (or (nth 3 pr) (nth 2 pr) (nth 1 pr)))
+                                 'face 'eglot-mode-line))))))))
   (setq indent-line-function 'indent-relative
         tab-always-indent 'complete
         revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")

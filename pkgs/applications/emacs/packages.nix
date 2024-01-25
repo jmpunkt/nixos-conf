@@ -27,8 +27,6 @@ with epkgs.melpaPackages;
     modus-themes
     # Bibliography
     citar
-    # SQL
-    sqlformat
     # Search/Find
     consult
     vertico

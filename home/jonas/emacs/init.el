@@ -602,6 +602,11 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (reformatter-define nixpkgs-fmt
     :program nix-nixpkgs-fmt-bin
     :group 'nix)
+  (defcustom pgformatter-bin "pg_format"
+    "Path to pgformatter binary.")
+  (reformatter-define pgformatter
+    :program pgformatter-bin
+    :group 'sql)
   (defcustom web-prettier-bin "prettier"
     "Path to prettier binary.")
   (reformatter-define prettier
@@ -1380,17 +1385,10 @@ paths, it will fallback to the project root path."
   :defer t
   :mode ("\\.sql\\'" . sql-mode)
   :hook (sql-mode . (lambda () (setq-local tab-width 2)))
+  :bind (:map sql-mode-map
+              ("C-c C-f" . pgformatter-buffer))
   :config
   (sql-highlight-postgres-keywords))
-
-(use-package sqlformat
-  :after sql
-  :defer t
-  :bind (:map sql-mode-map
-              ("C-c C-f" . sqlformat-buffer))
-  :config
-  (setq sqlformat-command 'pgformatter
-        sqlformat-args '("-s2" "-g")))
 
 ;;;; * Haskell
 (use-package haskell-mode

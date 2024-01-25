@@ -26,7 +26,6 @@ in {
       # haskellPackages.haskell-lsp
       nodePackages.typescript-language-server
       jmpunkt.pythonToolchain
-      jmpunkt.latex
       eslint-lsp
       nil
       typst

@@ -62,6 +62,7 @@ with epkgs.melpaPackages;
         jmpunktPkgs.ligature
         jmpunktPkgs.eglot-x
         jmpunktPkgs.typst-ts-mode
+        jmpunktPkgs.ox-typst
         (jmpunktPkgs.nixosPaths (import ./variables.nix {inherit pkgs;}))
       ]
       ++ [

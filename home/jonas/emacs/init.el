@@ -1160,6 +1160,11 @@ paths, it will fallback to the project root path."
         org-edit-src-content-indentation 0
         org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
 
+(use-package ox-typst
+  :after org
+  :config
+  (add-to-list 'org-src-lang-modes '("typst")))
+
 (use-package ob-shell
   :after org
   :defer t
@@ -1251,69 +1256,6 @@ paths, it will fallback to the project root path."
   :config
   (setq org-src-fontify-natively t
         org-src-tab-acts-natively t))
-
-(use-package ox-latex
-  :after org
-  :defer t
-  :config
-  (setq org-latex-listings 'minted
-        org-latex-prefer-user-labels t
-        org-latex-packages-alist '(("" "minted") ("" "xcolor") ("" "listings") ("" "url"))
-        org-latex-compiler "xelatex"
-        org-latex-pdf-process '("latexmk -g -pdf -pdflatex=\"%latex -synctex=1 -shell-escape -interaction=nonstopmode\" -outdir=%o %f"))
-  (add-to-list
-   'org-latex-classes
-   '("informal"
-     "\\documentclass{scrartcl}
-      \\usepackage[parfill]{parskip}
-      \\pagenumbering{gobble}"
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*{%s}")
-     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  (add-to-list
-   'org-latex-classes
-   '("tufte-book"
-     "\\documentclass{tufte-book}
-\\ifxetex
-  \\newcommand{\\textls}[2][5]{%
-    \\begingroup\\addfontfeatures{LetterSpace=#1}#2\\endgroup
-  }
-  \\renewcommand{\\allcapsspacing}[1]{\\textls[15]{#1}}
-  \\renewcommand{\\smallcapsspacing}[1]{\\textls[10]{#1}}
-  \\renewcommand{\\allcaps}[1]{\\textls[15]{\\MakeTextUppercase{#1}}}
-  \\renewcommand{\\smallcaps}[1]{\\smallcapsspacing{\\scshape\\MakeTextLowercase{#1}}}
-  \\renewcommand{\\textsc}[1]{\\smallcapsspacing{\\textsmallcaps{#1}}}
-\\fi"
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*{%s}")
-     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  (add-to-list
-   'org-latex-classes
-   '("koma-article"
-     "\\documentclass{scrartcl}
-      \\usepackage[parfill]{parskip}"
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*{%s}")
-     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-  (add-to-list
-   'org-latex-classes
-   '("spec"
-     "\\documentclass{refart}
-      \\pagestyle{plain}
-      \\usepackage{makeidx}
-      \\usepackage{ifthen}
-      \\usepackage{bookmark}
-      \\bibliographystyle{alpha}
-      \\pagestyle{headings}"
-     ("\\section{%s}" . "\\section*{%s}")
-     ("\\subsection{%s}" . "\\subsection*{%s}")
-     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-     ("\\paragraph{%s}" . "\\paragraph*{%s}")
-     ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
 
 (use-package org-bullets
   :after org

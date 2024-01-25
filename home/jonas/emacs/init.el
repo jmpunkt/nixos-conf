@@ -402,7 +402,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
         undo-tree-visualizer-diff t
         undo-tree-auto-save-history nil))
 
-;;;; * Evil
+;;;; * Meow
 (use-package meow
   :demand t
   :bind (:map global-map

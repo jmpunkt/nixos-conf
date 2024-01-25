@@ -37,6 +37,10 @@
               ("C--" . text-scale-decrease)
               ("C-j" . jmpunkt/join-line))
   :init
+  (defun xdg-open-file ()
+    "In dired or buffer, open the file named on this line."
+    (interactive)
+    (call-process "xdg-open" nil 0 nil (or (dired-get-filename nil t) buffer-file-name)))
   (defun jmpunkt/join-line ()
     (interactive)
     (next-line)
@@ -617,11 +621,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 ;;;; * Dired
 (use-package dired
-  :init
-  (defun dired-open-file ()
-    "In dired, open the file named on this line."
-    (interactive)
-    (call-process "xdg-open" nil 0 nil (dired-get-filename nil t)))
   :config
   (setq dired-listing-switches "-alh"
         dired-kill-when-opening-new-dired-buffer t))
@@ -1250,11 +1249,6 @@ paths, it will fallback to the project root path."
   :after org
   :defer t
   :config
-  ;; Sets the buffer name of org source blocks properly
-  (defadvice org-edit-src-code (around set-buffer-file-name activate compile)
-    (let ((file-name (buffer-file-name)))
-      ad-do-it
-      (setq buffer-file-name file-name)))
   (setq org-src-fontify-natively t
         org-src-tab-acts-natively t))
 

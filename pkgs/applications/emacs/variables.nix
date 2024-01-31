@@ -26,7 +26,6 @@ in {
       yaml-language-server
       # haskellPackages.haskell-lsp
       nodePackages.typescript-language-server
-      jmpunkt.pythonToolchain
       eslint-lsp
       nil
       typst-lsp

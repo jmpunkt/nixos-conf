@@ -38,7 +38,6 @@
     aspellDicts.en-science
     jmpunkt.chatterino2-nigthly
     jmpunkt.emacs
-    jmpunkt.latex
   ];
   xdg.configFile = {
     "emacs/init.el".text = builtins.readFile ./emacs/init.el;

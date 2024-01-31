@@ -22,9 +22,7 @@ in {
     lsp = with pkgs; [
       ccls
       rnix-lsp
-      texlab
       yaml-language-server
-      # haskellPackages.haskell-lsp
       nodePackages.typescript-language-server
       eslint-lsp
       nil

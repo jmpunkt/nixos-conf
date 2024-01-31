@@ -17,6 +17,7 @@ in {
       ripgrep # search
       pandoc # markdown, etc
       git
+      typst
     ];
     lsp = with pkgs; [
       ccls
@@ -28,7 +29,7 @@ in {
       jmpunkt.pythonToolchain
       eslint-lsp
       nil
-      typst
+      typst-lsp
     ];
     org = with pkgs; [
       # graphs
@@ -43,7 +44,8 @@ in {
       nixpkgs-fmt
       pgformatter
       nodePackages.prettier
-      pkgs.alejandra
+      alejandra
+      typstfmt
     ];
   in
     core ++ org ++ lsp ++ formatter;

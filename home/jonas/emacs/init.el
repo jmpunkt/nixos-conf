@@ -611,6 +611,11 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (reformatter-define pgformatter
     :program pgformatter-bin
     :group 'sql)
+  (defcustom typstfmt-bin "typstfmt"
+    "Path to pgformatter binary.")
+  (reformatter-define typstfmt
+    :program typstfmt-bin
+    :group 'typst)
   (defcustom web-prettier-bin "prettier"
     "Path to prettier binary.")
   (reformatter-define prettier
@@ -1334,7 +1339,18 @@ paths, it will fallback to the project root path."
 
 ;;;; * Typst
 
-(use-package typst-ts-mode)
+(use-package typst-ts-mode
+  :defer t
+  :mode "\\.typ\\'"
+  :hook ((typst-ts-mode . eglot-ensure)
+         (typst-ts-mode . typstfmt-on-save-mode))
+  :bind ((:map typst-ts-mode-map
+               ("C-c C-f" . typstfmt-buffer))
+         (:map jmpunkt/eglot-keys-map
+               ("C-c C-f" . typstfmt-buffer)))
+  :config
+  (require 'eglot)
+  (add-to-list 'eglot-server-programs '((typst-ts-mode) . ("typst-lsp"))))
 
 ;;;; * Nix
 (use-package nix-mode

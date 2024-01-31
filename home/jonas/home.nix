@@ -139,6 +139,7 @@
       enable = true;
       userName = "Jonas Meurer";
       userEmail = "jmpunkt@outlook.com";
+      lfs.enable = true;
       signing = {
         key = "4D78720A4358CC504F3EB45B26CDFB2E4DB6B136";
         signByDefault = true;

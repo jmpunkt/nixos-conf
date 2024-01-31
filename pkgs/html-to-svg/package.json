@@ -1,0 +1,16 @@
+{
+  "name": "html-to-svg",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "esbuild index.js --bundle --outfile=out.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "sourceType": "module",
+  "dependencies": {
+    "dom-to-svg": "^0.12.2",
+    "esbuild": "^0.20.0",
+    "html-to-image": "^1.11.11"
+  }
+}

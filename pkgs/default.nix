@@ -15,4 +15,5 @@
   verapdf = callPackage ./verapdf {};
   chatterino2-nigthly = qt6Packages.callPackage ./chatterino2 {};
   oh-my-svg = libsForQt5.callPackage ./oh-my-svg {};
+  html-to-svg = callPackage ./html-to-svg {};
 }

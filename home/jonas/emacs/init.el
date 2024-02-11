@@ -1373,6 +1373,11 @@ paths, it will fallback to the project root path."
   :defer t
   :mode "\\.dot\\'")
 
+;;;; * Makefile
+
+(use-package make-mode
+  :hook (make-mode . indent-tabs-mode))
+
 ;;; * Programming Languages
 
 ;;;; * SQL

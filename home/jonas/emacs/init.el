@@ -9,6 +9,66 @@
 (use-package gcmh-mode
    :hook (emacs-startup . gcmh-mode))
 
+;;; * Use-package (Formatting)
+(defcustom fmt-formatters-alist '()
+  "List of available formatters for major-modes."
+  :type '(alist :key-type symbol :value-type symbol)
+  :group 'fmt)
+
+(defcustom fmt-mode-map (define-keymap
+                          "C-c C-f" #'fmt-format-buffer)
+  "Keymap for `fmt-mode'."
+  :type 'keymap
+  :group 'fmt)
+
+(define-minor-mode fmt-mode
+  "Minor mode for formatting with fallbacks."
+  :init-value nil
+  :lighter " Fmt"
+  :keymap fmt-mode-map)
+
+(defun fmt-format-buffer ()
+  "General formatting function for `fmt-mode'.
+
+Use formatter function defined in `fmt-formatters-alist' if major mode
+or its parent modes are contained in that list.  Otherwise, fallback to
+eglot (if available)."
+  (interactive)
+  (let* ((mode (seq-find (lambda (mode) (assoc mode fmt-formatters-alist))
+                         (derived-mode-all-parents major-mode)))
+         (formatter (cdr (assoc mode fmt-formatters-alist))))
+    (if formatter
+        (funcall formatter)
+      (when (and (seq-contains minor-mode-list 'eglot--managed-mode) (eglot-current-server))
+        (eglot-format-buffer)))))
+
+(defun use-package-normalize/:fmt (name keyword args)
+  (use-package-only-one (symbol-name keyword) args
+    (lambda (label arg)
+      (cond
+       ((consp arg)
+        (cond
+         ((symbolp (car arg))
+          (cond
+           ((symbolp (cdr arg)) arg)
+           (t
+            (use-package-error
+             ":fmt wants a symbol in the second position"))))
+         (t
+          (use-package-error
+           ":fmt wants a symbol in the first position"))))
+       (t
+        (use-package-error
+         ":fmt wants a cons (like `(symbol . symbol)')"))))))
+
+(defun use-package-handler/:fmt (name keyword arg rest state)
+  (let ((body (use-package-process-keywords name rest state)))
+    (use-package-concat
+     body
+     `((add-to-list 'fmt-formatters-alist ',arg)))))
+
+(add-to-list 'use-package-keywords :fmt)
+
 ;;; * Paths
 (defconst org-remote-dir (expand-file-name "~/Dropbox"))
 (defconst org-agenda-dir (expand-file-name "agenda" org-remote-dir))
@@ -30,6 +90,7 @@
 (use-package emacs
   :demand t
   :hook ((prog-mode . jmpunkt/prog-init)
+         (prog-mode . fmt-mode)
          (conf-mode . jmpunkt/conf-init)
          (text-mode . jmpunkt/text-init))
   :bind (:map global-map
@@ -52,7 +113,7 @@
     (auto-fill-mode 1)
     (show-paren-mode 1)
     (display-line-numbers-mode 1)
-    (setq-local tab-width 4
+    (setq-local tab-width 2
                 indent-tabs-mode nil
                 show-trailing-whitespace t))
   (defun jmpunkt/prog-init ()
@@ -592,36 +653,33 @@ If the cursor is on the last promt, then we want to insert at the current positi
 ;;;; * Formatter
 (use-package reformatter
   :init
-  (defcustom nix-alejandra-bin "alejandra"
-    "Path to alejandra binary.")
-  (reformatter-define alejandra
-    :program nix-alejandra-bin
+  (reformatter-define fmt/alejandra
+    :program "alejandra"
     :args (list input-file)
     :stdin nil
     :stdout nil
     :input-file (reformatter-temp-file-in-current-directory)
     :group 'nix)
-  (defcustom nix-nixpkgs-fmt-bin "nixpkgs-fmt"
-    "Path to nixpkgs-fmt binary.")
-  (reformatter-define nixpkgs-fmt
-    :program nix-nixpkgs-fmt-bin
+  (reformatter-define fmt/nixpkgs-fmt
+    :program "nixpkgs-fmt"
     :group 'nix)
-  (defcustom pgformatter-bin "pg_format"
-    "Path to pgformatter binary.")
-  (reformatter-define pgformatter
-    :program pgformatter-bin
+  (reformatter-define fmt/ruff
+    :program "ruff"
+    :args (list "format" "--stdin-filename" (or (buffer-file-name) (buffer-name)))
+    :group 'python)
+  (reformatter-define fmt/pgformatter
+    :program "pg_format"
     :group 'sql)
-  (defcustom typstfmt-bin "typstfmt"
-    "Path to pgformatter binary.")
-  (reformatter-define typstfmt
-    :program typstfmt-bin
+  (reformatter-define fmt/typstfmt
+    :program "typstfmt"
     :group 'typst)
-  (defcustom web-prettier-bin "prettier"
-    "Path to prettier binary.")
-  (reformatter-define prettier
-    :program web-prettier-bin
-    :args (when (buffer-file-name)
-             (list "--stdin-filepath" (buffer-file-name)))
+  (reformatter-define fmt/biome
+    :program "biome"
+    :args (list "format" "--stdin-file-path" (or (buffer-file-name) (buffer-name)))
+    :group 'web)
+  (reformatter-define fmt/prettier
+    :program "prettier"
+    :args (list "--stdin-filepath" (or (buffer-file-name) (buffer-name)))
     :group 'web))
 
 ;;;; * Dired
@@ -812,7 +870,6 @@ paths, it will fallback to the project root path."
   :commands eglot-ensure
   :bind (:map eglot-mode-map
               ("C-c k r" . jmpunkt/eglot-rename)
-              ("C-c C-f" . eglot-format-buffer)
               ("M-RET" . jmpunkt/eglot-code-actions))
   :init
   (defun jmpunkt/lsp-snippet-to-tempel (snippet)
@@ -837,17 +894,6 @@ paths, it will fallback to the project root path."
     (interactive)
     (meow--cancel-selection)
     (call-interactively 'eglot-code-actions))
-  (defvar jmpunkt/eglot-keys-map (make-keymap)
-    "Keymap which supersedes the default eglot keymap")
-  (define-minor-mode jmpunkt/eglot-keys-mode
-    "Minor mode allows to overwrite the Eglot keybinds for specific major modes."
-    :keymap jmpunkt/eglot-keys-map
-    (add-hook 'eglot-managed-mode-hook
-              (lambda () (jmpunkt/eglot-keys-mode))
-              nil
-              1)
-    (add-to-list 'emulation-mode-map-alists
-                 `((jmpunkt/eglot-keys-mode . ,jmpunkt/eglot-keys-map))))
   (defun jmpunkt/eglot-disable-mouse()
     ;; disable mouse support for flymake face
     (cl-loop for i from 1
@@ -1145,7 +1191,6 @@ paths, it will fallback to the project root path."
               ("C-j" . nil)
               ("C-c <return>" . org-edit-src-exit))
   :hook ((org-mode . (lambda ()
-                       (setq-local tab-width 2)
                        (add-to-list 'ispell-skip-region-alist
                                     '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
                        (add-to-list 'ispell-skip-region-alist
@@ -1290,9 +1335,9 @@ paths, it will fallback to the project root path."
 ;;;; * GraphQL
 (use-package graphql-mode
   :defer t
-  :bind (:map graphql-mode-map
-              ("C-c C-f" . prettier-buffer))
-  :mode ("\\.graphql\\'"))
+  :mode ("\\.graphql\\'")
+  :fmt (graphql-mode . fmt/prettier-buffer)
+  :hook (graphql-mode . fmt/prettier-on-save-mode))
 
 ;;; * Text Files
 ;;;; * reStructuredText
@@ -1325,9 +1370,7 @@ paths, it will fallback to the project root path."
 (use-package sql
   :defer t
   :mode ("\\.sql\\'" . sql-mode)
-  :hook (sql-mode . (lambda () (setq-local tab-width 2)))
-  :bind (:map sql-mode-map
-              ("C-c C-f" . pgformatter-buffer))
+  :fmt (sql-mode . fmt/pgformatter-buffer)
   :config
   (sql-highlight-postgres-keywords))
 
@@ -1338,16 +1381,13 @@ paths, it will fallback to the project root path."
   :hook (haskell-mode . eglot-ensure))
 
 ;;;; * Typst
-
 (use-package typst-ts-mode
   :defer t
   :mode "\\.typ\\'"
-  :hook ((typst-ts-mode . eglot-ensure)
-         (typst-ts-mode . typstfmt-on-save-mode))
-  :bind ((:map typst-ts-mode-map
-               ("C-c C-f" . typstfmt-buffer))
-         (:map jmpunkt/eglot-keys-map
-               ("C-c C-f" . typstfmt-buffer)))
+  :hook ((typst-ts-mode . fmt-mode)
+         (typst-ts-mode . eglot-ensure)
+         (typst-ts-mode . fmt/typstfmt-on-save-mode))
+  :fmt (typst-ts-mode . fmt/typstfmt-buffer)
   :config
   (require 'eglot)
   (add-to-list 'eglot-server-programs '((typst-ts-mode) . ("typst-lsp"))))
@@ -1357,15 +1397,9 @@ paths, it will fallback to the project root path."
   :defer t
   :mode "\\.nix\\'"
   :hook ((nix-mode . eglot-ensure)
-         (nix-mode . alejandra-on-save-mode)
-         (nix-mode . jmpunkt/eglot-keys-mode)
-         (nix-mode . (lambda ()
-                       (setq-local tab-width 2))))
-  :bind ((:map nix-mode-map
-               ("C-c C-f" . alejandra-buffer))
-         (:map jmpunkt/eglot-keys-map
-               ("C-c C-f" . alejandra-buffer)))
-  :init
+         (nix-mode . fmt/alejandra-on-save-mode)
+         (nix-mode . jmpunkt/eglot-keys-mode))
+  :fmt (nix-mode . fmt/alejandra-buffer)
   :config
   (require 'eglot)
   (add-to-list 'eglot-server-programs '(nix-mode . ("nil"))))
@@ -1375,6 +1409,7 @@ paths, it will fallback to the project root path."
   :defer t
   :mode ("\\.py\\'" . python-ts-mode)
   :hook (python-base-mode . eglot-ensure)
+  :fmt (python-mode . fmt/ruff-buffer)
   :config (setq python-indent-offset 4))
 
 ;;;; * Dart
@@ -1391,8 +1426,7 @@ paths, it will fallback to the project root path."
               ("C-c k r" . rust-run)
               ("C-c k c" . rust-check)
               ("C-c k C" . rust-clippy)
-              ("C-c k b" . rust-compile)
-              ("C-c C-f" . rust-format-buffer)))
+              ("C-c k b" . rust-compile)))
 
 ;;;; * Fish
 (use-package fish-mode
@@ -1404,19 +1438,18 @@ paths, it will fallback to the project root path."
   :defer t
   :mode ("\\.html\\'" . html-mode)
   :hook ((html-mode . eglot-ensure)
-         (html-mode . prettier-on-save-mode)))
+         (html-mode . fmt/prettier-on-save-mode))
+  :fmt (html-mode . fmt/prettier-buffer))
 
 (use-package css-mode
   :defer t
   :mode (("\\.css\\'" . css-ts-mode)
          ("\\.scss\\'" . scss-mode))
   :hook ((css-base-mode . eglot-ensure)
-         (css-base-mode . prettier-on-save-mode)
+         (css-base-mode . fmt/prettier-on-save-mode)
          (scss-base-mode . eglot-ensure)
-         (scss-mode . prettier-on-save-mode))
-  :bind (:map css-base-mode-map
-              ("C-c C-f" . prettier-buffer))
-
+         (scss-mode . fmt/prettier-on-save-mode))
+  :fmt (css-base-mode . fmt/prettier-buffer)
   :config
   (setq css-indent-offset 2))
 
@@ -1424,22 +1457,22 @@ paths, it will fallback to the project root path."
   :mode (("\\.ts\\'" . typescript-ts-mode)
          ("\\.tsx\\'" . tsx-ts-mode))
   :hook ((typescript-ts-base-mode . eglot-ensure)
-         (typescript-ts-base-mode . prettier-on-save-mode))
-  :bind (:map typescript-ts-base-mode-map
-              ("C-c C-f" . prettier-buffer)))
+         (typescript-ts-base-mode . fmt/biome-buffer))
+  :fmt (typescript-ts-base-mode . fmt/biome-buffer))
+
+(use-package json-ts-mode
+  :defer t
+  :mode (("\\.json\\'" . json-ts-mode)
+         ("flake.lock\\'" . json-ts-mode))
+  :fmt (json-ts-mode . fmt/biome-buffer))
 
 (use-package js
   :defer t
   :mode (("\\.js\\'" . js-ts-mode)
-         ("\\.jsx\\'" . js-jsx-mode)
-         ("\\.json\\'" . js-json-mode)
-         ("\\.jsonc\\'" . js-json-mode)
-         ("flake.lock\\'" . js-json-mode))
+         ("\\.jsx\\'" . js-jsx-mode))
   :hook ((js-base-mode . eglot-ensure)
-         (js-base-mode . prettier-on-save-mode))
-  :init
-  :bind (:map js-base-mode-map
-              ("C-c C-f" . prettier-buffer))
+         (js-base-mode . fmt/biome-buffer))
+  :fmt (js-base-mode . fmt/biome-buffer)
   :config
   (setq js-indent-level 2))
 

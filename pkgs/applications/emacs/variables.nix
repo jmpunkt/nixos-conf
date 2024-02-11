@@ -27,6 +27,11 @@ in {
       eslint-lsp
       nil
       typst-lsp
+      # NOTE: not a single application
+      (python3.withPackages (p: (with p; [
+        python-lsp-server
+        python-lsp-ruff
+      ])))
     ];
     org = with pkgs; [
       # graphs
@@ -43,6 +48,9 @@ in {
       nodePackages.prettier
       alejandra
       typstfmt
+      ruff
+      biome
+      (rustfmt.override {asNightly = true;})
     ];
   in
     core ++ org ++ lsp ++ formatter;

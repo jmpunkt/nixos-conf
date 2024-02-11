@@ -487,14 +487,20 @@ If the cursor is on the last promt, then we want to insert at the current positi
            (node (if (meow--selection-type)
                      (treesit-node-on (region-beginning) (region-end))
                    (treesit-node-at (point))))
-           (target (if (meow--selection-type) (treesit-node-parent node) node))
-           (m (if back (treesit-node-end target) (treesit-node-start target)))
-           (p (if back (treesit-node-start target) (treesit-node-end target))))
-      (when (and m p)
-        (thread-first
-          (meow--make-selection '(expand . parent) m p)
-          (meow--select))
-        (meow--maybe-highlight-num-positions))))
+           (target (if (meow--selection-type) (treesit-node-parent node) node)))
+      ;; If the parent does not expand the current selection, then use
+      ;; their parent instead.
+      (when (and
+             (equal (treesit-node-end target) (treesit-node-end node))
+             (equal (treesit-node-start target) (treesit-node-start node)))
+        (setq target (treesit-node-parent target)))
+      (let ((m (if back (treesit-node-end target) (treesit-node-start target)))
+            (p (if back (treesit-node-start target) (treesit-node-end target))))
+        (when (and m p)
+          (thread-first
+            (meow--make-selection '(expand . parent) m p)
+            (meow--select))
+          (meow--maybe-highlight-num-positions)))))
   (defun jmpunkt/meow--bound-of-treesit (symbol)
     (if-let ((node (cadr (jmpunkt/treesit-thing-at-point symbol))))
         `(,(treesit-node-start node) . ,(treesit-node-end node))))

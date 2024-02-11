@@ -1173,6 +1173,7 @@ paths, it will fallback to the project root path."
 (use-package diff-hl
   :hook ((magit-pre-refresh . diff-hl-magit-pre-refresh)
          (magit-post-refresh . diff-hl-magit-post-refresh)
+         (dired-mode . diff-hl-dired-mode)
          (after-init . global-diff-hl-mode)))
 
 ;;;; * Org

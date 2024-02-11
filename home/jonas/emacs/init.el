@@ -166,8 +166,7 @@ eglot (if available)."
       (:override () jmpunkt)
     (let* ((server (eglot-current-server))
            (nick (and server (eglot-project-nickname server)))
-           (pending (and server (hash-table-count
-                                 (jsonrpc--request-continuations server))))
+           (pending (and server (jsonrpc-continuation-count server)))
            (last-error (and server (jsonrpc-last-error server)))
            (is-pending (cl-plusp pending))
            (is-error (or last-error nil))

@@ -932,7 +932,9 @@ paths, it will fallback to the project root path."
               ([f8] . flymake-show-buffer-diagnostics))
   :hook ((prog-mode . flymake-mode)
          (markdown-mode . flymake-mode)
-         (text-mode . flymake-mode))
+         (text-mode . flymake-mode)
+         (flymake-diagnostics-buffer-mode . visual-line-mode)
+         (flymake-project-diagnostics-mode . visual-line-mode))
   :config
   (setq flymake-mode-line-counter-format
         '(" " flymake-mode-line-error-counter

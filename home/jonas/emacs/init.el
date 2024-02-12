@@ -748,7 +748,11 @@ If the cursor is on the last promt, then we want to insert at the current positi
                           (flyspell-mode 1)))))
   :config
   (setq flyspell-issue-welcome-flag nil
-        flyspell-issue-message-flag nil))
+        flyspell-issue-message-flag nil)
+  (custom-set-faces
+   ;; TODO: for now use same style for duplicate and incorrect
+   `(flyspell-duplicate ((t (:underline (:style wave :color ,(modus-themes-get-color-value 'underline-note))))))
+   '(flyspell-incorrect ((t (:inherit modus-themes-lang-note))))))
 
 (use-package flyspell-correct
   :after flyspell

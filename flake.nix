@@ -169,7 +169,7 @@
           gamma64 = packageSystem (mkSystem
             {
               inherit system;
-              nixpkgs = unstable;
+              nixpkgs = stable;
               modules = [
                 ./machines/gamma64/configuration.nix
                 hardware.nixosModules.lenovo-thinkpad-e495

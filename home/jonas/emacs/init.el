@@ -919,7 +919,7 @@ paths, it will fallback to the project root path."
   (jmpunkt/eglot-disable-mouse)
   (setq eglot-extend-to-xref t
         eglot-stay-out-of '(company)
-        eglot-events-buffer-size 0
+        eglot-events-buffer-config '(:size 0 :format lisp)
         eglot-sync-connect 0
         eglot-confirm-server-initiated-edits nil))
 

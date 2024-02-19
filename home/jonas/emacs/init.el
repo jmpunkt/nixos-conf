@@ -923,6 +923,10 @@ paths, it will fallback to the project root path."
         eglot-sync-connect 0
         eglot-confirm-server-initiated-edits nil))
 
+(use-package eglot-booster
+	:after eglot
+	:config	(eglot-booster-mode))
+
 (use-package eglot-x
   :after eglot)
 

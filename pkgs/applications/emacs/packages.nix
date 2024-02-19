@@ -61,6 +61,7 @@ with epkgs.melpaPackages;
         jmpunktPkgs.dart-ts-mode
         jmpunktPkgs.ligature
         jmpunktPkgs.eglot-x
+        jmpunktPkgs.eglot-booster
         jmpunktPkgs.typst-ts-mode
         jmpunktPkgs.ox-typst
         (jmpunktPkgs.nixosPaths (import ./variables.nix {inherit pkgs;}))

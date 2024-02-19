@@ -18,6 +18,7 @@ in {
       pandoc # markdown, etc
       git
       typst
+      jmpunkt.emacs-lsp-booster # eglot, lsp
     ];
     lsp = with pkgs; [
       ccls

@@ -1131,8 +1131,26 @@ paths, it will fallback to the project root path."
                ("C-x G" . magit-status-here))
          (:map magit-status-mode-map
                ("t" . magit-discard)
-               ("T" . magit-tag)))
+               ("T" . magit-tag)
+               ("C-t" . magit-notes)
+               ("L" . magit-log)
+               ("C-l" . magit-log-refresh)))
   :config
+  (transient-insert-suffix 'magit-dispatch
+    (kbd "h")
+    '("t" "Discard" magit-discard))
+  (transient-insert-suffix 'magit-dispatch
+    (kbd "h")
+    '("T" "Tag" magit-tag))
+  (transient-insert-suffix 'magit-dispatch
+    (kbd "h")
+    '("C-t" "Notes" magit-notes))
+  (transient-insert-suffix 'magit-dispatch
+    (kbd "h")
+    '("L" "Log" magit-log))
+  (transient-insert-suffix 'magit-dispatch
+    (kbd "h")
+    '("C-l" "Log" magit-log-refresh))
   (setq magit-slow-confirm '(magit-discard))
   (setq magit-status-sections-hook
         '(magit-insert-status-headers

@@ -12,6 +12,7 @@ with epkgs.melpaPackages;
     editorconfig
     reformatter
     gcmh
+    parinfer-rust-mode
     # Org
     org-bullets
     ob-async

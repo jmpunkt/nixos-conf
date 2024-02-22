@@ -109,7 +109,6 @@ eglot (if available)."
   (defun jmpunkt/default-init ()
     (subword-mode 1)
     (electric-indent-local-mode 1)
-    (electric-pair-local-mode 1)
     (auto-fill-mode 1)
     (show-paren-mode 1)
     (display-line-numbers-mode 1)
@@ -271,7 +270,7 @@ eglot (if available)."
                             "|->" "<->" "<~~" "<~" "<~>" "~~" "~~>"
                             "~>" "[||]" "|]" "[|" "|}" "{|" "[<" ">]"
                             "|>" "<|" "||>" "<||" "|||>" "<|||" "<|>"
-                            ":=" "::=" "/=" "//=" "/==" )))
+                            ":=" "::=" "/=" "//=" "/==")))
 
 (use-package editorconfig
   :ensure t
@@ -420,7 +419,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
                                     (min (cadr prop) new-length)
                                     (caddr prop)
                                     filtered))
-    filtered))
+     filtered))
   (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
   (setq eshell-history-size 1000
         eshell-hist-ignoredups t))
@@ -924,8 +923,8 @@ paths, it will fallback to the project root path."
         eglot-confirm-server-initiated-edits nil))
 
 (use-package eglot-booster
-	:after eglot
-	:config	(eglot-booster-mode))
+  :after eglot
+  :config (eglot-booster-mode))
 
 (use-package eglot-x
   :after eglot)
@@ -1453,6 +1452,10 @@ paths, it will fallback to the project root path."
 (use-package fish-mode
   :defer t
   :mode "\\.fish\\'")
+
+;;;; * ELisp
+(use-package parinfer-rust-mode
+  :hook emacs-lisp-mode)
 
 ;;;; * WEB
 (use-package sgml-mode

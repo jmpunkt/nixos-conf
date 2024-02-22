@@ -1413,16 +1413,15 @@ paths, it will fallback to the project root path."
   (add-to-list 'eglot-server-programs '((typst-ts-mode) . ("typst-lsp"))))
 
 ;;;; * Nix
-(use-package nix-mode
+(use-package nix-ts-mode
   :defer t
   :mode "\\.nix\\'"
-  :hook ((nix-mode . eglot-ensure)
-         (nix-mode . fmt/alejandra-on-save-mode)
-         (nix-mode . jmpunkt/eglot-keys-mode))
-  :fmt (nix-mode . fmt/alejandra-buffer)
+  :hook ((nix-ts-mode . eglot-ensure)
+         (nix-ts-mode . fmt/alejandra-on-save-mode))
+  :fmt (nix-ts-mode . fmt/alejandra-buffer)
   :config
   (require 'eglot)
-  (add-to-list 'eglot-server-programs '(nix-mode . ("nil"))))
+  (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nil"))))
 
 ;;;; * Python
 (use-package python

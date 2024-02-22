@@ -45,7 +45,6 @@ with epkgs.melpaPackages;
     # Misc
     yaml-mode
     fish-mode
-    nix-mode
     graphql-mode
     mermaid-mode
     # Presentation
@@ -54,6 +53,8 @@ with epkgs.melpaPackages;
     # Programming
     rust-mode
     haskell-mode
+    nix-ts-mode
+    nix-mode
   ]
   ++ (with epkgs.elpaPackages; [undo-tree org])
   ++ (

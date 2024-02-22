@@ -1,0 +1,3 @@
+PIN_COMPATIBLE=elite_c
+SERIAL_DRIVER=vendor
+OLED_ENABLE = yes

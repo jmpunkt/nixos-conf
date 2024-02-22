@@ -1,0 +1,48 @@
+* Split Keyboard
+
+** Parts
+- 2x Sweep36 (https://github.com/sadekbaroudi/sweep36)
+  - reversible
+  - hotswap
+  - OLED support
+  - Kailh Choc v1
+- 2x Frood RP2040 Controller
+  (https://42keebs.eu/shop/parts/controllers/frood-rp2040-pro-micro-controller/?attribute_colour=Black)
+  - Promicro layout
+  - Elite-C extra PINs
+- 2x OLED (4 Pin, 128x32)
+- 36x Kailh Choc v1 Sunset Tactile Switches
+- 36x Kailh Hotswap Sockets
+- 36x Kailh Choc v1 Compatible Key Caps
+- 1x TRRS Cable (30cm)
+- 2x TRRS Connector (through hole)
+- 1x USB-C to USB-A Cable (2m)
+
+** Configuration Notice
+
+The PCB is reversible, thus the pins layout is the same for both
+sides. Since both sides use the same layout, it is required to flip
+the controller on one side.
+
+#+BEGIN_SRC json
+{
+	"matrix_pins": {
+		"direct": [
+			["GP9", "GP26", "GP27", "GP28", "GP29"],
+			["GP8", "GP4", "GP5", "GP6", "GP7"],
+			["GP20", "GP23", "GP21", "GP12", "GP13"],
+			["GP17", "GP16", "GP14", null, null]
+		]
+	},
+	"split": {
+		"enabled": true
+	}
+}
+#+END_SRC
+
+** Flash
+
+#+BEGIN_SRC sh
+nix build .#keyboard
+dd if=./result/image.uf2 of=/dev/sdX
+#+END_SRC

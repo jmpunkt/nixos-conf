@@ -202,7 +202,8 @@ eglot (if available)."
         icon-title-format "%b"
         display-line-numbers-grow-only t
         auth-source-save-behavior nil
-        uniquify-buffer-name-style 'forward)
+        uniquify-buffer-name-style 'forward
+        history-delete-duplicates t)
   (setq-default mode-line-format
                 '((:eval
                    (simple-mode-line-render

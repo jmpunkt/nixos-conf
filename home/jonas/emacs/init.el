@@ -1010,30 +1010,6 @@ paths, it will fallback to the project root path."
         enable-recursive-minibuffers t
         completion-ignore-case t))
 
-;; This setup comes close to vertico. However, it is not perfect and
-;; the following things are missing:
-;; - groups (not using it anyways?)
-;; - highlight whole line
-;; - marginalia looks a bit strange?
-;; - when typing all candidates are hidden (but counted) -> echo area infers
-(use-package icomplete
-  :hook ((icomplete-minibuffer-setup . (lambda () (setq truncate-lines t)))
-         ;;(after-init . icomplete-vertical-mode)
-         )
-  :config
-  (setq icomplete-scroll t)
-  (setq icomplete-show-matches-on-no-input t)
-  (setq icomplete-compute-delay 0.05)
-  (set-face-attribute 'icomplete-selected-match nil :inherit 'region)
-  ;; skip all icomplete maps and inherit directly from minibuffer
-  (setq icomplete-vertical-mode-minibuffer-map (make-composed-keymap nil minibuffer-local-map))
-  :bind (:map icomplete-vertical-mode-minibuffer-map
-              ("<return>". icomplete-force-complete-and-exit)
-              ([remap minibuffer-force-complete-and-exit] . icomplete-force-complete-and-exit)
-              ([remap minibuffer-force-complete] . icomplete-force-complete)
-              ([remap next-line] . icomplete-forward-completions)
-              ([remap previous-line] . icomplete-backward-completions)))
-
 (use-package embark
   :bind (("C-c C-r" . embark-act)
          ("C-h B" . embark-bindings))

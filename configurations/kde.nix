@@ -13,12 +13,24 @@
     spectacle
     ktouch
     kdialog
-    krita
     skanlite
     pinentry-qt
     partition-manager
   ];
+
+  xdg.portal = {
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-kde
+    ];
+  };
+
   services.xserver = {
+    enable = true;
+    libinput = {
+      enable = true;
+      touchpad.accelProfile = "flat";
+    };
+
     # + WAYLAND
     desktopManager.plasma5.runUsingSystemd = true;
     displayManager.sessionPackages = [

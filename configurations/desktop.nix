@@ -14,26 +14,40 @@
     dates = "weekly";
     options = "--delete-older-than 14d";
   };
-  xdg = {
-    portal = {
-      enable = true;
-      extraPortals = with pkgs; [
-        xdg-desktop-portal-kde
-      ];
-    };
-  };
+  xdg.portal.enable = true;
   programs.dconf.enable = true;
   environment.systemPackages = with pkgs; [
-    ntfsprogs
-    dosfstools
-    xfsprogs.bin
-    jfsutils
-    f2fs-tools
-    ntfs3g
+    # gui
+    audacious
+    binutils-unwrapped
     chromium
+    discord
     firefox-bin
-    nix-tree
+    gnupg
+    krita
     mpv
+    tdesktop
+    thunderbird
+    jmpunkt.chatterino2-nigthly
+    jmpunkt.emacs
+
+    # cli
+    git
+    hyperfine
+    nix-tree
+    sqlite
+    tokei
+
+    # spelling
+    aspell
+    aspellDicts.de
+    aspellDicts.en
+    aspellDicts.en-computers
+    aspellDicts.en-science
+    enchant
+    hunspell
+    hunspellDicts.en-us-large
+    jmpunkt.hunspellDicts.de-de
   ];
   fonts = {
     packages = with pkgs; [
@@ -72,7 +86,6 @@
         support32Bit = true;
       };
     };
-
     printing = {
       enable = true;
       drivers = with pkgs; [gutenprint hplip];
@@ -80,12 +93,8 @@
     avahi.enable = true;
     avahi.nssmdns = true;
     avahi.openFirewall = true;
+  };
 
-    xserver = {
-      enable = true;
-      libinput = {
-        enable = true;
-        touchpad.accelProfile = "flat";
       };
     };
   };

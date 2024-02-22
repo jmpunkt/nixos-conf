@@ -2,7 +2,6 @@
   config,
   pkgs,
   lib,
-  xdgData,
   ...
 }: {
   imports = import ../../modules/all-home-manager.nix;
@@ -13,32 +12,6 @@
     paper = "de_DE.utf8";
     time = "de_DE.utf8";
   };
-  home.packages = with pkgs; [
-    binutils-unwrapped
-    dropbox-cli
-    cryptsetup
-    gnupg
-    feh
-    thunderbird
-    audacious
-    discord
-    tdesktop
-    tokei
-    sqlite
-    git
-    hyperfine
-    enchant
-    hunspell
-    hunspellDicts.en-us-large
-    jmpunkt.hunspellDicts.de-de
-    aspell
-    aspellDicts.de
-    aspellDicts.en
-    aspellDicts.en-computers
-    aspellDicts.en-science
-    jmpunkt.chatterino2-nigthly
-    jmpunkt.emacs
-  ];
   xdg.configFile = {
     "emacs/init.el".text = builtins.readFile ./emacs/init.el;
     # since emacs 27.1
@@ -51,6 +24,7 @@
   manual.manpages.enable = false;
   home.sessionVariables = {
     MOZ_ENABLE_WAYLAND = 1;
+    NIXOS_OZONE_WL = 1;
   };
   programs = {
     direnv = {
@@ -73,6 +47,5 @@
       };
     };
   };
-  services.dropbox.enable = true;
   home.stateVersion = "18.09";
 }

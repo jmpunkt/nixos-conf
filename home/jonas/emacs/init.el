@@ -323,11 +323,15 @@ The INNER must be contained by the outer. See
                      `(,inner-node ,outer-node)))
                definitions))))
 ;;;; Shell
+(use-package eat
+  :commands eat)
+
 (use-package term
   :hook
   (term-mode . (lambda ()
                  (add-hook 'meow-insert-enter-hook #'term-char-mode nil t)
                  (add-hook 'meow-insert-exit-hook #'term-line-mode nil t))))
+
 (use-package comint
   :bind (:map comint-mode-map
               ("C-j" . comint-next-matching-input-from-input)

@@ -58,6 +58,7 @@ with epkgs.melpaPackages;
     nix-mode
   ]
   ++ (with epkgs.elpaPackages; [undo-tree org])
+  ++ (with epkgs.nongnuPackages; [eat])
   ++ (
     with epkgs.manualPackages;
       [

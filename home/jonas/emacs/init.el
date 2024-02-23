@@ -1536,6 +1536,14 @@ paths, it will fallback to the project root path."
   (setq-default pdf-view-display-size 'fit-page)
   (setq pdf-view-resize-factor 1.1))
 
+;;; * Misc
+(use-package biome
+  :commands biome
+  :config
+  (setq biome-query-coords
+      '(("Berlin, Germany" 52.52437 13.41053)
+        ("Darmstadt, Germany" 49.87167 8.65027))))
+
 ;;; * -- End
 (provide 'init)
 ;;; init.el ends here

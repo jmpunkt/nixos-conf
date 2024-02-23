@@ -13,6 +13,7 @@ with epkgs.melpaPackages;
     reformatter
     gcmh
     parinfer-rust-mode
+    biome
     # Org
     org-bullets
     ob-async

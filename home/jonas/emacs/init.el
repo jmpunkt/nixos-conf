@@ -1544,6 +1544,12 @@ paths, it will fallback to the project root path."
       '(("Berlin, Germany" 52.52437 13.41053)
         ("Darmstadt, Germany" 49.87167 8.65027))))
 
+(use-package proced
+  :config
+  (setq proced-tree-flag t
+        proced-auto-update-flag t
+        proced-enable-color-flag t))
+
 ;;; * -- End
 (provide 'init)
 ;;; init.el ends here

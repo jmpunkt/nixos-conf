@@ -94,8 +94,4 @@
     avahi.nssmdns = true;
     avahi.openFirewall = true;
   };
-
-      };
-    };
-  };
 }

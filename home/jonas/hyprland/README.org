@@ -1,0 +1,82 @@
+#+TITLE: Desktop Setup
+
+/Some thoughts about my current Plasma setup and how I use it/
+
+There are inconveniences using Plasma instead of a custom display manager.
+
+1. The most annoying (but also fixable) is the runner/menu. Invoking
+   the menu/runner requires a noticeable amount of time to start which
+   results in missed keystrokes. Most of the time the runner runs the
+   correct application due to caching (keeping the last invoked
+   command as a fill), but requires at least two invocations. The UX
+   of the runner/menu is bad in Plasma.
+
+2. When using Nix, it is hard to capture the state of the Plasma
+   configuration. Therefore, my configuration is mostly vanilla. Since
+   I am using Emacs anyway, most features provided by Plasma are not
+   used anyway. I use Plasma functionality due to habit, laziness, or
+   muscle memory.
+
+3. For some applications Plasma remembers their dimensions and
+   placement (not all for some reason). However, after rebooting this
+   information are no longer available and Plasma uses older
+   dimensions/placement. On top of that, the behavior is also
+   different for my laptop and desktop machine.
+
+* Requirements
+
+Here are some strict requirements for my setup. 
+
+** System Tray
+I use applications which run in the background when closed.
+
+** Redshift
+I like this feature.
+
+** Monitor Configuration
+You do not have to configure your monitor setup often, but when you
+do, it is annoying with the CLI.
+
+** Audio Configuration
+I want fast access to audio settings. Mainly volume control on my
+desktop. On my laptop volume control is provided through shortcuts.
+
+** Bluetooth Configuration
+Useful for wireless headsets.
+
+** Network
+Mostly for Wi-Fi networks. Preferably a GUI instead of the terminal. Or
+maybe there is a way to use Emacs to configure it.
+
+** Notifications
+Always useful.
+
+** Application Launcher
+Somehow I need to launch applications, but I do not want to use Emacs
+for it.
+
+** Calendar
+Having the time and date inside the taskbar is necessary for me. A
+calendar widget is useful but not strictly necessary.
+
+** Battery Information
+For my laptop I need a visual indicator of the battery
+status.
+
+* Optional
+
+Here are optional requirements which may not be related to a desktop
+manager.
+
+** Weather
+I do not use that very often. But with a proper setup I might start
+using it. Plasma only provides limit information about the weather in
+its taskbar widget. However, I need additional information (mostly
+rain information).
+
+** File Manager
+Emacs can be used as a fully functional file manager
+(dired-mode). However, the user experience for decrypting a storage
+device might not be same. Currently, Dolphin allows decrypting devices
+by a single click, followed by a password prompt. For Emacs, I have not
+found a similar setup yet.

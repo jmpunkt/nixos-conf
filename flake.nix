@@ -17,6 +17,7 @@
       inputs.nixpkgs.follows = "unstable";
     };
     utils.url = "github:numtide/flake-utils";
+    anyrun.url = "github:Kirottu/anyrun";
   };
   outputs = {
     self,
@@ -26,6 +27,7 @@
     home-manager,
     rust-overlay,
     emacs-overlay,
+    anyrun,
     utils,
   }: let
     allPackagesOverlay = final: prev:
@@ -124,6 +126,7 @@
               ];
             };
         in {
+          keyboard = self.legacyPackages.${system}.callPackage ./qmk {};
           sd-rpi2 = packageSD rpi2System;
           rpi2 = packageSystem rpi2System;
           iso-minimal = packageISO (

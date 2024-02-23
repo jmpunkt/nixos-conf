@@ -30,7 +30,7 @@
       enable = true;
       touchpad.accelProfile = "flat";
     };
-
+    layout = config.console.keyMap;
     # + WAYLAND
     desktopManager.plasma5.runUsingSystemd = true;
     displayManager.sessionPackages = [

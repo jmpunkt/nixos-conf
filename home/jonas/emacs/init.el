@@ -234,6 +234,7 @@ eglot (if available)."
   (toggle-scroll-bar -1)
   (global-so-long-mode 1)
   (electric-indent-mode -1)
+  (electric-pair-mode -1)
 
   (global-prettify-symbols-mode -1)
   (global-eldoc-mode -1)

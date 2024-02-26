@@ -101,7 +101,11 @@ eglot (if available)."
   (defun xdg-open-file ()
     "In dired or buffer, open the file named on this line."
     (interactive)
-    (call-process "xdg-open" nil 0 nil (or (dired-get-filename nil t) buffer-file-name)))
+    (call-process "xdg-open" nil 0 nil (or
+                                        (when (eq major-mode 'dired-mode)
+                                          (dired-get-filename nil t)
+                                          (dired-current-directory))
+                                        buffer-file-name)))
   (defun jmpunkt/join-line ()
     (interactive)
     (next-line)

@@ -1138,6 +1138,12 @@ paths, it will fallback to the project root path."
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
   (setq cape-dabbrev-min-length 3))
 
+(use-package rg
+  :commands (rg-menu)
+  :config
+  (rg-enable-default-bindings)
+  (rg-enable-menu))
+
 ;;;; * Git
 (use-package magit
   :bind ((:map global-map

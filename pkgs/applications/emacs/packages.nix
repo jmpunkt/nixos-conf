@@ -14,6 +14,7 @@ with epkgs.melpaPackages;
     gcmh
     parinfer-rust-mode
     biome
+    transient-dwim
     # Org
     org-bullets
     ob-async

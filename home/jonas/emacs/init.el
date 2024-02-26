@@ -703,6 +703,10 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (setq dired-listing-switches "-alh"
         dired-kill-when-opening-new-dired-buffer t))
 
+(use-package transient-dwim
+  :ensure t
+  :bind ("M-=" . transient-dwim-dispatch))
+
 ;;;; * DirEnv
 (use-package envrc
   :bind-keymap ("C-c e" . envrc-command-map)

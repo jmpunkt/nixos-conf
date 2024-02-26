@@ -1,29 +1,47 @@
-* Split Keyboard
+#+TITLE: Split Keyboard
 
-** Parts
+* Parts
 - 2x Sweep36 (https://github.com/sadekbaroudi/sweep36)
   - reversible
   - hotswap
   - OLED support
   - Kailh Choc v1
-- 2x Frood RP2040 Controller
-  (https://42keebs.eu/shop/parts/controllers/frood-rp2040-pro-micro-controller/?attribute_colour=Black)
+- 2x Frood RP2040 Controller (Rev 9) (https://github.com/piit79/Frood)
   - Promicro layout
   - Elite-C extra PINs
-- 2x OLED (4 Pin, 128x32)
+
+  *WARNING*: This board utilizes the pin GP17 for an on-board LED,
+  resulting in conflicts with the Sweep36 board. Sweep36 requires
+  *ALL* pins. However, if you use the GP15 instead of the GP17, you
+  can still use all keys. Otherwise, one key will not be usable. Now
+  you can use the board like it does not have an on-board LED.
+
+  /Alternatively/ (not done, only theorized) solder a wire from the
+  non-working key to the pin GP6 (B1 label on the board). Make sure
+  to solder on the right side (not the ground side). Then replace
+  GP17 with GP6.
+
+  The USB port is not perfectly centered, thus when flipping the board
+  some USB cables might not fit into the port. The plastic of the USB
+  cable interferes with the PCB. Try to solder the flipped PCB (right
+  hand side) a little higher than the other.
+
+- 1x OLED (4 Pin, 128x32)
 - 36x Kailh Choc v1 Sunset Tactile Switches
 - 36x Kailh Hotswap Sockets
 - 36x Kailh Choc v1 Compatible Key Caps
-- 1x TRRS Cable (30cm)
+- 1x TRRS Cable (30 cm)
 - 2x TRRS Connector (through hole)
-- 1x USB-C to USB-A Cable (2m)
+- 1x USB-C to USB-A Cable (2 m)
+- 6x Rubber Feet (3mm height, 10mm diameter)
 
-** Configuration Notice
+* Configuration Notice
 
-The PCB is reversible, thus the pins layout is the same for both
+The PCB is reversible, thus the pin's layout is the same for both
 sides. Since both sides use the same layout, it is required to flip
 the controller on one side.
 
+** Elite-C Without LED on GP17
 #+BEGIN_SRC json
 {
 	"matrix_pins": {
@@ -40,9 +58,26 @@ the controller on one side.
 }
 #+END_SRC
 
-** Flash
+** Elite-C With LED on GP17 (Frood)
+#+BEGIN_SRC json
+{
+	"matrix_pins": {
+		"direct": [
+			["GP9", "GP26", "GP27", "GP28", "GP29"],
+			["GP8", "GP4", "GP5", "GP6", "GP7"],
+			["GP20", "GP23", "GP21", "GP12", "GP13"],
+			["GP15", "GP16", "GP14", null, null]
+		]
+	},
+	"split": {
+		"enabled": true
+	}
+}
+#+END_SRC
+
+* Flash
 
 #+BEGIN_SRC sh
 nix build .#keyboard
-dd if=./result/image.uf2 of=/dev/sdX
+doas dd if=result/image.uf2 of=/dev/disk/by-label/RPI-RP2
 #+END_SRC

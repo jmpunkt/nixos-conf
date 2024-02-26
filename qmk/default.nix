@@ -28,11 +28,11 @@ in
     '';
 
     buildPhase = ''
-      make sweeeeep:jmpunkt
+      make sweeeeep:default
     '';
 
     installPhase = ''
       mkdir -p $out/
-      mv sweeeeep_jmpunkt.uf2  $out/image.uf2
+      mv sweeeeep_default.uf2  $out/image.uf2
     '';
   }

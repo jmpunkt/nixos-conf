@@ -28,7 +28,11 @@
     enable = true;
     libinput = {
       enable = true;
-      touchpad.accelProfile = "flat";
+      touchpad = {
+        accelProfile = "flat";
+        naturalScrolling = true;
+        tapping = true;
+      };
     };
     layout = config.console.keyMap;
     # + WAYLAND

@@ -48,10 +48,6 @@
         PCIE_ASPM_ON_BAT = "powersupersave";
       };
     };
-    xserver.libinput.touchpad = {
-      naturalScrolling = true;
-      tapping = true;
-    };
   };
   system.stateVersion = "20.03";
 }

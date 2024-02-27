@@ -41,7 +41,18 @@
         emacs-overlay.overlays.package
       ];
     };
-    inherit (lib) mkUnstableOverlay mkSystem mkSystemCross mkPkgs packageSD packageISO packageSystem;
+    inherit
+      (lib)
+      mkUnstableOverlay
+      mkSystem
+      mkSystemCross
+      mkPkgs
+      packageSD
+      packageISO
+      packageSystem
+      packageVM
+      ;
+
     forAllSystems =
       utils.lib.eachDefaultSystem
       (system: {legacyPackages = mkPkgs system unstable [(mkUnstableOverlay system)];});
@@ -145,6 +156,26 @@
               modules = [(import ./machines/iso/configuration.nix)];
             }
           );
+          vm-alpha128 = packageVM (mkSystem
+            {
+              inherit system;
+              nixpkgs = stable;
+              modules = [
+                self.nixosModules.alpha128
+                "${stable}/nixos/modules/virtualisation/qemu-vm.nix"
+                ./configurations/vm-guest.nix
+              ];
+            });
+          vm-gamma64 = packageVM (mkSystem
+            {
+              inherit system;
+              nixpkgs = stable;
+              modules = [
+                self.nixosModules.gamma64
+                "${stable}/nixos/modules/virtualisation/qemu-vm.nix"
+                ./configurations/vm-guest.nix
+              ];
+            });
         };
       });
     forx86_64Systems =
@@ -158,14 +189,7 @@
               inherit system;
               nixpkgs = stable;
               modules = [
-                ./machines/alpha128/configuration.nix
-                hardware.nixosModules.common-pc
-                hardware.nixosModules.common-pc-ssd
-                hardware.nixosModules.common-cpu-amd
-                hardware.nixosModules.common-cpu-amd-pstate
-                hardware.nixosModules.common-gpu-amd
-                self.nixosModules.home-jonas
-                home-manager.nixosModules.home-manager
+                self.nixosModules.alpha128
               ];
             }
           );
@@ -173,14 +197,7 @@
             {
               inherit system;
               nixpkgs = stable;
-              modules = [
-                ./machines/gamma64/configuration.nix
-                hardware.nixosModules.lenovo-thinkpad-e495
-                hardware.nixosModules.common-pc-laptop-acpi_call
-                hardware.nixosModules.common-pc-laptop-ssd
-                self.nixosModules.home-jonas
-                home-manager.nixosModules.home-manager
-              ];
+              modules = [self.nixosModules.gamma64];
             });
         };
       });
@@ -205,6 +222,28 @@
             home-manager.users.jonas = ./home/jonas/home.nix;
           }
         );
+        gamma64 = {config, ...}: {
+          imports = [
+            ./machines/gamma64/configuration.nix
+            hardware.nixosModules.lenovo-thinkpad-e495
+            hardware.nixosModules.common-pc-laptop-acpi_call
+            hardware.nixosModules.common-pc-laptop-ssd
+            self.nixosModules.home-jonas
+            home-manager.nixosModules.home-manager
+          ];
+        };
+        alpha128 = {conifg, ...}: {
+          imports = [
+            ./machines/alpha128/configuration.nix
+            hardware.nixosModules.common-pc
+            hardware.nixosModules.common-pc-ssd
+            hardware.nixosModules.common-cpu-amd
+            hardware.nixosModules.common-cpu-amd-pstate
+            hardware.nixosModules.common-gpu-amd
+            self.nixosModules.home-jonas
+            home-manager.nixosModules.home-manager
+          ];
+        };
       };
     };
 }

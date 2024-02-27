@@ -100,4 +100,6 @@ in rec {
   # Provide the attribute path for building a NixOS system derivation.
   packageSystem = target:
     target.config.system.build.toplevel;
+  packageVM = target:
+    target.config.system.build.vm;
 }

@@ -1454,22 +1454,12 @@ paths, it will fallback to the project root path."
 ;;;; * Rust
 (use-package rust-mode
   :mode "\\.rs\\'"
-  :hook (rust-mode . eglot-ensure)
-  :bind (:map rust-mode-map
-              ("C-c k t" . rust-test)
-              ("C-c k r" . rust-run)
-              ("C-c k c" . rust-check)
-              ("C-c k C" . rust-clippy)
-              ("C-c k b" . rust-compile)))
+  :hook (rust-mode . eglot-ensure))
 
 ;;;; * Fish
 (use-package fish-mode
   :defer t
   :mode "\\.fish\\'")
-
-;;;; * ELisp
-(use-package parinfer-rust-mode
-  :hook emacs-lisp-mode)
 
 ;;;; * WEB
 (use-package sgml-mode

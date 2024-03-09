@@ -12,7 +12,6 @@ with epkgs.melpaPackages;
     editorconfig
     reformatter
     gcmh
-    parinfer-rust-mode
     biome
     transient-dwim
     rg

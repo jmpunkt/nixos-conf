@@ -1064,6 +1064,8 @@ paths, it will fallback to the project root path."
   :init
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
+  (setq register-preview-delay 0.5
+        register-preview-function #'consult-register-format)
   (advice-add #'register-preview :override #'consult-register-window)
   :config
   ;; ++ https://github.com/minad/consult/wiki#narrowing-which-key-help-without-delay

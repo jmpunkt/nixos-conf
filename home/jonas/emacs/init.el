@@ -226,11 +226,12 @@ eglot (if available)."
                        (:eval (jmpunkt/mode-line-major-mode))
                        (:eval mode-line-misc-info)))))))
   (set-face-attribute 'mode-line nil
-                      :height 1.0)
+                      :height 110)
   (set-face-attribute 'default nil
                       :font "Cascadia Code PL"
                       :weight 'regular
-                      :width 'normal)
+                      :width 'normal
+                      :height 110)
   (set-face-attribute 'variable-pitch nil
                       :font "Cascadia Code PL")
   (set-face-attribute 'fixed-pitch nil

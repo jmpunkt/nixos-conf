@@ -26,7 +26,6 @@
   cable interferes with the PCB. Try to solder the flipped PCB (right
   hand side) a little higher than the other.
 
-- 1x OLED (4 Pin, 128x32)
 - 36x Kailh Choc v1 Sunset Tactile Switches
 - 36x Kailh Hotswap Sockets
 - 36x Kailh Choc v1 Compatible Key Caps
@@ -78,6 +77,46 @@ the controller on one side.
 * Flash
 
 #+BEGIN_SRC sh
-nix build .#keyboard
-doas dd if=result/image.uf2 of=/dev/disk/by-label/RPI-RP2
+sh qmk/flash.sh
 #+END_SRC
+
+* Stands
+
+I use rubber spacers on the bottom of the PCB to prevent the keyboard
+from sliding on my desk. These spacers should be at least 3 mm
+tall. Put the spacers around the PCB to prevent the board from tilting
+when pressing the bottom rows. There should be two spacers on the top,
+two spacers on the bottom, and on spacers on the sides of the
+controller.
+
+** Thumb Pain
+After using the keyboard for a while your inner part of your thumb
+might start to hurt (right next to the nail). The pain is very
+unpleasant but can be fixed. Increasing the height of the top side of
+the board, by putting multiple spacers on-top of each other. I put
+another 3 mm on the top side. Now the bottom side spacers are 3 mm
+tall and the top side are 6 mm tall.
+
+* Issues
+** Pending
+
+*** Keyboard Can Not Wake System
+When the computer is sleeping, then it can not be woken up with this
+keyboard. Other peripherals work.
+
+** Fixed
+
+*** Keyboard Not Responding After System Woken From Sleep
+When putting the computer to sleep and wake it after wards, then the
+keyboard is not responding. The keyboard needs to be re-plugged.
+
+Fixed by adding the entry ="suspend_wakeup_delay": 200= to the =usb=
+section in the =info.json=.
+
+*** Keyboard Not Responding on System Boot
+Currently the keyboard is not available when I start the computer. I
+have to re-plug the keyboard to be able to use it.
+
+Fixed by adding the entry ="suspend_wakeup_delay": 1000= to the =usb=
+section in the =info.json=. This requires a higher delay than previous
+issue.

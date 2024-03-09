@@ -3,279 +3,198 @@
 
 // Defines names for use in layer keycodes and the keymap
 enum layer_names {
-    _COLEMAK,
     _QWERTY,
+    _GAME,
     _LOWER,
     _RAISE,
-    _ADJUST,
     _FUNC,
-};
-
-// custom keycodes
-enum custom_keycodes {
-  C_FN = SAFE_RANGE,
-  C_BLK,
 };
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
-#define FUNC MO(_FUNC)
 
+enum {
+  KX_DQUOTE = SAFE_RANGE,
+  KX_QUOTE,
+  KX_GRAVE,
+  KX_CIRCUMFLEX,
+  KX_TILDE,
+  KX_CTRL_SPACE,
+};
+
+enum {
+  TP_ABK = 0,
+  TP_BRC,
+  TP_PRN,
+  TP_CBR,
+};
+
+#define FUNCTION_TRIPLE_DANCE(name) void dance_##name (tap_dance_state_t *state, void *user_data) { \
+  if (state->count == 1) { \
+    tap_code16(KC_L##name); \
+  } else if (state->count == 2) { \
+    tap_code16(KC_R##name); \
+  }  else { \
+    tap_code16(KC_L##name); \
+    tap_code16(KC_R##name); \
+  } \
+}
+
+FUNCTION_TRIPLE_DANCE(ABK)
+FUNCTION_TRIPLE_DANCE(BRC)
+FUNCTION_TRIPLE_DANCE(PRN)
+FUNCTION_TRIPLE_DANCE(CBR)
+
+tap_dance_action_t tap_dance_actions[] = {
+  [TP_ABK]  = ACTION_TAP_DANCE_FN(dance_ABK),
+  [TP_BRC]  = ACTION_TAP_DANCE_FN(dance_BRC),
+  [TP_PRN]  = ACTION_TAP_DANCE_FN(dance_PRN),
+  [TP_CBR]  = ACTION_TAP_DANCE_FN(dance_CBR),
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-/* Colemak
- *
- * ,----------------------------------.           ,----------------------------------.
- * |   Q  |   W  |   F  |   P  |   B  |           |   J  |   L  |   U  |   Y  |   ;  |
- * |------+------+------+------+------|           |------+------+------+------+------|
- * |   A  |   R  |   S  |   T  |   G  |           |   M  |   N  |   E  |   I  |   O  |
- * |------+------+------+------+------|           |------+------+------+------+------|
- * |   Z  |   X  |   C  |   D  |   V  |           |   K  |   H  |   ,  |   .  |   /  |
- * `-------------+--------------------'           `----------------------------------'
- *                  ,--------------------.    ,--------------------.
- *                  | Ctrl  |backsp|R/Spa|    |L/Ente|Func  | Alt  |
- *                  `--------------------'    `--------------------.
- */
-
-// Default config uses home row mods. So hold each of the keys on the home row to use ctrl, gui, alt, or shift
-[_COLEMAK] = LAYOUT_split_3x5_3(
-  KC_Q,         KC_W,         KC_F,         KC_P,         KC_B,         KC_J,    KC_L,         KC_U,         KC_Y,         KC_SCLN,
-  KC_A,         KC_R,         KC_S,         KC_T,         KC_G,         KC_M,    KC_N,         KC_E,         KC_I,         KC_O,
-  KC_Z,         KC_X,         KC_C,         KC_D,         KC_V,         KC_K,    KC_H,         KC_COMMA,     KC_DOT,       KC_SLASH,
-                              LCTL_T(KC_DEL),  KC_BSPC,      LT(RAISE,KC_SPACE),           LT(LOWER,KC_ENTER), LT(FUNC, KC_MINUS),   KC_UNDS
-),
-
 /* QWERTY
  *
  * ,----------------------------------.           ,----------------------------------.
- * |   Q  |   W  |   E  |   R  |   T  |           |   Y  |   U  |   I  |   O  |   P  |
+ * |   Q  |   W  |   E  |   R  |   T  |           |   Y  |   U  |   I  |   O  |   _  |
  * |------+------+------+------+------|           |------+------+------+------+------|
- * |   A  |   S  |   D  |   F  |   G  |           |   H  |   J  |   K  |   L  |   ;  |
+ * |   A  |   S  |   D  |   F  |   G  |           |   H  |   J  |   K  |   L  |   P  |
  * |------+------+------+------+------|           |------+------+------+------+------|
- * |   Z  |   X  |   C  |   V  |   B  |           |   N  |   M  |   ,  |   .  |   /  |
+ * |   Z  |   X  |   C  |   V  |   B  |           |   N  |   M  |   .  |   ,  |   ;  |
  * `----------------------------------'           `----------------------------------'
  *                  ,--------------------.    ,--------------------.
- *                  | Ctrl  |backsp|R/Spa|    |L/Ente|Func  | Alt  |
- *                  `--------------------'    `--------------------.
+ *                  | Ctrl|backsp|L/Space|    |R/RET  |Shift|Meta  |
+ *                  `--------------------'    `--------------------'
  */
 
 [_QWERTY] = LAYOUT_split_3x5_3(
-  KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,         KC_Y,    KC_U,         KC_I,         KC_O,         KC_P,
-  KC_A,         KC_S,         KC_D,         KC_F,         KC_G,         KC_H,    KC_J,         KC_K,         KC_L,         KC_SCLN,
-  KC_Z,         KC_X,         KC_C,         KC_V,         KC_B,         KC_N,    KC_M,         KC_COMMA,     KC_DOT,       KC_SLASH,
-                              LCTL_T(KC_DEL),  KC_BSPC,      LT(RAISE,KC_SPACE),           LT(LOWER,KC_ENTER), LT(FUNC, KC_MINUS),   KC_UNDS
+  KC_Q,         KC_W,         KC_E,            KC_R,         KC_T,         KC_Y,    KC_U,         KC_I,         KC_O,         KC_UNDERSCORE,
+  KC_A,         KC_S,         KC_D,            KC_F,         KC_G,         KC_H,    KC_J,         KC_K,         KC_L,         KC_P,
+  KC_Z,         KC_X,         KC_C,            KC_V,         KC_B,         KC_N,    KC_M,         KC_DOT,       KC_COMMA,     KC_SCLN,
+                          KC_LCTL,  KC_BSPC,    LT(LOWER,KC_SPACE),        LT(RAISE,KC_ENTER), KC_LSFT,  KC_LALT
 ),
+
 /* Raise
  *
  * ,----------------------------------.           ,----------------------------------.
- * |   ^  |   !  |   <  |   >  | altT |           |   ({ |   => |   -  |   \  |   ~  |
+ * |      |      |   `  |   '  |   "  |           |  -   |  $   |  ~   |  @   |  :   |
  * |------+------+------+------+------|           |------+------+------+------+------|
- * |  |   |   ;  |   {  |   }  |   '  |           |  *   |   (  |   )  |   /  |   #  |
+ * |  {   |  <   |   [  |   (  |   /  |           |  ?   |   &  |   =  |   +  |  *   |
  * |------+------+------+------+------|           |------+------+------+------+------|
- * |  &   |   :  |  [   |  ]   |   `  |           |  +   |   =  |   ,  |   .  |   ?  |
+ * |      |      |      |      |   \  |           |  !   |   |  |  #   |  ^   |  %   |
  * `----------------------------------'           `----------------------------------'
- *                  ,--------------------.    ,--------------------.
- *                  |      |      |      |    |      | CapsW|  _   |
- *                  `--------------------'    `--------------------.
+ *                  ,--------------------.
+ *                  | S+C  |      | \_/  |
+ *                  `--------------------'
  */
 [_RAISE] = LAYOUT_split_3x5_3(
-  LSFT(KC_6),     KC_EXLM,      KC_LT,       KC_GT,       KC_TAB,             C_BLK,            C_FN,       KC_MINUS,   KC_NUBS,    KC_TILD,
-  KC_BSPC,        KC_SCLN,      KC_LCBR,     KC_RCBR,     KC_QUOTE,           LSFT(KC_8),       KC_LPRN,    KC_RPRN,    KC_SLASH,   LSFT(KC_3),
-  KC_AMPR,        KC_COLN,      KC_LBRC,     KC_RBRC,     KC_GRAVE,           LSFT(KC_EQUAL),   KC_EQUAL,   KC_COMMA,   KC_DOT,     KC_SLASH,
-                                _______,     _______,     _______,            _______,          CW_TOGG,    KC_LALT
+  _______,      _______,    KX_GRAVE,    KX_QUOTE,       KX_DQUOTE,      KC_MINUS,        KC_DOLLAR,  KX_TILDE,  KC_AT,    KC_COLON,
+  TD(TP_CBR),   TD(TP_ABK), TD(TP_BRC),  TD(TP_PRN),     KC_SLASH,       KC_QUESTION,     KC_AMPR,    KC_EQUAL,  KC_PLUS,  KC_ASTR,
+  _______,      _______,    _______,     _______,        KC_NUBS,        KC_EXLM,         KC_PIPE,    KC_HASH,   KX_CIRCUMFLEX,  KC_PERC,
+                           LSFT(KC_LCTL),    _______,   _______,         _______,         _______,    _______
 ),
 
 /* Lower
  *
  * ,----------------------------------.           ,----------------------------------.
- * | esc  |   1  |   2  |   3  |   .  |           |   F1 |  F2  |  F3  |  F4  | Home |
+ * |  1   |   2  |   3  |   4  |  5   |           | ESC  | tab  | del  | pos1 | end  |
  * |------+------+------+------+------|           |------+------+------+------+------|
- * | shift|   4  |   5  |   6  |   ,  |           |   F5 |  F6  |  F7  |  F8  | PgUp |
+ * |  6   |   7  |   8  |   9  |  0   |           | left |down  |up    | right|      |
  * |------+------+------+------+------|           |------+------+------+------+------|
- * | ctrl |   7  |   8  |   9  |   0  |           |   F9 |  F10 |  F11 |  F12 | PgDn |
+ * |      | ae   |  ss  |  ue  |  oe  |           |      |      |      |      |      |
  * `----------------------------------'           `----------------------------------'
- *                  ,--------------------.    ,--------------------.
- *                  | alt  | win |       |    |     |       |      |
- *                  `--------------------'    `--------------------.
+ *                                             ,--------------------.
+ *                                             |  \_/  | win  | C+M |
+ *                                             `--------------------'
  */
 [_LOWER] = LAYOUT_split_3x5_3(
-  KC_ESCAPE,  KC_1, KC_2,    KC_3,    KC_DOT,       KC_F1, KC_F2, KC_F3, KC_F4, KC_HOME,
-  KC_LSFT,    KC_4, KC_5,    KC_6,    KC_COMMA,     KC_F5, KC_F6, KC_F7, KC_F8, KC_PGUP,
-  KC_LCTL,    KC_7, KC_8,    KC_9,    KC_0,         KC_F9, KC_F10, KC_F11, KC_F12,   KC_PGDN,
-                    KC_LALT, KC_LGUI, _______,      _______,  _______, _______
+  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                   KC_ESC, KC_TAB, KC_DEL, KC_HOME, KC_END,
+  KC_6,    KC_7,    KC_8,    KC_9,    KC_0,                   KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,_______,
+  _______, RALT(KC_Q), RALT(KC_S), RALT(KC_Y), RALT(KC_P),    _______, _______, _______, _______, _______,
+                    _______, _______, _______,                _______, KC_LGUI, LSFT(KC_LALT)
 ),
 
-/* Adjust (Lower + Raise)
+/* Function layer
  *
  * ,----------------------------------.           ,----------------------------------.
- * |      |      |      |      |COLEMK|           |      |loud- |mute  |loud+ |      |
+ * | NKRO |      |      |      | Reset|           |  f1  |  f2  |  f3  |  f4  |home  |
  * |------+------+------+------+------|           |------+------+------+------+------|
- * |      |      |      |      |QWERTY|           |      |prev  |Play  |next  |      |
+ * |      |      |      |      |      |           |  f5  |  f6  |  f7  |  f8  |pgup  |
  * |------+------+------+------+------|           |------+------+------+------+------|
- * |      |  cut |copy  |pase  |      |           |      |      |      |      | Reset|
+ * |      |      |      |      | Game |           |  f9  | f10  | f11  |  f12 |pgdwn |
  * `----------------------------------'           `----------------------------------'
- *                  ,--------------------.    ,--------------------.
- *                  |      |      |      |    |      |      |      |
- *                  `--------------------'    `--------------------.
- */
-[_ADJUST] =  LAYOUT_split_3x5_3(
-  _______, _______, _______, _______, TO(_COLEMAK),       _______,  KC_VOLD,  KC_MUTE,   KC_VOLU,    _______,
-  _______, _______,  _______, _______, TO(_QWERTY),       _______,  KC_MPRV,  KC_MPLY,   KC_MNXT,    _______,
-  _______, KC_CUT  ,  KC_COPY, KC_PASTE, _______,         _______,  KC_BRID,  _______,   KC_BRIU,   QK_BOOT,
-                     _______, _______, _______,           _______, _______,   _______
-),
-
-/* Function layer 
- *
- * ,----------------------------------.           ,----------------------------------.
- * |      |      |      |c+s+P |      |           |      |      |   UP |      |      |
- * |------+------+------+------+------|           |------+------+------+------+------|
- * |      |      |  c+S |c+s+F |      |           |      | LEFT | DOWN | RIGHT|      |
- * |------+------+------+------+------|           |------+------+------+------+------|
- * |      |      |      | c+P  |      |           |      |      |      |      |      |
- * `----------------------------------'           `----------------------------------'
- *                  ,--------------------.    ,--------------------.
- *                  |      |      |      |    |      |      |      |
- *                  `--------------------'    `--------------------.
  */
 [_FUNC] = LAYOUT_split_3x5_3(
-  _______, _______, A(S(KC_F)), C(S(KC_P)), _______,      _______, _______, KC_UP, _______, _______,
-  _______, _______, C(KC_S), C(S(KC_F)), _______,      _______, KC_LEFT, KC_DOWN, KC_RIGHT, _______,
-  MEH(KC_C), MEH(KC_F), C(KC_SLASH), C(KC_P), _______,      _______, G(S(KC_S)), G(KC_E), _______, _______,
-                    KC_LCTL, KC_LGUI, _______,      _______, _______, _______
+  MAGIC_TOGGLE_NKRO, _______, _______, _______, QK_BOOT,        KC_F1, KC_F2,  KC_F3,  KC_F4,  KC_HOME,
+  _______, _______, _______, _______, _______,        KC_F5, KC_F6,  KC_F7,  KC_F8,  KC_PGUP,
+  _______, _______, _______, _______, DF(_GAME),      KC_F9, KC_F10, KC_F11, KC_F12, KC_PGDN,
+                    _______, _______, _______,        _______, _______, _______
+),
+/* Game layer
+ *
+ * ,----------------------------------.           ,----------------------------------.
+ * |  T   |   Q  |   W  |   E  |   R  |           |      |      |      |      |      |
+ * |------+------+------+------+------|           |------+------+------+------+------|
+ * |  G   |   A  |   S  |   D  |   F  |           |      |      |      |      |      |
+ * |------+------+------+------+------|           |------+------+------+------+------|
+ * |  B   |   Z  |   X  |   C  |   V  |           |      |      |      |      |      |
+ * `----------------------------------'           `----------------------------------'
+ *                  ,--------------------.    ,--------------------.
+ *                  | Ctrl|Shift |L/Space|    |QWERTY|     |       |
+ *                  `--------------------'    `--------------------'
+*/
+[_GAME] = LAYOUT_split_3x5_3(
+         KC_T,  KC_Q,  KC_W,  KC_E,  KC_R,         _______,   _______,   _______,   _______,  _______,
+         KC_G,  KC_A,  KC_S,  KC_D,  KC_F,         _______,   _______,   _______,   _______,  _______,
+         KC_B,  KC_Z,  KC_X,  KC_C,  KC_V,         _______,   _______,   _______,   _______,  _______,
+         MT(MOD_LCTL, KX_CTRL_SPACE), KC_LSFT, LT(LOWER,KC_SPACE),     DF(_QWERTY), _______,  _______
 ),
 };
 
-
 layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
+   return update_tri_layer_state(state, _LOWER, _RAISE, _FUNC);
 }
 
-// fn to hit these two keys after each other = and >
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  if (record->event.pressed) {
-    switch (keycode) {
-      case C_FN:
-        SEND_STRING("=>");
-        return false;
-      case C_BLK:
-        SEND_STRING("({");
-        return false;
-    }
-  }
-  return true;
-}
-
-// OLED
-#ifdef OLED_ENABLE
-
-bool render_layer_status(void) {
-    oled_clear();
-    // Host Keyboard Layer Status
-    switch (get_highest_layer(layer_state)) {
-        case _COLEMAK:
-          if (is_keyboard_master()) {
-              // colemak is default write some funny words each 4 caracters long here
-              oled_write_ln_P(PSTR("if"), false);
-              oled_write_ln_P(PSTR("you"), false);
-              oled_write_ln_P(PSTR("read"), false);
-              oled_write_ln_P(PSTR("this"), false);
-              oled_write_ln_P(PSTR("you"), false);
-              oled_write_ln_P(PSTR("are"), false);
-              oled_write_ln_P(PSTR("a"), false);
-              oled_write_ln_P(PSTR("nerd"), false);
-              oled_write_ln_P(PSTR("lol"), false);
-          } else {
-              oled_write_ln_P(PSTR("this"), false);
-              oled_write_ln_P(PSTR("is"), false);
-              oled_write_ln_P(PSTR("the"), false);
-              oled_write_ln_P(PSTR("right"), false);
-              oled_write_ln_P(PSTR("side"), false);
-              oled_write_ln_P(PSTR("or"), false);
-              oled_write_ln_P(PSTR("you"), false);
-              oled_write_ln_P(PSTR("plug"), false);
-              oled_write_ln_P(PSTR("in"), false);
-              oled_write_ln_P(PSTR("wrong"), false);
-          }
-        break;
-        case _LOWER:
-            oled_write_ln_P(PSTR("|"), false);
-            oled_write_ln_P(PSTR("|"), false);
-            oled_write_ln_P(PSTR("|"), false);
-            oled_write_ln_P(PSTR("|"), false);
-            oled_write_ln_P(PSTR("----"), false);
-            oled_write_ln_P(PSTR(""), false);
-            oled_write_ln_P(PSTR("----"), false);
-            oled_write_ln_P(PSTR("|  |"), false);
-            oled_write_ln_P(PSTR("|  |"), false);
-            oled_write_ln_P(PSTR("|  |"), false);
-            oled_write_ln_P(PSTR("----"), false);
-            break;
-        case _RAISE:
-            oled_write_ln_P(PSTR("----"), false);
-            oled_write_ln_P(PSTR("|  |"), false);
-            oled_write_ln_P(PSTR("|--/"), false);
-            oled_write_ln_P(PSTR("| \\"), false);
-            oled_write_ln_P(PSTR("|  \\"), false);
-            oled_write_ln_P(PSTR(""), false);
-            oled_write_ln_P(PSTR(" /\\"), false);
-            oled_write_ln_P(PSTR("/  \\"), false);
-            oled_write_ln_P(PSTR("|--|"), false);
-            oled_write_ln_P(PSTR("|  |"), false);
-            oled_write_ln_P(PSTR("|  |"), false);
-            break;
-        case _FUNC:
-            oled_write_ln_P(PSTR("----"), false);
-            oled_write_ln_P(PSTR("|   "), false);
-            oled_write_ln_P(PSTR("|---"), false);
-            oled_write_ln_P(PSTR("|   "), false);
-            oled_write_ln_P(PSTR("|   "), false);
-            oled_write_ln_P(PSTR(""), false);
-            oled_write_ln_P(PSTR("|  |"), false);
-            oled_write_ln_P(PSTR("|\\ |"), false);
-            oled_write_ln_P(PSTR("| \\|"), false);
-            oled_write_ln_P(PSTR("|  \\"), false);
-            oled_write_ln_P(PSTR("|  |"), false);
-            break;
-        case _ADJUST:
-            oled_write_ln_P(PSTR(" /\\"), false);
-            oled_write_ln_P(PSTR("/  \\"), false);
-            oled_write_ln_P(PSTR("|--|"), false);
-            oled_write_ln_P(PSTR("|  |"), false);
-            oled_write_ln_P(PSTR("|  |"), false);
-            oled_write_ln_P(PSTR(""), false);
-            oled_write_ln_P(PSTR("|-\\"), false);
-            oled_write_ln_P(PSTR("|  \\"), false);
-            oled_write_ln_P(PSTR("|  |"), false);
-            oled_write_ln_P(PSTR("|  /"), false);
-            oled_write_ln_P(PSTR("|-/"), false);
-            break;
-        default:
+  switch (keycode) {
+  case KX_QUOTE:
+    if (record->event.pressed) {
+      tap_code(KC_QUOTE);
+      tap_code(KC_SPACE);
     }
     return false;
-}
-
-oled_rotation_t oled_init_user(oled_rotation_t rotation) {
-    return OLED_ROTATION_270;
-}
-
-bool oled_task_user(void) {
-  render_layer_status();
-  return false;
-}
-
-void oled_render_boot(bool bootloader) {
-    oled_clear();
-    if (bootloader) {
-        oled_write_P(PSTR("Flashing"), false);
-    } else {
-        oled_write_P(PSTR("Rebooting"), false);
+  case KX_DQUOTE:
+    if (record->event.pressed) {
+      tap_code16(KC_DQUO);
+      tap_code(KC_SPACE);
     }
+    return false;
+  case KX_GRAVE:
+    if (record->event.pressed) {
+      tap_code(KC_GRAVE);
+      tap_code(KC_SPACE);
+    }
+    return false;
+  case KX_TILDE:
+    if (record->event.pressed) {
+      tap_code16(KC_TILDE);
+      tap_code(KC_SPACE);
+    }
+    return false;
+  case KX_CTRL_SPACE:
+    if (record->event.pressed) {
+      register_code(KC_LCTL);
+      tap_code(KC_SPACE);
+      unregister_code(KC_LCTL);
+    }
+    return false;
+  case KX_CIRCUMFLEX:
+    if (record->event.pressed) {
+      tap_code16(KC_CIRCUMFLEX);
+      tap_code(KC_SPACE);
+    }
+    return false;
+  default:
+    return true; // Process all other keycodes normally
+  }
 }
-
-bool shutdown_user(bool jump_to_bootloader) {
-    oled_render_boot(jump_to_bootloader);
-    return true;
-}
-
-#endif

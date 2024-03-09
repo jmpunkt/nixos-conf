@@ -4,7 +4,8 @@
 	"usb": {
 		"vid": "0x2E8A",
 		"pid": "0x1072",
-		"device_version": "1.0.0"
+		"device_version": "9.0.0",
+    "suspend_wakeup_delay": 1000
 	},
 	"features": {
 		"bootmagic": true,

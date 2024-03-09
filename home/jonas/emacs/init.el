@@ -96,6 +96,7 @@ eglot (if available)."
   :bind (:map global-map
               ("C-+" . text-scale-increase)
               ("C--" . text-scale-decrease)
+              ("M-C-;" . eval-expression)
               ("C-j" . jmpunkt/join-line))
   :init
   (defun xdg-open-file ()
@@ -476,8 +477,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
 (use-package meow
   :demand t
   :bind (:map global-map
-              ("M-." . jmpunkt/meow-find-definitions)
-              ("M-?" . jmpunkt/meow-find-references)
               ("C-d" . meow-page-down)
               ("C-u" . meow-page-up))
   :init
@@ -520,16 +519,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
     (jmpunkt/meow--bound-of-treesit 'function))
   (defun jmpunkt/meow--inner-of-function ()
     (jmpunkt/meow--inner-of-treesit 'function))
-  (defun jmpunkt/meow-find-references ()
-    "Xref definition."
-    (interactive)
-    (meow--cancel-selection)
-    (smart-jump-references))
-  (defun jmpunkt/meow-find-definitions ()
-    "Xref definition."
-    (interactive)
-    (meow--cancel-selection)
-    (smart-jump-go))
   (defun jmpunkt/meow-search-with (search)
     (interactive (list (read-string "search: " nil 'regexp-search-ring)))
     (when search
@@ -660,7 +649,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
      '("'" . repeat)
      '("<escape>" . ignore)
      '("C-r" . undo-tree-redo)
-     '("=" . indent-region)))
+     '("=" . meow-indent)))
   :config
   (jmpunkt/meow-setup)
   (meow-global-mode 1))
@@ -705,11 +694,10 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 (use-package transient-dwim
   :ensure t
-  :bind ("M-=" . transient-dwim-dispatch))
+  :bind ("C-x h" . transient-dwim-dispatch))
 
 ;;;; * DirEnv
 (use-package envrc
-  :bind-keymap ("C-c e" . envrc-command-map)
   :hook ((prog-mode . envrc-mode)
          (org-mode . envrc-mode)
          (eshell-mode . envrc-mode)
@@ -722,9 +710,20 @@ If the cursor is on the last promt, then we want to insert at the current positi
 ;;;; * xref/jumping
 (use-package smart-jump
   :demand t
-  :bind (("M-." . smart-jump-go)
-         ("M-," . smart-jump-back)
-         ("M-?" . smart-jump-references)))
+  :bind (("C-c m b" . smart-jump-back)
+         ("C-c m f" . jmpunkt/meow-find-definitions)
+         ("C-c m r" . jmpunkt/meow-find-references))
+  :init
+  (defun jmpunkt/meow-find-references ()
+    "Xref definition."
+    (interactive)
+    (meow--cancel-selection)
+    (smart-jump-references))
+  (defun jmpunkt/meow-find-definitions ()
+    "Xref definition."
+    (interactive)
+    (meow--cancel-selection)
+    (smart-jump-go)))
 
 ;;;; * Spelling
 (use-package ispell
@@ -893,7 +892,7 @@ paths, it will fallback to the project root path."
   :commands eglot-ensure
   :bind (:map eglot-mode-map
               ("C-c k r" . jmpunkt/eglot-rename)
-              ("M-RET" . jmpunkt/eglot-code-actions))
+              ("C-c k h" . jmpunkt/eglot-code-actions))
   :init
   (defun jmpunkt/lsp-snippet-to-tempel (snippet)
     "Convert Language Server Protocol snippet into Tempel snippet."
@@ -949,8 +948,8 @@ paths, it will fallback to the project root path."
   :after consult
   :commands flymake-mode
   :bind (:map flymake-mode-map
-              ([f7] . consult-flymake)
-              ([f8] . flymake-show-buffer-diagnostics))
+              ("C-c h f" . consult-flymake)
+              ("C-c h d" . flymake-show-buffer-diagnostics))
   :hook ((prog-mode . flymake-mode)
          (markdown-mode . flymake-mode)
          (text-mode . flymake-mode)
@@ -1106,19 +1105,19 @@ paths, it will fallback to the project root path."
 (use-package cape
   :demand t
   :bind (:map global-map
-              ("C-c p t" . complete-tag)
-              ("C-c p d" . cape-dabbrev)
-              ("C-c p f" . cape-file)
-              ("C-c p h" . cape-history)
-              ("C-c p k" . cape-keyword)
-              ("C-c p s" . cape-elisp-symbol)
-              ("C-c p a" . cape-abbrev)
-              ("C-c p i" . cape-ispell)
-              ("C-c p l" . cape-line)
-              ("C-c p w" . cape-dict)
-              ("C-c p _" . cape-tex)
-              ("C-c p &" . cape-sgml)
-              ("C-c p r" . cape-rfc1345))
+              ("C-c c t" . complete-tag)
+              ("C-c c d" . cape-dabbrev)
+              ("C-c c f" . cape-file)
+              ("C-c c h" . cape-history)
+              ("C-c c k" . cape-keyword)
+              ("C-c c s" . cape-elisp-symbol)
+              ("C-c c a" . cape-abbrev)
+              ("C-c c i" . cape-ispell)
+              ("C-c c l" . cape-line)
+              ("C-c c w" . cape-dict)
+              ("C-c c _" . cape-tex)
+              ("C-c c &" . cape-sgml)
+              ("C-c c r" . cape-rfc1345))
   :init
   (defalias 'cape-symbol+dabbrev
     (cape-capf-super #'cape-elisp-symbol #'cape-dabbrev))

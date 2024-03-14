@@ -20,4 +20,5 @@ flash_device() {
     dd if="$src" of="$dst"
 }
 
+echo "Building done"
 doas bash -c "$(declare -f flash_device); flash_device $drv/image.uf2 $usb_device"

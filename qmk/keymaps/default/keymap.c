@@ -148,40 +148,45 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
       tap_code(KC_QUOTE);
       tap_code(KC_SPACE);
+      return false;
     }
-    return false;
+    break;
   case KX_DQUOTE:
     if (record->event.pressed) {
       tap_code16(KC_DQUO);
       tap_code(KC_SPACE);
+      return false;
     }
-    return false;
+    break;
   case KX_GRAVE:
     if (record->event.pressed) {
       tap_code(KC_GRAVE);
       tap_code(KC_SPACE);
+      return false;
     }
-    return false;
+    break;
   case KX_TILDE:
     if (record->event.pressed) {
       tap_code16(KC_TILDE);
       tap_code(KC_SPACE);
+      return false;
     }
-    return false;
+    break;
   case KX_CTRL_SPACE:
     if (record->event.pressed) {
       register_code(KC_LCTL);
-      tap_code(KC_SPACE);
+      tap_code_delay(KC_SPACE, 100);
       unregister_code(KC_LCTL);
+      return false;
     }
-    return false;
+    break;
   case KX_CIRCUMFLEX:
     if (record->event.pressed) {
       tap_code16(KC_CIRCUMFLEX);
       tap_code(KC_SPACE);
+      return false;
     }
-    return false;
-  default:
-    return true; // Process all other keycodes normally
+    break;
   }
+  return true; // Process all other keycodes normally
 }

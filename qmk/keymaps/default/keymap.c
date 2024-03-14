@@ -1,5 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "keymap_us_international.h"
+#include "../../lib.h"
 
 // Defines names for use in layer keycodes and the keymap
 enum layer_names {
@@ -27,29 +28,15 @@ enum {
   TP_BRC,
   TP_PRN,
   TP_CBR,
+  TP_CTRL_SPACE,
 };
 
-#define FUNCTION_TRIPLE_DANCE(name) void dance_##name (tap_dance_state_t *state, void *user_data) { \
-  if (state->count == 1) { \
-    tap_code16(KC_L##name); \
-  } else if (state->count == 2) { \
-    tap_code16(KC_R##name); \
-  }  else { \
-    tap_code16(KC_L##name); \
-    tap_code16(KC_R##name); \
-  } \
-}
-
-FUNCTION_TRIPLE_DANCE(ABK)
-FUNCTION_TRIPLE_DANCE(BRC)
-FUNCTION_TRIPLE_DANCE(PRN)
-FUNCTION_TRIPLE_DANCE(CBR)
-
 tap_dance_action_t tap_dance_actions[] = {
-  [TP_ABK]  = ACTION_TAP_DANCE_FN(dance_ABK),
-  [TP_BRC]  = ACTION_TAP_DANCE_FN(dance_BRC),
-  [TP_PRN]  = ACTION_TAP_DANCE_FN(dance_PRN),
-  [TP_CBR]  = ACTION_TAP_DANCE_FN(dance_CBR),
+  [TP_ABK]  = ACTION_TAP_DANCE_TRIPLE_AUTO(KC_LABK, KC_RABK),
+  [TP_BRC]  = ACTION_TAP_DANCE_TRIPLE_AUTO(KC_LBRC, KC_RBRC),
+  [TP_PRN]  = ACTION_TAP_DANCE_TRIPLE_AUTO(KC_LPRN, KC_RPRN),
+  [TP_CBR]  = ACTION_TAP_DANCE_TRIPLE_AUTO(KC_LCBR, KC_RCBR),
+  [TP_CTRL_SPACE] = ACTION_TAP_DANCE_HOLD_TAP(KC_LCTL, LCTL(KC_SPACE)),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -144,10 +131,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                  `--------------------'    `--------------------'
 */
 [_GAME] = LAYOUT_split_3x5_3(
-         KC_T,  KC_Q,  KC_W,  KC_E,  KC_R,         _______,   _______,   _______,   _______,  _______,
+         KC_T,  KC_Q,  KC_W,  KC_E,  KC_R,         KX_CTRL_SPACE,   _______,   _______,   _______,  _______,
          KC_G,  KC_A,  KC_S,  KC_D,  KC_F,         _______,   _______,   _______,   _______,  _______,
          KC_B,  KC_Z,  KC_X,  KC_C,  KC_V,         _______,   _______,   _______,   _______,  _______,
-         MT(MOD_LCTL, KX_CTRL_SPACE), KC_LSFT, LT(LOWER,KC_SPACE),     DF(_QWERTY), _______,  _______
+         TD(TP_CTRL_SPACE), KC_LSFT, LT(LOWER,KC_SPACE),     DF(_QWERTY), _______,  _______
 ),
 };
 

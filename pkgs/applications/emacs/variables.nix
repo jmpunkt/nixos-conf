@@ -23,7 +23,6 @@ in {
     ];
     lsp = with pkgs; [
       ccls
-      rnix-lsp
       yaml-language-server
       nodePackages.typescript-language-server
       eslint-lsp

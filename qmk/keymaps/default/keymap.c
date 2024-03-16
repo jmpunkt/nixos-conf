@@ -28,7 +28,7 @@ enum {
   TP_BRC,
   TP_PRN,
   TP_CBR,
-  TP_CTRL_SPACE,
+  TP_CTRL_B,
 };
 
 tap_dance_action_t tap_dance_actions[] = {
@@ -36,7 +36,7 @@ tap_dance_action_t tap_dance_actions[] = {
   [TP_BRC]  = ACTION_TAP_DANCE_TRIPLE_AUTO(KC_LBRC, KC_RBRC),
   [TP_PRN]  = ACTION_TAP_DANCE_TRIPLE_AUTO(KC_LPRN, KC_RPRN),
   [TP_CBR]  = ACTION_TAP_DANCE_TRIPLE_AUTO(KC_LCBR, KC_RCBR),
-  [TP_CTRL_SPACE] = ACTION_TAP_DANCE_HOLD_TAP(KC_LCTL, LCTL(KC_SPACE)),
+  [TP_CTRL_B] = ACTION_TAP_DANCE_HOLD_TAP(KC_LCTL, KC_B),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -131,10 +131,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                  `--------------------'    `--------------------'
 */
 [_GAME] = LAYOUT_split_3x5_3(
-         KC_T,  KC_Q,  KC_W,  KC_E,  KC_R,         KX_CTRL_SPACE,   _______,   _______,   _______,  _______,
-         KC_G,  KC_A,  KC_S,  KC_D,  KC_F,         _______,   _______,   _______,   _______,  _______,
-         KC_B,  KC_Z,  KC_X,  KC_C,  KC_V,         _______,   _______,   _______,   _______,  _______,
-         TD(TP_CTRL_SPACE), KC_LSFT, LT(LOWER,KC_SPACE),     DF(_QWERTY), _______,  _______
+         KC_T,  KC_Q,  KC_W,  KC_E,  KC_R,               _______,   _______,   _______,   _______,  _______,
+         KC_G,  KC_A,  KC_S,  KC_D,  KC_F,               _______,   _______,   _______,   _______,  _______,
+         TD(TP_CTRL_B),  KC_Z,  KC_X,  KC_C,  KC_V,      _______,   _______,   _______,   _______,  _______,
+         KX_CTRL_SPACE, KC_LSFT, LT(LOWER,KC_SPACE),     DF(_QWERTY), _______,  _______
 ),
 };
 
@@ -175,11 +175,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   case KX_CTRL_SPACE:
     if (record->event.pressed) {
       register_code(KC_LCTL);
-      tap_code_delay(KC_SPACE, 100);
+      wait_ms(100);
+      register_code(KC_SPACE);
+    } else {
+      unregister_code(KC_SPACE);
       unregister_code(KC_LCTL);
-      return false;
     }
-    break;
+    return false;
   case KX_CIRCUMFLEX:
     if (record->event.pressed) {
       tap_code16(KC_CIRCUMFLEX);

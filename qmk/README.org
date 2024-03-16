@@ -110,13 +110,10 @@ keyboard. Other peripherals work.
 When putting the computer to sleep and wake it after wards, then the
 keyboard is not responding. The keyboard needs to be re-plugged.
 
-Fixed by adding the entry ="suspend_wakeup_delay": 200= to the =usb=
-section in the =info.json=.
+Fixed by adding the =#define USB_VBUS_PIN GP19= to =config.h=.
 
 *** Keyboard Not Responding on System Boot
 Currently the keyboard is not available when I start the computer. I
 have to re-plug the keyboard to be able to use it.
 
-Fixed by adding the entry ="suspend_wakeup_delay": 1000= to the =usb=
-section in the =info.json=. This requires a higher delay than previous
-issue.
+Fixed by adding the =#define USB_VBUS_PIN GP19= to =config.h=.

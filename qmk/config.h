@@ -8,3 +8,4 @@
 
 #define RP2040_FLASH_GD25Q64CS
 #define FORCE_NKRO
+#define USB_VBUS_PIN GP19

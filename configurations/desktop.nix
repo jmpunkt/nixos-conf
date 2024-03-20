@@ -37,6 +37,7 @@
     nix-tree
     sqlite
     tokei
+    streamlink
 
     # spelling
     aspell

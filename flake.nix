@@ -5,7 +5,7 @@
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
+      url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "stable";
     };
     rust-overlay = {
@@ -29,7 +29,7 @@
     emacs-overlay,
     anyrun,
     utils,
-  }: let
+  } @ inputs: let
     allPackagesOverlay = final: prev:
       (import ./overlays/10-pkgs.nix final prev)
       // ((import ./overlays/emacs-overlay-glue.nix {inherit emacs-overlay;}) final prev);
@@ -143,7 +143,7 @@
           iso-minimal = packageISO (
             mkSystem
             {
-              inherit system;
+              inherit system inputs;
               nixpkgs = stable;
               modules = [(import ./machines/iso-minimal/configuration.nix)];
             }
@@ -151,7 +151,7 @@
           iso = packageISO (
             mkSystem
             {
-              inherit system;
+              inherit system inputs;
               nixpkgs = stable;
               modules = [(import ./machines/iso/configuration.nix)];
             }
@@ -186,7 +186,7 @@
           alpha128 = packageSystem (
             mkSystem
             {
-              inherit system;
+              inherit system inputs;
               nixpkgs = stable;
               modules = [
                 self.nixosModules.alpha128
@@ -195,7 +195,7 @@
           );
           gamma64 = packageSystem (mkSystem
             {
-              inherit system;
+              inherit system inputs;
               nixpkgs = stable;
               modules = [self.nixosModules.gamma64];
             });
@@ -220,6 +220,10 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.jonas = ./home/jonas/home.nix;
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              systemConfig = config;
+            };
           }
         );
         gamma64 = {config, ...}: {

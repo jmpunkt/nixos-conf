@@ -4,7 +4,11 @@
   lib,
   ...
 }: {
-  imports = import ../../modules/all-home-manager.nix;
+  imports =
+    (import ../../modules/all-home-manager.nix)
+    ++ [
+      ./hyprland
+    ];
   home.language = {
     base = "en_US.utf8";
     address = "de_DE.utf8";

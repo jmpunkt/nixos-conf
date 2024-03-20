@@ -50,10 +50,12 @@ in rec {
     system,
     modules,
     nixpkgs,
+    inputs,
   }:
     nixpkgs.lib.nixosSystem
     {
       inherit system;
+      specialArgs = {inherit inputs;};
       modules =
         [
           nixpkgs.nixosModules.notDetected

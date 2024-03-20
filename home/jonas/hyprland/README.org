@@ -25,7 +25,7 @@ There are inconveniences using Plasma instead of a custom display manager.
 
 * Requirements
 
-Here are some strict requirements for my setup. 
+Here are some strict requirements for my setup.
 
 ** System Tray
 I use applications which run in the background when closed.
@@ -49,15 +49,14 @@ Mostly for Wi-Fi networks. Preferably a GUI instead of the terminal. Or
 maybe there is a way to use Emacs to configure it.
 
 ** Notifications
-Always useful.
+Always useful. Ideally the application should provide a way to see the
+"history" of the notifications.
 
 ** Application Launcher
 Somehow I need to launch applications, but I do not want to use Emacs
-for it.
-
-** Calendar
-Having the time and date inside the taskbar is necessary for me. A
-calendar widget is useful but not strictly necessary.
+for it. The results should be predictable. Entries should not be
+sorted by recently used. Except if the application provides a
+customizable sorting framework.
 
 ** Battery Information
 For my laptop I need a visual indicator of the battery
@@ -67,6 +66,10 @@ status.
 
 Here are optional requirements which may not be related to a desktop
 manager.
+
+** Calendar
+Having the time and date inside the taskbar is necessary for me. A
+calendar widget is useful but not strictly necessary.
 
 ** Weather
 I do not use that very often. But with a proper setup I might start
@@ -80,3 +83,34 @@ Emacs can be used as a fully functional file manager
 device might not be same. Currently, Dolphin allows decrypting devices
 by a single click, followed by a password prompt. For Emacs, I have not
 found a similar setup yet.
+
+* Missing
+
+** Swaync (Home Manager Module)
+https://github.com/nix-community/home-manager/pull/4249
+
+** Scaling
+Currently the scaling of is too large. I prefer a smaller scaling.
+
+** Assign Applications Workspaces
+Most common applications (Firefox and Emacs) should have a dedicated
+workspace assigned. They should always launch in that workspace.
+
+** Chatterino Layout
+Use Chatterino and Streamlink to be split on the same monitor in 1:5
+ratio. It must be possible to move the whole workspace across
+workspaces.
+
+** Monitor Setup
+Should not be tracked with Nix. Every machine tracks it state of the
+monitor setup locally. However, since there is no
+=~/.config/hypr/monitor.conf=, =nwg-displays= does not save the
+configuration. There should be a home-manager activation script which
+creates an empty file?
+
+** Icons
+I really want to use SVG icons instead of font icons. However, waybar
+does not support such thing. An alternative bar (Eww) supports SVG
+icons, but currently does not have a tray support.
+
+https://github.com/elkowar/eww/pull/743

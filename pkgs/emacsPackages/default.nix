@@ -25,4 +25,7 @@
   ox-typst = pkgs.callPackage ./ox-typst.nix {
     inherit melpaBuild;
   };
+  copilot = pkgs.callPackage ./copilot.nix {
+    inherit melpaBuild;
+  };
 }

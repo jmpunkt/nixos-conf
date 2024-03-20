@@ -4,6 +4,8 @@
   eslint-lsp = pkgs.writeShellScriptBin "eslint-lsp" ''
     "${pkgs.nodejs}/bin/node" "${pathOfExtension vscode-eslint}/server/out/eslintServer.js" "--stdio"
   '';
+  copilot =
+    pkgs.nodePackages_latest.jmpunkt."copilot-node-server-1.14.0";
 in {
   variables = {
     org-plantuml-jar-path = "${pkgs.plantuml}/lib/plantuml.jar";
@@ -11,6 +13,9 @@ in {
     mermaid-mmdc-location = "${pkgs.nodePackages.mermaid-cli}/bin/mmdc";
     flymake-languagetool-server-command = ["${pkgs.languagetool}/bin/languagetool-http-server"];
     parinfer-rust-library = "${pkgs.kakounePlugins.parinfer-rust}/lib/libparinfer_rust.so";
+    copilot-node-executable = "${pkgs.nodePackages_latest.nodejs}/bin/node";
+    copilot-install-dir = "${copilot}";
+    copilot-version = copilot.version;
   };
   paths = let
     core = with pkgs; [

@@ -1547,6 +1547,11 @@ paths, it will fallback to the project root path."
   (setq pdf-view-resize-factor 1.1))
 
 ;;; * Misc
+(use-package copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-mode-map
+              ("C-c r" . copilot-accept-completion)))
+
 (use-package biome
   :commands biome
   :config

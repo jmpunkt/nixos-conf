@@ -24,18 +24,10 @@ enum {
 };
 
 enum {
-  TP_ABK = 0,
-  TP_BRC,
-  TP_PRN,
-  TP_CBR,
   TP_CTRL_B,
 };
 
 tap_dance_action_t tap_dance_actions[] = {
-  [TP_ABK]  = ACTION_TAP_DANCE_TRIPLE_AUTO(KC_LABK, KC_RABK),
-  [TP_BRC]  = ACTION_TAP_DANCE_TRIPLE_AUTO(KC_LBRC, KC_RBRC),
-  [TP_PRN]  = ACTION_TAP_DANCE_TRIPLE_AUTO(KC_LPRN, KC_RPRN),
-  [TP_CBR]  = ACTION_TAP_DANCE_TRIPLE_AUTO(KC_LCBR, KC_RCBR),
   [TP_CTRL_B] = ACTION_TAP_DANCE_HOLD_TAP(KC_LCTL, KC_B),
 };
 
@@ -68,7 +60,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------|           |------+------+------+------+------|
  * |  {   |  <   |   [  |   (  |   /  |           |  ?   |   &  |   =  |   +  |  *   |
  * |------+------+------+------+------|           |------+------+------+------+------|
- * |      |      |      |      |   \  |           |  !   |   |  |  #   |  ^   |  %   |
+ * |  }   |  >   |  ]   |   )  |   \  |           |  !   |   |  |  #   |  ^   |  %   |
  * `----------------------------------'           `----------------------------------'
  *                  ,--------------------.
  *                  | S+C  |      | \_/  |
@@ -76,8 +68,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_RAISE] = LAYOUT_split_3x5_3(
   _______,      _______,    KX_GRAVE,    KX_QUOTE,       KX_DQUOTE,      KC_MINUS,        KC_DOLLAR,  KX_TILDE,  KC_AT,    KC_COLON,
-  TD(TP_CBR),   TD(TP_ABK), TD(TP_BRC),  TD(TP_PRN),     KC_SLASH,       KC_QUESTION,     KC_AMPR,    KC_EQUAL,  KC_PLUS,  KC_ASTR,
-  _______,      _______,    _______,     _______,        KC_NUBS,        KC_EXLM,         KC_PIPE,    KC_HASH,   KX_CIRCUMFLEX,  KC_PERC,
+  KC_LCBR,      KC_LABK,    KC_LBRC,     KC_LPRN,        KC_SLASH,       KC_QUESTION,     KC_AMPR,    KC_EQUAL,  KC_PLUS,  KC_ASTR,
+  KC_RCBR,      KC_RABK,    KC_RBRC,     KC_RPRN,        KC_NUBS,        KC_EXLM,         KC_PIPE,    KC_HASH,   KX_CIRCUMFLEX,  KC_PERC,
                            LSFT(KC_LCTL),    _______,   _______,         _______,         _______,    _______
 ),
 

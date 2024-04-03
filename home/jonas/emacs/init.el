@@ -740,26 +740,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :defer t
   :commands flyspell-mode
   :init
-  (defvar jmpunkt/flyspell-disabled-modes
-    '(dired-mode
-      log-edit-mode
-      compilation-mode
-      help-mode
-      profiler-report-mode
-      speedbar-mode
-      gud-mode
-      calc-mode
-      Info-mode))
-  (defun jmpunkt/flyspell-enabled-for-mode ()
-    (interactive)
-    (not (memq major-mode jmpunkt/flyspell-disabled-modes)))
-  :hook ((prog-mode . (lambda ()
-                        (when (jmpunkt/flyspell-enabled-for-mode)
-                          (flyspell-mode 1)
-                          (run-hooks 'flyspell-prog-mode-hook))))
-         (text-mode . (lambda ()
-                        (when (jmpunkt/flyspell-enabled-for-mode)
-                          (flyspell-mode 1)))))
+  :hook (prog-mode . flyspell-mode)
   :config
   (setq flyspell-issue-welcome-flag nil
         flyspell-issue-message-flag nil)
@@ -781,9 +762,16 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 (use-package flymake-languagetool
   :ensure t
+  :init
+  (defun jmpunkt/flymake-languagetool-language-set ()
+    (interactive)
+    (when-let ((lang (completing-read "Language: " '("en-US" "de-DE"))))
+      (setq flymake-languagetool-language lang)
+      (message "Set language to %s" lang)))
   :hook ((text-mode . flymake-languagetool-load)
          (org-mode . flymake-languagetool-load)
-         (markdown-mode . flymake-languagetool-load)))
+         (markdown-mode . flymake-languagetool-load)
+         (message-mode . flymake-languagetool-load)))
 
 ;;;; * Projectile
 (use-package project

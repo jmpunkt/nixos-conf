@@ -1549,8 +1549,10 @@ paths, it will fallback to the project root path."
 
 (use-package proced
   :config
+  (setq-default proced-auto-update-flag t)
   (setq proced-tree-flag t
-        proced-auto-update-flag t
+        proced-auto-update-interval 1
+        proced-show-remote-processes t
         proced-enable-color-flag t))
 
 ;;; * -- End

@@ -3,16 +3,7 @@
   pkgs,
   ...
 }: let
-  keyboard-get = pkgs.writeShellScript "hyprland-get-keyboard" ''
-    # https://github.com/hyprwm/Hyprland/discussions/2616#discussioncomment-6327590
-    # get-lang
-    # if we switch all of them, then getting any of them (the first) works.
-    hyprctl devices -j |
-      ${pkgs.jq}/bin/jq -r '.keyboards[] | .active_keymap' |
-      head -n1 |
-      cut -c1-2 |
-      tr 'a-z' 'A-Z'
-  '';
+  scripts = pkgs.callPackage ./scripts.nix {};
 in {
   programs.waybar = {
     enable = true;
@@ -49,7 +40,7 @@ in {
           escape = true;
           format = "{icon} {}";
           icon = "⌨️";
-          exex = "${keyboard-get}";
+          exex = "${scripts.keyboard-get}";
           interval = 5;
         };
         "custom/notification" = {

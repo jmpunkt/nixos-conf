@@ -17,19 +17,7 @@
 
     cargoSha256 = "sha256-N3sfVwHpBkFxRsvOSpwqhrb31018myNnTKiOWMEitFo=";
   };
-
-  keyboard-switch = pkgs.writeShellScript "hyprland-switch-keyboard" ''
-    # https://github.com/hyprwm/Hyprland/discussions/2616#discussioncomment-6327590
-    # switch-lang
-    hyprctl \
-      --batch "$(
-        hyprctl devices -j |
-          ${pkgs.jq}/bin/jq -r '.keyboards[] | .name' |
-          while IFS= read -r keyboard; do
-            printf '%s %s %s;' 'switchxkblayout' "''${keyboard}" 'next'
-          done
-      )"
-  '';
+  scripts = pkgs.callPackage ./scripts.nix {};
 in {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -40,8 +28,8 @@ in {
         "${mainMod}, L, exec, swaylock -f -c 000000"
         "${mainMod}, E, exec, dolphin"
         "${mainMod}, P, exec, shotman"
-        "${mainMod}, R, exec, anyrun"
-        "${mainMod}, O, exec, ${keyboard-switch}"
+        "${mainMod}, R, exec, emacs"
+        "${mainMod}, O, exec, ${scripts.keyboard-switch}"
 
         "${mainMod} , Q, killactive,"
         "${mainMod} , S, togglesplit, # dwindle"

@@ -228,17 +228,13 @@ eglot (if available)."
   (set-face-attribute 'mode-line nil
                       :height 110)
   (set-face-attribute 'default nil
-                      :font "Cascadia Code PL"
                       :weight 'regular
                       :width 'normal
                       :height 110)
-  (set-face-attribute 'variable-pitch nil
-                      :font "Cascadia Code PL")
-  (set-face-attribute 'fixed-pitch nil
-                      :font "Cascadia Code PL")
+  (set-face-attribute 'variable-pitch nil :inherit 'default :family 'unspecified)
+  (set-face-attribute 'fixed-pitch nil :inherit 'default :family 'unspecified)
   (save-place-mode 1)
   (global-hl-line-mode 1)
-  (toggle-scroll-bar -1)
   (global-so-long-mode 1)
   (electric-indent-mode -1)
   (electric-pair-mode -1)

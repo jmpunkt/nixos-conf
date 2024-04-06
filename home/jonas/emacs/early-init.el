@@ -36,9 +36,12 @@ The information is formatted in a way suitable for
 (package-initialize)
 
 ;;; Emacs
+(setq default-frame-alist '((font . "Cascadia Code PL")))
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+
 (tool-bar-mode -1)
 (menu-bar-mode -1)
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
+(scroll-bar-mode -1)
 
 ;;; * -- End
 ;;; early-init.el ends here

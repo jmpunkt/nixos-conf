@@ -49,12 +49,14 @@
         key = "4D78720A4358CC504F3EB45B26CDFB2E4DB6B136";
         signByDefault = true;
       };
-      extraConfig = {
-        core = {
-          editor = "emacs";
-        };
-      };
     };
+  };
+  services.emacs = {
+    enable = true;
+    package = pkgs.jmpunkt.emacs;
+    startWithUserSession = "graphical";
+    client.enable = true;
+    defaultEditor = true;
   };
   home.stateVersion = "18.09";
 }

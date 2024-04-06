@@ -1,5 +1,6 @@
 {
   config,
+  systemConfig,
   pkgs,
   lib,
   ...
@@ -7,7 +8,11 @@
   imports =
     (import ../../modules/all-home-manager.nix)
     ++ [
-      ./hyprland
+      (
+        if systemConfig.programs.hyprland.enable
+        then import ./hyprland
+        else {...}: {}
+      )
     ];
   home.language = {
     base = "en_US.utf8";

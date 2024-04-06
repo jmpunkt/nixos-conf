@@ -41,7 +41,7 @@ in {
     enable = true;
     iconTheme = {
       package = pkgs.libsForQt5.breeze-icons;
-      name = "Breeze";
+      name = "breeze";
     };
     theme = {
       package = pkgs.libsForQt5.breeze-gtk;
@@ -59,7 +59,6 @@ in {
   #   };
   qt = {
     enable = true;
-    platformTheme = "qtct";
     style = {
       name = "Breeze";
       package = pkgs.libsForQt5.breeze-qt5;

@@ -102,9 +102,6 @@ in {
       env = [
         "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
         "WLR_DRM_NO_ATOMIC,1"
-        "GTK2_RC_FILES,/home/jonas/.config/gtk-2.0/gtkrc"
-        "QT_QPA_PLATFORMTHEME,qt5ct"
-        # "QT_STYLE_OVERRIDE,qt5ct"
       ];
 
       exec-once = [

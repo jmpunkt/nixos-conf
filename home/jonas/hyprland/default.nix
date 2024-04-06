@@ -11,9 +11,6 @@
     else false;
 in {
   imports = [
-    inputs.anyrun.homeManagerModules.default
-    ./anyrun.nix
-    ./waybar.nix
     ./hyprland.nix
   ];
 

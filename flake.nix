@@ -17,7 +17,6 @@
       inputs.nixpkgs.follows = "unstable";
     };
     utils.url = "github:numtide/flake-utils";
-    anyrun.url = "github:Kirottu/anyrun";
   };
   outputs = {
     self,
@@ -27,7 +26,6 @@
     home-manager,
     rust-overlay,
     emacs-overlay,
-    anyrun,
     utils,
   } @ inputs: let
     allPackagesOverlay = final: prev:

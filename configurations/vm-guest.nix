@@ -36,12 +36,15 @@
     useBootLoader = false;
     cores = 16;
     qemu = {
-      package = pkgs.qemu;
+      package = pkgs.qemu_kvm;
+      guestAgent.enable = true;
       options = [
-        "-vga virtio"
         "-enable-kvm"
-        "-machine q35"
-        "-display sdl"
+
+        # normal
+        "-vga virtio"
+        "-display sdl,gl=on,show-cursor=off"
+
       ];
     };
   };

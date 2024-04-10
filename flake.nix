@@ -156,7 +156,7 @@
           );
           vm-alpha128 = packageVM (mkSystem
             {
-              inherit system;
+              inherit system inputs;
               nixpkgs = stable;
               modules = [
                 self.nixosModules.alpha128
@@ -166,7 +166,7 @@
             });
           vm-gamma64 = packageVM (mkSystem
             {
-              inherit system;
+              inherit system inputs;
               nixpkgs = stable;
               modules = [
                 self.nixosModules.gamma64

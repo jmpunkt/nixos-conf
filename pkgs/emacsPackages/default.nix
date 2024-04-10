@@ -10,9 +10,6 @@
   eglot-x = pkgs.callPackage ./eglot-x.nix {
     inherit melpaBuild;
   };
-  eglot-booster = pkgs.callPackage ./eglot-booster.nix {
-    inherit melpaBuild;
-  };
   eglot-ltex = pkgs.callPackage ./eglot-ltex.nix {
     inherit melpaBuild;
   };

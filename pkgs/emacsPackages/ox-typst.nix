@@ -4,7 +4,7 @@
   melpaBuild,
   writeText,
 }: let
-  rev = "25ba84f38cd3ba95dc062feff05be3520d82c0ea";
+  rev = "d0e9666e7493ff5267f45646bcba737a73873c13";
   pname = "ox-typst";
 in
   melpaBuild {
@@ -17,7 +17,7 @@ in
       inherit rev;
       owner = "jmpunkt";
       repo = pname;
-      sha256 = "sha256-gI2TgMqOS8sVaaCKfKC5z6dCzgR0PSUiB5e3tDIJeKY=";
+      sha256 = "sha256-tEkraQvnoZQv7r0Pa5yhexNYAjwbK+tUnLjNkrXSbeA=";
     };
 
     recipe = writeText "recipe" ''

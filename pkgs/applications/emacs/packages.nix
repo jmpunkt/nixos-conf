@@ -70,6 +70,7 @@ with epkgs.melpaPackages;
         jmpunktPkgs.typst-ts-mode
         jmpunktPkgs.ox-typst
         jmpunktPkgs.copilot
+        jmpunktPkgs.app-launcher
         (jmpunktPkgs.nixosPaths (import ./variables.nix {inherit pkgs;}))
       ]
       ++ [

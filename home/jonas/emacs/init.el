@@ -6,6 +6,23 @@
 (require 'bind-key)
 (require 'nixos-paths)
 
+(use-package app-launcher
+  :commands app-launcher-run-app
+  :init
+  (defun emacs-run-launcher ()
+    (interactive)
+    (with-selected-frame (make-frame '((name . "emacs-run-launcher")
+                                       (minibuffer . only)
+                                       (auto-raise . t)
+                                       (fullscreen . nil)
+                                       (undecorated . t)
+                                       (internal-border-width . 20)
+                                       (width . 200)
+                                       (height . 11)))
+      (unwind-protect
+          (app-launcher-run-app)
+        (delete-frame)))))
+
 (use-package gcmh-mode
    :hook (emacs-startup . gcmh-mode))
 

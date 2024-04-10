@@ -1578,6 +1578,20 @@ paths, it will fallback to the project root path."
         ("Darmstadt, Germany" 49.87167 8.65027))))
 
 (use-package proced
+  :bind (:map proced-mode-map
+              ("C-s" . jmpunkt/proced-search))
+  :init
+  (defun jmpunkt/proced-search ()
+    "Search inside the proced buffer.
+
+Disabling the auto update while searching."
+    (interactive)
+    (let ((save-status proced-auto-update-flag))
+      (unwind-protect
+          (progn
+            (setq-local proced-auto-update-flag nil)
+            (call-interactively #'consult-line))
+        (setq-local proced-auto-update-flag save-status))))
   :config
   (setq-default proced-auto-update-flag t)
   (setq proced-tree-flag t

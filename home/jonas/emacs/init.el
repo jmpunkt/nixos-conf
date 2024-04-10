@@ -782,8 +782,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
 (use-package flyspell-correct
   :after flyspell
   :bind (:map flyspell-mode-map
-              ("C-c s <" . flyspell-correct-previous)
-              ("C-c s >" . flyspell-correct-next)
+              ("C-c s p" . flyspell-correct-previous)
+              ("C-c s n" . flyspell-correct-next)
               ("C-c s c" . flyspell-correct-at-point)
               ("C-c s d" . ispell-change-dictionary)
               ("C-c s f" . flyspell-buffer))

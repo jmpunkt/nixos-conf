@@ -1470,7 +1470,9 @@ paths, it will fallback to the project root path."
 ;;;; * Rust
 (use-package rust-mode
   :mode "\\.rs\\'"
-  :hook (rust-mode . eglot-ensure))
+  :hook (rust-mode . eglot-ensure)
+  :custom
+  (rust-mode-treesitter-derive t))
 
 ;;;; * Fish
 (use-package fish-mode

@@ -31,4 +31,7 @@
   app-launcher = pkgs.callPackage ./app-launcher.nix {
     inherit melpaBuild;
   };
+  xdg-appmenu = pkgs.callPackage ./xdg-appmenu.nix {
+    inherit melpaBuild;
+  };
 }

@@ -1596,6 +1596,7 @@ Disabling the auto update while searching."
   (setq-default proced-auto-update-flag t)
   (setq proced-tree-flag t
         proced-auto-update-interval 1
+        proced-auto-update-flag 'visible
         proced-show-remote-processes t
         proced-enable-color-flag t))
 

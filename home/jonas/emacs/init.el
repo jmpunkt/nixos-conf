@@ -530,6 +530,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
       ;; If the parent does not expand the current selection, then use
       ;; their parent instead.
       (when (and
+             (meow--selection-type)
              (equal (treesit-node-end target) (treesit-node-end node))
              (equal (treesit-node-start target) (treesit-node-start node)))
         (setq target (treesit-node-parent target)))

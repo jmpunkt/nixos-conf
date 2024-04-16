@@ -465,6 +465,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
      filtered))
   (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
   (setq eshell-history-size 1000
+        eshell-history-append t
         eshell-hist-ignoredups 'erase))
 
 (use-package compile

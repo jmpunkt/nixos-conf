@@ -797,7 +797,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (defun jmpunkt/flymake-languagetool-language-set ()
     (interactive)
     (when-let ((lang (completing-read "Language: " '("en-US" "de-DE"))))
-      (setq flymake-languagetool-language lang)
+      (setq-local flymake-languagetool-language lang)
       (message "Set language to %s" lang)))
   :hook ((text-mode . flymake-languagetool-load)
          (org-mode . flymake-languagetool-load)

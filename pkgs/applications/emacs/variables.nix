@@ -12,7 +12,6 @@ in {
     ob-mermaid-cli-path = "${pkgs.nodePackages.mermaid-cli}/bin/mmdc";
     mermaid-mmdc-location = "${pkgs.nodePackages.mermaid-cli}/bin/mmdc";
     flymake-languagetool-server-command = ["${pkgs.languagetool}/bin/languagetool-http-server"];
-    parinfer-rust-library = "${pkgs.kakounePlugins.parinfer-rust}/lib/libparinfer_rust.so";
     copilot-node-executable = "${pkgs.nodePackages_latest.nodejs}/bin/node";
     copilot-install-dir = "${copilot}";
     copilot-version = copilot.version;

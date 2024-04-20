@@ -41,7 +41,7 @@
         (delete-frame)))))
 
 (use-package gcmh-mode
-   :hook (emacs-startup . gcmh-mode))
+  :hook (emacs-startup . gcmh-mode))
 
 ;;; * Use-package (Formatting)
 (defcustom fmt-formatters-alist '()
@@ -434,7 +434,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
     (jmpunkt/eshell-goto-end-or-here))
   (define-advice eshell-previous-matching-input-from-input
       (:before (&rest args) eshell-advice)
-      (jmpunkt/eshell-goto-end-or-here))
+    (jmpunkt/eshell-goto-end-or-here))
   (define-advice meow-yank
       (:before (&rest args) eshell-advice)
     (when (derived-mode-p 'eshell-mode)
@@ -462,7 +462,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
                                     (min (cadr prop) new-length)
                                     (caddr prop)
                                     filtered))
-     filtered))
+      filtered))
   (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
   (setq eshell-history-size 1000
         eshell-history-append t
@@ -925,7 +925,7 @@ paths, it will fallback to the project root path."
               template '())
         (while (string-match regex snippet last-match)
           (setq template (append template `(,(substring snippet last-match (or (when (match-beginning 1) (1- (match-beginning 1))) (match-beginning 10)))
-                                             p)))
+                                            p)))
           (setq last-match (match-end 0)))
         (add-to-list 'template (substring snippet last-match (length snippet)) 1)
         template)))

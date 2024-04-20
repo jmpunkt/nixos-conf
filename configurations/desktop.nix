@@ -28,6 +28,8 @@
     mpv
     tdesktop
     thunderbird
+    streamlink
+    yt-dlp
     jmpunkt.chatterino2-nigthly
     jmpunkt.emacs
 

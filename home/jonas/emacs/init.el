@@ -1220,20 +1220,22 @@ paths, it will fallback to the project root path."
   :defer t
   :mode ("\\.org\\'" . org-mode)
   :init
-  (defun jmpunkt/org-delegate-keybind (key)
-    "Tries delegating a key sequence to the underlying org-edit-special block.
-
- Mimics the behavior of entering the block, pressing a single key command, and then exiting."
-    (when (org-in-src-block-p)
-      (org-edit-special)
-      (let ((formatter (key-binding key)))
-        (when formatter
-          (funcall formatter)))
-      (org-edit-src-exit)))
   (defun jmpunkt/format-org-src ()
-    "Formats the org-src-block with `jmpunkt/org-delegate-keybind`."
+    "Formats the org-src-block with C-c C-f keybind or indents the whole buffer.
+
+If the cursor is inside a source block, then the C-c C-f keybind is
+delegated to the underlying mode. C-c C-f is ideally bound to
+formatting the source code. If the cursor is not inside a source
+block, then the whole buffer is indented."
     (interactive)
-    (jmpunkt/org-delegate-keybind (kbd "C-c C-f")))
+    (if (org-in-src-block-p)
+        (progn
+          (org-edit-special)
+          (let ((formatter (key-binding (kbd "C-c C-f"))))
+            (when formatter
+              (funcall formatter)))
+          (org-edit-src-exit))
+      (org-indent-indent-buffer)))
   :bind (:map org-mode-map
               ("C-c C-f" . jmpunkt/format-org-src)
               ("C-j" . nil)

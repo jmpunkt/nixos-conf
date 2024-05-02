@@ -1357,11 +1357,6 @@ block, then the whole buffer is indented."
   (setq org-src-fontify-natively t
         org-src-tab-acts-natively t))
 
-(use-package org-bullets
-  :after org
-  :hook (org-mode . org-bullets-mode)
-  :config (setq org-bullets-bullet-list '("●" "○" "✸" "✿")))
-
 (use-package citar
   :bind (("C-c b" . citar-insert-citation)
          :map minibuffer-local-map

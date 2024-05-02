@@ -16,7 +16,6 @@ with epkgs.melpaPackages;
     transient-dwim
     rg
     # Org
-    org-bullets
     ob-async
     ob-mermaid
     ob-graphql

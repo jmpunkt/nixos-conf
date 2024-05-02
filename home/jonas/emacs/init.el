@@ -1251,14 +1251,9 @@ block, then the whole buffer is indented."
                                       (when org-inline-image-overlays
                                         (org-redisplay-inline-images)))))
   :config
-  (put 'bibtex-completion-bibliography 'safe-local-variable #'stringp)
-  (setq org-highlight-latex-and-related '(latex)
-        org-ellipsis "…"
+  (setq org-ellipsis "…"
         org-log-done 'time
-        org-catch-invisible-edits 'smart
-        org-deadline-warning-days 14
-        org-edit-src-content-indentation 0
-        org-todo-keywords '((sequence "TODO(t!)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)"))))
+        org-catch-invisible-edits 'show-and-error))
 
 (use-package ox-typst
   :after org

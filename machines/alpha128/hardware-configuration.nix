@@ -12,7 +12,7 @@
     fsType = "ext4";
   };
   fileSystems."/boot/efi" = {
-    device = "/dev/disk/by-uuid/98C4-B2DF";
+    device = "/dev/disk/by-uuid/8759-6936";
     fsType = "vfat";
   };
   swapDevices = [];

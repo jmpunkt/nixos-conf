@@ -267,6 +267,7 @@ eglot (if available)."
                       :height 110)
   (set-face-attribute 'variable-pitch nil :inherit 'default :family 'unspecified)
   (set-face-attribute 'fixed-pitch nil :inherit 'default :family 'unspecified)
+  (pixel-scroll-precision-mode 1)
   (save-place-mode 1)
   (global-hl-line-mode 1)
   (global-so-long-mode 1)

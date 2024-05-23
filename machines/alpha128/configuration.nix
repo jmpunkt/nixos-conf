@@ -25,6 +25,7 @@
     ];
   };
   networking.hostName = "alpha128";
+  hardware.bluetooth.enable = true;
   hardware.openrazer = {
     enable = true;
     syncEffectsEnabled = false;

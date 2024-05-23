@@ -10,11 +10,11 @@
     };
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "stable";
     };
     emacs-overlay = {
       url = "github:nix-community/emacs-overlay";
-      inputs.nixpkgs.follows = "unstable";
+      inputs.nixpkgs.follows = "stable";
     };
     utils.url = "github:numtide/flake-utils";
   };

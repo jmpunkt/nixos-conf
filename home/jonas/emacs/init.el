@@ -6,6 +6,30 @@
 (require 'bind-key)
 (require 'nixos-paths)
 
+(defvar presentation-mode--previous nil
+  "Store previous face configuration.")
+
+(define-minor-mode presentation-mode
+  "Toggles global presentation-mode."
+  nil
+  :global t
+  :group 'presentation
+  (if presentation-mode
+      (progn
+        (setq presentation-mode--previous (face-all-attributes 'default))
+        (set-face-attribute 'default nil
+                            :weight 'regular
+                            :width 'normal
+                            :height 200))
+    (apply 'set-face-attribute
+           'default nil
+           (-mapcat (lambda (x) (when (and
+                                       (not (equal :foundry (car x)))
+                                       (not (equal :family (car x))))
+                                  (list (car x) (cdr x))))
+                    presentation-mode--previous))
+    (setq presentation-mode--previous nil)))
+
 (use-package app-launcher
   :commands app-launcher-run-app
   :init

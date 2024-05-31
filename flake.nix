@@ -1,11 +1,11 @@
 {
   description = "My configuration as a flake";
   inputs = {
-    stable.url = "github:NixOS/nixpkgs/nixos-23.11";
+    stable.url = "github:NixOS/nixpkgs/nixos-24.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "stable";
     };
     rust-overlay = {

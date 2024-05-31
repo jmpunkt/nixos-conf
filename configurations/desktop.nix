@@ -14,8 +14,6 @@
     dates = "weekly";
     options = "--delete-older-than 14d";
   };
-  xdg.portal.enable = true;
-  programs.dconf.enable = true;
   environment.systemPackages = with pkgs; [
     # gui
     audacious
@@ -30,7 +28,7 @@
     thunderbird
     streamlink
     yt-dlp
-    jmpunkt.chatterino2-nigthly
+    chatterino2
     jmpunkt.emacs
 
     # cli
@@ -92,7 +90,8 @@
     printing.enable = true;
     avahi = {
       enable = true;
-      nssmdns = true;
+      nssmdns4 = true;
+      nssmdns6 = true;
     };
   };
 }

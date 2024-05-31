@@ -39,6 +39,6 @@
   services.timesyncd.enable = true;
   time.timeZone = "Europe/Berlin";
   boot.kernelPackages = pkgs.linuxPackages_latest;
-  services.xserver.layout = "de";
+  services.xserver.xkb.layout = "de";
   console.keyMap = "de";
 }

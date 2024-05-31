@@ -29,9 +29,9 @@
   hardware.openrazer = {
     enable = true;
     syncEffectsEnabled = false;
-    mouseBatteryNotifier = false;
+    batteryNotifier.enable = false;
     users = [config.users.users.jonas.name];
   };
-  environment.systemPackages = with pkgs; [razergenie nvtop-amd];
+  environment.systemPackages = with pkgs; [razergenie nvtopPackages.amd];
   system.stateVersion = "20.03";
 }

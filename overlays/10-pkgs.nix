@@ -17,7 +17,7 @@ self: super:
   vscode-extensions =
     (super.vscode-extensions or {}) // {jmpunktPkgs = super.callPackage ../pkgs/vscode-extensions {};};
   emacsPackagesFor = emacs: (
-    (super.emacsPackagesFor emacs).overrideScope'
+    (super.emacsPackagesFor emacs).overrideScope
     (
       eself: esuper: let
         manualPackages =

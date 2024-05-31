@@ -1214,21 +1214,7 @@ paths, it will fallback to the project root path."
     (kbd "h")
     '("C-l" "Log" magit-log-refresh))
   (setq magit-slow-confirm '(magit-discard))
-  (setq magit-status-sections-hook
-        '(magit-insert-status-headers
-          magit-insert-merge-log
-          magit-insert-untracked-files
-          magit-insert-unstaged-changes
-          magit-insert-staged-changes
-          magit-insert-unpulled-from-upstream
-          magit-insert-unpulled-from-pushremote
-          magit-insert-unpushed-to-upstream
-          magit-insert-unpushed-to-pushremote))
-  (setq magit-diff-refine-hunk 'all)
-  (remove-hook 'magit-status-sections-hook 'magit-insert-tags-header)
-  (remove-hook 'magit-status-sections-hook 'magit-insert-status-headers)
-  (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-pushremote)
-  (remove-hook 'magit-status-sections-hook 'magit-insert-unpulled-from-upstream))
+  (setq magit-diff-refine-hunk 'all))
 
 (use-package hl-todo
   :hook (after-init . global-hl-todo-mode))

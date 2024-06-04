@@ -16,7 +16,7 @@
     buildShell = pkgs: anyRustToolchain: pkgs.mkShell {buildInputs = with pkgs; [anyRustToolchain];};
     rustOverwrite = anyRustToolchain: anyRustToolchain.override {extensions = ["rust-src" "rust-analyzer-preview"];};
     buildForSystem = system: let
-      overlays = [rust-overlay.overlay];
+      overlays = [rust-overlay.overlays.default];
       pkgs = import nixpkgs {inherit system overlays;};
     in {
       devShells = rec {

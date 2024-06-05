@@ -1195,29 +1195,26 @@ paths, it will fallback to the project root path."
 (use-package magit
   :bind ((:map global-map
                ("C-x g" . magit-status)
-               ("C-x G" . magit-status-here))
-         (:map magit-status-mode-map
-               ("t" . magit-discard)
-               ("T" . magit-tag)
-               ("C-t" . magit-notes)
-               ("L" . magit-log)
-               ("C-l" . magit-log-refresh)))
+               ("C-x G" . magit-status-here)))
   :config
-  (transient-insert-suffix 'magit-dispatch
-    (kbd "h")
-    '("t" "Discard" magit-discard))
-  (transient-insert-suffix 'magit-dispatch
-    (kbd "h")
-    '("T" "Tag" magit-tag))
-  (transient-insert-suffix 'magit-dispatch
-    (kbd "h")
-    '("C-t" "Notes" magit-notes))
-  (transient-insert-suffix 'magit-dispatch
-    (kbd "h")
-    '("L" "Log" magit-log))
-  (transient-insert-suffix 'magit-dispatch
-    (kbd "h")
-    '("C-l" "Log" magit-log-refresh))
+  ;; NOTE: The order is important, first rebind keybinds which should
+  ;;       be used late. Otherwise, the menu will miss these entries
+  ;;       and the replace operations fails silently.
+  (transient-replace-suffix 'magit-dispatch
+                            '("T" "Note" magit-notes)
+                            '("C-t" "Note" magit-notes))
+  (transient-replace-suffix 'magit-dispatch
+                            '("t" "Tag" magit-tag)
+                            '("T" "Tag" magit-tag))
+  (transient-replace-suffix 'magit-dispatch
+                            '("k" "Discard" magit-discard)
+                            '("t" "Discard" magit-discard))
+  (transient-replace-suffix 'magit-dispatch
+                            '("L" "Log (change)" magit-log-refresh)
+                            '("C-l" "Log (change)" magit-log-refresh))
+  (transient-replace-suffix 'magit-dispatch
+                            '("l" "Log" magit-log)
+                            '("L" "Log" magit-log))
   (setq magit-slow-confirm '(magit-discard))
   (setq magit-diff-refine-hunk 'all))
 

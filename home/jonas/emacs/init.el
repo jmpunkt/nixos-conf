@@ -6,6 +6,11 @@
 (require 'bind-key)
 (require 'nixos-paths)
 
+(defcustom presentation-mode-font-height 200
+  "Store previous face configuration."
+  :type 'number
+  :group 'presentation)
+
 (defvar presentation-mode--previous nil
   "Store previous face configuration.")
 
@@ -20,10 +25,10 @@
         (set-face-attribute 'default nil
                             :weight 'regular
                             :width 'normal
-                            :height 200))
+                            :height presentation-mode-font-height))
     (apply 'set-face-attribute
            'default nil
-           (-mapcat (lambda (x) (when (and
+           (seq-mapcat (lambda (x) (when (and
                                        (not (equal :foundry (car x)))
                                        (not (equal :family (car x))))
                                   (list (car x) (cdr x))))

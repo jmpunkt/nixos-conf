@@ -6,7 +6,6 @@
   ...
 }: {
   imports = [
-    "${modulesPath}/installer/cd-dvd/channel.nix"
     "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
     ../../configurations/flakes.nix
   ];

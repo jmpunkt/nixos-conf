@@ -151,7 +151,13 @@
             {
               inherit system inputs;
               nixpkgs = stable;
-              modules = [(import ./machines/iso/configuration.nix)];
+              modules = [
+                (import ./machines/iso/configuration.nix)
+                self.nixosModules.home-unknown
+                ({...}: {
+                  home-manager.users.nixos = ./home/jonas/home.nix;
+                })
+              ];
             }
           );
           vm-alpha128 = packageVM (mkSystem
@@ -213,15 +219,23 @@
       overlays.default = allPackagesOverlay;
       templates = import ./templates;
       nixosModules = {
-        home-jonas = (
+        home-unknown = (
           {config, ...}: {
+            imports = [
+              home-manager.nixosModules.home-manager
+            ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.jonas = ./home/jonas/home.nix;
             home-manager.extraSpecialArgs = {
               inherit inputs;
               systemConfig = config;
             };
+          }
+        );
+        home-jonas = (
+          {config, ...}: {
+            imports = [self.nixosModules.home-unknown];
+            home-manager.users.jonas = ./home/jonas/home.nix;
           }
         );
         gamma64 = {config, ...}: {
@@ -231,7 +245,6 @@
             hardware.nixosModules.common-pc-laptop-acpi_call
             hardware.nixosModules.common-pc-laptop-ssd
             self.nixosModules.home-jonas
-            home-manager.nixosModules.home-manager
           ];
         };
         alpha128 = {conifg, ...}: {
@@ -243,7 +256,6 @@
             hardware.nixosModules.common-cpu-amd-pstate
             hardware.nixosModules.common-gpu-amd
             self.nixosModules.home-jonas
-            home-manager.nixosModules.home-manager
           ];
         };
       };

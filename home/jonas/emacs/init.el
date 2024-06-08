@@ -1195,7 +1195,13 @@ paths, it will fallback to the project root path."
 (use-package magit
   :bind ((:map global-map
                ("C-x g" . magit-status)
-               ("C-x G" . magit-status-here)))
+               ("C-x G" . magit-status-here))
+         (:map magit-status-mode-map
+               ("t" . magit-discard)
+               ("T" . magit-tag)
+               ("C-t" . magit-notes)
+               ("L" . magit-log)
+               ("C-l" . magit-log-refresh)))
   :config
   ;; NOTE: The order is important, first rebind keybinds which should
   ;;       be used late. Otherwise, the menu will miss these entries

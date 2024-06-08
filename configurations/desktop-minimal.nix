@@ -39,6 +39,7 @@
     packages = with pkgs; [
       roboto
       noto-fonts
+      noto-fonts-monochrome-emoji
       freefont_ttf
       liberation_ttf
       # Monospace

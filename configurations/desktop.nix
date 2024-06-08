@@ -4,6 +4,7 @@
   lib,
   ...
 }: {
+  imports = [./desktop-minimal.nix];
   nix.gc = {
     automatic = true;
     dates = "weekly";

@@ -13,7 +13,6 @@
   isoImage.volumeID = "nixos-${config.system.nixos.release}-${pkgs.stdenv.hostPlatform.uname.processor}";
   environment.systemPackages = with pkgs; [neovim git];
   networking.useDHCP = true;
-  programs.fish.enable = true;
   services.timesyncd.enable = true;
   time.timeZone = "Europe/Berlin";
   boot.kernelPackages = pkgs.linuxPackages_latest;

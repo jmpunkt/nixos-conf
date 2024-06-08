@@ -587,8 +587,13 @@ If the cursor is on the last promt, then we want to insert at the current positi
       (push search regexp-search-ring)
       (call-interactively #'meow-search)))
   (defun jmpunkt/meow-setup ()
+    ;; add treesit function
     (meow-thing-register 'function #'jmpunkt/meow--inner-of-function #'jmpunkt/meow--bound-of-function)
     (add-to-list 'meow-char-thing-table '(?f . function))
+    ;; add thing-at-point url
+    (meow-thing-register 'url 'url 'url)
+    (add-to-list 'meow-char-thing-table '(?u . url))
+    ;; add angle brackets
     (meow-thing-register 'angle
                          '(pair ("<") (">"))
                          '(pair ("<") (">")))

@@ -36,7 +36,7 @@ The information is formatted in a way suitable for
 (package-initialize)
 
 ;;; Emacs
-(setq default-frame-alist '((font . "Cascadia Code PL")))
+(setq default-frame-alist '((font . "Fantasque Sans Mono")))
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 (tool-bar-mode -1)

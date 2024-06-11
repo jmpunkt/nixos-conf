@@ -9,6 +9,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
     supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
   };
+
   environment.systemPackages = with pkgs; [
     # gui
     binutils-unwrapped
@@ -37,16 +38,12 @@
   ];
   fonts = {
     packages = with pkgs; [
-      roboto
-      noto-fonts
-      noto-fonts-monochrome-emoji
+      dejavu_fonts
       freefont_ttf
       liberation_ttf
+      noto-fonts-monochrome-emoji
       # Monospace
-      ibm-plex
-      jetbrains-mono
       fantasque-sans-mono
-      cascadia-code
       # Emacs Icons
       emacs-all-the-icons-fonts
     ];

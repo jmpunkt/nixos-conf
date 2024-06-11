@@ -289,11 +289,11 @@ eglot (if available)."
                        (:eval (jmpunkt/mode-line-major-mode))
                        (:eval mode-line-misc-info)))))))
   (set-face-attribute 'mode-line nil
-                      :height 110)
+                      :height 125)
   (set-face-attribute 'default nil
                       :weight 'regular
                       :width 'normal
-                      :height 110)
+                      :height 125)
   (set-face-attribute 'variable-pitch nil :inherit 'default :family 'unspecified)
   (set-face-attribute 'fixed-pitch nil :inherit 'default :family 'unspecified)
   (save-place-mode 1)
@@ -321,24 +321,6 @@ eglot (if available)."
   :commands show-paren-mode
   :config
   (setq show-paren-delay 0))
-
-(use-package ligature
-  :defer t
-  :commands ligature-mode
-  :hook (prog-mode . ligature-mode)
-  :config
-  (ligature-set-ligatures 'prog-mode
-                          '("==" "===" "!=" "!==" "=!=" "=:=" "=/="
-                            "<=" ">=" "<>" "-|" "_|_" "|-" "||-" "|="
-                            "||=" "^=" "<+>" "<+" "+>" "<*>" "<*" "*>"
-                            "<!--" "<#--" "-->" "->" "->>" "<<-" "<-"
-                            "<=<" "=<<" "<<=" "<==" "<=>" "<==>" "==>"
-                            "=>" "=>>" ">=>" ">>=" ">>-" ">-" ">--"
-                            "-<" "-<<" ">->" "<-<" "<-|" "<=|" "|=>"
-                            "|->" "<->" "<~~" "<~" "<~>" "~~" "~~>"
-                            "~>" "[||]" "|]" "[|" "|}" "{|" "[<" ">]"
-                            "|>" "<|" "||>" "<||" "|||>" "<|||" "<|>"
-                            ":=" "::=" "/=" "//=" "/==")))
 
 (use-package editorconfig
   :ensure t

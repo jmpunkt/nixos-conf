@@ -29,16 +29,16 @@
     (apply 'set-face-attribute
            'default nil
            (seq-mapcat (lambda (x) (when (and
-                                       (not (equal :foundry (car x)))
-                                       (not (equal :family (car x))))
-                                  (list (car x) (cdr x))))
-                    presentation-mode--previous))
+                                          (not (equal :foundry (car x)))
+                                          (not (equal :family (car x))))
+                                     (list (car x) (cdr x))))
+                       presentation-mode--previous))
     (setq presentation-mode--previous nil)))
 
 (use-package xdg-appmenu
   :commands xdg-appmenu
   :init
-  (defun emacs-run-launcher2 ()
+  (defun emacs-run-launcher ()
     (interactive)
     (with-selected-frame (make-frame '((name . "emacs-run-launcher")
                                        (minibuffer . only)
@@ -1176,20 +1176,20 @@ paths, it will fallback to the project root path."
   ;;       be used late. Otherwise, the menu will miss these entries
   ;;       and the replace operations fails silently.
   (transient-replace-suffix 'magit-dispatch
-                            '("T" "Note" magit-notes)
-                            '("C-t" "Note" magit-notes))
+    '("T" "Note" magit-notes)
+    '("C-t" "Note" magit-notes))
   (transient-replace-suffix 'magit-dispatch
-                            '("t" "Tag" magit-tag)
-                            '("T" "Tag" magit-tag))
+    '("t" "Tag" magit-tag)
+    '("T" "Tag" magit-tag))
   (transient-replace-suffix 'magit-dispatch
-                            '("k" "Discard" magit-discard)
-                            '("t" "Discard" magit-discard))
+    '("k" "Discard" magit-discard)
+    '("t" "Discard" magit-discard))
   (transient-replace-suffix 'magit-dispatch
-                            '("L" "Log (change)" magit-log-refresh)
-                            '("C-l" "Log (change)" magit-log-refresh))
+    '("L" "Log (change)" magit-log-refresh)
+    '("C-l" "Log (change)" magit-log-refresh))
   (transient-replace-suffix 'magit-dispatch
-                            '("l" "Log" magit-log)
-                            '("L" "Log" magit-log))
+    '("l" "Log" magit-log)
+    '("L" "Log" magit-log))
   (setq magit-slow-confirm '(magit-discard))
   (setq magit-diff-refine-hunk 'all))
 

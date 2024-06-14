@@ -1519,6 +1519,7 @@ block, then the whole buffer is indented."
                            (pdf-misc-size-indication-minor-mode)
                            (pdf-links-minor-mode)
                            (pdf-isearch-minor-mode)
+                           (auto-revert-mode)
                            (cua-mode -1)))
   :bind (:map pdf-view-mode-map
               ("C-s" . isearch-forward)

@@ -160,18 +160,12 @@ eglot (if available)."
   (defun jmpunkt/default-init ()
     (subword-mode 1)
     (electric-indent-local-mode 1)
-    (auto-fill-mode 1)
     (show-paren-mode 1)
-    (display-line-numbers-mode 1)
-    (setq-local tab-width 2
-                indent-tabs-mode nil
-                show-trailing-whitespace t))
+    (display-line-numbers-mode 1))
   (defun jmpunkt/prog-init ()
-    (jmpunkt/default-init)
-    (setq-local comment-auto-fill-only-comments t))
+    (jmpunkt/default-init))
   (defun jmpunkt/conf-init ()
-    (jmpunkt/default-init)
-    (setq-local comment-auto-fill-only-comments t))
+    (jmpunkt/default-init))
   (defun jmpunkt/text-init ()
     (jmpunkt/default-init)
     (setq-local comment-auto-fill-only-comments nil))
@@ -256,6 +250,11 @@ eglot (if available)."
         uniquify-buffer-name-style 'forward
         history-delete-duplicates t
         xref-search-program 'ripgrep)
+  (setq-default tab-width 2
+                fill-column 80
+                indent-tabs-mode nil
+                show-trailing-whitespace t
+                comment-auto-fill-only-comments t)
   (setq-default mode-line-format
                 '((:eval
                    (simple-mode-line-render
@@ -1207,6 +1206,7 @@ paths, it will fallback to the project root path."
 (use-package org
   :defer t
   :mode ("\\.org\\'" . org-mode)
+  :hook (org-mode . (lambda () (setq-local tab-width 8)))
   :init
   (defun jmpunkt/format-org-src ()
     "Formats the org-src-block with C-c C-f keybind or indents the whole buffer.

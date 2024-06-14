@@ -770,7 +770,9 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :defer t
   :commands flyspell-mode
   :init
-  :hook (prog-mode . flyspell-mode)
+  :hook ((prog-mode . flyspell-mode)
+         (text-mode . flyspell-mode)
+         (conf-mode . flyspell-mode))
   :config
   (setq flyspell-issue-welcome-flag nil
         flyspell-issue-message-flag nil)
@@ -790,18 +792,12 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :config
   (setq flyspell-correct-interface #'flyspell-correct-dummy))
 
-(use-package flymake-languagetool
-  :ensure t
-  :init
-  (defun jmpunkt/flymake-languagetool-language-set ()
-    (interactive)
-    (when-let ((lang (completing-read "Language: " '("en-US" "de-DE"))))
-      (setq-local flymake-languagetool-language lang)
-      (message "Set language to %s" lang)))
-  :hook ((text-mode . flymake-languagetool-load)
-         (org-mode . flymake-languagetool-load)
-         (markdown-mode . flymake-languagetool-load)
-         (message-mode . flymake-languagetool-load)))
+(use-package languagetool
+  :defer t
+  :commands (languagetool-server-mode
+             languagetool-server-start)
+  :config
+  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")))
 
 ;;;; * Projectile
 (use-package project
@@ -966,7 +962,6 @@ paths, it will fallback to the project root path."
               ("C-c h f" . consult-flymake)
               ("C-c h d" . flymake-show-buffer-diagnostics))
   :hook ((prog-mode . flymake-mode)
-         (markdown-mode . flymake-mode)
          (text-mode . flymake-mode)
          (flymake-diagnostics-buffer-mode . visual-line-mode)
          (flymake-project-diagnostics-mode . visual-line-mode))
@@ -1378,6 +1373,7 @@ block, then the whole buffer is indented."
 ;;;; * Markdown
 (use-package markdown-mode
   :defer t
+  :hook ((markdown-mode . flyspell-mode))
   :mode
   (("INSTALL\\.md\\\'". gfm-mode)
    ("CONTRIBUTORS\\.md\\\'". gfm-mode)

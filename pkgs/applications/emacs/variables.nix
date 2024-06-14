@@ -11,7 +11,9 @@ in {
     org-plantuml-jar-path = "${pkgs.plantuml}/lib/plantuml.jar";
     ob-mermaid-cli-path = "${pkgs.nodePackages.mermaid-cli}/bin/mmdc";
     mermaid-mmdc-location = "${pkgs.nodePackages.mermaid-cli}/bin/mmdc";
-    flymake-languagetool-server-command = ["${pkgs.languagetool}/bin/languagetool-http-server"];
+    languagetool-server-command = "${pkgs.languagetool}/share/languagetool-server.jar";
+    languagetool-console-command = "${pkgs.languagetool}/share/languagetool-commandline.jar";
+    languagetool-java-bin = "${pkgs.jre}/bin/java";
     copilot-node-executable = "${pkgs.nodePackages_latest.nodejs}/bin/node";
     copilot-install-dir = "${copilot}";
     copilot-version = copilot.version;

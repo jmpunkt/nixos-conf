@@ -51,7 +51,7 @@ in {
       pgformatter
       nodePackages.prettier
       alejandra
-      typstfmt
+      typstyle
       ruff
       biome
       (rustfmt.override {asNightly = true;})

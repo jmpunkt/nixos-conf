@@ -706,8 +706,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (reformatter-define fmt/pgformatter
     :program "pg_format"
     :group 'sql)
-  (reformatter-define fmt/typstfmt
-    :program "typstfmt"
+  (reformatter-define fmt/typstyle
+    :program "typstyle"
     :group 'typst)
   (reformatter-define fmt/biome
     :program "biome"
@@ -1418,9 +1418,11 @@ block, then the whole buffer is indented."
   :defer t
   :mode "\\.typ\\'"
   :hook ((typst-ts-mode . fmt-mode)
-         (typst-ts-mode . eglot-ensure)
-         (typst-ts-mode . fmt/typstfmt-on-save-mode))
-  :fmt (typst-ts-mode . fmt/typstfmt-buffer)
+         ;; (typst-ts-mode . eglot-ensure)
+         (typst-ts-mode . fmt/typstyle-on-save-mode))
+  :fmt (typst-ts-mode . fmt/typstyle-buffer)
+  :custom
+  (typst-ts-mode-indent-offset 2)
   :config
   (require 'eglot)
   (add-to-list 'eglot-server-programs '((typst-ts-mode) . ("typst-lsp"))))

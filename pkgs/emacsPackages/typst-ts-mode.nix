@@ -4,12 +4,12 @@
   melpaBuild,
   writeText,
 }: let
-  rev = "eb4bcb0a85a0ad96841cfe2112f378d7ab673758";
+  rev = "a5f094dd1d1ce992e9ad290e4838779b2dd5809a";
   pname = "typst-ts-mode";
 in
   melpaBuild {
     inherit pname;
-    version = "20231225.0";
+    version = "20240317.0";
 
     commit = rev;
 
@@ -17,7 +17,7 @@ in
       inherit rev;
       owner = "~meow_king";
       repo = pname;
-      sha256 = "sha256-+0j1alT0cVfxXdWie6J2UWX1JNx9EX3seDpOWor0klA=";
+      sha256 = "sha256-HUOsb5aUj2Kb5E0HaZENp9pqQIAOF4t2SEIKH7cFspo=";
     };
 
     recipe = writeText "recipe" ''

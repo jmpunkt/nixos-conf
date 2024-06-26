@@ -279,6 +279,7 @@ eglot (if available)."
   (set-face-attribute 'variable-pitch nil :inherit 'default :family 'unspecified)
   (set-face-attribute 'fixed-pitch nil :inherit 'default :family 'unspecified)
   (save-place-mode 1)
+  (savehist-mode 1)
   (global-hl-line-mode 1)
   (global-so-long-mode 1)
   (electric-indent-mode -1)

@@ -2,6 +2,7 @@
 with epkgs.melpaPackages;
   [
     # Core
+    avy
     meow
     which-key
     hl-todo
@@ -13,6 +14,7 @@ with epkgs.melpaPackages;
     reformatter
     gcmh
     biome
+    casual-avy
     transient-dwim
     rg
     # Org

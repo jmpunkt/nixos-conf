@@ -161,7 +161,8 @@ eglot (if available)."
     (subword-mode 1)
     (electric-indent-local-mode 1)
     (show-paren-mode 1)
-    (display-line-numbers-mode 1))
+    (display-line-numbers-mode 1)
+    (setq-local show-trailing-whitespace t))
   (defun jmpunkt/prog-init ()
     (jmpunkt/default-init))
   (defun jmpunkt/conf-init ()
@@ -253,7 +254,6 @@ eglot (if available)."
   (setq-default tab-width 2
                 fill-column 80
                 indent-tabs-mode nil
-                show-trailing-whitespace t
                 comment-auto-fill-only-comments t)
   (setq-default mode-line-format
                 '((:eval

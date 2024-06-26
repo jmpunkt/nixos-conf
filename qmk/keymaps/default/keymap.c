@@ -56,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Raise
  *
  * ,----------------------------------.           ,----------------------------------.
- * |      |      |   `  |   '  |   "  |           |  -   |  $   |  ~   |  @   |  :   |
+ * |  €   |      |   `  |   '  |   "  |           |  -   |  $   |  ~   |  @   |  :   |
  * |------+------+------+------+------|           |------+------+------+------+------|
  * |  {   |  <   |   [  |   (  |   /  |           |  ?   |   &  |   =  |   +  |  *   |
  * |------+------+------+------+------|           |------+------+------+------+------|
@@ -67,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                  `--------------------'
  */
 [_RAISE] = LAYOUT_split_3x5_3(
-  _______,      _______,    KX_GRAVE,    KX_QUOTE,       KX_DQUOTE,      KC_MINUS,        KC_DOLLAR,  KX_TILDE,  KC_AT,    KC_COLON,
+  US_EURO,      _______,    KX_GRAVE,    KX_QUOTE,       KX_DQUOTE,      KC_MINUS,        KC_DOLLAR,  KX_TILDE,  KC_AT,    KC_COLON,
   KC_LCBR,      KC_LABK,    KC_LBRC,     KC_LPRN,        KC_SLASH,       KC_QUESTION,     KC_AMPR,    KC_EQUAL,  KC_PLUS,  KC_ASTR,
   KC_RCBR,      KC_RABK,    KC_RBRC,     KC_RPRN,        KC_NUBS,        KC_EXLM,         KC_PIPE,    KC_HASH,   KX_CIRCUMFLEX,  KC_PERC,
                            LSFT(KC_LCTL),    _______,   _______,         _______,         _______,    _______

@@ -1,7 +1,4 @@
-{
-  callPackage,
-  emacs,
-}: let
+{callPackage}: let
   emacsBinary = callPackage ./custom.nix {};
   emacsBundle = (callPackage ./overrides.nix {}) emacsBinary;
   packageFn = callPackage ./packages.nix {};

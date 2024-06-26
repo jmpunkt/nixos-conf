@@ -799,10 +799,9 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :config
   (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")))
 
-;;;; * Projectile
+;;;; * Project
 (use-package project
   :demand t
-  :bind-keymap ("C-x p" . project-prefix-map)
   :bind (:map project-prefix-map
               ("f" . project-find-file)
               ("d" . project-find-dir)

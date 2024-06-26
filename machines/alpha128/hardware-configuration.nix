@@ -22,8 +22,12 @@
   };
   hardware.amdgpu = {
     loadInInitrd = true;
-    amdvlk = true;
-    opencl = true;
+    amdvlk = {
+      enable = true;
+      support32Bit.enable = true;
+      supportExperimental.enable = true;
+    };
+    opencl.enable = true;
   };
   nix.settings.max-jobs = lib.mkDefault 14;
 }

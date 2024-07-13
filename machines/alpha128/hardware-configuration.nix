@@ -21,7 +21,7 @@
     ROC_ENABLE_PRE_VEGA = "1";
   };
   hardware.amdgpu = {
-    loadInInitrd = true;
+    initrd.enable = true;
     amdvlk = {
       enable = true;
       support32Bit.enable = true;

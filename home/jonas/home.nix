@@ -15,11 +15,9 @@
       )
     ];
   home.language = {
-    base = "en_US.utf8";
-    address = "de_DE.utf8";
+    base = "en_IE.UTF-8";
     monetary = "de_DE.utf8";
-    paper = "de_DE.utf8";
-    time = "de_DE.utf8";
+    telephone = "de_DE.utf8";
   };
   xdg.configFile = {
     "emacs/init.el".text = builtins.readFile ./emacs/init.el;

@@ -14,7 +14,7 @@
     spectacle
     ktouch
     kdialog
-    skanlite
+    simple-scan
     partition-manager
   ];
 

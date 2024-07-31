@@ -56,6 +56,8 @@
   sound.enable = lib.mkForce false;
   hardware = {
     sane.enable = true;
+    sane.extraBackends = with pkgs; [hplipWithPlugin];
+    sane.disabledDefaultBackends = ["escl"];
     opengl.enable = true;
     pulseaudio.enable = lib.mkForce false;
   };
@@ -75,6 +77,7 @@
       };
     };
     printing.enable = true;
+    printing.drivers = with pkgs; [hplip];
     avahi = {
       enable = true;
       nssmdns4 = true;

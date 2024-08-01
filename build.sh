@@ -5,6 +5,6 @@ hostname=$(hostname)
 
 echo "Building configuration for $hostname"
 
-nix build ".#$hostname"
+nix --experimental-features 'nix-command flakes' build ".#$hostname"
 
-nix run self#nvd diff /nix/var/nix/profiles/system ./result/
+nix --experimental-features 'nix-command flakes' run self#nvd diff /nix/var/nix/profiles/system ./result/

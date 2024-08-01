@@ -16,8 +16,8 @@
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
-      efi.efiSysMountPoint = "/boot/efi";
     };
+    initrd.systemd.enable = true;
     tmp.cleanOnBoot = true;
     blacklistedKernelModules = [
       # Disable: https://bbs.archlinux.org/viewtopic.php?id=239075

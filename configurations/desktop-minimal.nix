@@ -17,6 +17,7 @@
     gnupg
     mpv
     jmpunkt.emacs
+    keepassxc
 
     # cli
     git

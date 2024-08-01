@@ -33,6 +33,10 @@
     MOZ_ENABLE_WAYLAND = 1;
     NIXOS_OZONE_WL = 1;
   };
+  services.syncthing = {
+    enable = true;
+    tray.enable = true;
+  };
   programs = {
     direnv = {
       enable = true;

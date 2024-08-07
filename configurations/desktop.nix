@@ -5,10 +5,34 @@
   ...
 }: {
   imports = [./desktop-minimal.nix];
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 14d";
+  hardware = {
+    sane.enable = true;
+    sane.extraBackends = with pkgs; [hplipWithPlugin];
+    sane.disabledDefaultBackends = ["escl"];
+    pulseaudio.enable = lib.mkForce false;
+  };
+  sound.enable = lib.mkForce false;
+  security.rtkit.enable = true;
+  services = {
+    pipewire = {
+      enable = true;
+      pulse = {enable = true;};
+      alsa = {
+        enable = true;
+        support32Bit = true;
+      };
+    };
+    printing.enable = true;
+    printing.drivers = with pkgs; [hplip];
+    avahi = {
+      enable = true;
+      nssmdns4 = true;
+      nssmdns6 = true;
+    };
+  };
+  location = {
+    latitude = 50.11;
+    longitude = 8.682;
   };
   environment.systemPackages = with pkgs; [
     # gui
@@ -21,6 +45,7 @@
     streamlink
     yt-dlp
     chatterino2
+    mpv
 
     # cli
     streamlink

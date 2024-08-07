@@ -9,13 +9,16 @@
     kernelPackages = pkgs.linuxPackages_latest;
     supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
   };
-
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
   environment.systemPackages = with pkgs; [
     # gui
     binutils-unwrapped
     firefox-bin
     gnupg
-    mpv
     jmpunkt.emacs
     keepassxc
 
@@ -50,39 +53,14 @@
     ];
     fontconfig.defaultFonts.monospace = ["Jetbrains Mono"];
   };
-  location = {
-    latitude = 50.11;
-    longitude = 8.682;
-  };
-  sound.enable = lib.mkForce false;
   hardware = {
-    sane.enable = true;
-    sane.extraBackends = with pkgs; [hplipWithPlugin];
-    sane.disabledDefaultBackends = ["escl"];
     opengl.enable = true;
-    pulseaudio.enable = lib.mkForce false;
   };
   networking.networkmanager.enable = true;
   networking.wireless.enable = lib.mkForce false;
   systemd.services.NetworkManager-wait-online.enable = false;
-  security.rtkit.enable = true;
   services = {
     unbound.enable = true;
     nscd.enableNsncd = true;
-    pipewire = {
-      enable = true;
-      pulse = {enable = true;};
-      alsa = {
-        enable = true;
-        support32Bit = true;
-      };
-    };
-    printing.enable = true;
-    printing.drivers = with pkgs; [hplip];
-    avahi = {
-      enable = true;
-      nssmdns4 = true;
-      nssmdns6 = true;
-    };
   };
 }

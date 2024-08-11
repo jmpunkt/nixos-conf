@@ -404,7 +404,8 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
   (eshell-pre-command . (lambda ()
                           (setq-local process-environment (copy-sequence process-environment))
                           (setenv "TERM" "xterm-256color")
-                          (setenv "PAGER" "cat")))
+                          (setenv "PAGER" "cat")
+                          (setenv "MANPAGER" "cat")))
   :init
   (defun jmpunkt/eshell-goto-end-or-here ()
     "Smart eshell goto promt.

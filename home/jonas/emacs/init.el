@@ -510,7 +510,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 (use-package casual-avy
   :ensure t
-  :bind ("M-g" . casual-avy-tmenu))
+  :commands casual-avy-tmenu)
 
 ;;;; * Meow
 (use-package meow
@@ -677,7 +677,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
      '("g" . meow-cancel-selection)
      '("G" . meow-grab)
      '("p" . meow-yank)
-     '("Q" . meow-goto-line)
+     '("Q" . casual-avy-tmenu)
      '("r" . meow-replace)
      '("R" . meow-swap-grab)
      '("s" . meow-kill)

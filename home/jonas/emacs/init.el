@@ -673,6 +673,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
      '("g" . meow-cancel-selection)
      '("G" . meow-grab)
      '("p" . meow-yank)
+     '("q" . meow-goto-line)
      '("Q" . casual-avy-tmenu)
      '("r" . meow-replace)
      '("R" . meow-swap-grab)

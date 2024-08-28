@@ -72,55 +72,6 @@
                   nix repl $confnix
                 '';
             };
-          # switch the current live system (not persistent)
-          deploy-test =
-            utils.lib.mkApp
-            {
-              drv =
-                unstable.legacyPackages.${system}.writeShellScriptBin
-                "deploy-test"
-                ''
-                  set -e
-                  drv=$(nix eval --raw "$1.drvPath")
-                  nix build "$drv"
-                  path=$(nix path-info "$drv")
-                  sh "$path/bin/switch-to-configuration" switch
-                '';
-            };
-          # switch the live system and keep changes for next boot (persistent)
-          deploy-local =
-            utils.lib.mkApp
-            {
-              drv =
-                unstable.legacyPackages.${system}.writeShellScriptBin
-                "deploy-local"
-                ''
-                  set -e
-                  drv=$(nix eval --raw "$1.drvPath")
-                  nix build "$drv"
-                  path=$(nix path-info "$drv")
-                  nix-env -p /nix/var/nix/profiles/system --set "$drv"
-                  sh "$path/bin/switch-to-configuration" boot
-                '';
-            };
-          deploy-remote =
-            utils.lib.mkApp
-            {
-              drv =
-                unstable.legacyPackages.${system}.writeShellScriptBin
-                "switch-remote"
-                ''
-                  set -e
-                  echo "building paths ..."
-                  drv=$(nix eval --raw "$1.drvPath")
-                  nix copy --to "ssh://$2" "$drv"
-                  echo "adding to environment ..."
-                  path=$(nix path-info "$drv")
-                  ssh "$2" nix-env -p /nix/var/nix/profiles/system --set "$path"
-                  echo "switching system ..."
-                  ssh "$2" "$path/bin/switch-to-configuration switch"
-                '';
-            };
         };
         packages = let
           rpi2System =

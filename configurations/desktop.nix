@@ -29,6 +29,8 @@
       nssmdns4 = true;
       nssmdns6 = true;
     };
+    unbound.enable = true;
+    nscd.enableNsncd = true;
   };
   location = {
     latitude = 50.11;

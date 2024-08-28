@@ -59,8 +59,4 @@
   networking.networkmanager.enable = true;
   networking.wireless.enable = lib.mkForce false;
   systemd.services.NetworkManager-wait-online.enable = false;
-  services = {
-    unbound.enable = true;
-    nscd.enableNsncd = true;
-  };
 }

@@ -44,7 +44,6 @@
         # normal
         "-vga virtio"
         "-display sdl,gl=on,show-cursor=off"
-
       ];
     };
   };

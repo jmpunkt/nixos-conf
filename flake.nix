@@ -118,7 +118,7 @@
               modules = [
                 self.nixosModules.alpha128
                 "${stable}/nixos/modules/virtualisation/qemu-vm.nix"
-                ./configurations/vm-guest.nix
+                ./configurations/qemu-vm.nix
               ];
             });
           vm-gamma64 = packageVM (mkSystem
@@ -128,7 +128,7 @@
               modules = [
                 self.nixosModules.gamma64
                 "${stable}/nixos/modules/virtualisation/qemu-vm.nix"
-                ./configurations/vm-guest.nix
+                ./configurations/qemu-vm.nix
               ];
             });
         };

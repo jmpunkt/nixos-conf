@@ -9,11 +9,13 @@
     uid = 1000;
     extraGroups =
       [
-        "libvirtd"
         config.users.groups.wheel.name
         config.users.groups.audio.name
         config.users.groups.users.name
       ]
+      ++ (lib.optionals config.virtualisation.libvirtd.enable [
+        config.users.groups.libvirtd.name
+      ])
       ++ (lib.optionals config.networking.networkmanager.enable [
         config.users.groups.networkmanager.name
       ]);

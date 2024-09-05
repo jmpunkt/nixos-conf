@@ -44,7 +44,6 @@
     # gui
     audacious
     discord
-    krita
     tdesktop
     streamlink
     yt-dlp

@@ -36,14 +36,16 @@
     latitude = 50.11;
     longitude = 8.682;
   };
+  programs = {
+    chromium.enable = true;
+    thunderbird.enable = true;
+  };
   environment.systemPackages = with pkgs; [
     # gui
     audacious
-    chromium
     discord
     krita
     tdesktop
-    thunderbird
     streamlink
     yt-dlp
     chatterino2

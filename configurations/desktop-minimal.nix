@@ -14,16 +14,20 @@
     dates = "weekly";
     options = "--delete-older-than 14d";
   };
+  programs = {
+    git.enable = true;
+    firefox = {
+      enable = true;
+      package = pkgs.firefox-bin;
+    };
+  };
   environment.systemPackages = with pkgs; [
     # gui
     binutils-unwrapped
-    firefox-bin
     gnupg
-    jmpunkt.emacs
     keepassxc
 
     # cli
-    git
     hyperfine
     nix-tree
     sqlite

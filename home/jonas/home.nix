@@ -52,13 +52,17 @@
         signByDefault = true;
       };
     };
+    emacs = {
+      enable = true;
+      package = pkgs.jmpunkt.emacs;
+    };
   };
-  services.emacs = {
-    enable = true;
-    package = pkgs.jmpunkt.emacs;
-    startWithUserSession = "graphical";
-    client.enable = true;
-    defaultEditor = true;
-  };
+  # services.emacs = {
+  #   enable = true;
+  #   package = pkgs.jmpunkt.emacs;
+  #   startWithUserSession = "graphical";
+  #   client.enable = true;
+  #   defaultEditor = true;
+  # };
   home.stateVersion = "18.09";
 }

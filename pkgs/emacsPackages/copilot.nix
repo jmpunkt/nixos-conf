@@ -4,7 +4,7 @@
   melpaBuild,
   writeText,
 }: let
-  rev = "0d48e75dabef86b962b7a8bfcc7d3614a1201821";
+  rev = "535ef61e82f09d744cd5b097b1fc99f08cce175c";
   pname = "copilot";
   owner = "copilot-emacs";
 in
@@ -17,7 +17,7 @@ in
     src = fetchFromGitHub {
       inherit rev owner;
       repo = "${pname}.el";
-      sha256 = "sha256-RYEq5bUouAZOGvsljM1d4tpMlFLmLC4VF7e7J/HrpKk=";
+      sha256 = "sha256-/ZDnEZWUFcKnUtFrd/4C7LX16GAdUQncU8ZnYzntKS0=";
     };
 
     recipe = writeText "recipe" ''

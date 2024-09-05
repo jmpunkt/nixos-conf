@@ -38,13 +38,15 @@
   };
   programs = {
     chromium.enable = true;
-    thunderbird.enable = true;
+    # TODO: only available in unstable
+    # thunderbird.enable = true;
   };
   environment.systemPackages = with pkgs; [
     # gui
     audacious
     discord
     tdesktop
+    thunderbird
     streamlink
     yt-dlp
     chatterino2

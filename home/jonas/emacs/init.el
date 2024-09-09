@@ -1402,9 +1402,11 @@ block, then the whole buffer is indented."
   :mode "\\.dot\\'")
 
 ;;;; * Makefile
-
 (use-package make-mode
   :hook (make-mode . indent-tabs-mode))
+
+;;;; * Justfile
+(use-package just-mode)
 
 ;;; * Programming Languages
 

@@ -576,33 +576,13 @@ If the cursor is on the last promt, then we want to insert at the current positi
                          '(pair ("<") (">"))
                          '(pair ("<") (">")))
     (add-to-list 'meow-char-thing-table '(?a . angle))
+    ;; change display name of modes
     (setq meow-replace-state-name-list
           '((normal . "N")
             (motion . "M")
             (keypad . "K")
             (insert . "I")
-            (beacon . "B")
-            (selection . "S")))
-    ;; setup basic selection mode
-    (setq meow-selection-keymap (make-keymap))
-    (meow-define-state selection
-      "meow state for basic moving and selection operations"
-      :lighter " [S]"
-      :keymap meow-selection-keymap)
-    (setq meow-cursor-type-selection 'box)
-    (meow-define-keys 'selection
-      '("j" . meow-next)
-      '("k" . meow-prev)
-      '("h" . meow-left)
-      '("l" . meow-right)
-      '("x" . meow-line)
-      '(";" . meow-reverse)
-      '("," . meow-inner-of-thing)
-      '("." . meow-bounds-of-thing))
-    (add-to-list 'meow-mode-state-list '(magit-status-mode . selection))
-    (add-to-list 'meow-mode-state-list '(magit-revision-mode . selection))
-    (add-to-list 'meow-replace-state-name-list '(selection . "SELECTION"))
-    (add-to-list 'meow-indicator-face-alist '(selection . meow-normal-indicator))
+            (beacon . "B")))
     ;; default meow setup
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
           meow-use-clipboard t
@@ -616,11 +596,23 @@ If the cursor is on the last promt, then we want to insert at the current positi
      '("k" . meow-prev)
      '("h" . meow-left)
      '("l" . meow-right)
+     '("x" . meow-line)
+     '("y" . meow-yank)
+     '("," . meow-inner-of-thing)
+     '("." . meow-bounds-of-thing)
+     '("(" . meow-beginning-of-thing)
+     '(")" . meow-end-of-thing)
      '("<escape>" . ignore))
     (meow-leader-define-key
-     ;; SPC j/k will run the original command in MOTION state.
+     ;; SPC <char> will run the original command in MOTION state.
      '("j" . "H-j")
      '("k" . "H-k")
+     '("x" . "H-x")
+     '("y" . "H-y")
+     '("," . "H-,")
+     '("." . "H-.")
+     '("(" . "H-(")
+     '(")" . "H-)")
      ;; Use SPC (0-9) for digit arguments.
      '("1" . meow-digit-argument)
      '("2" . meow-digit-argument)

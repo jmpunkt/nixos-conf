@@ -1554,7 +1554,9 @@ block, then the whole buffer is indented."
 (use-package copilot
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-mode-map
-              ("C-c r" . copilot-accept-completion)))
+              ("C-c r" . copilot-accept-completion))
+  :config
+  (setq copilot-indent-offset-warning-disable t))
 
 (use-package biome
   :commands biome

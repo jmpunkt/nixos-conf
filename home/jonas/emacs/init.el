@@ -143,7 +143,10 @@ eglot (if available)."
               ("C-+" . text-scale-increase)
               ("C--" . text-scale-decrease)
               ("M-C-;" . eval-expression)
-              ("C-j" . jmpunkt/join-line))
+              ("C-j" . jmpunkt/join-line)
+              ("M-P" . completion-at-point)
+              ("M-N" . shell-command)
+              ("M-S-<up>" . async-shell-command))
   :init
   (defun xdg-open-file ()
     "In dired or buffer, open the file named on this line."
@@ -235,7 +238,7 @@ eglot (if available)."
                                  (format "%s" (or (nth 3 pr) (nth 2 pr) (nth 1 pr)))
                                  'face 'eglot-mode-line))))))))
   (setq indent-line-function 'indent-relative
-        tab-always-indent 'complete
+        tab-always-indent t
         revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")
         make-backup-files nil
         auto-save-default nil
@@ -1118,23 +1121,9 @@ paths, it will fallback to the project root path."
   :config
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15))
-
 (use-package cape
   :demand t
-  :bind (:map global-map
-              ("C-c c t" . complete-tag)
-              ("C-c c d" . cape-dabbrev)
-              ("C-c c f" . cape-file)
-              ("C-c c h" . cape-history)
-              ("C-c c k" . cape-keyword)
-              ("C-c c s" . cape-elisp-symbol)
-              ("C-c c a" . cape-abbrev)
-              ("C-c c i" . cape-ispell)
-              ("C-c c l" . cape-line)
-              ("C-c c w" . cape-dict)
-              ("C-c c _" . cape-tex)
-              ("C-c c &" . cape-sgml)
-              ("C-c c r" . cape-rfc1345))
+  :bind ("C-c p" . cape-prefix-map)
   :init
   (defalias 'cape-symbol+dabbrev
     (cape-capf-super #'cape-elisp-symbol #'cape-dabbrev))

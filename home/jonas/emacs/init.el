@@ -586,6 +586,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
             (keypad . "K")
             (insert . "I")
             (beacon . "B")))
+    (add-to-list 'meow-mode-state-list '(compilation-mode . normal))
     ;; default meow setup
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
           meow-use-clipboard t

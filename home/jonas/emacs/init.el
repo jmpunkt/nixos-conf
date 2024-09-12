@@ -1030,8 +1030,6 @@ paths, it will fallback to the project root path."
               ("C-k" . previous-line)
               ("M-j" . scroll-up-command)
               ("M-k" . scroll-down-command)
-              ("C-S-j" . forward-paragraph)
-              ("C-S-k" . backward-paragraph)
               ("M-c" . kill-whole-line)
               ("C-b" . beginning-of-buffer)
               ("C-e" . end-of-buffer)
@@ -1333,9 +1331,7 @@ block, then the whole buffer is indented."
         org-src-tab-acts-natively t))
 
 (use-package citar
-  :bind (("C-c b" . citar-insert-citation)
-         :map minibuffer-local-map
-         ("M-b" . citar-insert-preset)))
+  :bind ("C-c b" . citar-insert-citation))
 
 ;;; * Configuration Files
 ;;;; * Mermaid

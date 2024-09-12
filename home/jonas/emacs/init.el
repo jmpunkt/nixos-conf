@@ -1128,7 +1128,7 @@ paths, it will fallback to the project root path."
   (defalias 'cape-symbol+dabbrev
     (cape-capf-super #'cape-elisp-symbol #'cape-dabbrev))
   (defun jmpunkt/cape-setup-git-commit ()
-    (add-to-list 'completion-at-point-functions 'cape-dabbrev))
+    (setq completion-at-point-functions '(cape-dabbrev)))
   (defun jmpunkt/cape-setup-eshell ()
     (add-to-list 'completion-at-point-functions 'cape-file))
   (defun jmpunkt/cape-setup-elisp ()

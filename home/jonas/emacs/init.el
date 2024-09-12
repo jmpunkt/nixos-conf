@@ -1018,7 +1018,9 @@ paths, it will fallback to the project root path."
 ;;;; Search/Find
 (use-package minibuffer
   :hook ((minibuffer-setup . cursor-intangible-mode)
-         (minibuffer-setup . minibuffer-depth-indicate-mode))
+         (minibuffer-setup . minibuffer-depth-indicate-mode)
+         (minibuffer-setup . (lambda ()
+                               (setq-local minibuffer-local-shell-command-map (make-sparse-keymap)))))
   :bind (:map minibuffer-local-map
               ([remap keyboard-quit] . minibuffer-keyboard-quit)
               ("<escape>" . minibuffer-exit)
@@ -1030,13 +1032,13 @@ paths, it will fallback to the project root path."
               ("M-k" . scroll-down-command)
               ("C-S-j" . forward-paragraph)
               ("C-S-k" . backward-paragraph)
+              ("M-c" . kill-whole-line)
               ("C-b" . beginning-of-buffer)
               ("C-e" . end-of-buffer)
               ("M-n" . next-history-element)
               ("M-p" . previous-history-element))
   :config
-  (setq minibuffer-local-map (make-sparse-keymap)
-        minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
+  (setq minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
         read-buffer-completion-ignore-case t
         read-file-name-completion-ignore-case t
         enable-recursive-minibuffers t

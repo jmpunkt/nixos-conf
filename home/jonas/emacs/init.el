@@ -597,7 +597,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
      '("h" . meow-left)
      '("l" . meow-right)
      '("x" . meow-line)
-     '("y" . meow-yank)
+     '("y" . meow-save)
      '("," . meow-inner-of-thing)
      '("." . meow-bounds-of-thing)
      '("(" . meow-beginning-of-thing)

@@ -60,7 +60,11 @@ with epkgs.melpaPackages;
     nix-ts-mode
     nix-mode
   ]
-  ++ (with epkgs.elpaPackages; [undo-tree org])
+  ++ (with epkgs.elpaPackages; [
+    undo-tree
+    org
+    breadcrumb
+  ])
   ++ (with epkgs.nongnuPackages; [eat])
   ++ (
     with epkgs.manualPackages;

@@ -1150,6 +1150,10 @@ paths, it will fallback to the project root path."
   (rg-enable-default-bindings)
   (rg-enable-menu))
 
+;;;; * breadcrumb
+(use-package breadcrumb
+  :hook (after-init . breadcrumb-mode))
+
 ;;;; * Git
 (use-package magit
   :bind ((:map global-map

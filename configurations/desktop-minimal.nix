@@ -32,6 +32,7 @@
     nix-tree
     sqlite
     tokei
+    nushell
 
     # spelling
     aspell

@@ -15,6 +15,7 @@
     withSQLite3 = true;
     withTreeSitter = true;
     withPgtk = true;
+    withXwidgets = false;
   })
 .overrideAttrs (old: {
   patches =

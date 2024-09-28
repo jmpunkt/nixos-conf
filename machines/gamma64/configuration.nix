@@ -7,8 +7,8 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    # ./../../configurations/kde.nix
-    ./../../configurations/hyprland.nix
+    ./../../configurations/kde.nix
+    #./../../configurations/hyprland.nix
     ./../../configurations/yubico.nix
     ./../../configurations/users/jonas.nix
   ];

@@ -299,8 +299,11 @@ eglot (if available)."
 (use-package eldoc
   :defer t
   :commands eldoc-mode
+  :bind (:map global-map
+              ("C-c d" . eldoc))
   :config
-  (setq eldoc-echo-area-use-multiline-p nil))
+  (setq eldoc-echo-area-use-multiline-p nil
+        eldoc-echo-area-prefer-doc-buffer t))
 
 (use-package paren
   :defer t

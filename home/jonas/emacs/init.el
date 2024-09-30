@@ -144,7 +144,6 @@ eglot (if available)."
               ("C--" . text-scale-decrease)
               ("M-C-;" . eval-expression)
               ("C-j" . jmpunkt/join-line)
-              ("M-P" . completion-at-point)
               ("M-N" . shell-command)
               ("M-S-<up>" . async-shell-command))
   :init
@@ -238,7 +237,8 @@ eglot (if available)."
                                  (format "%s" (or (nth 3 pr) (nth 2 pr) (nth 1 pr)))
                                  'face 'eglot-mode-line))))))))
   (setq indent-line-function 'indent-relative
-        tab-always-indent t
+        tab-always-indent 'complete
+        tab-first-completion 'complete
         revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")
         make-backup-files nil
         auto-save-default nil

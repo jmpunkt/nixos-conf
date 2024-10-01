@@ -16,6 +16,10 @@
       url = "github:nix-community/emacs-overlay";
       inputs.nixpkgs.follows = "stable";
     };
+    emacs-mirror = {
+      url = "github:emacs-mirror/emacs";
+      flake = false;
+    };
     utils.url = "github:numtide/flake-utils";
   };
   outputs = {
@@ -26,11 +30,12 @@
     home-manager,
     rust-overlay,
     emacs-overlay,
+    emacs-mirror,
     utils,
   } @ inputs: let
     allPackagesOverlay = final: prev:
       (import ./overlays/10-pkgs.nix final prev)
-      // ((import ./overlays/emacs-overlay-glue.nix {inherit emacs-overlay;}) final prev);
+      // ((import ./overlays/emacs-overlay-glue.nix {inherit emacs-overlay emacs-mirror;}) final prev);
     lib = import ./lib.nix {
       inherit self unstable stable;
       minimumOverlays = [
@@ -86,6 +91,7 @@
               ];
             };
         in {
+          ee = emacs-mirror;
           keyboard = self.legacyPackages.${system}.callPackage ./qmk {};
           sd-rpi2 = packageSD rpi2System;
           rpi2 = packageSystem rpi2System;

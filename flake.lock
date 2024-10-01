@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "emacs-mirror": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1727800237,
+        "narHash": "sha256-/ILXOuDEuhl9cTbfP7tnVmsRdVQuW5MP5Mbw5H25UDI=",
+        "owner": "emacs-mirror",
+        "repo": "emacs",
+        "rev": "372ce6adbf39c5b9ec92e103abe70af872085119",
+        "type": "github"
+      },
+      "original": {
+        "owner": "emacs-mirror",
+        "repo": "emacs",
+        "type": "github"
+      }
+    },
     "emacs-overlay": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -94,6 +110,7 @@
     },
     "root": {
       "inputs": {
+        "emacs-mirror": "emacs-mirror",
         "emacs-overlay": "emacs-overlay",
         "hardware": "hardware",
         "home-manager": "home-manager",

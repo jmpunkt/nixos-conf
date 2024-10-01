@@ -7,7 +7,7 @@
       enableNativeCompilation
       enableLTO
     ];
-    repository = emacs-overlay.repos.emacs.master;
+    repository = emacs-overlay.repos.emacs.github;
   })
   .override {
     withXinput2 = true;

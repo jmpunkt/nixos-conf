@@ -1,6 +1,9 @@
 # NOTE: Only use repository data (Emacs source, packages) from
 #       emacs-overlay and configure Emacs ourself.
-{emacs-overlay}: self: super: let
+{
+  emacs-overlay,
+  emacs-mirror,
+}: self: super: let
   inherit (self) emacs emacsPackagesFor;
   inherit
     (super)
@@ -46,6 +49,22 @@ in {
           lsp = fetchFromJson "${emacs-overlay}/repos/emacs/emacs-lsp.json";
           master = fetchFromJson "${emacs-overlay}/repos/emacs/emacs-master.json";
           unstable = fetchFromJson "${emacs-overlay}/repos/emacs/emacs-unstable.json";
+          github = {
+            src = emacs-mirror;
+            manifest = {
+              version = let
+                version =
+                  builtins.elemAt
+                  (builtins.match
+                    ".*This directory tree holds version ([0-9.]+) of GNU Emacs.*"
+                    (builtins.readFile "${emacs-mirror}/README"))
+                  0;
+              in
+                # Ensure we have a version number or not some random text.
+                assert (builtins.stringLength version) < 10; version;
+              rev = emacs-mirror.rev;
+            };
+          };
         };
       };
 

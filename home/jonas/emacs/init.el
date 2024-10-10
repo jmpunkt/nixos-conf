@@ -837,12 +837,13 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (defun jmpunkt/project-smylink-in-dir? (file)
     "Check if a given file is inside the project directory.
 
-If the file is a symlink, then it is resolved and then check if that
-link points into the project root. If the file is not a symlink, then
-it is assumed it is already inside the project root. "
+If the file is a symlink, it must point to a valid location inside the
+project. If that link points into the project root, we keep it, otherwise we
+ignore it. If the file is not a symlink, then it is assumed it is already inside
+the project root. "
     (let ((project (project-current))
           (symlink-resolved (file-symlink-p file)))
-      (if symlink-resolved
+      (if (and symlink-resolved (file-exists-p symlink-resolved))
           (if project
               (file-in-directory-p symlink-resolved (project-root project))
             t)

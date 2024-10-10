@@ -25,6 +25,7 @@ in {
       pandoc # markdown, etc
       git
       typst
+      git-absorb
     ];
     lsp = with pkgs; [
       ccls

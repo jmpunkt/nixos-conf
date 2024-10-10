@@ -1175,6 +1175,8 @@ paths, it will fallback to the project root path."
   ;; NOTE: The order is important, first rebind keybinds which should
   ;;       be used late. Otherwise, the menu will miss these entries
   ;;       and the replace operations fails silently.
+  (transient-replace-suffix 'magit-commit 'magit-commit-autofixup
+  '("x" "Absorb changes" magit-commit-absorb))
   (transient-replace-suffix 'magit-dispatch
     '("T" "Note" magit-notes)
     '("C-t" "Note" magit-notes))

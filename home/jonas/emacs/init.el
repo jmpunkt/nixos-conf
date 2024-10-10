@@ -946,20 +946,12 @@ paths, it will fallback to the project root path."
     (interactive)
     (meow--cancel-selection)
     (call-interactively 'eglot-code-actions))
-  (defun jmpunkt/eglot-disable-mouse()
-    ;; disable mouse support for flymake face
-    (cl-loop for i from 1
-             for type in '(eglot-note eglot-warning eglot-error)
-             do (put type 'flymake-overlay-control
-                     `((priority . ,(+ 50 i))
-                       (face . flymake-error)))))
   (define-advice eglot--snippet-expansion-fn
       (:override (&rest args) tempel-advice)
     (require 'tempel)
     (lambda (snippet) (tempel-insert (jmpunkt/lsp-snippet-to-tempel snippet))))
   :config
   (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'eldoc-highlight-function-argument)
-  (jmpunkt/eglot-disable-mouse)
   (setq eglot-extend-to-xref t
         eglot-stay-out-of '(company)
         eglot-events-buffer-config '(:size 0 :format lisp)

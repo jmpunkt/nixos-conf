@@ -51,6 +51,14 @@
         key = "4D78720A4358CC504F3EB45B26CDFB2E4DB6B136";
         signByDefault = true;
       };
+      extraConfig = {
+        core = {
+          whitespace = "trailing-space,space-before-tab";
+        };
+        rerere.enabled = "true";
+        merge.conflictstyle = "zdiff3";
+        pull.ff = "only";
+      };
     };
     emacs = {
       enable = true;

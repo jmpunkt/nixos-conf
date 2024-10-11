@@ -1152,7 +1152,12 @@ paths, it will fallback to the project root path."
 (use-package breadcrumb
   :hook (after-init . breadcrumb-mode))
 
-;;;; * Git
+;;;; * VCS
+(use-package ediff
+  :config
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain
+        ediff-diff-options "-w"))
+
 (use-package magit
   :bind ((:map global-map
                ("C-x g" . magit-status)

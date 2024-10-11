@@ -47,12 +47,11 @@
     discord
     tdesktop
     thunderbird
-    streamlink
-    yt-dlp
     chatterino2
     mpv
 
     # cli
     streamlink
+    yt-dlp
   ];
 }

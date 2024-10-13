@@ -41,7 +41,6 @@
         DisablePocket = true;
         DisableFirefoxAccounts = true;
         DisableAccounts = true;
-        DisableFirefoxScreenshots = false;
         DontCheckDefaultBrowser = true;
         DisplayBookmarksToolbar = "never";
         SearchBar = "unified";
@@ -111,7 +110,6 @@
             Status = "locked";
           };
           "extensions.pocket.enabled" = lock-false;
-          "extensions.screenshots.disabled" = lock-true;
           "browser.topsites.contile.enabled" = lock-false;
           "browser.formfill.enable" = lock-false;
           "browser.search.suggest.enabled" = lock-false;

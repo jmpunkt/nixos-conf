@@ -4,7 +4,12 @@
   lib,
   ...
 }: {
-  imports = [./base.nix ./locale.nix ./shell.nix ./fish ./yubico.nix];
+  imports = [
+    ./base.nix
+    ./locale.nix
+    ./shell.nix
+    ./fish
+  ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
     supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];

@@ -1449,7 +1449,10 @@ block, then the whole buffer is indented."
   :mode ("\\.py\\'" . python-ts-mode)
   :hook (python-base-mode . eglot-ensure)
   :fmt (python-mode . fmt/ruff-buffer)
-  :config (setq python-indent-offset 4))
+  :config
+  (setq python-indent-offset 4)
+  (push 'pyright compilation-error-regexp-alist)
+  (push '(pyright "^\\ +\\(.+\\):\\([0-9]+\\):\\([0-9]+\\).+$" 1 2 3) compilation-error-regexp-alist-alist))
 
 ;;;; * Dart
 (use-package dart-ts-mode

@@ -49,7 +49,6 @@ with epkgs.melpaPackages;
     # Misc
     yaml-mode
     graphql-mode
-    just-mode
     mermaid-mode
     # Presentation
     markdown-mode

@@ -56,7 +56,6 @@ with epkgs.melpaPackages;
     graphviz-dot-mode
     # Programming
     rust-mode
-    haskell-mode
     nix-ts-mode
     nix-mode
   ]

@@ -1407,12 +1407,6 @@ block, then the whole buffer is indented."
   :config
   (sql-highlight-postgres-keywords))
 
-;;;; * Haskell
-(use-package haskell-mode
-  :defer t
-  :mode "\\.hs\\'"
-  :hook (haskell-mode . eglot-ensure))
-
 ;;;; * Typst
 (use-package typst-ts-mode
   :defer t

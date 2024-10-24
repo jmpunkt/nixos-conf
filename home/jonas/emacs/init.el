@@ -1380,6 +1380,13 @@ block, then the whole buffer is indented."
   (require 'eglot)
   (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nil"))))
 
+;;;; * C/C++
+(use-package c-ts-mode
+  :init
+   (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+   (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+   (add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode)))
+
 ;;;; * Python
 (use-package python
   :init

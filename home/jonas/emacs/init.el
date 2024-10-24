@@ -134,7 +134,6 @@ eglot (if available)."
 
 ;;; * Emacs
 (use-package emacs
-  :demand t
   :hook ((prog-mode . jmpunkt/prog-init)
          (prog-mode . fmt-mode)
          (conf-mode . jmpunkt/conf-init)
@@ -296,7 +295,6 @@ eglot (if available)."
               ("M-n" . tempel-next)))
 
 (use-package eldoc
-  :defer t
   :commands eldoc-mode
   :bind (:map global-map
               ("C-c d" . eldoc))
@@ -305,13 +303,11 @@ eglot (if available)."
         eldoc-echo-area-prefer-doc-buffer t))
 
 (use-package paren
-  :defer t
   :commands show-paren-mode
   :config
   (setq show-paren-delay 0))
 
 (use-package editorconfig
-  :ensure t
   :config
   (editorconfig-mode 1))
 
@@ -398,7 +394,6 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
     (jmpunkt/comint-goto-end-or-here)))
 
 (use-package esh-mode
-  :defer t
   :commands eshell-mode eshell
   :hook
   (eshell-mode . eshell-hist-mode)
@@ -469,7 +464,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
         eshell-hist-ignoredups 'erase))
 
 (use-package compile
-  :defer t
   :commands compilation-mode
   :config
   (require 'xterm-color)
@@ -495,7 +489,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 ;;;; * undo-tree
 (use-package undo-tree
-  :defer t
   :commands undo-tree-mode
   :hook ((prog-mode . undo-tree-mode)
          (conf-mode . undo-tree-mode)
@@ -507,14 +500,12 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 ;;;; * Avy
 (use-package avy
-  :ensure t
   :custom
   (avy-timeout-seconds 0.1)
   :config
   (avy-setup-default))
 
 (use-package casual-avy
-  :ensure t
   :commands casual-avy-tmenu)
 
 ;;;; * Meow
@@ -739,7 +730,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
         dired-kill-when-opening-new-dired-buffer t))
 
 (use-package transient-dwim
-  :ensure t
   :bind ("C-x h" . transient-dwim-dispatch))
 
 ;;;; * DirEnv
@@ -755,7 +745,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 ;;;; * xref/jumping
 (use-package smart-jump
-  :demand t
   :bind (("C-c m b" . smart-jump-back)
          ("C-c m f" . jmpunkt/meow-find-definitions)
          ("C-c m r" . jmpunkt/meow-find-references))
@@ -773,7 +762,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 ;;;; * Spelling
 (use-package ispell
-  :defer t
   :config
   (setq-default ispell-program-name "enchant-2"
                 ;; Hide all default entries which may not be available
@@ -782,7 +770,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
                 ispell-local-dictionary "en"))
 
 (use-package flyspell
-  :defer t
   :commands flyspell-mode
   :init
   :hook ((prog-mode . flyspell-mode)
@@ -808,7 +795,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (setq flyspell-correct-interface #'flyspell-correct-dummy))
 
 (use-package languagetool
-  :defer t
   :commands (languagetool-server-mode
              languagetool-server-start)
   :config
@@ -816,7 +802,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 ;;;; * Project
 (use-package project
-  :demand t
   :bind (:map project-prefix-map
               ("f" . project-find-file)
               ("d" . project-find-dir)
@@ -918,7 +903,6 @@ paths, it will fallback to the project root path."
 
 ;;;; * Language Server (LSP)
 (use-package eglot
-  :defer t
   :commands eglot-ensure
   :bind (:map eglot-mode-map
               ("C-c k r" . jmpunkt/eglot-rename)
@@ -981,7 +965,6 @@ paths, it will fallback to the project root path."
 
 ;;;; RSS
 (use-package elfeed
-  :defer t
   :commands (elfeed)
   :init
   (setq elfeed-feeds
@@ -994,21 +977,18 @@ paths, it will fallback to the project root path."
 
 ;;;; WWW
 (use-package shr
-  :defer t
   :config
   (setq shr-use-colors nil
         shr-bullet "• "
         shr-folding-mode t))
 
 (use-package browse-url
-  :defer t
   :config
   (setq browse-url-handlers '((".*youtube.*" . browse-url-firefox)
                               (".*raw\.githubusercontent.*" . browse-url-emacs)
                               (".*github.*" . browse-url-firefox)
                               ("." . eww-browse-url))))
 (use-package eww
-  :defer t
   :commands (eww eww-follow-link)
   :config
   (setq eww-search-prefix "https://duckduckgo.com/html?q="))
@@ -1063,15 +1043,14 @@ paths, it will fallback to the project root path."
   :hook (after-init . vertico-mode))
 
 (use-package vertico-prescient
+  :hook (vertico-mode . vertico-prescient-mode)
   :config
-  (vertico-prescient-mode 1)
   (setq prescient-filter-method '(literal regexp initialism)))
 
 (use-package marginalia
   :hook (after-init . marginalia-mode))
 
 (use-package consult
-  :demand t
   :bind (:map global-map
               ("C-x b" . consult-buffer)
               ("C-x C-b" . consult-buffer-other-window)
@@ -1120,8 +1099,8 @@ paths, it will fallback to the project root path."
   :config
   (setq recentf-max-saved-items 200
         recentf-max-menu-items 15))
+
 (use-package cape
-  :demand t
   :bind ("C-c p" . cape-prefix-map)
   :init
   (defalias 'cape-symbol+dabbrev
@@ -1203,7 +1182,6 @@ paths, it will fallback to the project root path."
 
 ;;;; * Org
 (use-package org
-  :defer t
   :mode ("\\.org\\'" . org-mode)
   :hook (org-mode . (lambda () (setq-local tab-width 8)))
   :init
@@ -1249,55 +1227,45 @@ block, then the whole buffer is indented."
 
 (use-package ob-shell
   :after org
-  :defer t
   :commands (org-babel-execute:shell))
 
 (use-package ob-graphql
   :after org
-  :defer t
   :commands (org-babel-execute:graphql))
 
 (use-package ob-sql
   :after org
-  :defer t
   :commands (org-babel-execute:sql))
 
 (use-package ob-sqlite
   :after org
-  :defer t
   :commands (org-babel-execute:sqlite))
 
 (use-package ob-python
   :after org
-  :defer t
   :commands (org-babel-execute:python))
 
 (use-package ob-latex
   :after org
-  :defer t
   :commands (org-babel-execute:latex
              org-babel-expand-body:latex))
 
 (use-package ob-gnuplot
   :after org
-  :defer t
   :commands (org-babel-expand-body:gnuplot))
 
 (use-package ob-dot
   :after org
-  :defer t
   :commands (org-babel-execute:dot
              org-babel-expand-body:dot))
 
 (use-package ob-emacs-lisp
-  :defer t
   :after org
   :commands (org-babel-execute:emacs-lisp
              org-babel-expand-body:emacs-lisp))
 
 (use-package ob-plantuml
   :after org
-  :defer t
   :commands (org-babel-execute:plantuml))
 
 (use-package ob-async
@@ -1307,12 +1275,10 @@ block, then the whole buffer is indented."
 
 (use-package org-agenda
   :after org
-  :defer t
   :config
   (setq org-agenda-files (list org-agenda-dir)))
 
 (use-package org-capture
-  :defer t
   :commands (org-capture)
   :config
   (setq org-capture-templates
@@ -1328,13 +1294,11 @@ block, then the whole buffer is indented."
            "* %? %^G \n  %^t"))))
 
 (use-package org-indent
-  :defer t
   :after org
   :hook (org-mode . org-indent-mode))
 
 (use-package org-src
   :after org
-  :defer t
   :config
   (setq org-src-fontify-natively t
         org-src-tab-acts-natively t))
@@ -1344,51 +1308,38 @@ block, then the whole buffer is indented."
 
 ;;; * Configuration Files
 ;;;; * Mermaid
-(use-package mermaid-mode
-  :defer t)
+(use-package mermaid-mode)
 
 ;;;; * YAML
 (use-package yaml-ts-mode
-  :defer t
-  :hook (yaml-ts-mode . eglot-ensure)
-  :mode ("\\.yaml\\'" "\\.yml\\'"))
+  :hook (yaml-ts-mode . eglot-ensure))
 
 ;;;; * TOML
-(use-package toml-ts-mode
-  :mode ("\\.toml\\'"))
+(use-package toml-ts-mode)
 
 ;;;; * GraphQL
 (use-package graphql-mode
-  :defer t
-  :mode ("\\.graphql\\'")
   :fmt (graphql-mode . fmt/prettier-buffer)
   :hook (graphql-mode . fmt/prettier-on-save-mode))
 
 ;;; * Text Files
 ;;;; * reStructuredText
 (use-package rst
-  :defer t
   :mode (("\\.txt\\'" . rst-mode)
          ("\\.rst\\'" . rst-mode)
          ("\\.rest\\'" . rst-mode)))
 
 ;;;; * Markdown
 (use-package markdown-mode
-  :defer t
   :hook ((markdown-mode . flyspell-mode))
   :mode
   (("INSTALL\\.md\\\'". gfm-mode)
    ("CONTRIBUTORS\\.md\\\'". gfm-mode)
    ("LICENSE\\.md\\\'". gfm-mode)
-   ("README\\.md\\\'". gfm-mode)
-   ("README\\.md\\'". gfm-mode)
-   ("\\.markdown\\'" . markdown-mode)
-   ("\\.md\\'" . markdown-mode)))
+   ("README\\.md\\\'". gfm-mode)))
 
 ;;;; * Graphivz
-(use-package graphviz-dot-mode
-  :defer t
-  :mode "\\.dot\\'")
+(use-package graphviz-dot-mode)
 
 ;;;; * Makefile
 (use-package make-mode
@@ -1398,7 +1349,6 @@ block, then the whole buffer is indented."
 
 ;;;; * SQL
 (use-package sql
-  :defer t
   :mode ("\\.sql\\'" . sql-mode)
   :fmt (sql-mode . fmt/pgformatter-buffer)
   :config
@@ -1406,7 +1356,6 @@ block, then the whole buffer is indented."
 
 ;;;; * Typst
 (use-package typst-ts-mode
-  :defer t
   :mode "\\.typ\\'"
   :hook ((typst-ts-mode . fmt-mode)
          ;; (typst-ts-mode . eglot-ensure)
@@ -1420,7 +1369,6 @@ block, then the whole buffer is indented."
 
 ;;;; * Nix
 (use-package nix-ts-mode
-  :defer t
   :mode "\\.nix\\'"
   :hook ((nix-ts-mode . eglot-ensure)
          (nix-ts-mode . fmt/alejandra-on-save-mode))
@@ -1431,8 +1379,8 @@ block, then the whole buffer is indented."
 
 ;;;; * Python
 (use-package python
-  :defer t
-  :mode ("\\.py\\'" . python-ts-mode)
+  :init
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   :hook (python-base-mode . eglot-ensure)
   :fmt (python-mode . fmt/ruff-buffer)
   :config
@@ -1442,28 +1390,24 @@ block, then the whole buffer is indented."
 
 ;;;; * Dart
 (use-package dart-ts-mode
-  :mode ("\\.dart\\'" . dart-ts-mode)
   :hook (dart-ts-mode . eglot-ensure))
 
 ;;;; * Rust
 (use-package rust-mode
-  :mode "\\.rs\\'"
-  :hook (rust-mode . eglot-ensure)
-  :custom
-  (rust-mode-treesitter-derive t))
+  :hook (rust-ts-mode . eglot-ensure)
+  :init
+  (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode)))
 
 ;;;; * WEB
 (use-package sgml-mode
-  :defer t
-  :mode ("\\.html\\'" . html-mode)
   :hook ((html-mode . eglot-ensure)
          (html-mode . fmt/prettier-on-save-mode))
   :fmt (html-mode . fmt/prettier-buffer))
 
 (use-package css-mode
-  :defer t
-  :mode (("\\.css\\'" . css-ts-mode)
-         ("\\.scss\\'" . scss-mode))
+  :init
+  (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
+  :mode (("\\.scss\\'" . scss-mode))
   :hook ((css-base-mode . eglot-ensure)
          (css-base-mode . fmt/prettier-on-save-mode)
          (scss-base-mode . eglot-ensure)
@@ -1473,22 +1417,15 @@ block, then the whole buffer is indented."
   (setq css-indent-offset 2))
 
 (use-package typescript-ts-mode
-  :mode (("\\.ts\\'" . typescript-ts-mode)
-         ("\\.tsx\\'" . tsx-ts-mode))
   :hook ((typescript-ts-base-mode . eglot-ensure)
          (typescript-ts-base-mode . fmt/biome-buffer))
   :fmt (typescript-ts-base-mode . fmt/biome-buffer))
 
 (use-package json-ts-mode
-  :defer t
-  :mode (("\\.json\\'" . json-ts-mode)
-         ("flake.lock\\'" . json-ts-mode))
+  :mode (("flake.lock\\'" . json-ts-mode))
   :fmt (json-ts-mode . fmt/biome-buffer))
 
 (use-package js
-  :defer t
-  :mode (("\\.js\\'" . js-ts-mode)
-         ("\\.jsx\\'" . js-jsx-mode))
   :hook ((js-base-mode . eglot-ensure)
          (js-base-mode . fmt/biome-buffer))
   :fmt (js-base-mode . fmt/biome-buffer)
@@ -1497,12 +1434,10 @@ block, then the whole buffer is indented."
 
 ;;;; * LaTeX
 (use-package tex-mode
-  :defer t
   :mode ("\\.tex\\'" . latex-mode))
 
 ;;; * PDF
 (use-package pdf-tools
-  :defer t
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :hook (pdf-view-mode . (lambda ()
                            (pdf-misc-size-indication-minor-mode)

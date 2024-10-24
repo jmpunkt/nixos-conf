@@ -29,6 +29,7 @@ The information is formatted in a way suitable for
 
 (advice-add 'use-package-statistics-convert :override #'jmpunkt/use-package-statistics-convert)
 
+(setq use-package-always-defer t)
 (setq package-archives nil)
 (setq package-enable-at-startup nil)
 (setq use-package-verbose nil)

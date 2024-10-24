@@ -48,7 +48,6 @@ with epkgs.melpaPackages;
     elfeed
     # Misc
     yaml-mode
-    fish-mode
     graphql-mode
     just-mode
     mermaid-mode

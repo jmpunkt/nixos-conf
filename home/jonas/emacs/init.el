@@ -1466,11 +1466,6 @@ block, then the whole buffer is indented."
   :custom
   (rust-mode-treesitter-derive t))
 
-;;;; * Fish
-(use-package fish-mode
-  :defer t
-  :mode "\\.fish\\'")
-
 ;;;; * WEB
 (use-package sgml-mode
   :defer t

@@ -1556,6 +1556,9 @@ block, then the whole buffer is indented."
   (setq pdf-view-resize-factor 1.1))
 
 ;;; * Misc
+(use-package docker
+  :bind ("C-c C-d" . docker))
+
 (use-package copilot
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-mode-map

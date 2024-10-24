@@ -17,6 +17,7 @@ with epkgs.melpaPackages;
     casual-avy
     transient-dwim
     rg
+    docker
     # Org
     ob-async
     ob-mermaid

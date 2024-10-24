@@ -7,7 +7,6 @@ with epkgs.melpaPackages;
     which-key
     hl-todo
     envrc
-    smart-jump
     helpful
     xterm-color
     editorconfig
@@ -18,6 +17,7 @@ with epkgs.melpaPackages;
     transient-dwim
     rg
     docker
+    citre
     # Org
     ob-async
     ob-mermaid

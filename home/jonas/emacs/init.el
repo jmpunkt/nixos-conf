@@ -744,8 +744,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :hook (after-init . which-key-mode))
 
 ;;;; * xref/jumping
-(use-package smart-jump
-  :bind (("C-c m b" . smart-jump-back)
+(use-package citre
+  :bind (("C-c m b" . citre-jump-back)
          ("C-c m f" . jmpunkt/meow-find-definitions)
          ("C-c m r" . jmpunkt/meow-find-references))
   :init
@@ -753,12 +753,15 @@ If the cursor is on the last promt, then we want to insert at the current positi
     "Xref definition."
     (interactive)
     (meow--cancel-selection)
-    (smart-jump-references))
+    (citre-jump-to-reference))
   (defun jmpunkt/meow-find-definitions ()
     "Xref definition."
     (interactive)
     (meow--cancel-selection)
-    (smart-jump-go)))
+    (citre-jump)))
+
+
+(use-package citre-config)
 
 ;;;; * Spelling
 (use-package ispell

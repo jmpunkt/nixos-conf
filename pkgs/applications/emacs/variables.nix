@@ -26,6 +26,8 @@ in {
       git
       typst
       git-absorb
+      universal-ctags
+      global
     ];
     lsp = with pkgs; [
       ccls

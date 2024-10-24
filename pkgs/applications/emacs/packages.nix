@@ -59,7 +59,6 @@ with epkgs.melpaPackages;
     haskell-mode
     nix-ts-mode
     nix-mode
-    nushell-ts-mode
   ]
   ++ (with epkgs.elpaPackages; [
     undo-tree

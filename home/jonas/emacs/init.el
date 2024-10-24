@@ -1397,11 +1397,6 @@ block, then the whole buffer is indented."
 ;;;; * Justfile
 (use-package just-mode)
 
-;;;; * NuShell
-(use-package nushell-ts-mode
-  :mode ("\\.nu\\'" . nushell-ts-mode)
-  :hook (nushell-ts-mode . eglot-ensure))
-
 ;;; * Programming Languages
 
 ;;;; * SQL

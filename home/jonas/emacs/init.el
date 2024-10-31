@@ -162,6 +162,7 @@ eglot (if available)."
   (defun jmpunkt/default-init ()
     (subword-mode 1)
     (electric-indent-local-mode 1)
+    (display-fill-column-indicator-mode 1)
     (show-paren-mode 1)
     (display-line-numbers-mode 1)
     (setq-local show-trailing-whitespace t))

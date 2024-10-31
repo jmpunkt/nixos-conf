@@ -519,7 +519,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (defun jmpunkt/meow-block-or-parent (arg)
     "Call meow-block or jmpunkt/meow-treesit-parent if treesit is supported."
     (interactive "P")
-    (if (treesit-language-at (point))
+    (if (and (featurep 'treesit) (treesit-language-at (point)))
         (call-interactively 'jmpunkt/meow-treesit-parent)
       (call-interactively 'meow-block)))
   (defun jmpunkt/meow-treesit-parent (arg)

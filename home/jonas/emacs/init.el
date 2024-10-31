@@ -1060,31 +1060,12 @@ paths, it will fallback to the project root path."
               ("C-x C-b" . consult-buffer-other-window)
               ("M-o" . consult-outline)
               ("C-s" . consult-line))
+  :hook (completion-list-mode . consult-preview-at-point-mode)
   :init
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
-  (setq register-preview-delay 0.5
-        register-preview-function #'consult-register-format)
   (advice-add #'register-preview :override #'consult-register-window)
   :config
-  ;; ++ https://github.com/minad/consult/wiki#narrowing-which-key-help-without-delay
-  (defun immediate-which-key-for-narrow (fun &rest args)
-    (let* ((refresh t)
-           (timer (and consult-narrow-key
-                       (memq :narrow args)
-                       (run-at-time 0.05 0.05
-                                    (lambda ()
-                                      (if (eq last-input-event (elt consult-narrow-key 0))
-                                          (when refresh
-                                            (setq refresh nil)
-                                            (which-key--update))
-                                        (setq refresh t)))))))
-      (unwind-protect
-          (apply fun args)
-        (when timer
-          (cancel-timer timer)))))
-  (advice-add #'consult--read :around #'immediate-which-key-for-narrow)
-  ;; --
   (setq completion-in-region-function
         (lambda (&rest args)
           (apply (if (or vertico-mode icomplete-vertical-mode)

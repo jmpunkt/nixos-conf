@@ -7,7 +7,6 @@
   imports = [
     ./base.nix
     ./locale.nix
-    ./shell.nix
     ./fish
   ];
   boot = {

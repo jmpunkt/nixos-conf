@@ -7,7 +7,6 @@
 }: {
   imports = [
     "${modulesPath}/installer/cd-dvd/installation-cd-base.nix"
-    ../../configurations/flakes.nix
     ../../configurations/desktop-minimal.nix
   ];
   boot.supportedFilesystems.zfs = lib.mkForce false;

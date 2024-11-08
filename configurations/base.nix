@@ -10,6 +10,7 @@
   ];
   environment.systemPackages = with pkgs; [
     curl
+    wget
     fd
     git
     hdparm

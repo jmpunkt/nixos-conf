@@ -11,7 +11,9 @@
     # Disable command-not-found since there is probably no NixOS channel
     command-not-found.enable = lib.mkForce false;
   };
+  # use doas instead of sudo
   security.sudo.enable = lib.mkForce false;
+  security.doas.enable = true;
 
   # enable flakes
   nix = {
@@ -21,4 +23,7 @@
     '';
   };
 
+  networking.firewall.enable = true;
+  services.timesyncd.enable = lib.mkForce true;
+  programs.fish.enable = true;
 }

@@ -33,8 +33,4 @@
     ntfsprogs
     xfsprogs.bin
   ];
-  networking.firewall.enable = true;
-  security.doas.enable = true;
-  services.timesyncd.enable = lib.mkForce true;
-  programs.fish.enable = true;
 }

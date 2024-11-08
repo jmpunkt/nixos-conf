@@ -32,10 +32,6 @@
     unbound.enable = true;
     nscd.enableNsncd = true;
   };
-  location = {
-    latitude = 50.11;
-    longitude = 8.682;
-  };
   programs = {
     chromium.enable = true;
     # TODO: only available in unstable

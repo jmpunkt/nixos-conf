@@ -174,6 +174,10 @@
   hardware = {
     opengl.enable = true;
   };
+  location = {
+    latitude = 50.11;
+    longitude = 8.682;
+  };
   networking.networkmanager.enable = true;
   networking.wireless.enable = lib.mkForce false;
   systemd.services.NetworkManager-wait-online.enable = false;

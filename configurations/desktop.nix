@@ -5,12 +5,16 @@
   ...
 }: {
   imports = [./desktop-minimal.nix];
+
+  # scanner
   hardware = {
     sane.enable = true;
     sane.extraBackends = with pkgs; [hplipWithPlugin];
     sane.disabledDefaultBackends = ["escl"];
-    pulseaudio.enable = lib.mkForce false;
   };
+
+  # sound
+  hardware.pulseaudio.enable = lib.mkForce false;
   sound.enable = lib.mkForce false;
   security.rtkit.enable = true;
   services = {
@@ -22,6 +26,10 @@
         support32Bit = true;
       };
     };
+  };
+
+  # printing
+  services = {
     printing.enable = true;
     printing.drivers = with pkgs; [hplip];
     avahi = {
@@ -32,6 +40,7 @@
     unbound.enable = true;
     nscd.enableNsncd = true;
   };
+
   programs = {
     chromium.enable = true;
     # TODO: only available in unstable

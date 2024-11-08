@@ -7,10 +7,10 @@
 }: {
   imports = import ../modules/all-nixos.nix;
   nixpkgs.overlays = [(import ../overlays/00-patch.nix) (import ../overlays/10-pkgs.nix)];
-  programs = {
-    # Disable command-not-found since there is probably no NixOS channel
-    command-not-found.enable = lib.mkForce false;
-  };
+
+  # Disable command-not-found since there is probably no NixOS channel
+  programs.command-not-found.enable = lib.mkForce false;
+
   # use doas instead of sudo
   security.sudo.enable = lib.mkForce false;
   security.doas.enable = true;

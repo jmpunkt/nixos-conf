@@ -15,8 +15,8 @@
   "Store previous face configuration.")
 
 (define-minor-mode presentation-mode
-  "Toggles global presentation-mode."
-  nil
+  "Toggles global `presentation-mode'."
+  :init-value nil
   :global t
   :group 'presentation
   (if presentation-mode
@@ -547,10 +547,10 @@ If the cursor is on the last promt, then we want to insert at the current positi
             (meow--select))
           (meow--maybe-highlight-num-positions)))))
   (defun jmpunkt/meow--bound-of-treesit (symbol)
-    (if-let ((node (cadr (jmpunkt/treesit-thing-at-point symbol))))
+    (if-let* ((node (cadr (jmpunkt/treesit-thing-at-point symbol))))
         `(,(treesit-node-start node) . ,(treesit-node-end node))))
   (defun jmpunkt/meow--inner-of-treesit (symbol)
-    (if-let ((node (car (jmpunkt/treesit-thing-at-point symbol))))
+    (if-let* ((node (car (jmpunkt/treesit-thing-at-point symbol))))
         `(,(treesit-node-start node) . ,(treesit-node-end node))))
   (defun jmpunkt/meow--bound-of-function ()
     (jmpunkt/meow--bound-of-treesit 'function))

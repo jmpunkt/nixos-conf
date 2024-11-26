@@ -467,12 +467,14 @@ If the cursor is on the last promt, then we want to insert at the current positi
 (use-package compile
   :commands compilation-mode
   :config
-  (require 'xterm-color)
   (setq compilation-scroll-output t)
-  (setq compilation-environment '("TERM=xterm-256color"))
-  (define-advice compilation-filter
-      (:around (f proc string) xterm-color-advice)
-    (funcall f proc (xterm-color-filter string))))
+  ;; TODO: xterm-color and rg.el are not compatible
+  ;; (require 'xterm-color)
+  ;; (setq compilation-environment '("TERM=xterm-256color"))
+  ;; (define-advice compilation-filter
+  ;;     (:around (f proc string) xterm-color-advice)
+  ;;   (funcall f proc (xterm-color-filter string)))
+  )
 
 ;;; * Core Packages
 ;;;; * helpful

@@ -51,6 +51,7 @@
     enable = true;
     dnssec = "true";
     dnsovertls = "true";
+    llmnr = "false";
     fallbackDns = [
       # Cloudflare
       "1.1.1.1"
@@ -58,6 +59,12 @@
       "2606:4700:4700::1111"
       "2606:4700:4700::1001"
     ];
+  };
+  networking.networkmanager = {
+    settings.connection = {
+      "ipv6.addr-gen-mode" = "stable-privacy";
+      "ipv6.ip6-privacy" = "2";
+    };
   };
 
   programs = {

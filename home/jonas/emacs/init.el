@@ -115,13 +115,6 @@ eglot (if available)."
 
 (add-to-list 'use-package-keywords :fmt)
 
-;;; * Paths
-(defconst org-remote-dir (expand-file-name "~/Dropbox"))
-(defconst org-agenda-dir (expand-file-name "agenda" org-remote-dir))
-(defconst org-papers-dir (expand-file-name "papers" org-remote-dir))
-(defconst org-papers-pdfs (expand-file-name "lib" org-papers-dir))
-(defconst org-papers-notes (expand-file-name "notes.org" org-papers-dir))
-
 ;;; * Theme
 (use-package all-the-icons
   :init

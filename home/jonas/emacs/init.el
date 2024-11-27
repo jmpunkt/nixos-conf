@@ -1382,10 +1382,6 @@ block, then the whole buffer is indented."
   (push 'pyright compilation-error-regexp-alist)
   (push '(pyright "^\\ +\\(.+\\):\\([0-9]+\\):\\([0-9]+\\).+$" 1 2 3) compilation-error-regexp-alist-alist))
 
-;;;; * Dart
-(use-package dart-ts-mode
-  :hook (dart-ts-mode . eglot-ensure))
-
 ;;;; * Rust
 (use-package rust-mode
   :hook (rust-ts-mode . eglot-ensure)

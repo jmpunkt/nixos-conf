@@ -51,6 +51,7 @@ with epkgs.melpaPackages;
     graphql-mode
     mermaid-mode
     # Presentation
+    ox-typst
     markdown-mode
     graphviz-dot-mode
     # Programming
@@ -67,10 +68,8 @@ with epkgs.melpaPackages;
   ++ (
     with epkgs.manualPackages;
       [
-        jmpunktPkgs.dart-ts-mode
         jmpunktPkgs.eglot-x
         jmpunktPkgs.typst-ts-mode
-        jmpunktPkgs.ox-typst
         jmpunktPkgs.copilot
         jmpunktPkgs.xdg-appmenu
         (jmpunktPkgs.nixosPaths (import ./variables.nix {inherit pkgs;}))

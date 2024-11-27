@@ -942,6 +942,7 @@ paths, it will fallback to the project root path."
         eglot-confirm-server-initiated-edits nil))
 
 (use-package eglot-x
+  :demand t
   :after eglot)
 
 ;;;; * Flymake
@@ -1201,6 +1202,7 @@ block, then the whole buffer is indented."
         org-catch-invisible-edits 'show-and-error))
 
 (use-package ox-typst
+  :demand t
   :after org
   :config
   (add-to-list 'org-src-lang-modes '("typst")))
@@ -1254,6 +1256,7 @@ block, then the whole buffer is indented."
              org-babel-execute-src-block:async))
 
 (use-package org-agenda
+  :demand t
   :after org
   :config
   (setq org-agenda-files (list org-agenda-dir)))
@@ -1278,6 +1281,7 @@ block, then the whole buffer is indented."
   :hook (org-mode . org-indent-mode))
 
 (use-package org-src
+  :demand t
   :after org
   :config
   (setq org-src-fontify-natively t

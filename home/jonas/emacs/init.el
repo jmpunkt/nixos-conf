@@ -1423,6 +1423,12 @@ block, then the whole buffer is indented."
 (use-package tex-mode
   :mode ("\\.tex\\'" . latex-mode))
 
+;;;; * Docker
+(use-package dockerfile-ts-mode)
+
+(use-package docker
+  :bind ("C-c C-d" . docker))
+
 ;;; * PDF
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
@@ -1459,9 +1465,6 @@ block, then the whole buffer is indented."
   (setq pdf-view-resize-factor 1.1))
 
 ;;; * Misc
-(use-package docker
-  :bind ("C-c C-d" . docker))
-
 (use-package copilot
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-mode-map

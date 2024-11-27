@@ -1,11 +1,12 @@
 {
   lib,
-  fetchFromSourcehut,
+  fetchFromGitea,
   melpaBuild,
   writeText,
 }: let
-  rev = "a5f094dd1d1ce992e9ad290e4838779b2dd5809a";
+  rev = "d3e44b5361ed1bbb720a38dafdb29cb8d8b6d8be";
   pname = "typst-ts-mode";
+  owner = "meow_king";
 in
   melpaBuild {
     inherit pname;
@@ -13,15 +14,15 @@ in
 
     commit = rev;
 
-    src = fetchFromSourcehut {
-      inherit rev;
-      owner = "~meow_king";
+    src = fetchFromGitea {
+      inherit owner rev;
+      domain = "codeberg.org";
       repo = pname;
-      sha256 = "sha256-HUOsb5aUj2Kb5E0HaZENp9pqQIAOF4t2SEIKH7cFspo=";
+      sha256 = "sha256-fECXfTjbckgS+kEJ3dMQ7zDotqdxxBt3WFl0sEM60Aw=";
     };
 
     recipe = writeText "recipe" ''
-      (typst-ts-mode :repo "meow_king/typst-ts-mode" :fetcher sourcehut)
+      (${pname} :repo "${owner}/emacs-${pname}" :fetcher codeberg)
     '';
 
     meta = with lib; {

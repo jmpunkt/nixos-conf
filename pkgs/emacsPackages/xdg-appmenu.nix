@@ -22,7 +22,7 @@ in
     };
 
     recipe = writeText "recipe" ''
-      (${pname} :repo "${owner}/emacs-${pname}" :fetcher github)
+      (${pname} :repo "${owner}/emacs-${pname}" :fetcher codeberg)
     '';
 
     meta = with lib; {

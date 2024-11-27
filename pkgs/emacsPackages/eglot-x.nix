@@ -6,8 +6,9 @@
   melpaBuild,
   writeText,
 }: let
-  rev = "7d1724adf444bb0ddcf0c191c61365b1903031f0";
+  rev = "295c0309dc836966467c95867d1593f1376507b6";
   pname = "eglot-x";
+  owner = "nemethf";
 in
   melpaBuild {
     inherit pname;
@@ -16,14 +17,13 @@ in
     commit = rev;
 
     src = fetchFromGitHub {
-      inherit rev;
-      owner = "nemethf";
+      inherit rev owner;
       repo = pname;
-      sha256 = "sha256-MACRQnLH3bnZdtdDBsziIf6+IrArf0hykRLgwHhSiSE=";
+      sha256 = "sha256-G/jnEQRVo6xpBaW5cBrcAD03P65stgGMhTM21pxdNvE=";
     };
 
     recipe = writeText "recipe" ''
-      (eglot-x :repo "nemethf/eglot-x" :fetcher github)
+      (${pname} :repo "${owner}/${pname}" :fetcher github)
     '';
 
     meta = with lib; {

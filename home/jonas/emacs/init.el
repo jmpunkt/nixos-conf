@@ -1152,6 +1152,11 @@ paths, it will fallback to the project root path."
   (setq magit-slow-confirm '(magit-discard))
   (setq magit-diff-refine-hunk 'all))
 
+(use-package git-commit
+  :config
+  (setq git-commit-style-convention-checks
+        '(overlong-summary-line non-empty-second-line)))
+
 (use-package hl-todo
   :hook (after-init . global-hl-todo-mode))
 

@@ -1376,10 +1376,14 @@ block, then the whole buffer is indented."
   (push '(pyright "^\\ +\\(.+\\):\\([0-9]+\\):\\([0-9]+\\).+$" 1 2 3) compilation-error-regexp-alist-alist))
 
 ;;;; * Rust
-(use-package rust-mode
+(use-package rust-ts-mode
   :hook (rust-ts-mode . eglot-ensure)
   :init
   (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode)))
+
+(use-package rust-compile
+  :demand t
+  :after rust-ts-mode)
 
 ;;;; * WEB
 (use-package sgml-mode

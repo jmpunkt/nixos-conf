@@ -757,7 +757,9 @@ If the cursor is on the last promt, then we want to insert at the current positi
     (citre-jump)))
 
 
-(use-package citre-config)
+(use-package citre-config
+  :demand t
+  :after citre-mode)
 
 ;;;; * Spelling
 (use-package ispell

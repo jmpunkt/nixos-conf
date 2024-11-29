@@ -868,6 +868,16 @@ the project root. "
                  (lambda (project)
                    (seq-filter #'jmpunkt/project-smylink-in-dir? (funcall orig-project-files project)))))
         (funcall orig from to))))
+  ;; ignore all projects inside the nix store
+  (define-advice project-try-vc
+      (:around (orig dir) nix-store-filter)
+    (let ((orig-locate (symbol-function 'locate-dominating-file)))
+      (cl-letf (((symbol-function 'locate-dominating-file)
+                 (lambda (file name)
+                   (if (s-starts-with? "/nix/store/" file)
+                       nil
+                     (funcall orig-locate file name)))))
+        (funcall orig dir))))
   (define-advice project-search
       (:around (orig from to) symlink-filter)
     ;; remember old project-files

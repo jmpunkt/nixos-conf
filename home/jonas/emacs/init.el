@@ -485,6 +485,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :commands compilation-mode
   :config
   (setq compilation-scroll-output t)
+  (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
   ;; TODO: xterm-color and rg.el are not compatible
   ;; (require 'xterm-color)
   ;; (setq compilation-environment '("TERM=xterm-256color"))

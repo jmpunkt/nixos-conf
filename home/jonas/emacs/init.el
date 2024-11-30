@@ -748,6 +748,10 @@ If the cursor is on the last promt, then we want to insert at the current positi
 (use-package dired
   :config
   (setq dired-listing-switches "-alh"
+        dired-recursive-copies 'always
+        dired-recursive-deletes 'always
+        delete-by-moving-to-trash t
+        dired-dwim-target t
         dired-kill-when-opening-new-dired-buffer t))
 
 (use-package transient-dwim

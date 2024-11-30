@@ -2,7 +2,7 @@
   stdenv,
   lib,
   buildEnv,
-  emacsTrivialBuild,
+  trivialBuild,
   writeTextFile,
   emacs,
 }: {
@@ -58,7 +58,7 @@
       pathsToLink = ["/bin"];
     };
 in
-  emacsTrivialBuild
+  trivialBuild
   {
     pname = "emacs-nixos-paths";
     version = "0.0.1";

@@ -3,6 +3,11 @@
   fetchFromGitHub,
   melpaBuild,
   writeText,
+  dash,
+  editorconfig,
+  s,
+  f,
+  jsonrpc,
 }: let
   rev = "88b10203705a9cdcbc232e7d2914f6b12217a885";
   pname = "copilot";
@@ -13,6 +18,13 @@ in
     version = "20240313.0";
 
     commit = rev;
+    packageRequires = [
+      dash
+      editorconfig
+      s
+      f
+      jsonrpc
+    ];
 
     src = fetchFromGitHub {
       inherit rev owner;

@@ -24,13 +24,9 @@ self: super:
           esuper.manualPackages
           // {
             jmpunktPkgs =
-              super.callPackage
+              eself.callPackage
               ../pkgs/emacsPackages
               {
-                inherit emacs;
-                inherit (esuper) melpaBuild;
-                passedPackages = esuper;
-                emacsTrivialBuild = esuper.trivialBuild;
               };
           };
       in

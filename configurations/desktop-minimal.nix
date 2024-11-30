@@ -171,7 +171,7 @@
     fontconfig.defaultFonts.monospace = ["Jetbrains Mono"];
   };
   hardware = {
-    opengl.enable = true;
+    graphics.enable = true;
   };
   location = {
     latitude = 50.11;

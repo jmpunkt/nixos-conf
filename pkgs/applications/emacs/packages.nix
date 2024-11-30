@@ -16,7 +16,7 @@ with epkgs.melpaPackages;
     casual-avy
     transient-dwim
     rg
-    docker
+    # docker
     citre
     # Org
     ob-async

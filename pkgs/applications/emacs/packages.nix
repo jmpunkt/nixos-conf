@@ -72,6 +72,7 @@ with epkgs.melpaPackages;
         jmpunktPkgs.typst-ts-mode
         jmpunktPkgs.copilot
         jmpunktPkgs.xdg-appmenu
+        jmpunktPkgs.p-search
         (jmpunktPkgs.nixosPaths (import ./variables.nix {inherit pkgs;}))
       ]
       ++ [

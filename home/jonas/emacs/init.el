@@ -1301,12 +1301,6 @@ block, then the whole buffer is indented."
   :commands (ob-async-org-babel-execute-src-block
              org-babel-execute-src-block:async))
 
-(use-package org-agenda
-  :demand t
-  :after org
-  :config
-  (setq org-agenda-files (list org-agenda-dir)))
-
 (use-package org-capture
   :commands (org-capture)
   :config

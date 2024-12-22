@@ -1513,6 +1513,9 @@ block, then the whole buffer is indented."
   (setq pdf-view-resize-factor 1.1))
 
 ;;; * Misc
+(use-package p-search
+  :commands p-search)
+
 (use-package copilot
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-mode-map

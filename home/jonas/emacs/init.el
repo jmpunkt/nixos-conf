@@ -1516,6 +1516,10 @@ block, then the whole buffer is indented."
 (use-package p-search
   :commands p-search)
 
+(use-package devdocs
+  :commands devdocs-lookup
+  :bind (:map global-map ("C-h D" . devdocs-lookup)))
+
 (use-package copilot
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-mode-map

@@ -33,9 +33,19 @@
     emacs-mirror,
     utils,
   } @ inputs: let
-    allPackagesOverlay = final: prev:
-      (import ./overlays/10-pkgs.nix final prev)
-      // ((import ./overlays/emacs-overlay-glue.nix {inherit emacs-overlay emacs-mirror;}) final prev);
+    allPackagesOverlay =
+      stable.lib.composeManyExtensions
+      [
+        (final: prev: {
+          lib =
+            prev.lib
+            // {
+              jmpunkt = lib;
+            };
+        })
+        (import ./overlays/10-pkgs.nix)
+        (import ./overlays/emacs-overlay-glue.nix {inherit emacs-overlay emacs-mirror;})
+      ];
     lib = import ./lib.nix {
       inherit self unstable stable;
       minimumOverlays = [
@@ -173,6 +183,7 @@
       )
     )
     // {
+      inherit lib;
       overlays.default = allPackagesOverlay;
       templates = import ./templates;
       nixosModules = {

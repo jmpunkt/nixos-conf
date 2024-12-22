@@ -11,7 +11,6 @@
     stdenv
     lib
     ;
-
   # reconnect pkgs to the built emacs
   forwardPkgs = drv:
     drv.overrideAttrs (old: {
@@ -53,12 +52,12 @@ in {
             src = emacs-mirror;
             manifest = {
               version = let
-                version =
-                  builtins.elemAt
-                  (builtins.match
-                    ".*This directory tree holds version ([0-9.]+) of GNU Emacs.*"
-                    (builtins.readFile "${emacs-mirror}/README"))
-                  0;
+                version = lib.jmpunkt.unixTimestampToDate emacs-mirror.lastModified;
+                # builtins.elemAt
+                # (builtins.match
+                #   ".*This directory tree holds version ([0-9.]+) of GNU Emacs.*"
+                #   (builtins.readFile "${emacs-mirror}/README"))
+                # 0;
               in
                 # Ensure we have a version number or not some random text.
                 assert (builtins.stringLength version) < 10; version;

@@ -6,6 +6,7 @@
   unstable,
   minimumOverlays,
 }: let
+  inherit (stable.lib.trivial) mod;
   inherit (builtins) typeOf;
 in rec {
   # provides a NixOS system which will be cross-compiled.
@@ -104,4 +105,60 @@ in rec {
     target.config.system.build.toplevel;
   packageVM = target:
     target.config.system.build.vm;
+  isLeapYear = year:
+    ((mod year 4) == 0)
+    && (((mod year 100) != 0) || ((mod year 400) == 0));
+  yearsModUnixEpoch = timestamp: let
+    helper = seconds: year: let
+      daysRequired =
+        if isLeapYear year
+        then 366
+        else 365;
+      secondsRequired = daysRequired * 24 * 60 * 60;
+    in
+      if seconds <= secondsRequired
+      then {
+        year = year;
+        day = (seconds / 60 / 60 / 24) + 1;
+      }
+      else helper (seconds - secondsRequired) (year + 1);
+  in
+    helper timestamp 1970;
+  unixTimestampToDate = timestamp: let
+    dayAndYear = yearsModUnixEpoch timestamp;
+    year = dayAndYear.year;
+    dayInYear = dayAndYear.day;
+    daysInMonth = [
+      31
+      (
+        if isLeapYear year
+        then 29
+        else 28
+      )
+      31
+      30
+      31
+      30
+      31
+      31
+      30
+      31
+      30
+      31
+    ];
+    monthAndDay =
+      builtins.foldl' (
+        acc: daysInThisMonth:
+          if acc.days <= daysInThisMonth
+          then acc
+          else {
+            days = acc.days - daysInThisMonth;
+            month = acc.month + 1;
+          }
+      ) {
+        days = dayInYear;
+        month = 1;
+      }
+      daysInMonth;
+  in "${toString year}${toString monthAndDay.month}${toString monthAndDay.days}";
 }

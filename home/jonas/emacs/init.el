@@ -1429,6 +1429,10 @@ block, then the whole buffer is indented."
   :demand t
   :after rust-ts-mode)
 
+;;;; * Lua
+(use-package lua-ts-mode
+  :mode (("\\.lua\\'" . lua-ts-mode)))
+
 ;;;; * WEB
 (use-package sgml-mode
   :hook ((html-mode . eglot-ensure)

@@ -52,15 +52,10 @@ in {
             src = emacs-mirror;
             manifest = {
               version = let
-                version = lib.jmpunkt.unixTimestampToDate emacs-mirror.lastModified;
-                # builtins.elemAt
-                # (builtins.match
-                #   ".*This directory tree holds version ([0-9.]+) of GNU Emacs.*"
-                #   (builtins.readFile "${emacs-mirror}/README"))
-                # 0;
+                version = lib.jmpunkt.unixTimestampToDateTime emacs-mirror.lastModified;
               in
                 # Ensure we have a version number or not some random text.
-                assert (builtins.stringLength version) < 10; version;
+                assert (builtins.stringLength version) <= 14; version;
               rev = emacs-mirror.rev;
             };
           };

@@ -115,16 +115,26 @@ in rec {
         then 366
         else 365;
       secondsRequired = daysRequired * 24 * 60 * 60;
+      dayFloat = seconds / 60.0 / 60.0 / 24.0;
     in
       if seconds <= secondsRequired
       then {
         year = year;
-        day = (seconds / 60 / 60 / 24) + 1;
+        day = (builtins.floor dayFloat) + 1;
+        reminder = truncateFloat dayFloat;
       }
       else helper (seconds - secondsRequired) (year + 1);
   in
     helper timestamp 1970;
-  unixTimestampToDate = timestamp: let
+  truncateFloat = float:
+    float - (builtins.floor float);
+  # Pads a number with a leading zero if it is less than 10.
+  pad2Number = number:
+    if number < 10
+    then "0${toString number}"
+    else toString number;
+  # Converts a Unix timestamp to a date-time string (YYYYMMDD.HHMM).
+  unixTimestampToDateTime = timestamp: let
     dayAndYear = yearsModUnixEpoch timestamp;
     year = dayAndYear.year;
     dayInYear = dayAndYear.day;
@@ -160,5 +170,7 @@ in rec {
         month = 1;
       }
       daysInMonth;
-  in "${toString year}${toString monthAndDay.month}${toString monthAndDay.days}";
+    hour = dayAndYear.reminder * 24.0;
+    minute = (truncateFloat hour) * 60.0;
+  in "${toString year}${pad2Number monthAndDay.month}${pad2Number monthAndDay.days}.${pad2Number (builtins.floor hour)}${pad2Number (builtins.floor minute)}";
 }

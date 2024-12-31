@@ -4,6 +4,11 @@
 ;;; Code:
 ;;; Packages
 ;;; Startup Improvements
+
+;; Prevent Emacs from uncompromising loaddef files and skipping them
+;; anyways. For this setup (NixOS) every package should be compiled anyways.
+(setq native-comp-jit-compilation-deny-list '(".*-loaddefs.el.gz"))
+
 ;; temporary settings
 ;; persistent  settings
 (setq read-process-output-max (* 1024 1024)

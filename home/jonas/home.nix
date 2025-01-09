@@ -139,6 +139,7 @@
                 jmpunktPkgs.copilot
                 jmpunktPkgs.xdg-appmenu
                 jmpunktPkgs.p-search
+                jmpunktPkgs.ultra-scroll
                 (jmpunktPkgs.nixosPaths (import ./emacs/variables.nix {inherit pkgs;}))
               ]
               ++ [

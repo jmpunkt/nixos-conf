@@ -303,6 +303,7 @@ The DWIM behaviour of this command is as follows:
   (global-so-long-mode 1)
   (electric-indent-mode -1)
   (electric-pair-mode -1)
+  (pixel-scroll-precision-mode -1)
 
   (global-prettify-symbols-mode -1)
   (global-eldoc-mode -1)
@@ -495,6 +496,13 @@ If the cursor is on the last promt, then we want to insert at the current positi
   )
 
 ;;; * Core Packages
+(use-package ultra-scroll
+  :init
+  (setq scroll-conservatively 101 ; important!
+    scroll-margin 0)
+  :config
+  (ultra-scroll-mode 1))
+
 ;;;; * helpful
 (use-package helpful
   :hook (helpful-mode . button-mode)

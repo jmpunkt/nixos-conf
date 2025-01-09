@@ -574,25 +574,14 @@ If the cursor is on the last promt, then we want to insert at the current positi
             (meow--make-selection '(expand . parent) m p)
             (meow--select))
           (meow--maybe-highlight-num-positions)))))
-  (defun jmpunkt/meow--bound-of-treesit (symbol)
-    (if-let* ((node (cadr (jmpunkt/treesit-thing-at-point symbol))))
-        `(,(treesit-node-start node) . ,(treesit-node-end node))))
-  (defun jmpunkt/meow--inner-of-treesit (symbol)
-    (if-let* ((node (car (jmpunkt/treesit-thing-at-point symbol))))
-        `(,(treesit-node-start node) . ,(treesit-node-end node))))
-  (defun jmpunkt/meow--bound-of-function ()
-    (jmpunkt/meow--bound-of-treesit 'function))
-  (defun jmpunkt/meow--inner-of-function ()
-    (jmpunkt/meow--inner-of-treesit 'function))
   (defun jmpunkt/meow-search-with (search)
     (interactive (list (read-string "search: " nil 'regexp-search-ring)))
     (when search
       (push search regexp-search-ring)
       (call-interactively #'meow-search)))
   (defun jmpunkt/meow-setup ()
-    ;; add treesit function
-    (meow-thing-register 'function #'jmpunkt/meow--inner-of-function #'jmpunkt/meow--bound-of-function)
-    (add-to-list 'meow-char-thing-table '(?f . function))
+    ;; add treesit function alias
+    (add-to-list 'meow-char-thing-table '(?f . defun))
     ;; add thing-at-point url
     (meow-thing-register 'url 'url 'url)
     (add-to-list 'meow-char-thing-table '(?u . url))
@@ -1431,7 +1420,20 @@ block, then the whole buffer is indented."
 (use-package rust-ts-mode
   :hook (rust-ts-mode . eglot-ensure)
   :init
-  (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode)))
+  (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
+
+  :config
+  (add-to-list treesit-thing-settings
+               '(rust . ((defun . (or "function_item" "closure_expression"))
+                         ;; (sexp . "")
+                         ;; (word . "")
+                         ;; (sentence . "")
+                         (paragraph . "block")
+                         (string . (or "string_literal" "raw_string_literal"))
+                         (text . (or "line_comment" "string_literal" "raw_string_literal"))
+                         (comment . "line_comment")
+                         (number . (or "integer_literal" "float_literal")))))
+  )
 
 (use-package rust-compile
   :demand t

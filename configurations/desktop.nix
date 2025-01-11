@@ -6,6 +6,15 @@
 }: {
   imports = [./desktop-minimal.nix];
 
+  nix.settings = {
+    substituters = [
+      "https://emacs-ci.cachix.org"
+    ];
+    trusted-public-keys = [
+      "emacs-ci.cachix.org-1:B5FVOrxhXXrOL0S+tQ7USrhjMT5iOPH+QN9q0NItom4="
+    ];
+  };
+
   # scanner
   hardware = {
     sane.enable = true;

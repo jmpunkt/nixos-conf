@@ -62,7 +62,6 @@
   };
   services.timesyncd.enable = true;
 
-  system.disableInstallerTools = true;
   users.mutableUsers = false;
 
   nix.settings.allowed-users = ["root"];

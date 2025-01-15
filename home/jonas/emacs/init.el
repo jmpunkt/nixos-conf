@@ -330,48 +330,6 @@ The DWIM behaviour of this command is as follows:
   :config
   (editorconfig-mode 1))
 
-(use-package treesit
-  :init
-  (defvar jmpunkt/treesit-thing-lookup-table
-    '((rust-mode . ((function . ((function_item block)))))
-      ((js-mode js-jsx-mode ts-mode) . ((function . ((method_definition statement_block)
-                                                     (arrow_function statement_block)))))
-      (python-ts-mode . ((function . ((function_definition block))))))
-
-    "A lookup table in the form of (mode . (( kind . ((inner1 outer1)
- (inner2 outer2)) )).
-
-KIND is a chosen symbol which is describes the object.
-INNER and OUTER are symbols which are defined by their grammar
-definition.
-
-Informal description: for a mode, it describes how to lookup a kind
-where different syntax constructs describe the same kind. Each syntax
-construct contains of an inner and outer, where inner must always be
-contained by outer.")
-  (defun jmpunkt/treesit--thing-for-mode (mode kind)
-    (when-let* ((declarations (alist-get mode jmpunkt/treesit-thing-lookup-table nil nil
-                                         (lambda (key mode) (if (sequencep key) (seq-contains key mode) (eq key mode))))))
-      (alist-get kind declarations)))
-  (defun jmpunkt/treesit-thing-at-point (kind &optional mode)
-    "Return the OUTER and INNER node for the given KIND in MODE.
-
-The INNER must be contained by the outer. See
-`jmpunkt/trees-thing-lookup-table' for more information."
-    (let ((definitions (jmpunkt/treesit--thing-for-mode (or mode major-mode) kind)))
-      (cl-some (lambda (definition)
-                 (if-let* ((outer-type (car definition))
-                           (inner-type (cadr definition))
-                           (outer-node (treesit-parent-until
-                                        (treesit-node-at (point))
-                                        (lambda (node)
-                                          (string-equal (treesit-node-type node) outer-type))))
-                           (inner-node (car (treesit-filter-child
-                                             outer-node
-                                             (lambda (node)
-                                               (string-equal (treesit-node-type node) inner-type))))))
-                     `(,inner-node ,outer-node)))
-               definitions))))
 ;;;; Shell
 (use-package eat
   :commands eat)
@@ -1425,17 +1383,16 @@ block, then the whole buffer is indented."
   (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
 
   :config
-  (add-to-list treesit-thing-settings
-               '(rust . ((defun . (or "function_item" "closure_expression"))
-                         ;; (sexp . "")
-                         ;; (word . "")
-                         ;; (sentence . "")
-                         (paragraph . "block")
-                         (string . (or "string_literal" "raw_string_literal"))
-                         (text . (or "line_comment" "string_literal" "raw_string_literal"))
-                         (comment . "line_comment")
-                         (number . (or "integer_literal" "float_literal")))))
-  )
+  (add-to-list 'treesit-thing-settings
+               '(rust (defun (or "function_item" "closure_expression"))
+                      ;; (sexp "")
+                      ;; (word "")
+                      ;; (sentence "")
+                      (paragraph "block")
+                      (string (or "string_literal" "raw_string_literal"))
+                      (text (or "line_comment" "string_literal" "raw_string_literal"))
+                      (comment "line_comment")
+                      (number (or "integer_literal" "float_literal"))))))
 
 (use-package rust-compile
   :demand t

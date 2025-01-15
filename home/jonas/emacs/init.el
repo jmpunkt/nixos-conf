@@ -769,7 +769,11 @@ If the cursor is on the last promt, then we want to insert at the current positi
 (use-package citre
   :bind (("C-c m b" . citre-jump-back)
          ("C-c m f" . jmpunkt/meow-find-definitions)
-         ("C-c m r" . jmpunkt/meow-find-references))
+         ("C-c m r" . jmpunkt/meow-find-references)
+         ("C-c m c" . citre-create-tags-file)
+         ("C-c m u" . citre-update-tags-file))
+  :custom
+  (citre-default-create-tags-file-location 'global-cache)
   :init
   (defun jmpunkt/meow-find-references ()
     "Xref definition."
@@ -780,12 +784,10 @@ If the cursor is on the last promt, then we want to insert at the current positi
     "Xref definition."
     (interactive)
     (meow--cancel-selection)
-    (citre-jump)))
+    (citre-jump))
+  :config
+  (require 'citre-config))
 
-
-(use-package citre-config
-  :demand t
-  :after citre-mode)
 
 ;;;; * Spelling
 (use-package ispell

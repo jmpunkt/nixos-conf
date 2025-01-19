@@ -180,4 +180,8 @@
   networking.networkmanager.enable = true;
   networking.wireless.enable = lib.mkForce false;
   systemd.services.NetworkManager-wait-online.enable = false;
+  # Remove logs older than 3 days.
+  services.journald.extraConfig = ''
+    MaxFileSec=3day
+  '';
 }

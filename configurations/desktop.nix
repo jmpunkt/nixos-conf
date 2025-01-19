@@ -58,7 +58,7 @@
   services.resolved = {
     enable = true;
     dnssec = "true";
-    dnsovertls = "true";
+    dnsovertls = "opportunistic";
     llmnr = "false";
     fallbackDns = [
       # Cloudflare

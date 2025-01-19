@@ -24,7 +24,6 @@ in {
       ripgrep # search
       pandoc # markdown, etc
       git
-      typst
       git-absorb
       universal-ctags
       global
@@ -50,6 +49,8 @@ in {
       pkgs.nodePackages.mermaid-cli
       ghostscript
       zip
+      tectonic
+      typst
     ];
     formatter = with pkgs; [
       nixpkgs-fmt

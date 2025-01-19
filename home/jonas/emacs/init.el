@@ -1202,7 +1202,8 @@ block, then the whole buffer is indented."
   :config
   (setq org-ellipsis "…"
         org-log-done 'time
-        org-catch-invisible-edits 'show-and-error))
+        org-catch-invisible-edits 'show-and-error
+        org-latex-pdf-process '("tectonic -X compile --outdir=%o -Z shell-escape -Z continue-on-errors %f")))
 
 (use-package ox-typst
   :demand t
@@ -1392,7 +1393,7 @@ block, then the whole buffer is indented."
                       (string (or "string_literal" "raw_string_literal"))
                       (text (or "line_comment" "string_literal" "raw_string_literal"))
                       (comment "line_comment")
-                      (number (or "integer_literal" "float_literal"))))))
+                      (number (or "integer_literal" "float_literal")))))
 
 (use-package rust-compile
   :demand t

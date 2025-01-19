@@ -5,7 +5,7 @@
     "${pkgs.nodejs}/bin/node" "${pathOfExtension vscode-eslint}/server/out/eslintServer.js" "--stdio"
   '';
   copilot =
-    pkgs.nodePackages_latest.jmpunkt."copilot-node-server-1.14.0";
+    pkgs.nodePackages.jmpunkt."copilot-node-server-1.14.0";
 in {
   variables = {
     org-plantuml-jar-path = "${pkgs.plantuml}/lib/plantuml.jar";
@@ -14,7 +14,7 @@ in {
     languagetool-server-command = "${pkgs.languagetool}/share/languagetool-server.jar";
     languagetool-console-command = "${pkgs.languagetool}/share/languagetool-commandline.jar";
     languagetool-java-bin = "${pkgs.jre}/bin/java";
-    copilot-node-executable = "${pkgs.nodePackages_latest.nodejs}/bin/node";
+    copilot-node-executable = "${pkgs.nodePackages.nodejs}/bin/node";
     copilot-install-dir = "${copilot}";
     copilot-version = copilot.version;
   };

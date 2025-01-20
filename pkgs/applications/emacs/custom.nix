@@ -3,6 +3,7 @@
     name = "emacs-jmpunkt";
     features = with emacs-overlay; [
       enableLTO
+      enableIgc
     ];
     repository = emacs-overlay.repos.emacs.github;
   })

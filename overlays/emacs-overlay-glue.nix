@@ -103,6 +103,14 @@ in {
           ++ features
           ++ [forwardPkgs]);
 
+      enableIgc = drv:
+        drv.overrideAttrs (
+          old: {
+            configureFlags = old.configureFlags ++ [(lib.withFeature true "mps")];
+            buildInputs = old.buildInputs ++ [pkgs.mps];
+          }
+        );
+
       # Enable link-time optimization
       enableLTO = drv:
         drv.overrideAttrs (

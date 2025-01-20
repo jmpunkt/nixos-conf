@@ -3,15 +3,16 @@
     "emacs-mirror": {
       "flake": false,
       "locked": {
-        "lastModified": 1737204394,
-        "narHash": "sha256-lIw90SfX96pyQ+faK3uwYJJlf0sB+NoR4lD4UzQ2KRU=",
+        "lastModified": 1737382110,
+        "narHash": "sha256-2dJEQzlu0Gb2NSbycjaMOJL0DX8OQLF78x14r13lOdQ=",
         "owner": "emacs-mirror",
         "repo": "emacs",
-        "rev": "dcfc31dabd6f6b51be7b2fbc1115787856397870",
+        "rev": "06510ef9d4d86a87e89c8a0d0ae25257fcb62108",
         "type": "github"
       },
       "original": {
         "owner": "emacs-mirror",
+        "ref": "feature/igc",
         "repo": "emacs",
         "type": "github"
       }

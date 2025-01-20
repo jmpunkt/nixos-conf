@@ -103,37 +103,6 @@ in {
           ++ features
           ++ [forwardPkgs]);
 
-      # Enable native comp feature for Emacs.
-      enableNativeCompilation = drv:
-        (drv.overrideAttrs (
-          old: {
-            patches = [
-              (pkgs.substituteAll {
-                src = ./glue.patch;
-                backendPath =
-                  lib.concatStringsSep " "
-                  (
-                    builtins.map (x: ''"-B${x}"'') [
-                      # Paths necessary so the JIT compiler finds its libraries:
-                      "${lib.getLib pkgs.libgccjit}/lib"
-                      "${lib.getLib pkgs.libgccjit}/lib/gcc/${stdenv.targetPlatform.config}/${pkgs.libgccjit.version}/"
-                      "${lib.getLib stdenv.cc.libc}/lib"
-                      "${lib.getLib stdenv.cc.cc.libgcc}/lib"
-
-                      # Executable paths necessary for compilation (ld, as):
-                      "${lib.getBin stdenv.cc.cc}/bin"
-                      "${lib.getBin stdenv.cc.bintools}/bin"
-                      "${lib.getBin stdenv.cc.bintools.bintools}/bin"
-                    ]
-                  );
-              })
-            ];
-          }
-        ))
-        .override {
-          withNativeCompilation = true;
-        };
-
       # Enable link-time optimization
       enableLTO = drv:
         drv.overrideAttrs (

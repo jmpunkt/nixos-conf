@@ -2,9 +2,6 @@
 ((emacs-overlay.mkEmacsFromRepo {
     name = "emacs-jmpunkt";
     features = with emacs-overlay; [
-      # NOTE: removes all patches, should be put first, additional
-      # patches should be provided afterwards again
-      enableNativeCompilation
       enableLTO
     ];
     repository = emacs-overlay.repos.emacs.github;
@@ -16,6 +13,7 @@
     withTreeSitter = true;
     withPgtk = true;
     withXwidgets = false;
+    withNativeCompilation = true;
   })
 .overrideAttrs (old: {
   patches =

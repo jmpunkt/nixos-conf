@@ -1205,6 +1205,18 @@ block, then the whole buffer is indented."
         org-catch-invisible-edits 'show-and-error
         org-latex-pdf-process '("tectonic -X compile --outdir=%o -Z shell-escape -Z continue-on-errors %f")))
 
+(use-package org-clock
+  ;; Same as (org-clock-persistence-insinuate) but will lazy load. Calling the
+  ;; function instead causes `org-mode' to be loaded.
+  :hook ((org-mode . org-clock-load)
+         (kill-emacs . org-clock-save))
+  :config
+  (setq org-clock-idle-time 10
+        org-clock-in-resume t
+        org-clock-persist t
+        org-clock-persist-query-resume nil
+        org-clock-out-remove-zero-time-clocks t))
+
 (use-package ox-typst
   :demand t
   :after org

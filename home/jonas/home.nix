@@ -124,6 +124,7 @@
             nix-ts-mode
             nix-mode
             devdocs
+            flymake-ruff
           ]
           ++ (with epkgs.elpaPackages; [
             undo-tree

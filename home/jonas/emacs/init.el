@@ -1401,6 +1401,9 @@ block, then the whole buffer is indented."
   (push 'pyright compilation-error-regexp-alist)
   (push '(pyright "^\\ +\\(.+\\):\\([0-9]+\\):\\([0-9]+\\).+$" 1 2 3) compilation-error-regexp-alist-alist))
 
+(use-package flymake-ruff
+  :hook (python-ts-mode . flymake-ruff-load))
+
 ;;;; * Rust
 (use-package rust-ts-mode
   :hook (rust-ts-mode . eglot-ensure)

@@ -1056,6 +1056,12 @@ paths, it will fallback to the project root path."
               ("C-s" . consult-line))
   :hook (completion-list-mode . consult-preview-at-point-mode)
   :init
+  (defun consult-clock-in ()
+    "Clock into an Org heading."
+    (interactive)
+    (save-window-excursion
+      (consult-org-heading)
+      (org-clock-in)))
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
@@ -1066,6 +1072,9 @@ paths, it will fallback to the project root path."
                      #'consult-completion-in-region
                    #'completion--in-region)
                  args)))
+  (consult-customize consult-clock-in
+                     :prompt "Clock in: "
+                     :preview-key "M-.")
   (consult-customize
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref

@@ -35,11 +35,7 @@ in {
       eslint-lsp
       nil
       typst-lsp
-      # NOTE: not a single application
-      (python3.withPackages (p: (with p; [
-        python-lsp-server
-        python-lsp-ruff
-      ])))
+      basedpyright
     ];
     org = with pkgs; [
       # graphs

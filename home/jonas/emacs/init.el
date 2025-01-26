@@ -933,6 +933,9 @@ paths, it will fallback to the project root path."
     (lambda (snippet) (tempel-insert (jmpunkt/lsp-snippet-to-tempel snippet))))
   :config
   (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'eldoc-highlight-function-argument)
+  (add-to-list 'eglot-server-programs
+               '((python-mode python-ts-mode)
+                 "basedpyright-langserver" "--stdio"))
   (setq eglot-extend-to-xref t
         eglot-stay-out-of '(company)
         eglot-events-buffer-config '(:size 0 :format lisp)

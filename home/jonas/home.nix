@@ -32,7 +32,13 @@
   home.sessionVariables = {
     MOZ_ENABLE_WAYLAND = 1;
     NIXOS_OZONE_WL = 1;
+    GTAGSCONF = "${pkgs.global}/share/gtags/gtags.conf";
+    GTAGSLABEL = "pygments";
+    MAKEOBJDIRPREFIX = "/home/jonas/.cache/gtags";
   };
+  systemd.user.tmpfiles.rules = [
+    "D /home/jonas/.cache/gtags 0755 jonas jonas 7d -"
+  ];
   services.syncthing = {
     enable = true;
     tray.enable = true;

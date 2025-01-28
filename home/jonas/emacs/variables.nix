@@ -33,7 +33,7 @@ in {
       yaml-language-server
       nodePackages.typescript-language-server
       eslint-lsp
-      nil
+      nixd
       typst-lsp
       basedpyright
     ];

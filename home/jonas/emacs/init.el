@@ -1391,7 +1391,7 @@ block, then the whole buffer is indented."
   :fmt (nix-ts-mode . fmt/alejandra-buffer)
   :config
   (require 'eglot)
-  (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nil"))))
+  (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nixd"))))
 
 ;;;; * C/C++
 (use-package c-ts-mode

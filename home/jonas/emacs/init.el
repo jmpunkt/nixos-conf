@@ -1069,12 +1069,6 @@ paths, it will fallback to the project root path."
         xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
   :config
-  (setq completion-in-region-function
-        (lambda (&rest args)
-          (apply (if (or vertico-mode icomplete-vertical-mode)
-                     #'consult-completion-in-region
-                   #'completion--in-region)
-                 args)))
   (consult-customize consult-clock-in
                      :prompt "Clock in: "
                      :preview-key "M-.")
@@ -1084,6 +1078,22 @@ paths, it will fallback to the project root path."
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
    :preview-key "C-."))
+
+(use-package corfu-prescient
+  :commands corfu-prescient-mode)
+
+(use-package corfu
+  :bind (:map corfu-map
+              ("TAB" . corfu-next)
+              ([tab] . corfu-next)
+              ("S-TAB" . corfu-previous)
+              ([backtab] . corfu-previous))
+  :custom
+  (corfu-cycle t)
+  (corfu-preselect 'prompt)
+  :init
+  (global-corfu-mode)
+  (corfu-prescient-mode))
 
 (use-package recentf
   :hook (after-init . recentf-mode)

@@ -1,10 +1,8 @@
 {
-  stdenv,
   lib,
   buildEnv,
   trivialBuild,
   writeTextFile,
-  emacs,
 }: {
   variables,
   paths,
@@ -20,7 +18,9 @@
     then "1"
     else if (builtins.isInt value) || (builtins.isFloat value)
     then "${value}"
-    else lib.assertMsg false "sets are not translated into emacs";
+    else if (builtins.isAttrs value)
+    then "'(${builtins.concatStringsSep " " (lib.attrsets.mapAttrsToList (key: value: "(${key} . ${valueToEmacs value})") value)})"
+    else lib.assertMsg false "${builtins.typeOf value} can not translated into Elisp";
   pairs =
     builtins.concatStringsSep
     "\n"

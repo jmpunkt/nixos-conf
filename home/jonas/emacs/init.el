@@ -1244,7 +1244,8 @@ block, then the whole buffer is indented."
   :demand t
   :after org
   :config
-  (add-to-list 'org-src-lang-modes '("typst")))
+  (add-to-list 'org-src-lang-modes '("typst" . typst-ts))
+  (add-to-list 'org-latex-listings-langs '(typst-ts "Typst")))
 
 (use-package ob-shell
   :after org

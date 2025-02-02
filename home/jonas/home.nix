@@ -138,6 +138,8 @@
             undo-tree
             org
             breadcrumb
+            svg-lib
+            kind-icon
           ])
           ++ (with epkgs.nongnuPackages; [eat])
           ++ (

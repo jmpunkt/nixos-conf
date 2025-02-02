@@ -17,6 +17,14 @@ in {
     copilot-node-executable = "${pkgs.nodePackages.nodejs}/bin/node";
     copilot-install-dir = "${copilot}";
     copilot-version = copilot.version;
+    svg-lib-icon-collections = {
+      "\"material\"" = "file://${pkgs.fetchFromGitHub {
+        owner = "Templarian";
+        repo = "MaterialDesign";
+        rev = "2424e748e0cc63ab7b9c095a099b9fe239b737c0";
+        sha256 = "sha256-QMGl7soAhErrrnY3aKOZpt49yebkSNzy10p/v5OaqQ0=";
+      }}/svg/%s.svg";
+    };
   };
   paths = let
     core = with pkgs; [

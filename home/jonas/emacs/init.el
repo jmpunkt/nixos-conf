@@ -1091,6 +1091,11 @@ paths, it will fallback to the project root path."
   (global-corfu-mode)
   (corfu-prescient-mode))
 
+(use-package kind-icon
+  :after corfu
+  :init
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
 (use-package recentf
   :hook (after-init . recentf-mode)
   :config

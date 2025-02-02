@@ -17,7 +17,7 @@
       inputs.nixpkgs.follows = "stable";
     };
     emacs-mirror = {
-      url = "github:emacs-mirror/emacs/feature/igc";
+      url = "github:emacs-mirror/emacs?rev=a4a0957b6b3b1db858524ac6d4dc3d951f65960b";
       flake = false;
     };
     utils.url = "github:numtide/flake-utils";

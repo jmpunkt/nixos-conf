@@ -116,10 +116,6 @@ eglot (if available)."
 (add-to-list 'use-package-keywords :fmt)
 
 ;;; * Theme
-(use-package all-the-icons
-  :init
-  (setq inhibit-compacting-font-caches t))
-
 (use-package modus-themes
   :init
   (load-theme 'modus-vivendi-tinted t)

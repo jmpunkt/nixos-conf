@@ -165,8 +165,6 @@
       noto-fonts-monochrome-emoji
       # Monospace
       fantasque-sans-mono
-      # Emacs Icons
-      emacs-all-the-icons-fonts
     ];
     fontconfig.defaultFonts.monospace = ["Jetbrains Mono"];
   };

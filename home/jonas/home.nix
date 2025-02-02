@@ -102,7 +102,6 @@
             magit
             diff-hl
             # UI
-            all-the-icons
             modus-themes
             # Bibliography
             citar

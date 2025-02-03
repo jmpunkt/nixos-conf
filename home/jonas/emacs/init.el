@@ -180,8 +180,10 @@ The DWIM behaviour of this command is as follows:
     (display-line-numbers-mode 1)
     (setq-local show-trailing-whitespace t))
   (defun jmpunkt/prog-init ()
+    (corfu-mode)
     (jmpunkt/default-init))
   (defun jmpunkt/conf-init ()
+    (corfu-mode)
     (jmpunkt/default-init))
   (defun jmpunkt/text-init ()
     (jmpunkt/default-init)
@@ -1037,7 +1039,14 @@ paths, it will fallback to the project root path."
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package vertico
-  :hook (after-init . vertico-mode))
+  :hook (after-init . vertico-mode)
+  :config
+  (setq completion-in-region-function
+        (lambda (&rest args)
+          (apply (if vertico-mode
+                     #'consult-completion-in-region
+                   #'completion--in-region)
+                 args))))
 
 (use-package vertico-prescient
   :hook (vertico-mode . vertico-prescient-mode)
@@ -1079,6 +1088,7 @@ paths, it will fallback to the project root path."
   :commands corfu-prescient-mode)
 
 (use-package corfu
+  :commands corfu-mode
   :bind (:map corfu-map
               ("TAB" . corfu-next)
               ([tab] . corfu-next)
@@ -1087,9 +1097,7 @@ paths, it will fallback to the project root path."
   :custom
   (corfu-cycle t)
   (corfu-preselect 'prompt)
-  :init
-  (global-corfu-mode)
-  (corfu-prescient-mode))
+  :hook (corfu-mode . corfu-prescient-mode))
 
 (use-package kind-icon
   :after corfu

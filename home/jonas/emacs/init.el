@@ -1039,7 +1039,12 @@ paths, it will fallback to the project root path."
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package vertico
+  :init
+  (require 'vertico-quick)
   :hook (after-init . vertico-mode)
+  :bind (:map vertico-map
+              ("M-q" . vertico-quick-insert)
+              ("C-q" . vertico-quick-exit))
   :config
   (setq completion-in-region-function
         (lambda (&rest args)

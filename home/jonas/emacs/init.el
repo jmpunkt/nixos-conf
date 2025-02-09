@@ -1550,7 +1550,8 @@ block, then the whole buffer is indented."
   :bind (:map copilot-mode-map
               ("C-c r" . copilot-accept-completion))
   :config
-  (setq copilot-indent-offset-warning-disable t))
+  (setq copilot-indent-offset-warning-disable t
+        copilot-max-char 500000))
 
 (use-package biome
   :commands biome

@@ -516,12 +516,13 @@ If the cursor is on the last promt, then we want to insert at the current positi
                      (treesit-node-on (region-beginning) (region-end))
                    (treesit-node-at (point))))
            (target (if (meow--selection-type) (treesit-node-parent node) node)))
-      ;; If the parent does not expand the current selection, then use
-      ;; their parent instead.
-      (when (and
-             (meow--selection-type)
-             (equal (treesit-node-end target) (treesit-node-end node))
-             (equal (treesit-node-start target) (treesit-node-start node)))
+      ;; If the parent does not expand the current selection, then use their
+      ;; parent instead.
+      (while (and
+              (meow--selection-type)
+              (equal (treesit-node-end target) (treesit-node-end node))
+              (equal (treesit-node-start target) (treesit-node-start node))
+              (treesit-node-parent target))
         (setq target (treesit-node-parent target)))
       (let ((m (if back (treesit-node-end target) (treesit-node-start target)))
             (p (if back (treesit-node-start target) (treesit-node-end target))))

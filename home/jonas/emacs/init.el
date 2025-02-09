@@ -1343,7 +1343,9 @@ block, then the whole buffer is indented."
 
 ;;;; * YAML
 (use-package yaml-ts-mode
-  :hook (yaml-ts-mode . eglot-ensure))
+  :hook (yaml-ts-mode . eglot-ensure)
+  :init
+  (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode)))
 
 ;;;; * TOML
 (use-package toml-ts-mode)

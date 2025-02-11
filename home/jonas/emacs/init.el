@@ -1353,8 +1353,7 @@ block, then the whole buffer is indented."
 
 ;;;; * GraphQL
 (use-package graphql-mode
-  :fmt (graphql-mode . fmt/prettier-buffer)
-  :hook (graphql-mode . fmt/prettier-on-save-mode))
+  :fmt (graphql-mode . fmt/prettier-buffer))
 
 ;;; * Text Files
 ;;;; * reStructuredText
@@ -1392,8 +1391,7 @@ block, then the whole buffer is indented."
 (use-package typst-ts-mode
   :mode "\\.typ\\'"
   :hook ((typst-ts-mode . fmt-mode)
-         ;; (typst-ts-mode . eglot-ensure)
-         (typst-ts-mode . fmt/typstyle-on-save-mode))
+         (typst-ts-mode . eglot-ensure))
   :fmt (typst-ts-mode . fmt/typstyle-buffer)
   :custom
   (typst-ts-mode-indent-offset 2)
@@ -1404,8 +1402,7 @@ block, then the whole buffer is indented."
 ;;;; * Nix
 (use-package nix-ts-mode
   :mode "\\.nix\\'"
-  :hook ((nix-ts-mode . eglot-ensure)
-         (nix-ts-mode . fmt/alejandra-on-save-mode))
+  :hook ((nix-ts-mode . eglot-ensure))
   :fmt (nix-ts-mode . fmt/alejandra-buffer)
   :config
   (require 'eglot)
@@ -1469,9 +1466,7 @@ block, then the whole buffer is indented."
   (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
   :mode (("\\.scss\\'" . scss-mode))
   :hook ((css-base-mode . eglot-ensure)
-         (css-base-mode . fmt/prettier-on-save-mode)
-         (scss-base-mode . eglot-ensure)
-         (scss-mode . fmt/prettier-on-save-mode))
+         (scss-base-mode . eglot-ensure))
   :fmt (css-base-mode . fmt/prettier-buffer)
   :config
   (setq css-indent-offset 2))

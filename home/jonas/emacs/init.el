@@ -1473,8 +1473,8 @@ block, then the whole buffer is indented."
   (setq css-indent-offset 2))
 
 (use-package typescript-ts-mode
-  :hook ((typescript-ts-base-mode . eglot-ensure)
-         (typescript-ts-base-mode . fmt/biome-buffer))
+  :mode ("\\.ts\\'" . typescript-ts-mode)
+  :hook ((typescript-ts-base-mode . eglot-ensure))
   :fmt (typescript-ts-base-mode . fmt/biome-buffer))
 
 (use-package json-ts-mode

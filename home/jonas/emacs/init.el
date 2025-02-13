@@ -1484,6 +1484,7 @@ block, then the whole buffer is indented."
 (use-package js
   :init
   (add-to-list 'major-mode-remap-alist '(js-mode . js-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(javascript-mode . js-ts-mode))
   :hook ((js-base-mode . eglot-ensure))
   :fmt (js-base-mode . fmt/biome-buffer)
   :config

@@ -5,7 +5,10 @@
     "${pkgs.nodejs}/bin/node" "${pathOfExtension vscode-eslint}/server/out/eslintServer.js" "--stdio"
   '';
   copilot =
-    pkgs.nodePackages.jmpunkt."copilot-node-server-1.14.0";
+    pkgs.nodePackages.jmpunkt."@github/copilot-language-server-1.273.0";
+  copilot-run = pkgs.writeShellScriptBin "copilot-run" ''
+    "${pkgs.nodejs}/bin/node" "${copilot}/lib/node_modules/@github/copilot-language-server/dist/language-server.js" "$@"
+  '';
 in {
   variables = {
     org-plantuml-jar-path = "${pkgs.plantuml}/lib/plantuml.jar";
@@ -14,8 +17,8 @@ in {
     languagetool-server-command = "${pkgs.languagetool}/share/languagetool-server.jar";
     languagetool-console-command = "${pkgs.languagetool}/share/languagetool-commandline.jar";
     languagetool-java-bin = "${pkgs.jre}/bin/java";
-    copilot-node-executable = "${pkgs.nodePackages.nodejs}/bin/node";
     copilot-install-dir = "${copilot}";
+    copilot-server-executable = "${copilot-run}/bin/copilot-run";
     copilot-version = copilot.version;
     svg-lib-icon-collections = {
       "\"material\"" = "file://${pkgs.fetchFromGitHub {

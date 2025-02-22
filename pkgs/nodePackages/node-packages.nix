@@ -3,22 +3,55 @@
 {nodeEnv, fetchurl, fetchgit, nix-gitignore, stdenv, lib, globalBuildInputs ? []}:
 
 let
-  sources = {};
+  sources = {
+    "vscode-jsonrpc-8.2.0" = {
+      name = "vscode-jsonrpc";
+      packageName = "vscode-jsonrpc";
+      version = "8.2.0";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/vscode-jsonrpc/-/vscode-jsonrpc-8.2.0.tgz";
+        sha512 = "C+r0eKJUIfiDIfwJhria30+TYWPtuHJXHtI7J0YlOmKAo7ogxP20T0zxB7HZQIFhIyvoBPwWskjxrvAtfjyZfA==";
+      };
+    };
+    "vscode-languageserver-protocol-3.17.5" = {
+      name = "vscode-languageserver-protocol";
+      packageName = "vscode-languageserver-protocol";
+      version = "3.17.5";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/vscode-languageserver-protocol/-/vscode-languageserver-protocol-3.17.5.tgz";
+        sha512 = "mb1bvRJN8SVznADSGWM9u/b07H7Ecg0I3OgXDuLdn307rl/J3A9YD6/eYOssqhecL27hK1IPZAsaqh00i/Jljg==";
+      };
+    };
+    "vscode-languageserver-types-3.17.5" = {
+      name = "vscode-languageserver-types";
+      packageName = "vscode-languageserver-types";
+      version = "3.17.5";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/vscode-languageserver-types/-/vscode-languageserver-types-3.17.5.tgz";
+        sha512 = "Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==";
+      };
+    };
+  };
 in
 {
-  "copilot-node-server-1.14.0" = nodeEnv.buildNodePackage {
-    name = "copilot-node-server";
-    packageName = "copilot-node-server";
-    version = "1.14.0";
+  "@github/copilot-language-server-1.273.0" = nodeEnv.buildNodePackage {
+    name = "_at_github_slash_copilot-language-server";
+    packageName = "@github/copilot-language-server";
+    version = "1.273.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/copilot-node-server/-/copilot-node-server-1.14.0.tgz";
-      sha512 = "akyEGXwu/jZwc7+QIxkr/kKxiCp6yCQ9742J16/YposLMcgQHUDlag9WP+TjxD6HXPRFU53+8mKrUld5CS+slw==";
+      url = "https://registry.npmjs.org/@github/copilot-language-server/-/copilot-language-server-1.273.0.tgz";
+      sha512 = "aVpGOprSPYYgRHzjnim5ug1L0SSlTEwLlYNITFTCIaVJmNr5T8gdq09ZiDlZXKQHlo7kQty+WhHZCAZd9bor+w==";
     };
+    dependencies = [
+      sources."vscode-jsonrpc-8.2.0"
+      sources."vscode-languageserver-protocol-3.17.5"
+      sources."vscode-languageserver-types-3.17.5"
+    ];
     buildInputs = globalBuildInputs;
     meta = {
-      description = "Copilot Node.js server stripped from https://github.com/github/copilot.vim";
-      homepage = "https://github.com/jfcherng/copilot-node-server#readme";
-      license = "GitHub Terms of Service";
+      description = "Your AI pair programmer";
+      homepage = "https://github.com/features/copilot";
+      license = "https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features";
     };
     production = true;
     bypassCache = true;

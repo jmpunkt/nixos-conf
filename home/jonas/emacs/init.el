@@ -939,6 +939,7 @@ paths, it will fallback to the project root path."
         eglot-stay-out-of '(company)
         eglot-events-buffer-config '(:size 0 :format lisp)
         eglot-sync-connect 0
+        eglot-code-action-indications nil
         eglot-confirm-server-initiated-edits nil))
 
 (use-package eglot-x

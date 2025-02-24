@@ -180,10 +180,10 @@ The DWIM behaviour of this command is as follows:
     (display-line-numbers-mode 1)
     (setq-local show-trailing-whitespace t))
   (defun jmpunkt/prog-init ()
-    (corfu-mode)
+    (completion-preview-mode)
     (jmpunkt/default-init))
   (defun jmpunkt/conf-init ()
-    (corfu-mode)
+    (completion-preview-mode)
     (jmpunkt/default-init))
   (defun jmpunkt/text-init ()
     (jmpunkt/default-init)
@@ -1049,11 +1049,12 @@ paths, it will fallback to the project root path."
               ("C-q" . vertico-quick-exit))
   :config
   (setq completion-in-region-function
-        (lambda (&rest args)
-          (apply (if vertico-mode
-                     #'consult-completion-in-region
-                   #'completion--in-region)
-                 args))))
+        (kind-icon-enhance-completion
+         (lambda (&rest args)
+           (apply (if vertico-mode
+                      #'consult-completion-in-region
+                    #'completion--in-region)
+                  args)))))
 
 (use-package vertico-prescient
   :hook (vertico-mode . vertico-prescient-mode)
@@ -1091,25 +1092,16 @@ paths, it will fallback to the project root path."
    consult--source-project-recent-file
    :preview-key "C-."))
 
-(use-package corfu-prescient
-  :commands corfu-prescient-mode)
-
-(use-package corfu
-  :commands corfu-mode
-  :bind (:map corfu-map
-              ("TAB" . corfu-next)
-              ([tab] . corfu-next)
-              ("S-TAB" . corfu-previous)
-              ([backtab] . corfu-previous))
+(use-package completion-preview
+  :init
+  (global-completion-preview-mode 1)
   :custom
-  (corfu-cycle t)
-  (corfu-preselect 'prompt)
-  :hook (corfu-mode . corfu-prescient-mode))
+  (completion-preview-ignore-case t))
 
 (use-package kind-icon
-  :after corfu
-  :init
-  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+  ;; :init
+  ;; (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
+  )
 
 (use-package recentf
   :hook (after-init . recentf-mode)

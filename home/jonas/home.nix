@@ -87,8 +87,6 @@
             casual-avy
             transient-dwim
             rg
-            corfu
-            corfu-prescient
             # docker
             citre
             # Org

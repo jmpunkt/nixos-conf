@@ -76,7 +76,6 @@
             # Core
             avy
             meow
-            which-key
             hl-todo
             envrc
             helpful

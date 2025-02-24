@@ -1402,6 +1402,9 @@ block, then the whole buffer is indented."
   (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nixd"))))
 
 ;;;; * C/C++
+(use-package cmake-ts-mode
+  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+
 (use-package c-ts-mode
   :init
    (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))

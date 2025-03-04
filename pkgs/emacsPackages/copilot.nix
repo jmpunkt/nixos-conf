@@ -9,13 +9,13 @@
   f,
   jsonrpc,
 }: let
-  rev = "8a0068afcfb98af7f172d04f6f8cc932c1a22fe8";
+  rev = "80fd2a503dd7a0e97ce9604e39bc62fa62441781";
   pname = "copilot";
-  owner = "copilot-emacs";
+  owner = "jmpunkt";
 in
   melpaBuild {
     inherit pname;
-    version = "20250219.0";
+    version = "20250304.0";
 
     commit = rev;
     packageRequires = [
@@ -29,7 +29,7 @@ in
     src = fetchFromGitHub {
       inherit rev owner;
       repo = "${pname}.el";
-      sha256 = "sha256-7UIu/qVFI27lpwkX13k5CvuJbP9oted3KrT0vN/dJ1E=";
+      sha256 = "sha256-NqXtdUdDxxK8xOslzBEXsB/nIlBInQmrTFZ7UPom7to=";
     };
 
     recipe = writeText "recipe" ''

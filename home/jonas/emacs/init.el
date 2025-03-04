@@ -1090,16 +1090,7 @@ paths, it will fallback to the project root path."
    consult--source-project-recent-file
    :preview-key "C-."))
 
-(use-package completion-preview
-  :init
-  (global-completion-preview-mode 1)
-  :custom
-  (completion-preview-ignore-case t))
-
-(use-package kind-icon
-  ;; :init
-  ;; (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter)
-  )
+(use-package kind-icon)
 
 (use-package recentf
   :hook (after-init . recentf-mode)

@@ -103,11 +103,10 @@
             # Bibliography
             citar
             # Search/Find
-            consult
             vertico
             vertico-prescient
             embark
-            embark-consult
+            (embark-consult.override { consult = epkgs.manualPackages.jmpunktPkgs.consult; })
             marginalia
             cape
             tempel
@@ -142,6 +141,7 @@
           ++ (
             with epkgs.manualPackages;
               [
+                jmpunktPkgs.consult
                 jmpunktPkgs.eglot-x
                 jmpunktPkgs.typst-ts-mode
                 jmpunktPkgs.copilot

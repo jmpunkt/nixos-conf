@@ -745,38 +745,19 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 
 ;;;; * Spelling
-(use-package ispell
-  :config
-  (setq-default ispell-program-name "enchant-2"
-                ;; Hide all default entries which may not be available
-                ;; on the system anyways
-                ispell-dictionary-base-alist nil
-                ispell-local-dictionary "en"))
-
-(use-package flyspell
-  :commands flyspell-mode
-  :init
-  :hook ((prog-mode . flyspell-mode)
-         (text-mode . flyspell-mode)
-         (conf-mode . flyspell-mode))
-  :config
-  (setq flyspell-issue-welcome-flag nil
-        flyspell-issue-message-flag nil)
-  (custom-set-faces
-   ;; TODO: for now use same style for duplicate and incorrect
-   `(flyspell-duplicate ((t (:underline (:style wave :color ,(modus-themes-get-color-value 'underline-note))))))
-   '(flyspell-incorrect ((t (:inherit modus-themes-lang-note))))))
-
-(use-package flyspell-correct
-  :after flyspell
-  :bind (:map flyspell-mode-map
-              ("C-c s p" . flyspell-correct-previous)
-              ("C-c s n" . flyspell-correct-next)
-              ("C-c s c" . flyspell-correct-at-point)
-              ("C-c s d" . ispell-change-dictionary)
+(use-package jinx
+  :hook ((prog-mode . jinx-mode)
+         (text-mode . jinx-mode)
+         (conf-mode . jinx-mode))
+  :bind (:map jinx-mode-map
+              ("C-c s p" . jinx-previous)
+              ("C-c s n" . jinx-next)
+              ("C-c s c" . jinx-correct)
+              ("C-c s d" . jinx-languages)
               ("C-c s f" . flyspell-buffer))
   :config
-  (setq flyspell-correct-interface #'flyspell-correct-dummy))
+  (custom-set-faces
+   '(jinx-misspelled ((t (:inherit modus-themes-lang-note))))))
 
 (use-package languagetool
   :commands (languagetool-server-mode

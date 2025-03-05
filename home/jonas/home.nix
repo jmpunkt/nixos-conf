@@ -111,7 +111,7 @@
             cape
             tempel
             # Spelling
-            flyspell-correct
+            jinx
             languagetool
             # RSS
             elfeed

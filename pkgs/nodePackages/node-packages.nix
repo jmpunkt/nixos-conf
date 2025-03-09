@@ -34,13 +34,13 @@ let
   };
 in
 {
-  "@github/copilot-language-server-1.273.0" = nodeEnv.buildNodePackage {
+  "@github/copilot-language-server-1.280.0" = nodeEnv.buildNodePackage {
     name = "_at_github_slash_copilot-language-server";
     packageName = "@github/copilot-language-server";
-    version = "1.273.0";
+    version = "1.280.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/@github/copilot-language-server/-/copilot-language-server-1.273.0.tgz";
-      sha512 = "aVpGOprSPYYgRHzjnim5ug1L0SSlTEwLlYNITFTCIaVJmNr5T8gdq09ZiDlZXKQHlo7kQty+WhHZCAZd9bor+w==";
+      url = "https://registry.npmjs.org/@github/copilot-language-server/-/copilot-language-server-1.280.0.tgz";
+      sha512 = "d0D8WqSY8Th0xYswJ9dJvBYsFa3zuBlI7xTgPknzzCJoXcly2eEekv0LqcLZgvlpXdTJSkEm3d5nNDmxdwOhOw==";
     };
     dependencies = [
       sources."vscode-jsonrpc-8.2.0"
@@ -50,7 +50,7 @@ in
     buildInputs = globalBuildInputs;
     meta = {
       description = "Your AI pair programmer";
-      homepage = "https://github.com/features/copilot";
+      homepage = "https://github.com/github/copilot-language-server-release";
       license = "https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features";
     };
     production = true;

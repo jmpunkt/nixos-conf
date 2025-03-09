@@ -5,7 +5,7 @@
     "${pkgs.nodejs}/bin/node" "${pathOfExtension vscode-eslint}/server/out/eslintServer.js" "--stdio"
   '';
   copilot =
-    pkgs.nodePackages.jmpunkt."@github/copilot-language-server-1.273.0";
+    pkgs.nodePackages.jmpunkt."@github/copilot-language-server-1.280.0";
   copilot-run = pkgs.writeShellScriptBin "copilot-run" ''
     "${pkgs.nodejs}/bin/node" "${copilot}/lib/node_modules/@github/copilot-language-server/dist/language-server.js" "$@"
   '';

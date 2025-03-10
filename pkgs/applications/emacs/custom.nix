@@ -16,9 +16,11 @@
     withXwidgets = false;
     withNativeCompilation = true;
   })
-.overrideAttrs (old: {
+.overrideAttrs (old: let
+  patchesWithoutFix = builtins.filter (e: !(builtins.isAttrs e) || (e.name != "?id=53a5dada413662389a17c551a00d215e51f5049f")) old.patches;
+in {
   patches =
-    old.patches
+    patchesWithoutFix
     ++ [
       # keep an eye on (https://github.com/tyler-dodge/emacs/commit/e56c55a742c0f0d152afb4958b863cdf7207b4c3), not working for Linux since it
       # is a MacOS workaround, patch below works fine and has

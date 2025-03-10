@@ -69,7 +69,7 @@
     };
     emacs = {
       enable = true;
-      package = pkgs.unstable.jmpunkt.emacs;
+      package = pkgs.jmpunkt.emacs;
       extraPackages = epkgs:
         with epkgs.melpaPackages;
           [

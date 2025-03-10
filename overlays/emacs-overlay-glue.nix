@@ -8,7 +8,6 @@
   inherit
     (super)
     pkgs
-    stdenv
     lib
     ;
   # reconnect pkgs to the built emacs

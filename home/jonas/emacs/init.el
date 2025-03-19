@@ -1395,11 +1395,10 @@ block, then the whole buffer is indented."
   :hook (python-ts-mode . flymake-ruff-load))
 
 ;;;; * Rust
-(use-package rust-ts-mode
-  :hook (rust-ts-mode . eglot-ensure)
-  :init
-  (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
-
+(use-package rust-mode
+  :custom
+  (rust-mode-treesitter-derive t)
+  :hook (rust-mode . eglot-ensure)
   :config
   (add-to-list 'treesit-thing-settings
                '(rust (defun (or "function_item" "closure_expression"))

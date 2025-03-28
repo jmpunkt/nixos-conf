@@ -27,12 +27,6 @@
   };
   networking.hostName = "alpha128";
   hardware.bluetooth.enable = true;
-  hardware.openrazer = {
-    enable = true;
-    syncEffectsEnabled = false;
-    batteryNotifier.enable = false;
-    users = [config.users.users.jonas.name];
-  };
   environment.systemPackages = with pkgs; [razergenie nvtopPackages.amd];
   system.stateVersion = "20.03";
 }

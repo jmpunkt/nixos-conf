@@ -5,6 +5,5 @@
   copilot = callPackage ./copilot.nix {};
   xdg-appmenu = callPackage ./xdg-appmenu.nix {};
   p-search = callPackage ./p-search.nix {};
-  ultra-scroll = callPackage ./ultra-scroll.nix {};
   consult = callPackage ./consult.nix {};
 }

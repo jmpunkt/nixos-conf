@@ -450,12 +450,6 @@ If the cursor is on the last promt, then we want to insert at the current positi
   )
 
 ;;; * Core Packages
-(use-package ultra-scroll
-  :init
-  (setq scroll-conservatively 101 ; important!
-    scroll-margin 0)
-  :config
-  (ultra-scroll-mode 1))
 
 ;;;; * helpful
 (use-package helpful

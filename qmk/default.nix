@@ -7,9 +7,9 @@
   src = fetchFromGitHub {
     repo = "qmk_firmware";
     owner = "qmk";
-    rev = "0.24.2";
+    rev = "0.28.5";
     fetchSubmodules = true;
-    sha256 = "sha256-hkZ5hj/W32si0kRAe0zkSsGAJMVrgjf/Fu/ikPPwa8I=";
+    sha256 = "sha256-pY8WFXGihltJrakjaQgePlDUlpJBsibjmxOhKLmFIbY=";
   };
 in
   stdenv.mkDerivation rec {

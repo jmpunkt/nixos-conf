@@ -365,25 +365,24 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
     (jmpunkt/comint-goto-end-or-here)))
 
 (use-package esh-mode
-  :commands eshell-mode eshell
+  :commands (eshell-mode eshell)
   :hook
   (eshell-mode . eshell-hist-mode)
   (eshell-mode . (lambda ()
                    (add-hook 'meow-insert-enter-hook #'jmpunkt/eshell-goto-end-or-here nil t)))
-  (eshell-before-prompt . (lambda ()
-                            (setq-local xterm-color-preserve-properties t)))
-  (eshell-pre-command . (lambda ()
-                          (setq-local process-environment (copy-sequence process-environment))
-                          (setenv "TERM" "xterm-256color")
-                          (setenv "PAGER" "cat")
-                          (setenv "MANPAGER" "cat")))
+  (eshell-first-time-mode . (lambda ()
+                              (setq-local process-environment (copy-sequence process-environment))
+                              (setenv "PAGER" "cat")
+                              (setenv "MANPAGER" "cat")))
+  (eshell-first-time-mode . eat-eshell-visual-command-mode)
+  (eshell-first-time-mode . eat-eshell-mode)
   :init
   (defun jmpunkt/eshell-goto-end-or-here ()
-    "Smart eshell goto promt.
+    "Smart Eshell goto prompt.
 
-If the cursor is in the history of eshell, then we want to go to the end of buffer.
-If the cursor is on the promt of the eshell, then we want to go to the first writable position.
-If the cursor is on the last promt, then we want to insert at the current position."
+If the cursor is in the history of Eshell, then we want to go to the end of buffer.
+If the cursor is on the prompt of the Eshell, then we want to go to the first writable position.
+If the cursor is on the last prompt, then we want to insert at the current position."
     (if (< (point) eshell-last-output-start)
         (end-of-buffer)
       (let ((pos (point)))
@@ -408,29 +407,7 @@ If the cursor is on the last promt, then we want to insert at the current positi
   (define-advice eshell-send-input
       (:before (&rest args) eshell-advice)
     (jmpunkt/eshell-goto-end-or-here))
-  :config
-  (require 'xterm-color)
-  (add-to-list 'eshell-preoutput-filter-functions 'jmpunkt/xterm-color-propertized-filter)
-  (defun jmpunkt/strip-properties (propertized-string)
-    "Strips all properties of a string."
-    (let* ((string (substring propertized-string))
-           (start 0)
-           (end (length string)))
-      (set-text-properties start end nil string)
-      string))
-  (defun jmpunkt/xterm-color-propertized-filter (string)
-    "Filter propertized strings with xterm-color-filter."
-    (let* ((filtered (xterm-color-filter (jmpunkt/strip-properties string)))
-           (new-length (length filtered)))
-      (cl-loop for prop in (object-intervals string)
-               do
-               (add-text-properties (car prop)
-                                    (min (cadr prop) new-length)
-                                    (caddr prop)
-                                    filtered))
-      filtered))
   :custom
-  (eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
   (eshell-history-size 1000)
   (eshell-history-append t)
   (eshell-hist-ignoredups 'erase))

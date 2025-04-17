@@ -676,7 +676,8 @@ If the cursor is on the last prompt, then we want to insert at the current posit
   :hook ((prog-mode . envrc-mode)
          (org-mode . envrc-mode)
          (eshell-mode . envrc-mode)
-         (comint-mode . envrc-mode)))
+         (comint-mode . envrc-mode)
+         (compilation-mode . envrc-mode)))
 
 ;;;; * Which-Key
 (use-package which-key

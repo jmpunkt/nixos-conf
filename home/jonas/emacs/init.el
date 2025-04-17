@@ -117,16 +117,21 @@ eglot (if available)."
 
 ;;; * Theme
 (use-package modus-themes
+  :custom-face
+  (line-number-current-line ((t (:box nil))))
   :init
-  (load-theme 'modus-vivendi-tinted t)
-  (set-face-attribute 'line-number-current-line nil :box nil))
+  (load-theme 'modus-vivendi-tinted t))
 
 ;;; * Emacs
 (use-package emacs
   :hook ((prog-mode . jmpunkt/prog-init)
          (prog-mode . fmt-mode)
          (conf-mode . jmpunkt/conf-init)
-         (text-mode . jmpunkt/text-init))
+         (text-mode . jmpunkt/text-init)
+         (after-init . save-place-mode)
+         (after-init . savehist-mode)
+         (after-init . global-hl-line-mode)
+         (after-init . global-so-long-mode))
   :bind (:map global-map
               ("C-+" . text-scale-increase)
               ("C--" . text-scale-decrease)
@@ -250,53 +255,47 @@ The DWIM behaviour of this command is as follows:
                                ,(propertize
                                  (format "%s" (or (nth 3 pr) (nth 2 pr) (nth 1 pr)))
                                  'face 'eglot-mode-line))))))))
-  (setq indent-line-function 'indent-relative
-        revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg")
-        make-backup-files nil
-        auto-save-default nil
-        auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
-        backup-directory-alist `((".*" . ,temporary-file-directory))
-        column-number-mode t
-        read-extended-command-predicate #'command-completion-default-include-p
-        delete-by-moving-to-trash t
-        frame-title-format "%b"
-        icon-title-format "%b"
-        display-line-numbers-grow-only t
-        auth-source-save-behavior nil
-        uniquify-buffer-name-style 'forward
-        history-delete-duplicates t
-        xref-search-program 'ripgrep)
-  (setq-default tab-width 2
-                fill-column 80
-                indent-tabs-mode nil
-                comment-auto-fill-only-comments t)
-  (setq-default mode-line-format
-                '((:eval
-                   (simple-mode-line-render
-                    (format-mode-line
-                     '((:eval meow--indicator)
-                       " %* "
-                       (:eval (jmpunkt/mode-line-buffer-name))
-                       (:eval (jmpunkt/mode-line-position))
-                       (:eval (jmpunkt/mode-line-region))))
-                    (format-mode-line
-                     '((:eval (jmpunkt/mode-line-file-info))
-                       (:eval (jmpunkt/mode-line-vc))
-                       (:eval (jmpunkt/mode-line-flymake))
-                       (:eval (jmpunkt/mode-line-major-mode))
-                       (:eval mode-line-misc-info)))))))
-  (set-face-attribute 'mode-line nil
-                      :height 125)
-  (set-face-attribute 'default nil
-                      :weight 'regular
-                      :width 'normal
-                      :height 125)
-  (set-face-attribute 'variable-pitch nil :inherit 'default :family 'unspecified)
-  (set-face-attribute 'fixed-pitch nil :inherit 'default :family 'unspecified)
-  (save-place-mode 1)
-  (savehist-mode 1)
-  (global-hl-line-mode 1)
-  (global-so-long-mode 1)
+  :custom-face
+  (mode-line ((t (:height 125))))
+  (default ((t (:weight regular :width normal :height 125))))
+  (variable-pitch ((t (:inherit default :family unspecified))))
+  (fixed-pitch ((t (:inherit default :family unspecified))))
+  :custom
+  (indent-line-function 'indent-relative)
+  (revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg"))
+  (make-backup-files nil)
+  (auto-save-default nil)
+  (auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
+  (backup-directory-alist `((".*" . ,temporary-file-directory)))
+  (column-number-mode t)
+  (read-extended-command-predicate #'command-completion-default-include-p)
+  (delete-by-moving-to-trash t)
+  (frame-title-format "%b")
+  (icon-title-format "%b")
+  (display-line-numbers-grow-only t)
+  (auth-source-save-behavior nil)
+  (uniquify-buffer-name-style 'forward)
+  (history-delete-duplicates t)
+  (xref-search-program 'ripgrep)
+  (tab-width 2)
+  (fill-column 80)
+  (indent-tabs-mode nil)
+  (comment-auto-fill-only-comments t)
+  (mode-line-format '((:eval
+                       (simple-mode-line-render
+                        (format-mode-line
+                         '((:eval meow--indicator)
+                           " %* "
+                           (:eval (jmpunkt/mode-line-buffer-name))
+                           (:eval (jmpunkt/mode-line-position))
+                           (:eval (jmpunkt/mode-line-region))))
+                        (format-mode-line
+                         '((:eval (jmpunkt/mode-line-file-info))
+                           (:eval (jmpunkt/mode-line-vc))
+                           (:eval (jmpunkt/mode-line-flymake))
+                           (:eval (jmpunkt/mode-line-major-mode))
+                           (:eval mode-line-misc-info)))))))
+  :config
   (electric-indent-mode -1)
   (electric-pair-mode -1)
   (pixel-scroll-precision-mode -1)
@@ -313,18 +312,17 @@ The DWIM behaviour of this command is as follows:
   :commands eldoc-mode
   :bind (:map global-map
               ("C-c d" . eldoc))
-  :config
-  (setq eldoc-echo-area-use-multiline-p nil
-        eldoc-echo-area-prefer-doc-buffer t))
+  :custom
+  (eldoc-echo-area-use-multiline-p nil)
+  (eldoc-echo-area-prefer-doc-buffer t))
 
 (use-package paren
   :commands show-paren-mode
-  :config
-  (setq show-paren-delay 0))
+  :custom
+  (show-paren-delay 0))
 
 (use-package editorconfig
-  :config
-  (editorconfig-mode 1))
+  :hook (after-init . editorconfig-mode))
 
 ;;;; Shell
 (use-package eat
@@ -431,23 +429,16 @@ If the cursor is on the last promt, then we want to insert at the current positi
                                     (caddr prop)
                                     filtered))
       filtered))
-  (setq eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
-  (setq eshell-history-size 1000
-        eshell-history-append t
-        eshell-hist-ignoredups 'erase))
+  :custom
+  (eshell-output-filter-functions (remove 'eshell-handle-ansi-color eshell-output-filter-functions))
+  (eshell-history-size 1000)
+  (eshell-history-append t)
+  (eshell-hist-ignoredups 'erase))
 
 (use-package compile
   :commands compilation-mode
-  :config
-  (setq compilation-scroll-output t)
-  (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
-  ;; TODO: xterm-color and rg.el are not compatible
-  ;; (require 'xterm-color)
-  ;; (setq compilation-environment '("TERM=xterm-256color"))
-  ;; (define-advice compilation-filter
-  ;;     (:around (f proc string) xterm-color-advice)
-  ;;   (funcall f proc (xterm-color-filter string)))
-  )
+  :custom (compilation-scroll-output t)
+  :hook (compilation-filter . ansi-color-compilation-filter))
 
 ;;; * Core Packages
 
@@ -470,10 +461,10 @@ If the cursor is on the last promt, then we want to insert at the current positi
   :hook ((prog-mode . undo-tree-mode)
          (conf-mode . undo-tree-mode)
          (text-mode . undo-tree-mode))
-  :config
-  (setq undo-tree-visualizer-timestamps t
-        undo-tree-visualizer-diff t
-        undo-tree-auto-save-history nil))
+  :custom
+  (undo-tree-visualizer-timestamps t)
+  (undo-tree-visualizer-diff t)
+  (undo-tree-auto-save-history nil))
 
 ;;;; * Avy
 (use-package avy
@@ -692,13 +683,13 @@ If the cursor is on the last promt, then we want to insert at the current positi
 
 ;;;; * Dired
 (use-package dired
-  :config
-  (setq dired-listing-switches "-alh"
-        dired-recursive-copies 'always
-        dired-recursive-deletes 'always
-        delete-by-moving-to-trash t
-        dired-dwim-target t
-        dired-kill-when-opening-new-dired-buffer t))
+  :custom
+  (dired-listing-switches "-alh")
+  (dired-recursive-copies 'always)
+  (dired-recursive-deletes 'always)
+  (delete-by-moving-to-trash t)
+  (dired-dwim-target t)
+  (dired-kill-when-opening-new-dired-buffer t))
 
 (use-package transient-dwim
   :bind ("C-x h" . transient-dwim-dispatch))
@@ -733,10 +724,11 @@ If the cursor is on the last promt, then we want to insert at the current positi
     "Xref definition."
     (interactive)
     (meow--cancel-selection)
-    (citre-jump))
-  :config
-  (require 'citre-config))
+    (citre-jump)))
 
+(use-package citre-config
+  :demand t
+  :after citre)
 
 ;;;; * Spelling
 (use-package jinx
@@ -749,15 +741,14 @@ If the cursor is on the last promt, then we want to insert at the current positi
               ("C-c s c" . jinx-correct)
               ("C-c s d" . jinx-languages)
               ("C-c s f" . flyspell-buffer))
-  :config
-  (custom-set-faces
-   '(jinx-misspelled ((t (:inherit modus-themes-lang-note))))))
+  :custom-face
+  (jinx-misspelled ((t (:inherit modus-themes-lang-note)))))
 
 (use-package languagetool
   :commands (languagetool-server-mode
              languagetool-server-start)
-  :config
-  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")))
+  :custom
+  (languagetool-java-arguments '("-Dfile.encoding=UTF-8")))
 
 ;;;; * Project
 (use-package project
@@ -769,8 +760,8 @@ If the cursor is on the last promt, then we want to insert at the current positi
               ("g" . magit-project-status)
               ("s" . consult-ripgrep)
               ("?" . flymake-show-project-diagnostics))
-  :config
-  (setq project-switch-commands
+  :custom
+  (project-switch-commands
         '((project-find-file "file")
           (consult-ripgrep "search")
           (project-find-dir "directory")
@@ -903,16 +894,18 @@ paths, it will fallback to the project root path."
       (:override (&rest args) tempel-advice)
     (require 'tempel)
     (lambda (snippet) (tempel-insert (jmpunkt/lsp-snippet-to-tempel snippet))))
+  :custom-face
+  (eglot-highlight-symbol-face ((t (:inherit eldoc-highlight-function-argument))))
   :config
-  (set-face-attribute 'eglot-highlight-symbol-face nil :inherit 'eldoc-highlight-function-argument)
   (add-to-list 'eglot-server-programs
                '((python-mode python-ts-mode)
                  "basedpyright-langserver" "--stdio"))
-  (setq eglot-extend-to-xref t
-        eglot-stay-out-of '(company)
-        eglot-events-buffer-config '(:size 0)
-        eglot-code-action-indications nil
-        eglot-confirm-server-edits nil))
+  :custom
+  (eglot-extend-to-xref t)
+  (eglot-stay-out-of '(company))
+  (eglot-events-buffer-config '(:size 0))
+  (eglot-code-action-indications nil)
+  (eglot-confirm-server-edits nil))
 
 (use-package eglot-x
   :demand t
@@ -929,12 +922,12 @@ paths, it will fallback to the project root path."
          (text-mode . flymake-mode)
          (flymake-diagnostics-buffer-mode . visual-line-mode)
          (flymake-project-diagnostics-mode . visual-line-mode))
-  :config
-  (setq flymake-mode-line-counter-format
-        '(" " flymake-mode-line-error-counter
-          " " flymake-mode-line-warning-counter
-          " " flymake-mode-line-note-counter
-          " ")))
+  :custom
+  (flymake-mode-line-counter-format
+   '(" " flymake-mode-line-error-counter
+     " " flymake-mode-line-warning-counter
+     " " flymake-mode-line-note-counter
+     " ")))
 
 ;;;; RSS
 (use-package elfeed
@@ -950,21 +943,21 @@ paths, it will fallback to the project root path."
 
 ;;;; WWW
 (use-package shr
-  :config
-  (setq shr-use-colors nil
-        shr-bullet "• "
-        shr-folding-mode t))
+  :custom
+  (shr-use-colors nil)
+  (shr-bullet "• ")
+  (shr-folding-mode t))
 
 (use-package browse-url
-  :config
-  (setq browse-url-handlers '((".*youtube.*" . browse-url-firefox)
-                              (".*raw\.githubusercontent.*" . browse-url-emacs)
-                              (".*github.*" . browse-url-firefox)
-                              ("." . eww-browse-url))))
+  :custom
+  (browse-url-handlers '((".*youtube.*" . browse-url-firefox)
+                         (".*raw\.githubusercontent.*" . browse-url-emacs)
+                         (".*github.*" . browse-url-firefox)
+                         ("." . eww-browse-url))))
 (use-package eww
   :commands (eww eww-follow-link)
-  :config
-  (setq eww-search-prefix "https://duckduckgo.com/html?q="))
+  :custom
+  (eww-search-prefix "https://duckduckgo.com/html?q="))
 
 ;;;; Search/Find
 (use-package minibuffer
@@ -986,12 +979,12 @@ paths, it will fallback to the project root path."
               ("C-e" . end-of-buffer)
               ("M-n" . next-history-element)
               ("M-p" . previous-history-element))
-  :config
-  (setq minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt)
-        read-buffer-completion-ignore-case t
-        read-file-name-completion-ignore-case t
-        enable-recursive-minibuffers t
-        completion-ignore-case t))
+  :custom
+  (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
+  (read-buffer-completion-ignore-case t)
+  (read-file-name-completion-ignore-case t)
+  (enable-recursive-minibuffers t)
+  (completion-ignore-case t))
 
 (use-package embark
   :bind (("C-c C-r" . embark-act)
@@ -1005,7 +998,6 @@ paths, it will fallback to the project root path."
                       (if keymap
                           (cons '(vertico-current . embark-target) fr)
                         fr))))))
-
   (add-to-list 'embark-indicators #'embark-vertico-indicator))
 
 (use-package embark-consult
@@ -1013,25 +1005,26 @@ paths, it will fallback to the project root path."
   :hook (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package vertico
-  :init
-  (require 'vertico-quick)
   :hook (after-init . vertico-mode)
   :bind (:map vertico-map
               ("M-q" . vertico-quick-insert)
               ("C-q" . vertico-quick-exit))
-  :config
-  (setq completion-in-region-function
-        (kind-icon-enhance-completion
-         (lambda (&rest args)
-           (apply (if vertico-mode
-                      #'consult-completion-in-region
-                    #'completion--in-region)
-                  args)))))
+  :custom
+  (completion-in-region-function (kind-icon-enhance-completion
+                                  (lambda (&rest args)
+                                    (apply (if vertico-mode
+                                               #'consult-completion-in-region
+                                             #'completion--in-region)
+                                           args)))))
+
+(use-package vertico-quick
+  :demand t
+  :after vertico)
 
 (use-package vertico-prescient
   :hook (vertico-mode . vertico-prescient-mode)
-  :config
-  (setq prescient-filter-method '(literal regexp initialism)))
+  :custom
+  (prescient-filter-method '(literal regexp initialism)))
 
 (use-package marginalia
   :hook (after-init . marginalia-mode))
@@ -1068,9 +1061,9 @@ paths, it will fallback to the project root path."
 
 (use-package recentf
   :hook (after-init . recentf-mode)
-  :config
-  (setq recentf-max-saved-items 200
-        recentf-max-menu-items 15))
+  :custom
+  (recentf-max-saved-items 200)
+  (recentf-max-menu-items 15))
 
 (use-package cape
   :bind ("C-c p" . cape-prefix-map)
@@ -1091,7 +1084,8 @@ paths, it will fallback to the project root path."
   :config
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
-  (setq cape-dabbrev-min-length 3))
+  :custom
+  (cape-dabbrev-min-length 3))
 
 (use-package rg
   :commands (rg-menu)
@@ -1105,9 +1099,9 @@ paths, it will fallback to the project root path."
 
 ;;;; * VCS
 (use-package ediff
-  :config
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain
-        ediff-diff-options "-w"))
+  :custom
+  (ediff-window-setup-function 'ediff-setup-windows-plain)
+  (ediff-diff-options "-w"))
 
 (use-package magit
   :bind ((:map global-map
@@ -1140,13 +1134,14 @@ paths, it will fallback to the project root path."
   (transient-replace-suffix 'magit-dispatch
     '("l" "Log" magit-log)
     '("L" "Log" magit-log))
-  (setq magit-slow-confirm '(magit-discard))
-  (setq magit-diff-refine-hunk 'all))
+  :custom
+  (magit-slow-confirm '(magit-discard))
+  (magit-diff-refine-hunk 'all))
 
 (use-package git-commit
-  :config
-  (setq git-commit-style-convention-checks
-        '(overlong-summary-line non-empty-second-line)))
+  :custom
+  (git-commit-style-convention-checks
+   '(overlong-summary-line non-empty-second-line)))
 
 (use-package hl-todo
   :hook (after-init . global-hl-todo-mode))
@@ -1192,23 +1187,24 @@ block, then the whole buffer is indented."
          (org-babel-after-execute . (lambda ()
                                       (when org-inline-image-overlays
                                         (org-redisplay-inline-images)))))
-  :config
-  (setq org-ellipsis "…"
-        org-log-done 'time
-        org-catch-invisible-edits 'show-and-error
-        org-latex-pdf-process '("tectonic -X compile --outdir=%o -Z shell-escape -Z continue-on-errors %f")))
+  :custom
+  (org-ellipsis "…")
+  (org-log-done 'time)
+  (org-catch-invisible-edits 'show-and-error)
+  (org-latex-pdf-process
+   '("tectonic -X compile --outdir=%o -Z shell-escape -Z continue-on-errors %f")))
 
 (use-package org-clock
   ;; Same as (org-clock-persistence-insinuate) but will lazy load. Calling the
   ;; function instead causes `org-mode' to be loaded.
   :hook ((org-mode . org-clock-load)
          (kill-emacs . org-clock-save))
-  :config
-  (setq org-clock-idle-time 10
-        org-clock-in-resume t
-        org-clock-persist t
-        org-clock-persist-query-resume nil
-        org-clock-out-remove-zero-time-clocks t))
+  :custom
+  (org-clock-idle-time 10)
+  (org-clock-in-resume t)
+  (org-clock-persist t)
+  (org-clock-persist-query-resume nil)
+  (org-clock-out-remove-zero-time-clocks t))
 
 (use-package ox-typst
   :demand t
@@ -1267,18 +1263,18 @@ block, then the whole buffer is indented."
 
 (use-package org-capture
   :commands (org-capture)
-  :config
-  (setq org-capture-templates
-        '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
-           "* TODO %? %^G \n  %U" :empty-lines 1)
-          ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
-           "* TODO %? %^G \n  DEADLINE: %^t" :empty-lines 1)
-          ("p" "Priority" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
-           "* TODO [#A] %? %^G \n  SCHEDULED: %^t")
-          ("a" "Appointment" entry (file+headline
-                                    (lambda () (expand-file-name "calendar.org" org-agenda-dir))
-                                    "Event")
-           "* %? %^G \n  %^t"))))
+  :custom
+  (org-capture-templates
+   '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+      "* TODO %? %^G \n  %U" :empty-lines 1)
+     ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+      "* TODO %? %^G \n  DEADLINE: %^t" :empty-lines 1)
+     ("p" "Priority" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+      "* TODO [#A] %? %^G \n  SCHEDULED: %^t")
+     ("a" "Appointment" entry (file+headline
+                               (lambda () (expand-file-name "calendar.org" org-agenda-dir))
+                               "Event")
+      "* %? %^G \n  %^t"))))
 
 (use-package org-indent
   :after org
@@ -1287,9 +1283,9 @@ block, then the whole buffer is indented."
 (use-package org-src
   :demand t
   :after org
-  :config
-  (setq org-src-fontify-natively t
-        org-src-tab-acts-natively t))
+  :custom
+  (org-src-fontify-natively t)
+  (org-src-tab-acts-natively t))
 
 (use-package citar
   :bind ("C-c b" . citar-insert-citation))
@@ -1370,9 +1366,9 @@ block, then the whole buffer is indented."
 
 (use-package c-ts-mode
   :init
-   (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-   (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-   (add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode)))
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode)))
 
 ;;;; * Python
 (use-package python
@@ -1380,8 +1376,9 @@ block, then the whole buffer is indented."
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   :hook (python-base-mode . eglot-ensure)
   :fmt (python-mode . fmt/ruff-buffer)
+  :custom
+  (python-indent-offset 4)
   :config
-  (setq python-indent-offset 4)
   (push 'pyright compilation-error-regexp-alist)
   (push '(pyright "^\\ +\\(.+\\):\\([0-9]+\\):\\([0-9]+\\).+$" 1 2 3) compilation-error-regexp-alist-alist))
 
@@ -1427,8 +1424,8 @@ block, then the whole buffer is indented."
   :hook ((css-base-mode . eglot-ensure)
          (scss-base-mode . eglot-ensure))
   :fmt (css-base-mode . fmt/prettier-buffer)
-  :config
-  (setq css-indent-offset 2))
+  :custom
+  (css-indent-offset 2))
 
 (use-package typescript-ts-mode
   :mode ("\\.ts\\'" . typescript-ts-mode)
@@ -1445,8 +1442,8 @@ block, then the whole buffer is indented."
   (add-to-list 'major-mode-remap-alist '(javascript-mode . js-ts-mode))
   :hook ((js-base-mode . eglot-ensure))
   :fmt (js-base-mode . fmt/biome-buffer)
-  :config
-  (setq js-indent-level 2))
+  :custom
+  (js-indent-level 2))
 
 ;;;; * LaTeX
 (use-package tex-mode
@@ -1490,8 +1487,9 @@ block, then the whole buffer is indented."
               ("r"  . pdf-view-reset-slice))
   :config
   (pdf-tools-install)
-  (setq-default pdf-view-display-size 'fit-page)
-  (setq pdf-view-resize-factor 1.1))
+  :custom
+  (pdf-view-display-size 'fit-page)
+  (pdf-view-resize-factor 1.1))
 
 ;;; * Misc
 (use-package p-search
@@ -1505,16 +1503,16 @@ block, then the whole buffer is indented."
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-mode-map
               ("C-c r" . copilot-accept-completion))
-  :config
-  (setq copilot-indent-offset-warning-disable t
-        copilot-max-char 500000))
+  :custom
+  (copilot-indent-offset-warning-disable t)
+  (copilot-max-char 500000))
 
 (use-package biome
   :commands biome
-  :config
-  (setq biome-query-coords
-      '(("Berlin, Germany" 52.52437 13.41053)
-        ("Darmstadt, Germany" 49.87167 8.65027))))
+  :custom
+  (biome-query-coords
+   '(("Berlin, Germany" 52.52437 13.41053)
+     ("Darmstadt, Germany" 49.87167 8.65027))))
 
 (use-package proced
   :bind (:map proced-mode-map
@@ -1531,13 +1529,13 @@ Disabling the auto update while searching."
             (setq-local proced-auto-update-flag nil)
             (call-interactively #'consult-line))
         (setq-local proced-auto-update-flag save-status))))
-  :config
-  (setq-default proced-auto-update-flag t)
-  (setq proced-tree-flag t
-        proced-auto-update-interval 1
-        proced-auto-update-flag 'visible
-        proced-show-remote-processes t
-        proced-enable-color-flag t))
+  :custom
+  (proced-auto-update-flag t)
+  (proced-tree-flag t)
+  (proced-auto-update-interval 1)
+  (proced-auto-update-flag 'visible)
+  (proced-show-remote-processes t)
+  (proced-enable-color-flag t))
 
 ;;; * -- End
 (provide 'init)

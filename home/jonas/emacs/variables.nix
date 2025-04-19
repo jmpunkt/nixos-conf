@@ -45,7 +45,7 @@ in {
       nodePackages.typescript-language-server
       eslint-lsp
       nixd
-      typst-lsp
+      unstable.tinymist # Typst
       basedpyright
     ];
     org = with pkgs; [

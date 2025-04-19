@@ -1327,7 +1327,7 @@ block, then the whole buffer is indented."
   (typst-ts-mode-indent-offset 2)
   :config
   (require 'eglot)
-  (add-to-list 'eglot-server-programs '((typst-ts-mode) . ("typst-lsp"))))
+  (add-to-list 'eglot-server-programs '((typst-ts-mode) . ("tinymist"))))
 
 ;;;; * Nix
 (use-package nix-ts-mode

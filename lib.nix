@@ -81,7 +81,6 @@ in rec {
     {
       inherit system;
       overlays = minimumOverlays ++ additionalOverlays;
-      config.allowUnfree = true;
     };
   # Creates an overlay for a system which includes an attribute
   # `unstable` of all unstable nixpkgs.

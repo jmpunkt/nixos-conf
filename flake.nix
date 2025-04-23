@@ -101,7 +101,6 @@
               ];
             };
         in {
-          ee = emacs-mirror;
           keyboard = self.legacyPackages.${system}.callPackage ./qmk {};
           sd-rpi2 = packageSD rpi2System;
           rpi2 = packageSystem rpi2System;

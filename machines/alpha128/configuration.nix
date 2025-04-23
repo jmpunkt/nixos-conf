@@ -6,8 +6,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ./../../configurations/kde.nix
-    # ./../../configurations/virtualization.nix
+    ./../../configurations/desktop/kde.nix
     ./../../configurations/yubico.nix
     ./../../configurations/users/jonas.nix
     ./../../configurations/games.nix

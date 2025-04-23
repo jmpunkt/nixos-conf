@@ -6,7 +6,7 @@
   ...
 }: {
   imports = [
-    ./minimal.nix
+    ./barebones.nix
   ];
   environment.systemPackages = with pkgs; [
     curl

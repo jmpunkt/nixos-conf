@@ -7,7 +7,7 @@
 }: {
   imports = [
     "${modulesPath}/installer/cd-dvd/installation-cd-base.nix"
-    ../../configurations/desktop-minimal.nix
+    ../../configurations/desktop/minimal.nix
   ];
   boot.supportedFilesystems.zfs = lib.mkForce false;
   isoImage.volumeID = "nixos-${config.system.nixos.release}-${pkgs.stdenv.hostPlatform.uname.processor}";

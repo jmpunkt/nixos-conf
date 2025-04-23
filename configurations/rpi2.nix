@@ -6,9 +6,9 @@
   ...
 }: {
   imports = [
-    "${modulesPath}/profiles/minimal.nix"
+    "${modulesPath}/profiles/barebones.nix"
     "${modulesPath}/installer/sd-card/sd-image.nix"
-    ./minimal.nix
+    ./minimal-tools.nix
     ./sd-rpi2.nix
   ];
 

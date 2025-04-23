@@ -4,7 +4,7 @@
   lib,
   ...
 }: {
-  imports = [./desktop-minimal.nix];
+  imports = [./minimal.nix];
 
   environment.systemPackages = with pkgs; [
     ark

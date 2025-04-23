@@ -5,9 +5,9 @@
   ...
 }: {
   imports = [
-    ./base.nix
-    ./locale.nix
-    ./fish
+    ../tools.nix
+    ../locale.nix
+    ../fish
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
@@ -151,7 +151,6 @@
     aspellDicts.de
     aspellDicts.en
     aspellDicts.en-computers
-    aspellDicts.en-science
     enchant
     hunspell
     hunspellDicts.en-us-large

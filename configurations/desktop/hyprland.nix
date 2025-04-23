@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: {
-  imports = [./desktop.nix];
+  imports = [./minimal.nix];
   programs.hyprland.enable = true;
   security.polkit.enable = true;
   services.blueman.enable =

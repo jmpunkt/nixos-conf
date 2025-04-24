@@ -119,10 +119,7 @@
               nixpkgs = stable;
               modules = [
                 (import ./machines/iso/configuration.nix)
-                self.nixosModules.home-unknown
-                ({...}: {
-                  home-manager.users.nixos = ./home/jonas/home.nix;
-                })
+                self.nixosModules.home-jonas
               ];
             }
           );
@@ -201,8 +198,29 @@
         );
         home-jonas = (
           {config, ...}: {
-            imports = [self.nixosModules.home-unknown];
-            home-manager.users.jonas = ./home/jonas/home.nix;
+            imports = [
+              self.nixosModules.home-unknown
+              ./configurations/users/jonas.nix
+            ];
+            home-manager.users.jonas = {
+              imports = [
+                ./home/jonas/home.nix
+                ./home/jonas/yubikey
+                ./home/jonas/emacs
+              ];
+            };
+          }
+        );
+        home-jonas-with-yubikey = (
+          {config, ...}: {
+            imports = [
+              self.nixosModules.home-jonas
+            ];
+            home-manager.users.jonas = {
+              imports = [
+                ./home/jonas/yubikey
+              ];
+            };
           }
         );
         gamma64 = {config, ...}: {
@@ -210,7 +228,7 @@
             ./machines/gamma64/configuration.nix
             hardware.nixosModules.lenovo-thinkpad-e495
             hardware.nixosModules.common-pc-laptop-ssd
-            self.nixosModules.home-jonas
+            self.nixosModules.home-jonas-with-yubikey
           ];
         };
         alpha128 = {conifg, ...}: {
@@ -221,7 +239,7 @@
             hardware.nixosModules.common-cpu-amd
             hardware.nixosModules.common-cpu-amd-pstate
             hardware.nixosModules.common-gpu-amd
-            self.nixosModules.home-jonas
+            self.nixosModules.home-jonas-with-yubikey
           ];
         };
       };

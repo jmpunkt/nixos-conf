@@ -1274,7 +1274,10 @@ block, then the whole buffer is indented."
 
 ;;;; * YAML
 (use-package yaml-ts-mode
-  :hook (yaml-ts-mode . eglot-ensure)
+  ;; NOTE: YAML is a text-mode, thus we have to enable formatting manually.
+  :hook ((yaml-ts-mode . fmt-mode)
+         (yaml-ts-mode . eglot-ensure))
+  :fmt (yaml-ts-mode . fmt/prettier-buffer)
   :init
   (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode)))
 
@@ -1320,6 +1323,7 @@ block, then the whole buffer is indented."
 ;;;; * Typst
 (use-package typst-ts-mode
   :mode "\\.typ\\'"
+  ;; NOTE: Typst is a text mode, thus we have to enable formatting manually.
   :hook ((typst-ts-mode . fmt-mode)
          (typst-ts-mode . eglot-ensure))
   :fmt (typst-ts-mode . fmt/typstyle-buffer)

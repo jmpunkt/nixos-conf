@@ -60,7 +60,6 @@
           # RSS
           elfeed
           # Misc
-          yaml-mode
           graphql-mode
           mermaid-mode
           # Presentation

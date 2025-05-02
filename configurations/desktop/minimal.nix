@@ -13,11 +13,22 @@
     kernelPackages = pkgs.linuxPackages_latest;
     supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
   };
+
+  # Automatic garbage collection (system profiles)
   nix.gc = {
     automatic = true;
-    dates = "weekly";
+    dates = "daily";
     options = "--delete-older-than 14d";
+    randomizedDelaySec = "5min";
   };
+
+  # Automatic garbage collection (user profiles)
+  systemd.user.services."nix-gc" = {
+    description = "Garbage collection for user profiles";
+    script = "/run/current-system/sw/bin/nix-collect-garbage --delete-older-than 14d";
+    startAt = "daily";
+  };
+
   programs = {
     git.enable = true;
     firefox = {

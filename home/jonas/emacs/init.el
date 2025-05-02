@@ -1395,11 +1395,11 @@ block, then the whole buffer is indented."
   :mode (("\\.lua\\'" . lua-ts-mode)))
 
 ;;;; * WEB
-(use-package html-ts-mode
+(use-package mhtml-ts-mode
   :init
-  (add-to-list 'major-mode-remap-alist '(html-mode . html-ts-mode))
-  :hook ((html-ts-mode . eglot-ensure))
-  :fmt (html-ts-mode . fmt/prettier-buffer))
+  (add-to-list 'major-mode-remap-alist '(mhtml-mode . mhtml-ts-mode))
+  :hook ((mhtml-ts-mode . eglot-ensure))
+  :fmt (mhtml-ts-mode . fmt/prettier-buffer))
 
 (use-package css-mode
   :init

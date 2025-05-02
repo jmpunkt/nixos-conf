@@ -1282,7 +1282,9 @@ block, then the whole buffer is indented."
   (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode)))
 
 ;;;; * TOML
-(use-package toml-ts-mode)
+(use-package toml-ts-mode
+  :init
+  (add-to-list 'major-mode-remap-alist '(conf-toml-mode . toml-ts-mode)))
 
 ;;;; * GraphQL
 (use-package graphql-mode

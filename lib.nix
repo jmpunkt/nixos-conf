@@ -3,6 +3,7 @@
   # stable version nixpkgs
   stable,
   # unstable version nixpkgs
+  home-manager,
   unstable,
   minimumOverlays,
 }: let
@@ -41,6 +42,10 @@ in rec {
               # Allows commands like `nix shell self#jmpunkt.emacs`
               nix.registry.self.flake = self;
               nixpkgs.overlays = minimumOverlays ++ [(mkUnstableOverlay system)];
+              nix.nixPath = [
+                "nixpkgs=${nixpkgs}"
+                "home-manager=${home-manager}"
+              ];
             }
           )
         ]

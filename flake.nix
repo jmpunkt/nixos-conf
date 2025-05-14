@@ -47,7 +47,7 @@
         (import ./overlays/emacs-overlay-glue.nix {inherit emacs-overlay emacs-mirror;})
       ];
     lib = import ./lib.nix {
-      inherit self unstable stable;
+      inherit self unstable stable home-manager;
       minimumOverlays = [
         rust-overlay.overlays.default
         allPackagesOverlay

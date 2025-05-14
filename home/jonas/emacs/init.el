@@ -1114,7 +1114,9 @@ paths, it will fallback to the project root path."
     '("L" "Log" magit-log))
   :custom
   (magit-slow-confirm '(magit-discard))
-  (magit-diff-refine-hunk 'all))
+  (magit-diff-refine-hunk 'all)
+  :config
+  (remove-hook 'magit-status-headers-hook 'magit-insert-tags-header))
 
 (use-package git-commit
   :custom

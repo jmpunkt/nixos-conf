@@ -1419,6 +1419,8 @@ block, then the whole buffer is indented."
   :fmt (typescript-ts-base-mode . fmt/biome-buffer))
 
 (use-package json-ts-mode
+  :init
+  (add-to-list 'major-mode-remap-alist '(js-json-mode . json-ts-mode))
   :mode (("flake.lock\\'" . json-ts-mode))
   :fmt (json-ts-mode . fmt/biome-buffer))
 

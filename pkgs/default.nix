@@ -1,7 +1,6 @@
 {
   callPackage,
   libsForQt5,
-  qt6Packages,
 }: {
   emacs = callPackage ./applications/emacs {};
   hunspellDicts = callPackage ./hunspellDicts {};

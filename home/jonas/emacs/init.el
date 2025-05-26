@@ -368,6 +368,7 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
   :commands (eshell-mode eshell)
   :hook
   (eshell-mode . eshell-hist-mode)
+  (eshell-mode . buffer-disable-undo)
   (eshell-mode . (lambda ()
                    (add-hook 'meow-insert-enter-hook #'jmpunkt/eshell-goto-end-or-here nil t)))
   (eshell-first-time-mode . (lambda ()

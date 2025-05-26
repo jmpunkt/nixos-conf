@@ -15,6 +15,8 @@
     ];
   };
 
+  hardware.graphics.enable = true;
+
   # scanner
   hardware = {
     sane.enable = true;
@@ -23,7 +25,6 @@
   };
 
   # sound
-  hardware.pulseaudio.enable = lib.mkForce false;
   security.rtkit.enable = true;
   services = {
     pipewire = {

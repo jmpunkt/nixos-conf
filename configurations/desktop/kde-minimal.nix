@@ -6,14 +6,14 @@
 }: {
   imports = [./minimal.nix];
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs.kdePackages; [
     ark
     okular
     kate
     gwenview
     spectacle
     kdialog
-    partition-manager
+    partitionmanager
   ];
 
   services.libinput = {

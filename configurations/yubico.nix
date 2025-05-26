@@ -4,7 +4,6 @@
   ...
 }: {
   environment.systemPackages = with pkgs; [
-    yubikey-manager-qt
     yubikey-personalization
     yubikey-personalization-gui
     yubioath-flutter

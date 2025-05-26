@@ -58,11 +58,4 @@ in {
     samba
     battle-net
   ];
-  hardware = {
-    graphics.enable = true;
-    pulseaudio = {
-      enable = true;
-      support32Bit = true;
-    };
-  };
 }

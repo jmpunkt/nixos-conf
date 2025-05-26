@@ -172,7 +172,8 @@
       dejavu_fonts
       freefont_ttf
       liberation_ttf
-      noto-fonts-monochrome-emoji
+      noto-fonts
+      noto-fonts-emoji
       # Monospace
       fantasque-sans-mono
     ];

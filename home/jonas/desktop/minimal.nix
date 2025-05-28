@@ -1,4 +1,7 @@
 {pkgs, ...}: {
+  imports = [
+    ./kde.nix
+  ];
   home.packages = with pkgs; [
     # cli
     hyperfine

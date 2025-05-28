@@ -5,7 +5,11 @@
   lib,
   ...
 }: {
-  imports = import ../../modules/all-home-manager.nix;
+  imports =
+    (import ../../modules/all-home-manager.nix)
+    ++ [
+      ./tags.nix
+    ];
   manual.manpages.enable = false;
   home.language = {
     base = "en_IE.UTF-8";
@@ -31,13 +35,7 @@
   home.sessionVariables = {
     MOZ_ENABLE_WAYLAND = 1;
     NIXOS_OZONE_WL = 1;
-    GTAGSCONF = "${pkgs.global}/share/gtags/gtags.conf";
-    GTAGSLABEL = "pygments";
-    MAKEOBJDIRPREFIX = "/home/jonas/.cache/gtags";
   };
-  systemd.user.tmpfiles.rules = [
-    "D /home/jonas/.cache/gtags 0755 jonas jonas 7d -"
-  ];
   services.syncthing = {
     enable = true;
     tray.enable = true;

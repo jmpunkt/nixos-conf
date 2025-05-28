@@ -9,6 +9,7 @@
     (import ../../modules/all-home-manager.nix)
     ++ [
       ./tags.nix
+      ./fish
     ];
   manual.manpages.enable = false;
   home.language = {
@@ -41,7 +42,6 @@
     tray.enable = true;
   };
   programs = {
-    fish.enable = true;
     direnv = {
       enable = true;
       nix-direnv.enable = true;

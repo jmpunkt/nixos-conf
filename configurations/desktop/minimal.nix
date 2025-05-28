@@ -7,7 +7,6 @@
   imports = [
     ../tools.nix
     ../locale.nix
-    ../fish
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;

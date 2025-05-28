@@ -16,6 +16,7 @@
     base = "en_IE.UTF-8";
     monetary = "de_DE.utf8";
     telephone = "de_DE.utf8";
+    address = "de_DE.utf8";
   };
   programs.ssh = {
     enable = true;

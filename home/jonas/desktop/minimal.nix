@@ -21,7 +21,7 @@
   ];
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-bin.unwrapped;
+    package = pkgs.firefox-bin;
     languagePacks = ["de" "en-US"];
     policies = let
       lock-false = {

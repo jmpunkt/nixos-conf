@@ -69,5 +69,5 @@
     options = "--delete-older-than 14d";
     randomizedDelaySec = "5min";
   };
-  home.stateVersion = "18.09";
+  home.stateVersion = "25.05";
 }

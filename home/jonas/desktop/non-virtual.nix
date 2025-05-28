@@ -9,10 +9,17 @@
     ./minimal.nix
   ];
   programs.chromium.enable = true;
-  programs.thunderbird.enable = true;
+  # programs.thunderbird = {
+  #   enable = true;
+  #   profiles.main = {
+  #     isDefault = true;
+  #     withExternalGnupg = true;
+  #   };
+  # };
   programs.mpv.enable = true;
   home.packages = with pkgs; [
     # gui
+    thunderbird
     audacious
     discord
     tdesktop

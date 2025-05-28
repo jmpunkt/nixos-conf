@@ -75,23 +75,4 @@
       "ipv6.ip6-privacy" = "2";
     };
   };
-
-  programs = {
-    chromium.enable = true;
-    # TODO: only available in unstable
-    # thunderbird.enable = true;
-  };
-  environment.systemPackages = with pkgs; [
-    # gui
-    audacious
-    discord
-    tdesktop
-    thunderbird
-    chatterino2
-    mpv
-
-    # cli
-    streamlink
-    yt-dlp
-  ];
 }

@@ -220,6 +220,24 @@
             };
           }
         );
+        home-jonas-desktop-minimal = (
+          {...}: {
+            home-manager.users.jonas = {
+              imports = [
+                ./home/jonas/desktop/minimal.nix
+              ];
+            };
+          }
+        );
+        home-jonas-desktop-non-virtual = (
+          {...}: {
+            home-manager.users.jonas = {
+              imports = [
+                ./home/jonas/desktop/non-virtual.nix
+              ];
+            };
+          }
+        );
         gamma64 = {...}: {
           imports = [
             ./machines/gamma64/configuration.nix
@@ -227,6 +245,7 @@
             hardware.nixosModules.common-pc-laptop-ssd
             self.nixosModules.home-jonas
             self.nixosModules.home-jonas-yubikey
+            self.nixosModules.home-jonas-desktop-non-virtual
           ];
         };
         alpha128 = {...}: {
@@ -240,6 +259,7 @@
             hardware.nixosModules.common-gpu-amd
             self.nixosModules.home-jonas
             self.nixosModules.home-jonas-yubikey
+            self.nixosModules.home-jonas-desktop-non-virtual
           ];
         };
       };

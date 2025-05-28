@@ -20,13 +20,6 @@
     randomizedDelaySec = "5min";
   };
 
-  # Automatic garbage collection (user profiles)
-  systemd.user.services."nix-gc" = {
-    description = "Garbage collection for user profiles";
-    script = "/run/current-system/sw/bin/nix-collect-garbage --delete-older-than 14d";
-    startAt = "daily";
-  };
-
   fonts = {
     packages = with pkgs; [
       dejavu_fonts

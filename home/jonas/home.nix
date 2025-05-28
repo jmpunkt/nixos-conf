@@ -60,5 +60,13 @@
       };
     };
   };
+  # Automatic garbage collection (user profiles)
+  # TODO: compare with home-manager-auto-expire
+  nix.gc = {
+    automatic = true;
+    frequency = "daily";
+    options = "--delete-older-than 14d";
+    randomizedDelaySec = "5min";
+  };
   home.stateVersion = "18.09";
 }

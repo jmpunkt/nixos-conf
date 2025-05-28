@@ -197,7 +197,7 @@
           }
         );
         home-jonas = (
-          {config, ...}: {
+          {...}: {
             imports = [
               self.nixosModules.home-unknown
               ./configurations/users/jonas.nix
@@ -211,11 +211,8 @@
             };
           }
         );
-        home-jonas-with-yubikey = (
-          {config, ...}: {
-            imports = [
-              self.nixosModules.home-jonas
-            ];
+        home-jonas-yubikey = (
+          {...}: {
             home-manager.users.jonas = {
               imports = [
                 ./home/jonas/yubikey
@@ -223,15 +220,16 @@
             };
           }
         );
-        gamma64 = {config, ...}: {
+        gamma64 = {...}: {
           imports = [
             ./machines/gamma64/configuration.nix
             hardware.nixosModules.lenovo-thinkpad-e495
             hardware.nixosModules.common-pc-laptop-ssd
-            self.nixosModules.home-jonas-with-yubikey
+            self.nixosModules.home-jonas
+            self.nixosModules.home-jonas-yubikey
           ];
         };
-        alpha128 = {conifg, ...}: {
+        alpha128 = {...}: {
           imports = [
             ./machines/alpha128/configuration.nix
             ./configurations/vbox.nix
@@ -240,7 +238,8 @@
             hardware.nixosModules.common-cpu-amd
             hardware.nixosModules.common-cpu-amd-pstate
             hardware.nixosModules.common-gpu-amd
-            self.nixosModules.home-jonas-with-yubikey
+            self.nixosModules.home-jonas
+            self.nixosModules.home-jonas-yubikey
           ];
         };
       };

@@ -1,7 +1,11 @@
-{...}: {
+{pkgs, ...}: {
   home.file = {
     ".ssh/id_rsa.pub".text = builtins.readFile ./ssh.pub;
   };
+
+  home.packages = with pkgs; [
+    yubioath-flutter
+  ];
 
   programs.git = {
     enable = true;
@@ -11,6 +15,18 @@
       signByDefault = true;
     };
   };
+
+  programs.gpg.enable = true;
+
+  services.gpg-agent = {
+    enable = true;
+    enableSshSupport = true;
+    # NOTE: Use Gnome3 pinentry, works on Wayland and X11, in contrast to pinentry-gtk2
+    pinentry.package = pkgs.pinentry-gnome3;
+  };
+
+  # NOTE: Required for pinentry-gnome3 to work
+  dbus.packages = with pkgs; [gcr];
 
   programs.ssh = {
     matchBlocks = {

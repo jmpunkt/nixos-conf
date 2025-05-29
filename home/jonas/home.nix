@@ -18,6 +18,10 @@
     telephone = "de_DE.utf8";
     address = "de_DE.utf8";
   };
+  home.sessionVariables = {
+    MOZ_ENABLE_WAYLAND = 1;
+    NIXOS_OZONE_WL = 1;
+  };
   programs.ssh = {
     enable = true;
     controlMaster = "auto";
@@ -33,10 +37,6 @@
         };
       };
     };
-  };
-  home.sessionVariables = {
-    MOZ_ENABLE_WAYLAND = 1;
-    NIXOS_OZONE_WL = 1;
   };
   services.syncthing = {
     enable = true;

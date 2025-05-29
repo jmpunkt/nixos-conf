@@ -1096,22 +1096,23 @@ paths, it will fallback to the project root path."
   ;; NOTE: The order is important, first rebind keybinds which should
   ;;       be used late. Otherwise, the menu will miss these entries
   ;;       and the replace operations fails silently.
-  (transient-replace-suffix 'magit-commit 'magit-commit-autofixup
-  '("x" "Absorb changes" magit-commit-absorb))
-  (transient-replace-suffix 'magit-dispatch
-    '("T" "Note" magit-notes)
+  (transient-replace-suffix #'magit-commit
+    #'magit-commit-autofixup
+    '("x" "Absorb changes" magit-commit-absorb))
+  (transient-replace-suffix #'magit-dispatch
+    #'magit-notes
     '("C-t" "Note" magit-notes))
-  (transient-replace-suffix 'magit-dispatch
-    '("t" "Tag" magit-tag)
+  (transient-replace-suffix #'magit-dispatch
+    #'magit-tag
     '("T" "Tag" magit-tag))
-  (transient-replace-suffix 'magit-dispatch
-    '("k" "Discard" magit-discard)
+  (transient-replace-suffix #'magit-dispatch
+    #'magit-discard
     '("t" "Discard" magit-discard))
-  (transient-replace-suffix 'magit-dispatch
-    '("L" "Log (change)" magit-log-refresh)
+  (transient-replace-suffix #'magit-dispatch
+    #'magit-log-refresh
     '("C-l" "Log (change)" magit-log-refresh))
-  (transient-replace-suffix 'magit-dispatch
-    '("l" "Log" magit-log)
+  (transient-replace-suffix #'magit-dispatch
+    #'magit-log
     '("L" "Log" magit-log))
   :custom
   (magit-slow-confirm '(magit-discard))

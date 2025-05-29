@@ -38,23 +38,21 @@
       };
     };
   };
-  programs = {
-    direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
-    git = {
-      enable = true;
-      userName = "Jonas Meurer";
-      lfs.enable = true;
-      extraConfig = {
-        core = {
-          whitespace = "trailing-space,space-before-tab";
-        };
-        rerere.enabled = "true";
-        merge.conflictstyle = "zdiff3";
-        pull.ff = "only";
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+  programs.git = {
+    enable = true;
+    userName = "Jonas Meurer";
+    lfs.enable = true;
+    extraConfig = {
+      core = {
+        whitespace = "trailing-space,space-before-tab";
       };
+      rerere.enabled = "true";
+      merge.conflictstyle = "zdiff3";
+      pull.ff = "only";
     };
   };
   # Automatic garbage collection (user profiles)

@@ -38,6 +38,10 @@
       };
     };
   };
+  programs.lorri = {
+    enable = true;
+    nixPackage = systemConfig.nix.package;
+  };
   programs.direnv = {
     enable = true;
     nix-direnv.enable = true;

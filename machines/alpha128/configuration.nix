@@ -27,5 +27,5 @@
   networking.hostName = "alpha128";
   hardware.bluetooth.enable = true;
   environment.systemPackages = with pkgs; [razergenie nvtopPackages.amd];
-  system.stateVersion = "20.03";
+  system.stateVersion = "25.05";
 }

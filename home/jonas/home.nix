@@ -65,5 +65,5 @@
     options = "--delete-older-than 14d";
     randomizedDelaySec = "5min";
   };
-  home.stateVersion = "25.05";
+  home.stateVersion = systemConfig.system.stateVersion;
 }

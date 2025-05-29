@@ -38,10 +38,6 @@
       };
     };
   };
-  services.syncthing = {
-    enable = true;
-    tray.enable = true;
-  };
   programs = {
     direnv = {
       enable = true;

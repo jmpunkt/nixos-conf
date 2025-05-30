@@ -259,7 +259,7 @@
         alpha128 = {...}: {
           imports = [
             ./machines/alpha128/configuration.nix
-            ./configurations/vbox.nix
+            # ./configurations/vbox.nix
             hardware.nixosModules.common-pc
             hardware.nixosModules.common-pc-ssd
             hardware.nixosModules.common-cpu-amd

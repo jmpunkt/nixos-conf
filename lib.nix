@@ -10,6 +10,28 @@
   inherit (stable.lib.trivial) mod;
   inherit (builtins) typeOf;
 in rec {
+  defaultConfig = {
+    system,
+    nixpkgs,
+  }: (
+    {
+      config,
+      lib,
+      ...
+    }: {
+      # disable channels, since we are using flakes
+      nix.channel.enable = lib.mkForce false;
+      # Pins nixpkgs of system to `inputs.nixpkgs`.
+      nix.registry.nixpkgs.flake = nixpkgs;
+      # Allows commands like `nix shell self#jmpunkt.emacs`
+      nix.registry.self.flake = self;
+      nixpkgs.overlays = minimumOverlays ++ [(mkUnstableOverlay system)];
+      nix.nixPath = [
+        "nixpkgs=${nixpkgs}"
+        "home-manager=${home-manager}"
+      ];
+    }
+  );
   # provides a NixOS system which will be cross-compiled.
   mkSystemCross = {
     host,
@@ -35,19 +57,7 @@ in rec {
       modules =
         [
           nixpkgs.nixosModules.notDetected
-          (
-            {config, ...}: {
-              # Pins nixpkgs of system to `inputs.nixpkgs`.
-              nix.registry.nixpkgs.flake = nixpkgs;
-              # Allows commands like `nix shell self#jmpunkt.emacs`
-              nix.registry.self.flake = self;
-              nixpkgs.overlays = minimumOverlays ++ [(mkUnstableOverlay system)];
-              nix.nixPath = [
-                "nixpkgs=${nixpkgs}"
-                "home-manager=${home-manager}"
-              ];
-            }
-          )
+          (defaultConfig {inherit nixpkgs system;})
         ]
         ++ modules;
     };
@@ -65,18 +75,7 @@ in rec {
       modules =
         [
           nixpkgs.nixosModules.notDetected
-          (
-            {config, ...}: {
-              # Pins nixpkgs of system to `inputs.nixpkgs`.
-              nix.registry.nixpkgs.flake = nixpkgs;
-              # pin system nixpkgs to the same version as the flake
-              # input (https://github.com/nix-community/nix-index/issues/167#issuecomment-989849343)
-              nix.nixPath = ["nixpkgs=${nixpkgs}"];
-              # Allows commands like `nix shell self#jmpunkt.emacs`
-              nix.registry.self.flake = self;
-              nixpkgs.overlays = minimumOverlays ++ [(mkUnstableOverlay system)];
-            }
-          )
+          (defaultConfig {inherit nixpkgs system;})
         ]
         ++ modules;
     };

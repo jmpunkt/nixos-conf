@@ -21,8 +21,6 @@
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
-    # disable channels, since we are using flakes
-    channel.enable = false;
   };
 
   networking.firewall.enable = true;

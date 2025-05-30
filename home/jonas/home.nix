@@ -38,7 +38,7 @@
       };
     };
   };
-  programs.lorri = {
+  services.lorri = {
     enable = true;
     nixPackage = systemConfig.nix.package;
   };

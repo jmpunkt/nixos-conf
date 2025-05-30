@@ -1205,7 +1205,10 @@ block, then the whole buffer is indented."
   ;; Same as (org-clock-persistence-insinuate) but will lazy load. Calling the
   ;; function instead causes `org-mode' to be loaded.
   :hook ((org-mode . org-clock-load)
-         (kill-emacs . org-clock-save))
+         (kill-emacs . (lambda () (when
+                                      (and (boundp 'org-clock-loaded)
+                                           org-clock-loaded)
+                                    org-clock-save))))
   :custom
   (org-clock-idle-time 10)
   (org-clock-in-resume t)

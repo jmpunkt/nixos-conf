@@ -21,6 +21,10 @@
       flake = false;
     };
     utils.url = "github:numtide/flake-utils";
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "stable";
+    };
   };
   outputs = {
     self,
@@ -32,6 +36,7 @@
     emacs-overlay,
     emacs-mirror,
     utils,
+    nix-index-database,
   } @ inputs: let
     allPackagesOverlay =
       stable.lib.composeManyExtensions
@@ -194,6 +199,9 @@
               inherit inputs;
               systemConfig = config;
             };
+            home-manager.sharedModules = [
+              nix-index-database.hmModules.nix-index
+            ];
           }
         );
         home-jonas = (

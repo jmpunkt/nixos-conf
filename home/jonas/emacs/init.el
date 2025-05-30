@@ -372,6 +372,9 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
                    (add-hook 'eshell-pre-command-hook #'buffer-disable-undo nil t)
                    (add-hook 'eshell-post-command-hook #'buffer-enable-undo nil t)))
   (eshell-mode . (lambda ()
+                   (add-hook 'eshell-pre-command-hook #'jmpunkt/eshell-meow-save nil t)
+                   (add-hook 'eshell-post-command-hook #'jmpunkt/eshell-meow-restore nil t)))
+  (eshell-mode . (lambda ()
                    (add-hook 'meow-insert-enter-hook #'jmpunkt/eshell-goto-end-or-here nil t)))
   (eshell-first-time-mode . (lambda ()
                               (setq-local process-environment (copy-sequence process-environment))
@@ -380,6 +383,26 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
   (eshell-first-time-mode . eat-eshell-visual-command-mode)
   (eshell-first-time-mode . eat-eshell-mode)
   :init
+  (defvar jmpunkt/eshell-last-meow-state nil
+    "State of Meow before running command in Eshell.")
+  (defun jmpunkt/eshell-meow-save ()
+    "Save the current meow state before running a command in Eshell."
+    (setq jmpunkt/eshell-last-meow-state
+          (if (meow-insert-mode-p)
+              'insert
+            'normal))
+    (when (not (meow-normal-mode-p))
+      (meow-normal-mode)))
+  (defun jmpunkt/eshell-meow-restore ()
+    "Restore the previous Meow state after running a command in Eshell."
+    (when (and jmpunkt/eshell-last-meow-state
+               ;; Only when on the prompt, we want to restore the meow state.
+               (>= (point) eshell-last-output-end))
+        (when (eq jmpunkt/eshell-last-meow-state 'insert)
+          (meow--cancel-selection)
+          (when (not (meow-normal-mode-p))
+            (meow-insert-mode))))
+    (setq jmpunkt/eshell-last-meow-state nil))
   (defun jmpunkt/eshell-goto-end-or-here ()
     "Smart Eshell goto prompt.
 

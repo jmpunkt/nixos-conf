@@ -372,6 +372,7 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
                    (add-hook 'eshell-pre-command-hook #'buffer-disable-undo nil t)
                    (add-hook 'eshell-post-command-hook #'buffer-enable-undo nil t)))
   (eshell-mode . (lambda ()
+                   (add-hook 'meow-insert-enter-hook #'jmpunkt/eshell-meow-reset nil t)
                    (add-hook 'eshell-pre-command-hook #'jmpunkt/eshell-meow-save nil t)
                    (add-hook 'eshell-post-command-hook #'jmpunkt/eshell-meow-restore nil t)))
   (eshell-mode . (lambda ()
@@ -385,6 +386,9 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
   :init
   (defvar jmpunkt/eshell-last-meow-state nil
     "State of Meow before running command in Eshell.")
+  (defun jmpunkt/eshell-meow-reset ()
+    "Reset the Meow state in Eshell."
+    (setq jmpunkt/eshell-last-meow-state nil))
   (defun jmpunkt/eshell-meow-save ()
     "Save the current meow state before running a command in Eshell."
     (setq jmpunkt/eshell-last-meow-state

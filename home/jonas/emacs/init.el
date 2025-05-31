@@ -1310,12 +1310,11 @@ block, then the whole buffer is indented."
 
 ;;;; * YAML
 (use-package yaml-ts-mode
+  :mode ("\\.ya?ml\\'" . yaml-ts-mode)
   ;; NOTE: YAML is a text-mode, thus we have to enable formatting manually.
   :hook ((yaml-ts-mode . fmt-mode)
          (yaml-ts-mode . eglot-ensure))
-  :fmt (yaml-ts-mode . fmt/prettier-buffer)
-  :init
-  (add-to-list 'major-mode-remap-alist '(yaml-mode . yaml-ts-mode)))
+  :fmt (yaml-ts-mode . fmt/prettier-buffer))
 
 ;;;; * TOML
 (use-package toml-ts-mode

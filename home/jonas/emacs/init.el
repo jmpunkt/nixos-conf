@@ -400,7 +400,7 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
                (>= (point) eshell-last-output-end))
         (when (eq jmpunkt/eshell-last-meow-state 'insert)
           (meow--cancel-selection)
-          (when (not (meow-normal-mode-p))
+          (when (not (meow-insert-mode-p))
             (meow-insert-mode))))
     (setq jmpunkt/eshell-last-meow-state nil))
   (defun jmpunkt/eshell-goto-end-or-here ()

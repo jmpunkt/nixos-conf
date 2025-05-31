@@ -13,7 +13,16 @@
 
   # use doas instead of sudo
   security.sudo.enable = lib.mkForce false;
-  security.doas.enable = true;
+  security.doas = {
+    enable = true;
+    extraRules = [
+      {
+        groups = ["wheel"];
+        persist = true;
+        keepEnv = true;
+      }
+    ];
+  };
 
   # enable flakes
   nix = {

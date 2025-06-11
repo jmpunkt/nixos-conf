@@ -1212,7 +1212,7 @@ block, then the whole buffer is indented."
          (kill-emacs . (lambda () (when
                                       (and (boundp 'org-clock-loaded)
                                            org-clock-loaded)
-                                    org-clock-save))))
+                                    (org-clock-save)))))
   :custom
   (org-clock-idle-time 10)
   (org-clock-in-resume t)

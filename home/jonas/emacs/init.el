@@ -984,10 +984,18 @@ paths, it will fallback to the project root path."
               ("M-j" . scroll-up-command)
               ("M-k" . scroll-down-command)
               ("M-c" . kill-whole-line)
+              ("M-C" . jmpunkt/kill-line-without-save)
               ("C-b" . beginning-of-buffer)
               ("C-e" . end-of-buffer)
               ("M-n" . next-history-element)
               ("M-p" . previous-history-element))
+  :init
+  (defun jmpunkt/kill-line-without-save ()
+    "Delete the current line without saving it to the kill ring."
+    (interactive)
+    (delete-region
+     (line-beginning-position)
+     (line-end-position)))
   :custom
   (minibuffer-prompt-properties '(read-only t cursor-intangible t face minibuffer-prompt))
   (read-buffer-completion-ignore-case t)

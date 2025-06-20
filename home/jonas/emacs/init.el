@@ -690,6 +690,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
 
 ;;;; * Dired
 (use-package dired
+  :hook ((dired-mode . auto-revert-mode))
   :custom
   (dired-listing-switches "-alh")
   (dired-recursive-copies 'always)

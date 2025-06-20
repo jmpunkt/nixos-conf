@@ -1095,6 +1095,15 @@ paths, it will fallback to the project root path."
     (add-to-list 'completion-at-point-functions 'cape-symbol+dabbrev))
   (defun jmpunkt/cape-setup-comint ()
     (add-to-list 'completion-at-point-functions 'cape-symbol+dabbrev))
+  (defun jmpunkt/cape-dabbrev-buffer-list ()
+    "Return a list of buffers to search for dabbrev completions.
+
+Hooks into the dabbrev configuration by calling
+`dabbrev-select-buffers-function'.  This allows to see completions even if
+`dabbrev-completion' will not return candidates."
+    (dabbrev--reset-global-variables)
+    (setq dabbrev--check-other-buffers t)
+    (funcall dabbrev-select-buffers-function))
   :hook ((git-commit-mode . jmpunkt/cape-setup-git-commit)
          (eshell-mode . jmpunkt/cape-setup-eshell)
          (emacs-lisp-mode . jmpunkt/cape-setup-elisp))
@@ -1102,7 +1111,43 @@ paths, it will fallback to the project root path."
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
   :custom
-  (cape-dabbrev-min-length 3))
+  (cape-dabbrev-min-length 3)
+  (cape-dabbrev-buffer-function #'jmpunkt/cape-dabbrev-buffer-list))
+
+(use-package dabbrev
+  :init
+  (defun jmpunkt/dabbrev-friend-buffer-p (other-buffer)
+    "Determine if the OTHER-BUFFER is a friend buffer.
+
+The other buffer is considered a friend if it has the same major mode or is in
+the same project as the current buffer. Buffers in fundamental mode are also
+ignored."
+    (and (not (and (file-remote-p (or (buffer-file-name other-buffer) ""))))
+         (with-current-buffer other-buffer
+           (not
+            (or
+             (eq major-mode 'fundamental-mode)
+             (eq major-mode 'helpful-mode))))
+         (or
+          (eq major-mode
+              (with-current-buffer other-buffer
+	              major-mode))
+          (equal (project-current)
+                 (with-current-buffer other-buffer
+                   (project-current))))))
+  :custom
+  (dabbrev-ignored-buffer-regexps
+   '("\\` "
+     "\\(?:\\(?:[EG]?\\|GR\\)TAGS\\|e?tags\\|GPATH\\)\\(<[0-9]+>\\)?"))
+  ;; ignore case and  preserve case in expansions:
+  (dabbrev-case-distinction nil)
+  (dabbrev-case-fold-search t)
+  (dabbrev-case-replace nil)
+  (dabbrev-friend-buffer-function #'jmpunkt/dabbrev-friend-buffer-p)
+  :config
+  (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
 (use-package rg
   :commands (rg-menu)

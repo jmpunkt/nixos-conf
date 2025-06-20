@@ -632,7 +632,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
      '("G" . meow-grab)
      '("p" . meow-yank)
      '("q" . meow-goto-line)
-     '("Q" . casual-avy-tmenu)
+     '("Q" . avy-goto-char)
      '("r" . meow-replace)
      '("R" . meow-swap-grab)
      '("s" . meow-kill)

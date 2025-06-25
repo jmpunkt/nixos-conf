@@ -41,6 +41,9 @@
         Cryptomining = true;
         Fingerprinting = true;
       };
+      Homepage = {
+        StartPage = "previous-session";
+      };
       DisablePocket = true;
       DisableFirefoxAccounts = true;
       DisableAccounts = true;
@@ -50,7 +53,6 @@
       HttpsOnlyMode = "enabled";
       PostQuantumKeyAgreementEnabled = true;
       TranslateEnabled = false;
-      # NOTE: Not working with non ESR versions
       SearchEngines = {
         Default = "DuckDuckGo";
         DefaultPrivate = "DuckDuckGo";
@@ -69,7 +71,6 @@
         Downloads = true;
         Cache = true;
       };
-
       # Minimal extensions, everything else should be installed manually, depending on the device.
       ExtensionSettings = {
         # uBlock Origin:

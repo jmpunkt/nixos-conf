@@ -1387,13 +1387,8 @@ block, then the whole buffer is indented."
          ("\\.rest\\'" . rst-mode)))
 
 ;;;; * Markdown
-(use-package markdown-mode
-  :hook ((markdown-mode . flyspell-mode))
-  :mode
-  (("INSTALL\\.md\\\'". gfm-mode)
-   ("CONTRIBUTORS\\.md\\\'". gfm-mode)
-   ("LICENSE\\.md\\\'". gfm-mode)
-   ("README\\.md\\\'". gfm-mode)))
+(use-package markdown-ts-mode
+  :hook ((markdown-ts-mode . flyspell-mode)))
 
 ;;;; * Graphivz
 (use-package graphviz-dot-mode)

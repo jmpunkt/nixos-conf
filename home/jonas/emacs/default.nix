@@ -85,6 +85,7 @@
           with epkgs.manualPackages;
             [
               jmpunktPkgs.eglot-x
+              jmpunktPkgs.reader
               jmpunktPkgs.typst-ts-mode
               jmpunktPkgs.copilot
               jmpunktPkgs.xdg-appmenu

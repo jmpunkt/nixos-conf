@@ -5,4 +5,5 @@
   copilot = callPackage ./copilot.nix {};
   xdg-appmenu = callPackage ./xdg-appmenu.nix {};
   p-search = callPackage ./p-search.nix {};
+  reader = callPackage ./reader.nix {};
 }

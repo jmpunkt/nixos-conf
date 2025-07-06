@@ -1547,9 +1547,6 @@ block, then the whole buffer is indented."
 ;;   (pdf-view-resize-factor 1.1))
 
 ;;; * Misc
-(use-package p-search
-  :commands p-search)
-
 (use-package devdocs
   :commands devdocs-lookup
   :bind (:map global-map ("C-h D" . devdocs-lookup)))

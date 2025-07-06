@@ -25,7 +25,6 @@
           xterm-color
           editorconfig
           reformatter
-          gcmh
           biome
           casual-avy
           transient-dwim

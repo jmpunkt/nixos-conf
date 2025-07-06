@@ -6,9 +6,6 @@
 (require 'use-package)
 (require 'nixos-paths)
 
-(use-package gcmh-mode
-  :hook (emacs-startup . gcmh-mode))
-
 ;;; * Use-package (Formatting)
 (defcustom fmt-formatters-alist '()
   "List of available formatters for major-modes."

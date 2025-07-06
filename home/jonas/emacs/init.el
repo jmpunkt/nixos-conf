@@ -758,7 +758,8 @@ If the cursor is on the last prompt, then we want to insert at the current posit
           (project-find-dir "directory")
           (project-dired "browse")
           (magit-project-status "vc")
-          (project-eshell "shell")))
+          (project-eshell "shell")
+          (prot/keyboard-quit-dwim "quit" "C-g")))
   :init
   (defun jmpunkt/project-smylink-in-dir? (file)
     "Check if a given file is inside the project directory.

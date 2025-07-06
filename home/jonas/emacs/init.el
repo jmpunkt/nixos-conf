@@ -731,8 +731,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
               ("C-c s p" . jinx-previous)
               ("C-c s n" . jinx-next)
               ("C-c s c" . jinx-correct)
-              ("C-c s d" . jinx-languages)
-              ("C-c s f" . flyspell-buffer))
+              ("C-c s d" . jinx-languages))
   :custom-face
   (jinx-misspelled ((t (:inherit modus-themes-lang-note)))))
 

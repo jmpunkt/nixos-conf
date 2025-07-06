@@ -3,7 +3,7 @@
 
 ;;; Code:
 ;;; Packages
-(require 'bind-key)
+(require 'use-package)
 (require 'nixos-paths)
 
 (defcustom presentation-mode-font-height 200

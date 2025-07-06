@@ -4,7 +4,7 @@
   melpaBuild,
   writeText,
 }: let
-  rev = "1367003e2ad55a2f6f9e43178584683028ab56e9";
+  rev = "972dc69d6b8a3f8983f6b8000654f59c8a8d05ba";
   pname = "typst-ts-mode";
   owner = "meow_king";
 in
@@ -18,7 +18,7 @@ in
       inherit owner rev;
       domain = "codeberg.org";
       repo = pname;
-      sha256 = "sha256-0RAJ/Td3G7FDvzf7t8csNs/uc07WUPGvMo8ako5iyl0=";
+      sha256 = "sha256-+x8AthOxO0vBjaKSaiDpLnf+Ph0AqWl7EMei29dr85g=";
     };
 
     recipe = writeText "recipe" ''

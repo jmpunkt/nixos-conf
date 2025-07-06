@@ -6,35 +6,6 @@
 (require 'use-package)
 (require 'nixos-paths)
 
-(defcustom presentation-mode-font-height 200
-  "Store previous face configuration."
-  :type 'number
-  :group 'presentation)
-
-(defvar presentation-mode--previous nil
-  "Store previous face configuration.")
-
-(define-minor-mode presentation-mode
-  "Toggles global `presentation-mode'."
-  :init-value nil
-  :global t
-  :group 'presentation
-  (if presentation-mode
-      (progn
-        (setq presentation-mode--previous (face-all-attributes 'default))
-        (set-face-attribute 'default nil
-                            :weight 'regular
-                            :width 'normal
-                            :height presentation-mode-font-height))
-    (apply 'set-face-attribute
-           'default nil
-           (seq-mapcat (lambda (x) (when (and
-                                          (not (equal :foundry (car x)))
-                                          (not (equal :family (car x))))
-                                     (list (car x) (cdr x))))
-                       presentation-mode--previous))
-    (setq presentation-mode--previous nil)))
-
 (use-package gcmh-mode
   :hook (emacs-startup . gcmh-mode))
 

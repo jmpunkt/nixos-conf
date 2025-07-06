@@ -1096,7 +1096,6 @@ ignored."
   (dabbrev-case-replace nil)
   (dabbrev-friend-buffer-function #'jmpunkt/dabbrev-friend-buffer-p)
   :config
-  (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
@@ -1479,40 +1478,6 @@ block, then the whole buffer is indented."
 ;;; * PDF
 (use-package reader
     :mode ("\\.pdf\\'" . reader-mode))
-;; (use-package pdf-tools
-;;   :mode ("\\.pdf\\'" . pdf-view-mode)
-;;   :hook (pdf-view-mode . (lambda ()
-;;                            (pdf-misc-size-indication-minor-mode)
-;;                            (pdf-links-minor-mode)
-;;                            (pdf-isearch-minor-mode)
-;;                            (auto-revert-mode)
-;;                            (cua-mode -1)))
-;;   :bind (:map pdf-view-mode-map
-;;               ("C-s" . isearch-forward)
-;;               ("<s-spc>" .  pdf-view-scroll-down-or-next-page)
-;;               ("g"  . pdf-view-first-page)
-;;               ("G"  . pdf-view-last-page)
-;;               ("l"  . image-forward-hscroll)
-;;               ("h"  . image-backward-hscroll)
-;;               ("j"  . pdf-view-next-page)
-;;               ("k"  . pdf-view-previous-page)
-;;               ("e"  . pdf-view-goto-page)
-;;               ("u"  . pdf-view-revert-buffer)
-;;               ("al" . pdf-annot-list-annotations)
-;;               ("ad" . pdf-annot-delete)
-;;               ("aa" . pdf-annot-attachment-dired)
-;;               ("am" . pdf-annot-add-markup-annotation)
-;;               ("at" . pdf-annot-add-text-annotation)
-;;               ("y"  . pdf-view-kill-ring-save)
-;;               ("i"  . pdf-misc-display-metadata)
-;;               ("s"  . pdf-occur)
-;;               ("b"  . pdf-view-set-slice-from-bounding-box)
-;;               ("r"  . pdf-view-reset-slice))
-;;   :config
-;;   (pdf-tools-install)
-;;   :custom
-;;   (pdf-view-display-size 'fit-page)
-;;   (pdf-view-resize-factor 1.1))
 
 ;;; * Misc
 (use-package devdocs

@@ -35,23 +35,6 @@
                        presentation-mode--previous))
     (setq presentation-mode--previous nil)))
 
-(use-package xdg-appmenu
-  :commands xdg-appmenu
-  :init
-  (defun emacs-run-launcher ()
-    (interactive)
-    (with-selected-frame (make-frame '((name . "emacs-run-launcher")
-                                       (minibuffer . only)
-                                       (auto-raise . t)
-                                       (fullscreen . nil)
-                                       (undecorated . t)
-                                       (internal-border-width . 20)
-                                       (width . 200)
-                                       (height . 11)))
-      (unwind-protect
-          (call-interactively #'xdg-appmenu)
-        (delete-frame)))))
-
 (use-package gcmh-mode
   :hook (emacs-startup . gcmh-mode))
 

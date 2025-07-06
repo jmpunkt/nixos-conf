@@ -1183,6 +1183,7 @@ ignored."
   :custom
   (magit-slow-confirm '(magit-discard))
   (magit-diff-refine-hunk 'all)
+  (magit-auto-revert-immediately nil)
   :config
   (remove-hook 'magit-status-headers-hook 'magit-insert-tags-header))
 

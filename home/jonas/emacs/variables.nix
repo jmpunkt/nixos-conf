@@ -47,6 +47,7 @@ in {
       nixd
       unstable.tinymist # Typst
       basedpyright
+      taplo # Toml
     ];
     org = with pkgs; [
       # graphs

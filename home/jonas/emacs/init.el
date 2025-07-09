@@ -1319,8 +1319,13 @@ block, then the whole buffer is indented."
 
 ;;;; * TOML
 (use-package toml-ts-mode
+  :hook ((toml-ts-mode . fmt-mode)
+         (toml-ts-mode . eglot-ensure))
   :init
-  (add-to-list 'major-mode-remap-alist '(conf-toml-mode . toml-ts-mode)))
+  (add-to-list 'major-mode-remap-alist '(conf-toml-mode . toml-ts-mode))
+  :config
+  (with-eval-after-load 'eglot
+      (add-to-list 'eglot-server-programs '(toml-ts-mode . ("taplo" "lsp" "stdio")))))
 
 ;;;; * GraphQL
 (use-package graphql-mode

@@ -856,10 +856,6 @@ paths, it will fallback to the project root path."
     (lambda (snippet) (tempel-insert (jmpunkt/lsp-snippet-to-tempel snippet))))
   :custom-face
   (eglot-highlight-symbol-face ((t (:inherit eldoc-highlight-function-argument))))
-  :config
-  (add-to-list 'eglot-server-programs
-               '((python-mode python-ts-mode)
-                 "basedpyright-langserver" "--stdio"))
   :custom
   (eglot-extend-to-xref t)
   (eglot-stay-out-of '(company))
@@ -1366,8 +1362,8 @@ block, then the whole buffer is indented."
   :custom
   (typst-ts-mode-indent-offset 2)
   :config
-  (require 'eglot)
-  (add-to-list 'eglot-server-programs '((typst-ts-mode) . ("tinymist"))))
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs '(typst-ts-mode . ("tinymist")))))
 
 ;;;; * Nix
 (use-package nix-ts-mode
@@ -1375,8 +1371,8 @@ block, then the whole buffer is indented."
   :hook ((nix-ts-mode . eglot-ensure))
   :fmt (nix-ts-mode . fmt/alejandra-buffer)
   :config
-  (require 'eglot)
-  (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nixd"))))
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nixd")))))
 
 ;;;; * C/C++
 (use-package cmake-ts-mode
@@ -1397,6 +1393,10 @@ block, then the whole buffer is indented."
   :custom
   (python-indent-offset 4)
   :config
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '((python-mode python-ts-mode)
+                   "basedpyright-langserver" "--stdio")))
   (push 'pyright compilation-error-regexp-alist)
   (push '(pyright "^\\ +\\(.+\\):\\([0-9]+\\):\\([0-9]+\\).+$" 1 2 3) compilation-error-regexp-alist-alist))
 

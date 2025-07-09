@@ -1324,7 +1324,7 @@ block, then the whole buffer is indented."
 
 ;;;; * GraphQL
 (use-package graphql-mode
-  :fmt (graphql-mode . fmt/prettier-buffer))
+  :fmt (graphql-mode . fmt/biome-buffer))
 
 ;;; * Text Files
 ;;;; * reStructuredText
@@ -1433,7 +1433,7 @@ block, then the whole buffer is indented."
   :init
   (add-to-list 'major-mode-remap-alist '(mhtml-mode . mhtml-ts-mode))
   :hook ((mhtml-ts-mode . eglot-ensure))
-  :fmt (mhtml-ts-mode . fmt/prettier-buffer))
+  :fmt (mhtml-ts-mode . fmt/biome-buffer))
 
 (use-package css-mode
   :init
@@ -1441,7 +1441,7 @@ block, then the whole buffer is indented."
   :mode (("\\.scss\\'" . scss-mode))
   :hook ((css-base-mode . eglot-ensure)
          (scss-base-mode . eglot-ensure))
-  :fmt (css-base-mode . fmt/prettier-buffer)
+  :fmt (css-base-mode . fmt/biome-buffer)
   :custom
   (css-indent-offset 2))
 

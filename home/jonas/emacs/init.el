@@ -1386,10 +1386,10 @@ block, then the whole buffer is indented."
 
 ;;;; * Python
 (use-package python
-  :init
-  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   :hook (python-base-mode . eglot-ensure)
   :fmt (python-mode . fmt/ruff-buffer)
+  :init
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   :custom
   (python-indent-offset 4)
   :config
@@ -1398,7 +1398,8 @@ block, then the whole buffer is indented."
                  '((python-mode python-ts-mode)
                    "basedpyright-langserver" "--stdio")))
   (push 'pyright compilation-error-regexp-alist)
-  (push '(pyright "^\\ +\\(.+\\):\\([0-9]+\\):\\([0-9]+\\).+$" 1 2 3) compilation-error-regexp-alist-alist))
+  (push '(pyright "^\\ +\\(.+\\):\\([0-9]+\\):\\([0-9]+\\).+$" 1 2 3)
+        compilation-error-regexp-alist-alist))
 
 (use-package flymake-ruff
   :hook (python-ts-mode . flymake-ruff-load))

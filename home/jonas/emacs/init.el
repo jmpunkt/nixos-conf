@@ -1334,7 +1334,8 @@ block, then the whole buffer is indented."
          ("\\.rest\\'" . rst-mode)))
 
 ;;;; * Markdown
-(use-package markdown-ts-mode)
+(use-package markdown-ts-mode
+  :fmt (markdown-ts-mode . fmt/prettier-buffer))
 
 ;;;; * Graphivz
 (use-package graphviz-dot-mode)

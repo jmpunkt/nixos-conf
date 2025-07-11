@@ -64,7 +64,6 @@
           # Presentation
           ox-typst
           markdown-mode
-          graphviz-dot-mode
           # Programming
           rust-mode
           nix-ts-mode

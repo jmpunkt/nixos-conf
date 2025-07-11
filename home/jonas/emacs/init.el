@@ -1342,9 +1342,6 @@ block, then the whole buffer is indented."
 (use-package markdown-ts-mode
   :fmt (markdown-ts-mode . fmt/prettier-buffer))
 
-;;;; * Graphivz
-(use-package graphviz-dot-mode)
-
 ;;;; * Makefile
 (use-package make-mode
   :hook (make-mode . indent-tabs-mode))

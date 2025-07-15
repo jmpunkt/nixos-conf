@@ -595,7 +595,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
      '("x" . meow-line)
      '("X" . meow-goto-line)
      '("y" . meow-save)
-     '("Y" . meow-sync-grab)
+     '("Y" . consult-yank-from-kill-ring)
      '("z" . meow-pop-selection)
      '("'" . repeat)
      '("<" . indent-rigidly-left-to-tab-stop)

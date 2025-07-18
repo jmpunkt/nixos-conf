@@ -9,8 +9,7 @@
 ;; anyways. For this setup (NixOS) every package should be compiled anyways.
 (setq native-comp-jit-compilation-deny-list '(".*-loaddefs.el.gz"))
 
-;; temporary settings
-;; persistent  settings
+;; persistent settings
 (setq read-process-output-max (* 1024 1024)
       process-adaptive-read-buffering t
       gc-cons-threshold (* 128 1024 1024))

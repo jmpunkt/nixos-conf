@@ -17,10 +17,8 @@
 ;;; Packages
 (setq use-package-always-defer t)
 (setq package-archives nil)
-(setq package-enable-at-startup nil)
 (setq use-package-verbose nil)
 (setq use-package-compute-statistics t)
-(package-initialize)
 
 ;;; Emacs
 (setq default-frame-alist '((font . "Fantasque Sans Mono")))

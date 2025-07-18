@@ -65,7 +65,6 @@
           ox-typst
           markdown-mode
           # Programming
-          rust-mode
           nix-ts-mode
           nix-mode
           devdocs

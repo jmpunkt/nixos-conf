@@ -1412,10 +1412,9 @@ block, then the whole buffer is indented."
   :hook (python-ts-mode . flymake-ruff-load))
 
 ;;;; * Rust
-(use-package rust-mode
-  :custom
-  (rust-mode-treesitter-derive t)
-  :hook (rust-mode . eglot-ensure)
+(use-package rust-ts-mode
+  :mode ("\\.rs\\'" . rust-ts-mode)
+  :hook (rust-ts-mode . eglot-ensure)
   :config
   (add-to-list 'treesit-thing-settings
                '(rust (defun (or "function_item" "closure_expression"))
@@ -1427,10 +1426,6 @@ block, then the whole buffer is indented."
                       (text (or "line_comment" "string_literal" "raw_string_literal"))
                       (comment "line_comment")
                       (number (or "integer_literal" "float_literal")))))
-
-(use-package rust-compile
-  :demand t
-  :after rust-ts-mode)
 
 ;;;; * Lua
 (use-package lua-ts-mode

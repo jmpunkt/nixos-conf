@@ -12,6 +12,8 @@
     kernelPackages = pkgs.linuxPackages_latest;
     supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
   };
+  services.scx.enable = true;
+  services.scx.scheduler = "scx_rusty";
   # Automatic garbage collection (system profiles)
   nix.gc = {
     automatic = true;

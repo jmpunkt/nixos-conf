@@ -200,7 +200,7 @@
               systemConfig = config;
             };
             home-manager.sharedModules = [
-              nix-index-database.hmModules.nix-index
+              nix-index-database.homeModules.nix-index
             ];
           }
         );

@@ -470,7 +470,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
         (when (and m p)
           (thread-first
             (meow--make-selection '(expand . parent) m p)
-            (meow--select))
+            (meow--select t))
           (meow--maybe-highlight-num-positions)))))
   (defun jmpunkt/meow-search-with (search)
     (interactive (list (read-string "search: " nil 'regexp-search-ring)))

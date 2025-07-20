@@ -985,10 +985,6 @@ paths, it will fallback to the project root path."
                                              #'completion--in-region)
                                            args)))))
 
-(use-package vertico-quick
-  :demand t
-  :after vertico)
-
 (use-package vertico-prescient
   :hook (vertico-mode . vertico-prescient-mode)
   :custom

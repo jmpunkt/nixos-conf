@@ -1373,13 +1373,17 @@ block, then the whole buffer is indented."
   :mode "\\.nix\\'"
   :hook ((nix-ts-mode . eglot-ensure))
   :fmt (nix-ts-mode . fmt/alejandra-buffer)
+  :init
+  (add-to-list 'major-mode-remap-alist '(nix-mode . nix-ts-mode))
   :config
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nixd")))))
 
 ;;;; * C/C++
 (use-package cmake-ts-mode
-  :mode ("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode))
+  :mode ("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode)
+  :init
+  (add-to-list 'major-mode-remap-alist '(cmake-mode . cmake-ts-mode)))
 
 (use-package c-ts-mode
   :init
@@ -1411,6 +1415,8 @@ block, then the whole buffer is indented."
 (use-package rust-ts-mode
   :mode ("\\.rs\\'" . rust-ts-mode)
   :hook (rust-ts-mode . eglot-ensure)
+  :init
+  (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
   :config
   (add-to-list 'treesit-thing-settings
                '(rust (defun (or "function_item" "closure_expression"))
@@ -1425,7 +1431,9 @@ block, then the whole buffer is indented."
 
 ;;;; * Lua
 (use-package lua-ts-mode
-  :mode (("\\.lua\\'" . lua-ts-mode)))
+  :mode (("\\.lua\\'" . lua-ts-mode))
+  :init
+  (add-to-list 'major-mode-remap-alist '(lua-mode . lua-ts-mode)))
 
 ;;;; * WEB
 (use-package mhtml-ts-mode
@@ -1447,7 +1455,9 @@ block, then the whole buffer is indented."
 (use-package typescript-ts-mode
   :mode ("\\.ts\\'" . typescript-ts-mode)
   :hook ((typescript-ts-base-mode . eglot-ensure))
-  :fmt (typescript-ts-base-mode . fmt/biome-buffer))
+  :fmt (typescript-ts-base-mode . fmt/biome-buffer)
+  :init
+  (add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode)))
 
 (use-package json-ts-mode
   :init
@@ -1470,7 +1480,9 @@ block, then the whole buffer is indented."
 
 ;;;; * Docker
 (use-package dockerfile-ts-mode
-  :mode ("\\(?:Dockerfile\\(?:\\..*\\)?\\|\\.[Dd]ockerfile\\)\\'" . dockerfile-ts-mode))
+  :mode ("\\(?:Dockerfile\\(?:\\..*\\)?\\|\\.[Dd]ockerfile\\)\\'" . dockerfile-ts-mode)
+  :init
+  (add-to-list 'major-mode-remap-alist '(dockerfile-mode . dockerfile-ts-mode)))
 
 (use-package docker
   :bind ("C-c C-d" . docker))

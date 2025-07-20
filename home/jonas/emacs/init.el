@@ -1379,7 +1379,7 @@ block, then the whole buffer is indented."
 
 ;;;; * C/C++
 (use-package cmake-ts-mode
-  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
+  :mode ("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode))
 
 (use-package c-ts-mode
   :init
@@ -1469,14 +1469,15 @@ block, then the whole buffer is indented."
   :mode ("\\.tex\\'" . latex-mode))
 
 ;;;; * Docker
-(use-package dockerfile-ts-mode)
+(use-package dockerfile-ts-mode
+  :mode ("\\(?:Dockerfile\\(?:\\..*\\)?\\|\\.[Dd]ockerfile\\)\\'" . dockerfile-ts-mode))
 
 (use-package docker
   :bind ("C-c C-d" . docker))
 
 ;;; * PDF
 (use-package reader
-    :mode ("\\.pdf\\'" . reader-mode))
+  :mode ("\\.pdf\\'" . reader-mode))
 
 ;;; * Misc
 (use-package devdocs

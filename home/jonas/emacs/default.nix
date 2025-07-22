@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   xdg.configFile = {
     "emacs/init.el".text = builtins.readFile ./init.el;
     # since emacs 27.1
@@ -13,83 +14,84 @@
   programs.emacs = {
     enable = true;
     package = pkgs.jmpunkt.emacs;
-    extraPackages = epkgs:
+    extraPackages =
+      epkgs:
       with epkgs.melpaPackages;
+      [
+        # Core
+        avy
+        meow
+        hl-todo
+        envrc
+        helpful
+        xterm-color
+        editorconfig
+        reformatter
+        biome
+        casual-avy
+        transient-dwim
+        rg
+        # docker
+        citre
+        # Org
+        ob-async
+        ob-mermaid
+        ob-graphql
+        # PDF
+        pdf-tools
+        # Git
+        magit
+        diff-hl
+        # UI
+        modus-themes
+        # Bibliography
+        citar
+        # Search/Find
+        consult
+        vertico
+        vertico-prescient
+        embark
+        embark-consult
+        marginalia
+        cape
+        tempel
+        # Spelling
+        jinx
+        languagetool
+        # RSS
+        elfeed
+        # Misc
+        graphql-mode
+        mermaid-mode
+        # Presentation
+        ox-typst
+        markdown-mode
+        # Programming
+        nix-ts-mode
+        nix-mode
+        devdocs
+        flymake-ruff
+      ]
+      ++ (with epkgs.elpaPackages; [
+        undo-tree
+        org
+        breadcrumb
+        svg-lib
+        kind-icon
+      ])
+      ++ (with epkgs.nongnuPackages; [ eat ])
+      ++ (
+        with epkgs.manualPackages;
         [
-          # Core
-          avy
-          meow
-          hl-todo
-          envrc
-          helpful
-          xterm-color
-          editorconfig
-          reformatter
-          biome
-          casual-avy
-          transient-dwim
-          rg
-          # docker
-          citre
-          # Org
-          ob-async
-          ob-mermaid
-          ob-graphql
-          # PDF
-          pdf-tools
-          # Git
-          magit
-          diff-hl
-          # UI
-          modus-themes
-          # Bibliography
-          citar
-          # Search/Find
-          consult
-          vertico
-          vertico-prescient
-          embark
-          embark-consult
-          marginalia
-          cape
-          tempel
-          # Spelling
-          jinx
-          languagetool
-          # RSS
-          elfeed
-          # Misc
-          graphql-mode
-          mermaid-mode
-          # Presentation
-          ox-typst
-          markdown-mode
-          # Programming
-          nix-ts-mode
-          nix-mode
-          devdocs
-          flymake-ruff
+          jmpunktPkgs.eglot-x
+          jmpunktPkgs.reader
+          jmpunktPkgs.typst-ts-mode
+          jmpunktPkgs.copilot
+          (jmpunktPkgs.nixosPaths (import ./variables.nix { inherit pkgs; }))
         ]
-        ++ (with epkgs.elpaPackages; [
-          undo-tree
-          org
-          breadcrumb
-          svg-lib
-          kind-icon
-        ])
-        ++ (with epkgs.nongnuPackages; [eat])
-        ++ (
-          with epkgs.manualPackages;
-            [
-              jmpunktPkgs.eglot-x
-              jmpunktPkgs.reader
-              jmpunktPkgs.typst-ts-mode
-              jmpunktPkgs.copilot
-              (jmpunktPkgs.nixosPaths (import ./variables.nix {inherit pkgs;}))
-            ]
-            ++ [
-              treesit-grammars.with-all-grammars
-            ]
-        );
+        ++ [
+          treesit-grammars.with-all-grammars
+        ]
+      );
   };
 }

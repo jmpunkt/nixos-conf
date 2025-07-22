@@ -1,4 +1,5 @@
-{pkgs}: {
+{ pkgs }:
+{
   keyboard-get = pkgs.writeShellScript "hyprland-get-keyboard" ''
     # https://github.com/hyprwm/Hyprland/discussions/2616#discussioncomment-6327590
     # get-lang

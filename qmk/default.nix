@@ -3,7 +3,8 @@
   fetchFromGitHub,
   python3,
   qmk,
-}: let
+}:
+let
   src = fetchFromGitHub {
     repo = "qmk_firmware";
     owner = "qmk";
@@ -12,27 +13,27 @@
     sha256 = "sha256-pY8WFXGihltJrakjaQgePlDUlpJBsibjmxOhKLmFIbY=";
   };
 in
-  stdenv.mkDerivation rec {
-    inherit src;
+stdenv.mkDerivation rec {
+  inherit src;
 
-    name = "keyboard-jmpunkt";
+  name = "keyboard-jmpunkt";
 
-    nativeBuildInputs = [
-      python3
-      qmk
-    ];
+  nativeBuildInputs = [
+    python3
+    qmk
+  ];
 
-    postPatch = ''
-      cp -R ${./..}/qmk ./keyboards/sweeeeep
-      patchShebangs ./util/uf2conv.py
-    '';
+  postPatch = ''
+    cp -R ${./..}/qmk ./keyboards/sweeeeep
+    patchShebangs ./util/uf2conv.py
+  '';
 
-    buildPhase = ''
-      make sweeeeep:default
-    '';
+  buildPhase = ''
+    make sweeeeep:default
+  '';
 
-    installPhase = ''
-      mkdir -p $out/
-      mv sweeeeep_default.uf2  $out/image.uf2
-    '';
-  }
+  installPhase = ''
+    mkdir -p $out/
+    mv sweeeeep_default.uf2  $out/image.uf2
+  '';
+}

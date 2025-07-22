@@ -3,7 +3,8 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   # NOTE: do not enable wayland (currently it detects two monitors as
   # one and launches all battle-net related with twice the width by
   # same height.)
@@ -44,7 +45,8 @@
     fi
 
   '';
-in {
+in
+{
   programs.firejail = {
     wrappedBinaries = {
       wine = {

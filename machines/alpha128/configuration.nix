@@ -3,7 +3,8 @@
   pkgs,
   options,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware-configuration.nix
     ./../../configurations/desktop/kde.nix
@@ -26,6 +27,9 @@
   };
   networking.hostName = "alpha128";
   hardware.bluetooth.enable = true;
-  environment.systemPackages = with pkgs; [razergenie nvtopPackages.amd];
+  environment.systemPackages = with pkgs; [
+    razergenie
+    nvtopPackages.amd
+  ];
   system.stateVersion = "25.05";
 }

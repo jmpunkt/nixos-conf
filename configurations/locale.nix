@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   i18n = {
     # Has 24hrs, proper date format, uses A4, and is English.
     defaultLocale = "en_IE.UTF-8";

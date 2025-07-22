@@ -1,1 +1,1 @@
-{callPackage}: {}
+{ callPackage }: { }

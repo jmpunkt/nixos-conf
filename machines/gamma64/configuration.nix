@@ -4,7 +4,8 @@
   options,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     ./hardware-configuration.nix
     ./../../configurations/desktop/kde.nix
@@ -26,13 +27,22 @@
       "initcall_blacklist=acpi_cpufreq_init"
       "amd_pstate.shared_mem=1"
     ];
-    kernelModules = ["amd-pstate"];
+    kernelModules = [ "amd-pstate" ];
     initrd.luks.devices."root".allowDiscards = true;
   };
-  fileSystems."/".options = ["noatime" "nodiratime" "discard"];
+  fileSystems."/".options = [
+    "noatime"
+    "nodiratime"
+    "discard"
+  ];
   networking.hostName = "gamma64";
   hardware.cpu.amd.updateMicrocode = true;
-  environment.systemPackages = with pkgs; [tlp powertop s-tui config.boot.kernelPackages.cpupower];
+  environment.systemPackages = with pkgs; [
+    tlp
+    powertop
+    s-tui
+    config.boot.kernelPackages.cpupower
+  ];
   hardware.bluetooth.enable = true;
   services = {
     power-profiles-daemon.enable = lib.mkForce false;

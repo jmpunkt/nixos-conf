@@ -3,7 +3,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   users.users.jonas = {
     isNormalUser = true;
     uid = 1000;
@@ -27,5 +28,7 @@
       (builtins.readFile ./../../home/jonas/yubikey/ssh.pub)
     ];
   };
-  users.groups.jonas = {gid = 1000;};
+  users.groups.jonas = {
+    gid = 1000;
+  };
 }

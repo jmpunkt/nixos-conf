@@ -3,14 +3,23 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     ../tools.nix
     ../locale.nix
   ];
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    supportedFilesystems = ["btrfs" "reiserfs" "vfat" "f2fs" "xfs" "ntfs" "cifs"];
+    supportedFilesystems = [
+      "btrfs"
+      "reiserfs"
+      "vfat"
+      "f2fs"
+      "xfs"
+      "ntfs"
+      "cifs"
+    ];
   };
   services.scx.enable = true;
   services.scx.scheduler = "scx_rusty";
@@ -33,7 +42,7 @@
       fantasque-sans-mono
     ];
   };
-  hardware. graphics.enable = true;
+  hardware.graphics.enable = true;
   location = {
     latitude = 50.11;
     longitude = 8.682;

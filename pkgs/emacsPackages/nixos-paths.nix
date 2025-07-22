@@ -3,28 +3,35 @@
   buildEnv,
   trivialBuild,
   writeTextFile,
-}: {
+}:
+{
   variables,
   paths,
-}: let
-  valueToEmacs = value:
-    if (builtins.typeOf value) == "list"
-    then "'(${builtins.concatStringsSep "\n" (builtins.map valueToEmacs value)})"
-    else if (builtins.isString value) || (builtins.isPath value)
-    then ''"${value}"''
-    else if (builtins.isNull value) || ((builtins.isBool value) && value == false)
-    then "nil"
-    else if (builtins.isBool value)
-    then "1"
-    else if (builtins.isInt value) || (builtins.isFloat value)
-    then "${value}"
-    else if (builtins.isAttrs value)
-    then "'(${builtins.concatStringsSep " " (lib.attrsets.mapAttrsToList (key: value: "(${key} . ${valueToEmacs value})") value)})"
-    else lib.assertMsg false "${builtins.typeOf value} can not translated into Elisp";
-  pairs =
-    builtins.concatStringsSep
-    "\n"
-    (lib.mapAttrsToList (name: value: ''(setq-default ${name} ${valueToEmacs value})'') variables);
+}:
+let
+  valueToEmacs =
+    value:
+    if (builtins.typeOf value) == "list" then
+      "'(${builtins.concatStringsSep "\n" (builtins.map valueToEmacs value)})"
+    else if (builtins.isString value) || (builtins.isPath value) then
+      ''"${value}"''
+    else if (builtins.isNull value) || ((builtins.isBool value) && value == false) then
+      "nil"
+    else if (builtins.isBool value) then
+      "1"
+    else if (builtins.isInt value) || (builtins.isFloat value) then
+      "${value}"
+    else if (builtins.isAttrs value) then
+      "'(${
+        builtins.concatStringsSep " " (
+          lib.attrsets.mapAttrsToList (key: value: "(${key} . ${valueToEmacs value})") value
+        )
+      })"
+    else
+      lib.assertMsg false "${builtins.typeOf value} can not translated into Elisp";
+  pairs = builtins.concatStringsSep "\n" (
+    lib.mapAttrsToList (name: value: ''(setq-default ${name} ${valueToEmacs value})'') variables
+  );
   nixos-paths-el = ''
     ;;; nixos-paths.el --- auto generated file by NixOS -*- lexical-binding: t; -*-
 
@@ -50,23 +57,20 @@
     (provide 'nixos-paths)
     ;;; nixos-paths.el ends here
   '';
-  emacsPaths =
-    buildEnv
-    {
-      inherit paths;
-      name = "emacs-paths-deps";
-      pathsToLink = ["/bin"];
-    };
+  emacsPaths = buildEnv {
+    inherit paths;
+    name = "emacs-paths-deps";
+    pathsToLink = [ "/bin" ];
+  };
 in
-  trivialBuild
-  {
-    pname = "emacs-nixos-paths";
-    version = "0.0.1";
-    src =
-      writeTextFile
-      {
-        name = "nixos-paths.el";
-        text = nixos-paths-el;
-      };
-    meta = {description = "NixOS specific paths for Emacs.";};
-  }
+trivialBuild {
+  pname = "emacs-nixos-paths";
+  version = "0.0.1";
+  src = writeTextFile {
+    name = "nixos-paths.el";
+    text = nixos-paths-el;
+  };
+  meta = {
+    description = "NixOS specific paths for Emacs.";
+  };
+}

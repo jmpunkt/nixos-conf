@@ -4,9 +4,13 @@
   pkgs,
   options,
   ...
-}: {
+}:
+{
   imports = import ../modules/all-nixos.nix;
-  nixpkgs.overlays = [(import ../overlays/00-patch.nix) (import ../overlays/10-pkgs.nix)];
+  nixpkgs.overlays = [
+    (import ../overlays/00-patch.nix)
+    (import ../overlays/10-pkgs.nix)
+  ];
 
   # Disable command-not-found since there is probably no NixOS channel
   programs.command-not-found.enable = lib.mkForce false;
@@ -17,7 +21,7 @@
     enable = true;
     extraRules = [
       {
-        groups = ["wheel"];
+        groups = [ "wheel" ];
         persist = true;
         keepEnv = true;
       }

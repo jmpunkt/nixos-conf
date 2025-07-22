@@ -3,8 +3,9 @@
   pkgs,
   lib,
   ...
-}: {
-  imports = [./minimal.nix];
+}:
+{
+  imports = [ ./minimal.nix ];
 
   environment.systemPackages = with pkgs.kdePackages; [
     ark

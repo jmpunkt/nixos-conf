@@ -4,7 +4,8 @@
   pkgs,
   options,
   ...
-}: {
+}:
+{
   imports = [
     ./barebones.nix
   ];

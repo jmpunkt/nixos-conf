@@ -2,7 +2,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   home.shell.enableFishIntegration = true;
 
   xdg.configFile = {

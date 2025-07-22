@@ -4,12 +4,11 @@
   systemConfig,
   pkgs,
   ...
-}: let
-  ifBluetooth =
-    if systemConfig.hardware.bluetooth.enable
-    then true
-    else false;
-in {
+}:
+let
+  ifBluetooth = if systemConfig.hardware.bluetooth.enable then true else false;
+in
+{
   imports = [
     ./hyprland.nix
   ];
@@ -87,8 +86,8 @@ in {
     services.polkit-gnome-authentication-agent-1 = {
       Unit = {
         Description = "polkit-gnome-authentication-agent-1";
-        Wants = ["graphical-session.target"];
-        After = ["graphical-session.target"];
+        Wants = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
       };
       Service = {
         Type = "simple";
@@ -98,7 +97,7 @@ in {
         TimeoutStopSec = 10;
       };
       Install = {
-        WantedBy = ["graphical-session.target"];
+        WantedBy = [ "graphical-session.target" ];
       };
     };
   };

@@ -4,7 +4,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   home.sessionVariables = {
     GTAGSCONF = "${pkgs.global}/share/gtags/gtags.conf";
     GTAGSLABEL = "pygments";

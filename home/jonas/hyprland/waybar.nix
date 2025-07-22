@@ -2,9 +2,11 @@
   config,
   pkgs,
   ...
-}: let
-  scripts = pkgs.callPackage ./scripts.nix {};
-in {
+}:
+let
+  scripts = pkgs.callPackage ./scripts.nix { };
+in
+{
   programs.waybar = {
     enable = true;
     settings = {
@@ -12,7 +14,7 @@ in {
         layer = "top";
         position = "top";
         spacing = 4;
-        modules-left = ["hyprland/workspaces"];
+        modules-left = [ "hyprland/workspaces" ];
         modules-right = [
           "tray"
           "pulseaudio"
@@ -27,12 +29,12 @@ in {
           format = "{icon}";
           on-click = "activate";
           persistent-workspaces = {
-            "1" = [];
-            "2" = [];
-            "3" = [];
-            "4" = [];
-            "5" = [];
-            "6" = [];
+            "1" = [ ];
+            "2" = [ ];
+            "3" = [ ];
+            "4" = [ ];
+            "5" = [ ];
+            "6" = [ ];
           };
         };
         "custom/keyboard" = {
@@ -88,11 +90,17 @@ in {
           format-charging-alt = "{capacity}% ";
           format-plugged = "";
           format-alt = "{time} {capacity}% {icon}";
-          format-icons = ["" "" "" "" ""];
+          format-icons = [
+            ""
+            ""
+            ""
+            ""
+            ""
+          ];
         };
         "custom/monitor" = {
           tooltip = false;
-          on-click = "${pkgs.nwg-displays.override {hyprlandSupport = true;}}/bin/nwg-displays";
+          on-click = "${pkgs.nwg-displays.override { hyprlandSupport = true; }}/bin/nwg-displays";
           format = "";
         };
         pulseaudio = {
@@ -109,7 +117,11 @@ in {
             phone = "";
             portable = "";
             car = "";
-            default = ["" "" ""];
+            default = [
+              ""
+              ""
+              ""
+            ];
           };
           on-click = "${pkgs.pavucontrol}/bin/pavucontrol";
         };

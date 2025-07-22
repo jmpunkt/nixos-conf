@@ -2,18 +2,19 @@
   pkgs,
   config,
   ...
-}: {
+}:
+{
   console = {
     font = "Lat2-Terminus16";
     keyMap = "de";
   };
 
-  boot.kernelModules = ["vfio-pci"];
+  boot.kernelModules = [ "vfio-pci" ];
 
   services.qemuGuest.enable = true;
 
   services.openssh = {
-    ports = [11111];
+    ports = [ 11111 ];
     enable = true;
     settings = {
       PermitRootLogin = "yes";

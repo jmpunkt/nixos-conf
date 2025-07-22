@@ -4,13 +4,12 @@
   pkgs,
   lib,
   ...
-}: {
-  imports =
-    (import ../../modules/all-home-manager.nix)
-    ++ [
-      ./tags.nix
-      ./fish
-    ];
+}:
+{
+  imports = (import ../../modules/all-home-manager.nix) ++ [
+    ./tags.nix
+    ./fish
+  ];
   manual.manpages.enable = false;
   home.language = {
     base = "en_IE.UTF-8";

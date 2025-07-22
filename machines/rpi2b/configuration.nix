@@ -4,7 +4,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     ../../configurations/rpi2.nix
     ../../configurations/locale.nix
@@ -12,25 +13,27 @@
   ];
 
   systemd.services."sensor-data-setup" = {
-    wantedBy = ["multi-user.target"];
+    wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
       Type = "oneshot";
       WorkingDirectory = config.users.users.sensor-data.home;
       User = "sensor-data";
-      ExecStart = let
-        script = pkgs.writeScript "sensor-data-start" ''
-          #!${pkgs.runtimeShell}
-          if [ ! -f "mqtt.sqlite" ]; then
-            ${pkgs.sqlite}/bin/sqlite3 mqtt.sqlite 'PRAGMA journal_mode=WAL;'
-            chmod 760 mqtt.sqlite
-          fi
-        '';
-      in "${script}";
+      ExecStart =
+        let
+          script = pkgs.writeScript "sensor-data-start" ''
+            #!${pkgs.runtimeShell}
+            if [ ! -f "mqtt.sqlite" ]; then
+              ${pkgs.sqlite}/bin/sqlite3 mqtt.sqlite 'PRAGMA journal_mode=WAL;'
+              chmod 760 mqtt.sqlite
+            fi
+          '';
+        in
+        "${script}";
     };
   };
 
-  environment.systemPackages = [pkgs.sqlite];
+  environment.systemPackages = [ pkgs.sqlite ];
 
   users.users.sensor-data = {
     isSystemUser = true;
@@ -38,16 +41,16 @@
     home = "/var/lib/sensor-data";
     createHome = true;
   };
-  users.groups.sensor-data = {};
-  users.users.grafana.extraGroups = ["sensor-data"];
-  users.users.telegraf.extraGroups = ["sensor-data"];
+  users.groups.sensor-data = { };
+  users.users.grafana.extraGroups = [ "sensor-data" ];
+  users.users.telegraf.extraGroups = [ "sensor-data" ];
 
   services.telegraf = {
     enable = true;
     extraConfig = {
       inputs = {
         mqtt_consumer = {
-          servers = ["tcp://127.0.0.1:1883"];
+          servers = [ "tcp://127.0.0.1:1883" ];
           topics = [
             "tasmota/tele/+/SENSOR"
           ];
@@ -78,7 +81,11 @@
   networking = {
     firewall = {
       enable = true;
-      allowedTCPPorts = [80 443 1883];
+      allowedTCPPorts = [
+        80
+        443
+        1883
+      ];
     };
     hostName = "rpi2";
     interfaces.enp1s0 = {
@@ -91,6 +98,6 @@
       ];
     };
     defaultGateway.address = "192.168.178.1";
-    nameservers = ["192.168.178.1"];
+    nameservers = [ "192.168.178.1" ];
   };
 }

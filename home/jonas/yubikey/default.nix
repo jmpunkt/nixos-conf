@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   home.file = {
     ".ssh/id_rsa.pub".text = builtins.readFile ./ssh.pub;
   };
@@ -26,7 +27,7 @@
   };
 
   # NOTE: Required for pinentry-gnome3 to work
-  dbus.packages = with pkgs; [gcr];
+  dbus.packages = with pkgs; [ gcr ];
 
   programs.ssh = {
     matchBlocks = {

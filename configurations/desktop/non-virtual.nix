@@ -3,8 +3,9 @@
   pkgs,
   lib,
   ...
-}: {
-  imports = [./minimal.nix];
+}:
+{
+  imports = [ ./minimal.nix ];
 
   nix.settings = {
     substituters = [
@@ -20,8 +21,8 @@
   # scanner
   hardware = {
     sane.enable = true;
-    sane.extraBackends = with pkgs; [hplipWithPlugin];
-    sane.disabledDefaultBackends = ["escl"];
+    sane.extraBackends = with pkgs; [ hplipWithPlugin ];
+    sane.disabledDefaultBackends = [ "escl" ];
   };
 
   # sound
@@ -29,7 +30,9 @@
   services = {
     pipewire = {
       enable = true;
-      pulse = {enable = true;};
+      pulse = {
+        enable = true;
+      };
       alsa = {
         enable = true;
         support32Bit = true;
@@ -40,7 +43,7 @@
   # printing
   services = {
     printing.enable = true;
-    printing.drivers = with pkgs; [hplip];
+    printing.drivers = with pkgs; [ hplip ];
     avahi = {
       enable = true;
       nssmdns4 = true;

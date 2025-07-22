@@ -610,8 +610,8 @@ If the cursor is on the last prompt, then we want to insert at the current posit
 ;;;; * Formatter
 (use-package reformatter
   :init
-  (reformatter-define fmt/alejandra
-    :program "alejandra"
+  (reformatter-define fmt/nixfmt
+    :program "nixfmt"
     :args (list input-file)
     :stdin nil
     :stdout nil
@@ -1372,7 +1372,7 @@ block, then the whole buffer is indented."
 (use-package nix-ts-mode
   :mode "\\.nix\\'"
   :hook ((nix-ts-mode . eglot-ensure))
-  :fmt (nix-ts-mode . fmt/alejandra-buffer)
+  :fmt (nix-ts-mode . fmt/nixfmt-buffer)
   :init
   (add-to-list 'major-mode-remap-alist '(nix-mode . nix-ts-mode))
   :config

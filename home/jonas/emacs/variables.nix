@@ -64,7 +64,7 @@ in {
       nixpkgs-fmt
       pgformatter
       nodePackages.prettier
-      alejandra
+      nixfmt-rfc-style
       typstyle
       ruff
       biome

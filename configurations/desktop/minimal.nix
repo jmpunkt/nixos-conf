@@ -21,6 +21,10 @@
       "cifs"
     ];
   };
+
+  system.switch.enableNg = true;
+  system.rebuild.enableNg = true;
+
   services.scx.enable = true;
   services.scx.scheduler = "scx_rusty";
   # Automatic garbage collection (system profiles)

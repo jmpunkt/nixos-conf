@@ -12,4 +12,4 @@ nix --experimental-features 'nix-command flakes' build ".#$hostname"
 built=$(cat ./result/nixos-version)
 
 echo "diffing system derivations for $hostname ($current -> $built)"
-nix --experimental-features 'nix-command flakes' run self#nvd diff /nix/var/nix/profiles/system ./result/
+nix --experimental-features 'nix-command flakes' run nixpkgs#nvd diff /nix/var/nix/profiles/system ./result/

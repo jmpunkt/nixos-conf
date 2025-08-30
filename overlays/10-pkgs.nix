@@ -27,15 +27,4 @@ self: super:
       in
       esuper.override { inherit manualPackages; }
     ));
-
-  python39Packages = super.python39Packages // {
-    pycurl = super.python39Packages.pycurl.overrideAttrs (old: {
-      disabledTests = old.disabledTests ++ [
-        "test_getinfo_raw_certinfo"
-        "test_request_with_certinfo"
-        "test_request_with_verifypeer"
-        "test_request_without_certinfo"
-      ];
-    });
-  };
 }

@@ -1,10 +1,5 @@
 { pkgs }:
 let
-  pathOfExtension = ext: "${ext}/share/vscode/extensions/${ext.vscodeExtUniqueId}";
-  vscode-eslint = pkgs.vscode-extensions.jmpunktPkgs.vscode-eslint;
-  eslint-lsp = pkgs.writeShellScriptBin "eslint-lsp" ''
-    "${pkgs.nodejs}/bin/node" "${pathOfExtension vscode-eslint}/server/out/eslintServer.js" "--stdio"
-  '';
   copilot = pkgs.nodePackages.jmpunkt."@github/copilot-language-server-1.296.0";
   copilot-run = pkgs.writeShellScriptBin "copilot-run" ''
     "${pkgs.nodejs}/bin/node" "${copilot}/lib/node_modules/@github/copilot-language-server/dist/language-server.js" "$@"
@@ -47,7 +42,6 @@ in
         ccls
         yaml-language-server
         nodePackages.typescript-language-server
-        eslint-lsp
         nixd
         unstable.tinymist # Typst
         basedpyright

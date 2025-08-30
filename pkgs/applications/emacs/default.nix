@@ -32,5 +32,19 @@
         # taken from https://github.com/geza-herman/emacs/commit/784a9fd3d511b7f6794f713a8d0b1370ab1b2401
         ./improved-reading.patch
       ];
+      env = (old.env or { }) // {
+        CFLAGS = (
+          toString [
+            "-flto"
+            "-march=x86-64-v3"
+            "-fomit-frame-pointer"
+            "-funroll-loops"
+            "-frename-registers"
+            "-fno-signed-zeros"
+            "-fno-semantic-interposition"
+            "-pipe"
+          ]
+        );
+      };
     }
   )

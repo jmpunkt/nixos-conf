@@ -28,13 +28,7 @@
     ];
   };
 
-  # enable flakes
-  nix = {
-    package = pkgs.nixVersions.latest;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
+  nix.package = pkgs.nixVersions.latest;
 
   networking.firewall.enable = true;
   services.timesyncd.enable = lib.mkForce true;

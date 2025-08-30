@@ -24,14 +24,25 @@ rec {
         ...
       }:
       {
+        # enable flakes
+        nix.settings.experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
+        # disable default flake registry entries
+        nix.settings.flake-registry = "";
         # disable channels, since we are using flakes
         nix.channel.enable = lib.mkForce false;
         # Pins nixpkgs of system to `inputs.nixpkgs`.
-        nix.registry.nixpkgs.flake = nixpkgs;
+        nixpkgs.flake.setNixPath = true;
         # Allows commands like `nix shell self#jmpunkt.emacs`
         nix.registry.self.flake = self;
         nixpkgs.overlays = minimumOverlays ++ [ (mkUnstableOverlay system) ];
-        nix.nixPath = [
+        nix.settings.nix-path = lib.mkForce [
+          "nixpkgs=${nixpkgs}"
+          "home-manager=${home-manager}"
+        ];
+        nix.nixPath = lib.mkForce [
           "nixpkgs=${nixpkgs}"
           "home-manager=${home-manager}"
         ];

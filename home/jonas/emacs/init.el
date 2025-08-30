@@ -255,6 +255,9 @@ The DWIM behaviour of this command is as follows:
   (global-eldoc-mode -1)
   (put 'narrow-to-region 'disabled nil))
 
+(use-package so-long
+  :hook (after-init . global-so-long-mode))
+
 (use-package tempel
   :bind (:map tempel-map
               ("M-n" . tempel-next)))

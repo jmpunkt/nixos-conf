@@ -74,6 +74,7 @@
         typespec-ts-mode
       ]
       ++ (with epkgs.elpaPackages; [
+        so-long
         undo-tree
         org
         breadcrumb

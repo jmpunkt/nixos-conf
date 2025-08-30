@@ -124,6 +124,12 @@ in
         configureFlags = old.configureFlags ++ lib.singleton "--enable-link-time-optimization";
       });
 
+    enableWideInt =
+      drv:
+      drv.overrideAttrs (old: {
+        configureFlags = old.configureFlags ++ lib.singleton "--with-wide-int";
+      });
+
     # Enable debuggin with GDB
     enableDebug =
       drv:

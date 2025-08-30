@@ -4,7 +4,7 @@
     name = "emacs-jmpunkt";
     features = with emacs-overlay; [
       enableLTO
-      enableIgc
+      enableWideInt
     ];
     repository = emacs-overlay.repos.emacs.github;
   }).override

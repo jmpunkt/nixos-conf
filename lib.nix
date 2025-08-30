@@ -69,7 +69,8 @@ rec {
       modules = [
         nixpkgs.nixosModules.notDetected
         (defaultConfig { inherit nixpkgs system; })
-      ] ++ modules;
+      ]
+      ++ modules;
     };
   # provides NixOS system with default settings.
   mkSystem =
@@ -85,7 +86,8 @@ rec {
       modules = [
         nixpkgs.nixosModules.notDetected
         (defaultConfig { inherit nixpkgs system; })
-      ] ++ modules;
+      ]
+      ++ modules;
     };
   mkPkgs =
     system: nixpkgs: additionalOverlays:

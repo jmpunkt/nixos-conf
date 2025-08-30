@@ -1474,6 +1474,14 @@ block, then the whole buffer is indented."
   :custom
   (js-indent-level 2))
 
+;;;; * Typespec
+(use-package typespec-ts-mode
+  :hook ((typespec-ts-mode . eglot-ensure))
+  :config
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(typespec-ts-mode . ("tsp-server" "--stdio")))))
+
 ;;;; * LaTeX
 (use-package tex-mode
   :mode ("\\.tex\\'" . latex-mode))

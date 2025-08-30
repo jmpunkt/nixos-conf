@@ -52,6 +52,7 @@ in
         unstable.tinymist # Typst
         basedpyright
         taplo # Toml
+        unstable.typespec
       ];
       org = with pkgs; [
         # graphs

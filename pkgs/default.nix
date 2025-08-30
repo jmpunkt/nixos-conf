@@ -8,4 +8,5 @@
   hunspellDicts = callPackage ./hunspellDicts { };
   oh-my-svg = libsForQt5.callPackage ./oh-my-svg { };
   html-to-svg = callPackage ./html-to-svg { };
+  tree-sitter-typespec = callPackage ./tree-sitter-typespec { };
 }

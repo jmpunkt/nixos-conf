@@ -71,6 +71,7 @@
         nix-mode
         devdocs
         flymake-ruff
+        typespec-ts-mode
       ]
       ++ (with epkgs.elpaPackages; [
         undo-tree
@@ -90,7 +91,9 @@
           (jmpunktPkgs.nixosPaths (import ./variables.nix { inherit pkgs; }))
         ]
         ++ [
-          treesit-grammars.with-all-grammars
+          (treesit-grammars.with-grammars (
+            p: (builtins.attrValues p) ++ [ pkgs.jmpunkt.tree-sitter-typespec ]
+          ))
         ]
       );
   };

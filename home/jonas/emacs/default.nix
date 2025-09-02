@@ -89,6 +89,7 @@
           jmpunktPkgs.reader
           jmpunktPkgs.typst-ts-mode
           jmpunktPkgs.copilot
+          jmpunktPkgs.jj-mode
           (jmpunktPkgs.nixosPaths (import ./variables.nix { inherit pkgs; }))
         ]
         ++ [

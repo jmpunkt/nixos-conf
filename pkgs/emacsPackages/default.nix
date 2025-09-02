@@ -5,4 +5,5 @@
   typst-ts-mode = callPackage ./typst-ts-mode.nix { };
   copilot = callPackage ./copilot.nix { };
   reader = callPackage ./reader.nix { };
+  jj-mode = callPackage ./jj-mode.nix { };
 }

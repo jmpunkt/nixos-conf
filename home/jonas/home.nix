@@ -50,6 +50,10 @@
     enable = true;
     userName = "Jonas Meurer";
     lfs.enable = true;
+    difftastic = {
+      enable = true;
+      enableAsDifftool = true;
+    };
     extraConfig = {
       core = {
         whitespace = "trailing-space,space-before-tab";

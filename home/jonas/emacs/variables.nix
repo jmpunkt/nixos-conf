@@ -42,9 +42,9 @@ in
         ccls
         yaml-language-server
         nodePackages.typescript-language-server
-        nixd
+        unstable.nixd
         unstable.tinymist # Typst
-        basedpyright
+        unstable.basedpyright
         taplo # Toml
         unstable.typespec
       ];

@@ -1283,6 +1283,8 @@ block, then the whole buffer is indented."
 
 (use-package org-capture
   :commands (org-capture)
+  :bind (:map global-map
+              ("C-c c" . org-capture))
   :custom
   (org-capture-templates
    '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" jmpunkt/org-agenda-dir)))

@@ -1172,6 +1172,8 @@ ignored."
   :mode ("\\.org\\'" . org-mode)
   :hook (org-mode . (lambda () (setq-local tab-width 8)))
   :init
+  (defvar jmpunkt/org-agenda-dir (expand-file-name "~/Sync/")
+    "Directory for org-agenda files.")
   (defun jmpunkt/format-org-src ()
     "Formats the org-src-block with C-c C-f keybind or indents the whole buffer.
 
@@ -1283,16 +1285,19 @@ block, then the whole buffer is indented."
   :commands (org-capture)
   :custom
   (org-capture-templates
-   '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+   '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" jmpunkt/org-agenda-dir)))
       "* TODO %? %^G \n  %U" :empty-lines 1)
-     ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+     ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" jmpunkt/org-agenda-dir)))
       "* TODO %? %^G \n  DEADLINE: %^t" :empty-lines 1)
-     ("p" "Priority" entry (file (lambda () (expand-file-name "todo.org" org-agenda-dir)))
+     ("s" "Priority" entry (file (lambda () (expand-file-name "todo.org" jmpunkt/org-agenda-dir)))
       "* TODO [#A] %? %^G \n  SCHEDULED: %^t")
      ("a" "Appointment" entry (file+headline
-                               (lambda () (expand-file-name "calendar.org" org-agenda-dir))
+                               (lambda () (expand-file-name "calendar.org" jmpunkt/org-agenda-dir))
                                "Event")
-      "* %? %^G \n  %^t"))))
+      "* %? %^G \n  %^t")
+     ("c" "Code To-Do" entry (expand-file-name "todo.org" jmpunkt/org-agenda-dir)
+      "* TODO [#B] %?\n:Created: %T\n%i\n%a\nProposed Solution: "
+      :empty-lines 0))))
 
 (use-package org-indent
   :after org

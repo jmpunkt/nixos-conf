@@ -20,6 +20,10 @@
       url = "github:emacs-mirror/emacs";
       flake = false;
     };
+    emacs-igc-mirror = {
+      url = "github:emacs-mirror/emacs/feature/igc";
+      flake = false;
+    };
     utils.url = "github:numtide/flake-utils";
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
@@ -35,9 +39,9 @@
       home-manager,
       rust-overlay,
       emacs-overlay,
-      emacs-mirror,
       utils,
       nix-index-database,
+      ...
     }@inputs:
     let
       allPackagesOverlay = stable.lib.composeManyExtensions [
@@ -47,7 +51,7 @@
           };
         })
         (import ./overlays/10-pkgs.nix)
-        (import ./overlays/emacs-overlay-glue.nix { inherit emacs-overlay emacs-mirror; })
+        (import ./overlays/emacs-overlay-glue.nix { flake-inputs = inputs; })
       ];
       lib = import ./lib.nix {
         inherit

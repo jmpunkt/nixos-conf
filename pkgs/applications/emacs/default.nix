@@ -5,8 +5,9 @@
     features = with emacs-overlay; [
       enableLTO
       enableWideInt
+      enableIgc
     ];
-    repository = emacs-overlay.repos.emacs.github;
+    repository = emacs-overlay.repos.emacs.igc;
   }).override
   {
     withXinput2 = true;

@@ -1,8 +1,7 @@
 # NOTE: Only use repository data (Emacs source, packages) from
 #       emacs-overlay and configure Emacs ourself.
 {
-  emacs-overlay,
-  emacs-mirror,
+  flake-inputs,
 }:
 self: super:
 let
@@ -10,6 +9,11 @@ let
   inherit (super)
     pkgs
     lib
+    ;
+  inherit (flake-inputs)
+    emacs-overlay
+    emacs-mirror
+    emacs-igc-mirror
     ;
   # reconnect pkgs to the built emacs
   forwardPkgs =
@@ -58,6 +62,19 @@ in
           lsp = fetchFromJson "${emacs-overlay}/repos/emacs/emacs-lsp.json";
           master = fetchFromJson "${emacs-overlay}/repos/emacs/emacs-master.json";
           unstable = fetchFromJson "${emacs-overlay}/repos/emacs/emacs-unstable.json";
+          igc = {
+            src = emacs-igc-mirror;
+            manifest = {
+              version =
+                let
+                  version = lib.jmpunkt.unixTimestampToDateTime emacs-igc-mirror.lastModified;
+                in
+                # Ensure we have a version number or not some random text.
+                assert (builtins.stringLength version) <= 14;
+                version;
+              rev = emacs-igc-mirror.rev;
+            };
+          };
           github = {
             src = emacs-mirror;
             manifest = {
@@ -99,13 +116,11 @@ in
             name = "${name}-${repository.manifest.version}";
             inherit (repository.manifest) version;
             inherit (repository) src;
-            postPatch =
-              old.postPatch
-              + ''
-                substituteInPlace lisp/loadup.el \
-                --replace '(emacs-repository-get-version)' '"${repository.manifest.rev}"' \
-                --replace '(emacs-repository-get-branch)' '"master"'
-              '';
+            postPatch = old.postPatch + ''
+              substituteInPlace lisp/loadup.el \
+              --replace '(emacs-repository-get-version)' '"${repository.manifest.rev}"' \
+              --replace '(emacs-repository-get-branch)' '"master"'
+            '';
           });
       in
       builtins.foldl' (drv: fn: fn drv) emacs ([ setSource ] ++ features ++ [ forwardPkgs ]);

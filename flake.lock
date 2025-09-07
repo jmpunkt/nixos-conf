@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "emacs-igc-mirror": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1756955892,
+        "narHash": "sha256-NSFMSVqgoqfN8CUc8+pkhqEtZO/iSAAaI2t/iOqS4Lo=",
+        "owner": "emacs-mirror",
+        "repo": "emacs",
+        "rev": "fa71ca0e228ef4ab789ac78c921ac10210da0f2f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "emacs-mirror",
+        "ref": "feature/igc",
+        "repo": "emacs",
+        "type": "github"
+      }
+    },
     "emacs-mirror": {
       "flake": false,
       "locked": {

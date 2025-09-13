@@ -22,6 +22,11 @@
     ];
   };
 
+  programs.nh = {
+    enable = true;
+    package = pkgs.unstable.nh;
+  };
+
   system.switch.enableNg = true;
   system.rebuild.enableNg = true;
 

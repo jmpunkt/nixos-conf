@@ -28,6 +28,7 @@
         editorconfig
         reformatter
         biome
+        casual
         casual-avy
         transient-dwim
         rg

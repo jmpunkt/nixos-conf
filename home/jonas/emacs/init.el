@@ -1184,8 +1184,8 @@ ignored."
   :mode ("\\.org\\'" . org-mode)
   :hook (org-mode . (lambda () (setq-local tab-width 8)))
   :init
-  (defvar jmpunkt/org-agenda-dir (expand-file-name "~/Sync/")
-    "Directory for org-agenda files.")
+  (defvar jmpunkt/org-agenda-file "~/Sync/todo.org"
+    "File path to the main org-agenda file.")
   (defun jmpunkt/format-org-src ()
     "Formats the org-src-block with C-c C-f keybind or indents the whole buffer.
 
@@ -1217,6 +1217,7 @@ block, then the whole buffer is indented."
                                       (when org-inline-image-overlays
                                         (org-redisplay-inline-images)))))
   :custom
+  (org-todo-keywords '((sequence "TODO(t)" "NEXT(n@)" "PROG(p@)" "DONE(d@)" "CANCELED(c@")))
   (org-ellipsis "…")
   (org-log-done 'time)
   (org-catch-invisible-edits 'show-and-error)
@@ -1299,19 +1300,34 @@ block, then the whole buffer is indented."
               ("C-c c" . org-capture))
   :custom
   (org-capture-templates
-   '(("t" "TODO" entry (file (lambda () (expand-file-name "todo.org" jmpunkt/org-agenda-dir)))
+   '(("t" "TODO" entry (file jmpunkt/org-agenda-file)
       "* TODO %? %^G \n  %U" :empty-lines 1)
-     ("d" "Deadline" entry (file (lambda () (expand-file-name "todo.org" jmpunkt/org-agenda-dir)))
+     ("d" "Deadline" entry (file jmpunkt/org-agenda-file)
       "* TODO %? %^G \n  DEADLINE: %^t" :empty-lines 1)
-     ("s" "Priority" entry (file (lambda () (expand-file-name "todo.org" jmpunkt/org-agenda-dir)))
+     ("s" "Priority" entry (file jmpunkt/org-agenda-file)
       "* TODO [#A] %? %^G \n  SCHEDULED: %^t")
-     ("a" "Appointment" entry (file+headline
-                               (lambda () (expand-file-name "calendar.org" jmpunkt/org-agenda-dir))
-                               "Event")
-      "* %? %^G \n  %^t")
-     ("c" "Code To-Do" entry (expand-file-name "todo.org" jmpunkt/org-agenda-dir)
+     ("c" "Code To-Do" entry (file jmpunkt/org-agenda-file)
       "* TODO [#B] %?\n:Created: %T\n%i\n%a\nProposed Solution: "
       :empty-lines 0))))
+
+(use-package casual-agenda
+  :bind (:map org-agenda-mode-map
+              ("C-o" . casual-agenda-tmenu))
+  :after (org-agenda))
+
+(use-package org-agenda
+  :bind (:map global-map
+               ("C-c a" . org-agenda))
+  :custom
+  (org-agenda-span 'day)
+  (org-agenda-files (list jmpunkt/org-agenda-file))
+  (org-agenda-custom-commands
+   '(("n" "Agenda / TODO / PROG / NEXT"
+      ((agenda "" nil)
+       (todo "TODO" nil)
+       (todo "PROG" nil)
+       (todo "NEXT" nil))
+      nil))))
 
 (use-package org-indent
   :after org

@@ -437,6 +437,18 @@ If the cursor is on the last prompt, then we want to insert at the current posit
 (use-package casual-avy
   :commands casual-avy-tmenu)
 
+;;;; * Case
+(use-package caser
+  :bind (:map global-map
+              ("C-c t c" . caser-camelcase-dwim)
+              ("C-c t u" . caser-upper-camelcase-dwim)
+              ("C-c t s" . caser-snakecase-dwim)
+              ("C-c t k" . caser-dashcase-dwim)))
+
+(use-package titlecase
+  :bind (:map global-map
+              ("C-c t t" . titlecase-dwim)))
+
 ;;;; * Meow
 (use-package meow
   :demand t

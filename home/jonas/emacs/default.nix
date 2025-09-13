@@ -31,6 +31,8 @@
         casual-avy
         transient-dwim
         rg
+        titlecase
+        caser
         # docker
         citre
         # Org

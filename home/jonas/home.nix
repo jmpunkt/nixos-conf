@@ -63,26 +63,6 @@
       pull.ff = "only";
     };
   };
-  programs.jujutsu = {
-    enable = true;
-    settings = {
-      user = {
-        name = config.programs.git.userName;
-        email = config.programs.git.userEmail;
-      };
-      ui = {
-        diff-formatter = [
-          "${lib.getBin config.programs.git.difftastic.package}"
-          "--color=always"
-          "$left"
-          "$right"
-        ];
-      };
-      git = {
-        sign-on-push = true;
-      };
-    };
-  };
   # Automatic garbage collection (user profiles)
   # TODO: compare with home-manager-auto-expire
   nix.gc = {

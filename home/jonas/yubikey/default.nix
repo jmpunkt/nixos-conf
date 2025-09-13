@@ -16,16 +16,6 @@
     };
   };
 
-  programs.jujutsu = {
-    settings = {
-      signing = {
-        behavior = "own";
-        backend = "gpg";
-        key = "4D78720A4358CC504F3EB45B26CDFB2E4DB6B136";
-      };
-    };
-  };
-
   programs.gpg.enable = true;
 
   services.gpg-agent = {

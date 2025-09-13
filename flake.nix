@@ -50,6 +50,7 @@
             jmpunkt = lib;
           };
         })
+        (import ./overlays/00-patch.nix)
         (import ./overlays/10-pkgs.nix)
         (import ./overlays/emacs-overlay-glue.nix { flake-inputs = inputs; })
       ];
@@ -69,7 +70,6 @@
       inherit (lib)
         mkUnstableOverlay
         mkSystem
-        mkSystemCross
         mkPkgs
         packageSD
         packageISO
@@ -78,92 +78,77 @@
         ;
 
       forAllSystems = utils.lib.eachDefaultSystem (system: {
-        legacyPackages = mkPkgs system unstable [ (mkUnstableOverlay system) ];
+        legacyPackages = mkPkgs system unstable [ mkUnstableOverlay ];
       });
       forx86Systems = utils.lib.eachSystem [ "x86_64-linux" "i686-linux" ] (system: {
-        apps = {
-          repl = utils.lib.mkApp {
-            drv = unstable.legacyPackages.${system}.writeShellScriptBin "repl" ''
-              confnix=$(mktemp)
-              echo "builtins.getFlake (toString $(git rev-parse --show-toplevel))" >$confnix
-              trap "rm $confnix" EXIT
-              nix repl $confnix
-            '';
-          };
-        };
-        packages =
-          let
-            rpi2System = mkSystemCross {
-              host = system;
-              target = "armv7l-hf-multiplatform";
-              system = "armv7l-linux";
-              nixpkgs = unstable;
-              modules = [
-                ./machines/rpi2b/configuration.nix
-              ];
-            };
-          in
-          {
-            keyboard = self.legacyPackages.${system}.callPackage ./qmk { };
-            sd-rpi2 = packageSD rpi2System;
-            rpi2 = packageSystem rpi2System;
-            iso-minimal = packageISO (mkSystem {
-              inherit system inputs;
-              nixpkgs = stable;
-              modules = [ (import ./machines/iso-minimal/configuration.nix) ];
-            });
-            iso = packageISO (mkSystem {
-              inherit system inputs;
-              nixpkgs = stable;
-              modules = [
-                (import ./machines/iso/configuration.nix)
-                self.nixosModules.home-jonas
-              ];
-            });
-            vm-alpha128 = packageVM (mkSystem {
-              inherit system inputs;
-              nixpkgs = stable;
-              modules = [
-                self.nixosModules.alpha128
-                "${stable}/nixos/modules/virtualisation/qemu-vm.nix"
-                ./configurations/qemu-vm.nix
-              ];
-            });
-            vm-gamma64 = packageVM (mkSystem {
-              inherit system inputs;
-              nixpkgs = stable;
-              modules = [
-                self.nixosModules.gamma64
-                "${stable}/nixos/modules/virtualisation/qemu-vm.nix"
-                ./configurations/qemu-vm.nix
-              ];
-            });
-          };
-      });
-      forx86_64Systems = utils.lib.eachSystem [ "x86_64-linux" ] (system: {
         packages = {
-          alpha128 = packageSystem (mkSystem {
+          keyboard = self.legacyPackages.${system}.callPackage ./qmk { };
+          iso-minimal = packageISO (mkSystem {
+            inherit system inputs;
+            nixpkgs = stable;
+            modules = [ (import ./machines/iso-minimal/configuration.nix) ];
+          });
+          iso = packageISO (mkSystem {
+            inherit system inputs;
+            nixpkgs = stable;
+            modules = [
+              (import ./machines/iso/configuration.nix)
+              self.nixosModules.home-jonas
+            ];
+          });
+          sd-rpi2 = packageSD self.nixosConfigurations.rpi2;
+          vm-alpha128 = packageVM (mkSystem {
             inherit system inputs;
             nixpkgs = stable;
             modules = [
               self.nixosModules.alpha128
+              self.nixosModules.qemu-vm
             ];
           });
-          gamma64 = packageSystem (mkSystem {
+          vm-gamma64 = packageVM (mkSystem {
             inherit system inputs;
             nixpkgs = stable;
-            modules = [ self.nixosModules.gamma64 ];
+            modules = [
+              self.nixosModules.gamma64
+              self.nixosModules.qemu-vm
+            ];
           });
-        };
+        }
+        // (builtins.mapAttrs (name: packageSystem) self.nixosConfigurations);
       });
     in
-    (stable.lib.attrsets.recursiveUpdate forAllSystems (
-      stable.lib.attrsets.recursiveUpdate forx86Systems forx86_64Systems
-    ))
+    (stable.lib.attrsets.recursiveUpdate forAllSystems forx86Systems)
     // {
       inherit lib;
       overlays.default = allPackagesOverlay;
       templates = import ./templates;
+      nixosConfigurations = {
+        alpha128 = mkSystem {
+          inherit inputs;
+          nixpkgs = stable;
+          modules = [ self.nixosModules.alpha128 ];
+        };
+        gamma64 = mkSystem {
+          inherit inputs;
+          nixpkgs = stable;
+          modules = [ self.nixosModules.gamma64 ];
+        };
+        rpi2 = mkSystem {
+          inherit inputs;
+          nixpkgs = unstable;
+          modules = [
+            ./machines/rpi2b/configuration.nix
+            (
+              { lib, ... }:
+              {
+                nixpkgs.system = lib.systems.examples.armv7l-hf-multiplatform;
+                # target = "armv7l-hf-multiplatform";
+                # system = "armv7l-linux";
+              }
+            )
+          ];
+        };
+      };
       nixosModules = {
         home-unknown = (
           { config, ... }:
@@ -192,7 +177,6 @@
             home-manager.users.jonas = {
               imports = [
                 ./home/jonas/home.nix
-                ./home/jonas/yubikey
                 ./home/jonas/emacs
               ];
             };
@@ -228,6 +212,15 @@
             };
           }
         );
+        qemu-vm =
+          { ... }:
+          {
+            imports = [
+              "${stable}/nixos/modules/virtualisation/qemu-vm.nix"
+              ./configurations/qemu-vm.nix
+
+            ];
+          };
         gamma64 =
           { ... }:
           {

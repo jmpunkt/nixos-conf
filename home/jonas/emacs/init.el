@@ -1217,7 +1217,7 @@ block, then the whole buffer is indented."
                                       (when org-inline-image-overlays
                                         (org-redisplay-inline-images)))))
   :custom
-  (org-todo-keywords '((sequence "TODO(t)" "NEXT(n@)" "PROG(p@)" "DONE(d@)" "CANCELED(c@")))
+  (org-todo-keywords '((sequence "TODO(t)" "NEXT(n!)" "PROG(p!)" "|" "DONE(d!)" "CANCELED(c@)")))
   (org-ellipsis "…")
   (org-log-done 'time)
   (org-catch-invisible-edits 'show-and-error)

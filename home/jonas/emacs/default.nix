@@ -74,7 +74,14 @@
         nix-mode
         devdocs
         flymake-ruff
-        typespec-ts-mode
+        (typespec-ts-mode.overrideAttrs (old: {
+          src = pkgs.fetchFromGitHub {
+            owner = "jmpunkt";
+            repo = "typespec-ts-mode";
+            rev = "91fb990093ea8db8e1f30114ea52a8d6afbda5f9";
+            sha256 = "sha256-cUy66yiwxU+X1cBK1THJS9oQsDL4IlN9MEK3TU3XGvc=";
+          };
+        }))
       ]
       ++ (with epkgs.elpaPackages; [
         so-long

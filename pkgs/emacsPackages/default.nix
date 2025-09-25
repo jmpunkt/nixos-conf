@@ -6,4 +6,5 @@
   copilot = callPackage ./copilot.nix { };
   reader = callPackage ./reader.nix { };
   jj-mode = callPackage ./jj-mode.nix { };
+  nix-update-el = callPackage ./nix-update-el.nix { };
 }

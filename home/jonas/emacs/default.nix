@@ -93,6 +93,7 @@
           jmpunktPkgs.typst-ts-mode
           jmpunktPkgs.copilot
           jmpunktPkgs.jj-mode
+          jmpunktPkgs.nix-update-el
         ]
         ++ [
           (treesit-grammars.with-grammars (

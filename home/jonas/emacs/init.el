@@ -1401,7 +1401,7 @@ block, then the whole buffer is indented."
          (typst-ts-mode . eglot-ensure))
   :fmt (typst-ts-mode . fmt/typstyle-buffer)
   :custom
-  (typst-ts-mode-indent-offset 2)
+  (typst-ts-indent-offset 2)
   :config
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs '(typst-ts-mode . ("tinymist")))))

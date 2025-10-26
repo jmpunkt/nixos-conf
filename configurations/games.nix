@@ -28,33 +28,33 @@ in
   programs.steam.enable = true;
   environment.systemPackages = with pkgs; [
     bottles
-    (lutris.override {
-      extraPkgs =
-        pkgs: with pkgs; [
-          wineWowPackages.unstableFull
-          wineWowPackages.fonts
-          winetricks
-          dxvk
-          samba
-          vkd3d
+    # (lutris.override {
+    #   extraPkgs =
+    #     pkgs: with pkgs; [
+    #       wineWowPackages.unstableFull
+    #       wineWowPackages.fonts
+    #       winetricks
+    #       dxvk
+    #       samba
+    #       vkd3d
 
-          pixman
-          libjpeg
-          vulkan-loader
-          vulkan-tools
+    #       pixman
+    #       libjpeg
+    #       vulkan-loader
+    #       vulkan-tools
 
-          xorg.libXcursor
-          xorg.libXi
-          xorg.libXinerama
-          xorg.libXScrnSaver
-          libpng
-          libpulseaudio
-          libvorbis
-          stdenv.cc.cc.lib
-          libkrb5
-          keyutils
-        ];
-    })
+    #       xorg.libXcursor
+    #       xorg.libXi
+    #       xorg.libXinerama
+    #       xorg.libXScrnSaver
+    #       libpng
+    #       libpulseaudio
+    #       libvorbis
+    #       stdenv.cc.cc.lib
+    #       libkrb5
+    #       keyutils
+    #     ];
+    # })
     proton-run
     wineWowPackages.unstableFull
     wineWowPackages.fonts

@@ -74,6 +74,7 @@
         nix-mode
         devdocs
         flymake-ruff
+        d2-mode
         (typespec-ts-mode.overrideAttrs (old: {
           src = pkgs.fetchFromGitHub {
             owner = "jmpunkt";
@@ -147,6 +148,7 @@
           git-absorb
           universal-ctags
           global
+          d2 # d2lang
         ];
         lsp = with pkgs; [
           ccls

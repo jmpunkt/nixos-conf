@@ -652,6 +652,10 @@ If the cursor is on the last prompt, then we want to insert at the current posit
   (reformatter-define fmt/prettier
     :program "prettier"
     :args (list "--stdin-filepath" (or (buffer-file-name) (buffer-name)))
+    :group 'web)
+  (reformatter-define fmt/d2
+    :program "d2"
+    :args (list "fmt" "-")
     :group 'web))
 
 ;;;; * Dired
@@ -1405,6 +1409,10 @@ block, then the whole buffer is indented."
   :config
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs '(typst-ts-mode . ("tinymist")))))
+
+;;;; * Diagram
+(use-package d2-mode
+  :fmt (d2-mode . fmt/d2-buffer))
 
 ;;;; * Nix
 (use-package nix-ts-mode

@@ -7,7 +7,7 @@
   writeText,
 }:
 let
-  rev = "5b5a56ddf8a087520f5e25a7343ec6503338e35b";
+  rev = "8e872efd3d0b7779bde5b1e1d75c8e646a1f729f";
   pname = "eglot-x";
   owner = "nemethf";
 in
@@ -20,7 +20,7 @@ melpaBuild {
   src = fetchFromGitHub {
     inherit rev owner;
     repo = pname;
-    sha256 = "sha256-6FY/Y5ahA82N0uJ0Dvb5e390UoVBEi8E8kKGfyknM/k=";
+    sha256 = "sha256-a2qkitikqGZBXI4aVdn8c7P4HFwep9RPWkOVBbgQV2g=";
   };
 
   recipe = writeText "recipe" ''

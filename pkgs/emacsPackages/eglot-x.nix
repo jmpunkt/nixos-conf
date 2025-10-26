@@ -1,7 +1,5 @@
 {
   lib,
-  stdenv,
-  emacs,
   fetchFromGitHub,
   melpaBuild,
   writeText,

@@ -1,5 +1,4 @@
 {
-  lib,
   buildEnv,
   trivialBuild,
   writeTextFile,

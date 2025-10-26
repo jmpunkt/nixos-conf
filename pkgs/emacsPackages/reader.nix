@@ -8,7 +8,7 @@
   pkg-config,
 }:
 let
-  rev = "e2d790b337029489c46443131b0e1c9c710a5eb6";
+  rev = "1d3a15d2d1fb8e0946e0c6154bcc9476f61cbec5";
   ename = "reader";
   pname = "emacs-reader";
   owner = "divyaranjan";

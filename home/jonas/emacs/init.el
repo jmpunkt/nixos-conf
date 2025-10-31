@@ -1382,6 +1382,8 @@ block, then the whole buffer is indented."
 
 ;;;; * Markdown
 (use-package markdown-ts-mode
+  :init
+  (add-to-list 'major-mode-remap-alist '(markdown-mode . markdown-ts-mode))
   :fmt (markdown-ts-mode . fmt/prettier-buffer))
 
 ;;;; * Makefile

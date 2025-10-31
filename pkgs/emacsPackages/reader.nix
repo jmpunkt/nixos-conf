@@ -24,7 +24,7 @@ melpaBuild {
     inherit rev owner;
     domain = "codeberg.org";
     repo = pname;
-    sha256 = "sha256-O031rpG2kQo31QFKKw46Bjwy4EnWIqYuecs972ZzEDg=";
+    sha256 = "sha256-JsIIIR8K3GNyhZUR6L4ZRgJqlxQetoDiFUTFgZvV8CI=";
   };
 
   files = ''(:defaults "render-core.so")'';

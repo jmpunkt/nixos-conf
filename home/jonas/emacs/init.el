@@ -6,6 +6,66 @@
 (require 'use-package)
 (require 'nixos-paths)
 
+;;; * environment
+
+(defvar-local exec-environment--enabled-paths nil
+  "List of enabled paths for the current buffer.")
+
+(defun exec-environment-collect-paths ()
+  "Extend exec-path with interesting binary paths.
+
+Currently recognized paths are:
+- node_modules/.bin"
+  (when-let* ((project (project-current))
+              (project-path (project-root project)))
+    (let ((new-path nil)
+          (node-modules-bin (f-join project-path "node_modules" ".bin")))
+      (when project
+        (when (file-directory-p node-modules-bin)
+          (add-to-list 'new-path node-modules-bin)
+          new-path)))))
+
+(defun exec-environment--update ()
+  "Update `process-environment' and `exec-path' for the current buffer.
+
+Uses the paths from `exec-environment-collect-paths' to extend the PATH."
+  (make-local-variable 'process-environment)
+  (make-local-variable 'exec-path)
+  (let* ((existing-paths (s-chop-prefix
+                          "PATH="
+                          (seq-find (lambda (env)
+                                      (string-prefix-p "PATH=" env))
+                                    process-environment)))
+         (additional-paths-list (exec-environment-collect-paths))
+         (additional-paths (string-join
+                            additional-paths-list
+                            path-separator)))
+    (setq exec-environment--enabled-paths additional-paths-list)
+    (unless (s-starts-with? additional-paths existing-paths)
+      (add-to-list 'process-environment
+                   (concat "PATH=" (string-join
+                                    (list additional-paths existing-paths)
+                                    path-separator))))
+    (setq exec-path (append additional-paths-list exec-path))
+    (when (and (derived-mode-p 'eshell-mode))
+      (eshell/addpath additional-paths-list))
+    (when additional-paths-list
+      (message "Added %s path(s) to environment"
+              (seq-length additional-paths-list)))))
+
+(define-minor-mode exec-environment-mode
+  ""
+  :init-value nil
+  :lighter " Exec"
+  (if exec-environment-mode
+      (progn
+        (exec-environment--update)
+        (add-hook 'envrc-mode-hook #'exec-environment--update nil t)
+        (when (and (derived-mode-p 'eshell-mode))
+          (add-hook 'eshell-directory-change-hook #'exec-environment--update 100 t)))
+    (remove-hook 'envrc-mode-hook #'exec-environment--update t)
+    (remove-hook 'eshell-directory-change-hook #'exec-environment--update t)))
+
 ;;; * Use-package (Formatting)
 (defcustom fmt-formatters-alist '()
   "List of available formatters for major-modes."
@@ -77,6 +137,9 @@ eglot (if available)."
 (use-package emacs
   :hook ((prog-mode . jmpunkt/prog-init)
          (prog-mode . fmt-mode)
+         (prog-mode . exec-environment-mode)
+         (eshell-mode . exec-environment-mode)
+         (comint-mode . exec-environment-mode)
          (conf-mode . jmpunkt/conf-init)
          (text-mode . jmpunkt/text-init)
          (after-init . save-place-mode)

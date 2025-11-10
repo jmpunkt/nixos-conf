@@ -275,6 +275,7 @@ The DWIM behaviour of this command is as follows:
   (variable-pitch ((t (:inherit default :family unspecified))))
   (fixed-pitch ((t (:inherit default :family unspecified))))
   :custom
+  (treesit-font-lock-level 4)
   (indent-line-function 'indent-relative)
   (revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg"))
   (make-backup-files nil)

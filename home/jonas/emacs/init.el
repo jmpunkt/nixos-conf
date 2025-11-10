@@ -1138,7 +1138,6 @@ Hooks into the dabbrev configuration by calling
          (emacs-lisp-mode . jmpunkt/cape-setup-elisp))
   :config
   (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-silent)
-  (advice-add 'pcomplete-completions-at-point :around #'cape-wrap-purify)
   :custom
   (cape-dabbrev-min-length 3)
   (cape-dabbrev-buffer-function #'jmpunkt/cape-dabbrev-buffer-list))

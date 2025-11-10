@@ -398,8 +398,8 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
                               (setq-local process-environment (copy-sequence process-environment))
                               (setenv "PAGER" "cat")
                               (setenv "MANPAGER" "cat")))
-  (eshell-first-time-mode . eat-eshell-visual-command-mode)
-  (eshell-first-time-mode . eat-eshell-mode)
+  (eshell-load-hook . eat-eshell-visual-command-mode)
+  (eshell-load-hook . eat-eshell-mode)
   :init
   (defvar jmpunkt/eshell-last-meow-state nil
     "State of Meow before running command in Eshell.")

@@ -47,11 +47,13 @@ Uses the paths from `exec-environment-collect-paths' to extend the PATH."
                                     (list additional-paths existing-paths)
                                     path-separator))))
     (setq exec-path (append additional-paths-list exec-path))
-    (when (and (derived-mode-p 'eshell-mode))
-      (eshell/addpath additional-paths-list))
+    (when (and (derived-mode-p 'eshell-mode)
+               (fboundp 'eshell-get-path)
+               (fboundp 'eshell-set-path))
+      (eshell-set-path (append additional-paths-list (eshell-get-path))))
     (when additional-paths-list
       (message "Added %s path(s) to environment"
-              (seq-length additional-paths-list)))))
+               (seq-length additional-paths-list)))))
 
 (define-minor-mode exec-environment-mode
   ""

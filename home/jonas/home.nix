@@ -46,6 +46,7 @@
     enable = true;
     nix-direnv.enable = true;
   };
+  programs.mergiraf.enable = true;
   programs.git = {
     enable = true;
     userName = "Jonas Meurer";
@@ -59,7 +60,7 @@
         whitespace = "trailing-space,space-before-tab";
       };
       rerere.enabled = "true";
-      merge.conflictstyle = "zdiff3";
+      merge.conflictstyle = "diff3";
       pull.ff = "only";
     };
   };

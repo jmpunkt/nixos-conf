@@ -9,7 +9,7 @@
   ];
 
   programs.git = {
-    userEmail = "jmpunkt@outlook.com";
+    settings.user.email = "jmpunkt@outlook.com";
     signing = {
       key = "4D78720A4358CC504F3EB45B26CDFB2E4DB6B136";
       signByDefault = true;

@@ -27,7 +27,6 @@
     package = pkgs.unstable.nh;
   };
 
-  system.switch.enableNg = true;
   system.rebuild.enableNg = true;
 
   services.scx.enable = true;
@@ -46,7 +45,7 @@
       freefont_ttf
       liberation_ttf
       noto-fonts
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       # Monospace
       fantasque-sans-mono
     ];

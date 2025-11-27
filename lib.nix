@@ -68,7 +68,7 @@ rec {
   # Creates an overlay for a system which includes an attribute
   # `unstable` of all unstable nixpkgs.
   mkUnstableOverlay = final: prev: {
-    unstable = mkPkgs (final.pkgs.hostPlatform.system) unstable [ ];
+    unstable = mkPkgs (final.pkgs.stdenv.hostPlatform.system) unstable [ ];
   };
   # Provide the attribute path for building a SD image.
   packageSD = target: target.config.system.build.sdImage;

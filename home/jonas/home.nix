@@ -23,10 +23,10 @@
   };
   programs.ssh = {
     enable = true;
-    controlMaster = "auto";
-    controlPersist = "10m";
     matchBlocks = {
       "qemu" = {
+        controlPersist = "10m";
+        controlMaster = "auto";
         hostname = "127.0.0.1";
         port = 11111;
         user = "root";
@@ -47,15 +47,11 @@
     nix-direnv.enable = true;
   };
   programs.mergiraf.enable = true;
+  programs.difftastic.enable = true;
   programs.git = {
     enable = true;
-    userName = "Jonas Meurer";
-    lfs.enable = true;
-    difftastic = {
-      enable = true;
-      enableAsDifftool = true;
-    };
-    extraConfig = {
+    settings = {
+      user.name = "Jonas Meurer";
       core = {
         whitespace = "trailing-space,space-before-tab";
       };
@@ -63,12 +59,13 @@
       merge.conflictstyle = "diff3";
       pull.ff = "only";
     };
+    lfs.enable = true;
   };
   # Automatic garbage collection (user profiles)
   # TODO: compare with home-manager-auto-expire
   nix.gc = {
     automatic = true;
-    frequency = "daily";
+    dates = "daily";
     options = "--delete-older-than 14d";
     randomizedDelaySec = "5min";
   };

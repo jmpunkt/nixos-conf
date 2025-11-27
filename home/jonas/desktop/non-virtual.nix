@@ -23,7 +23,7 @@
     thunderbird
     audacious
     discord
-    tdesktop
+    telegram-desktop
     chatterino2
 
     # cli

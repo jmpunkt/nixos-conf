@@ -6,10 +6,11 @@
   ...
 }:
 {
-  imports = (import ../../modules/all-home-manager.nix) ++ [
-    ./tags.nix
+  imports = [
     ./fish
+    ./profiles
   ];
+
   manual.manpages.enable = false;
   home.language = {
     base = "en_IE.UTF-8";
@@ -38,29 +39,6 @@
     };
   };
   programs.nix-index.enable = true;
-  services.lorri = {
-    enable = true;
-    nixPackage = systemConfig.nix.package;
-  };
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
-  programs.mergiraf.enable = true;
-  programs.difftastic.enable = true;
-  programs.git = {
-    enable = true;
-    settings = {
-      user.name = "Jonas Meurer";
-      core = {
-        whitespace = "trailing-space,space-before-tab";
-      };
-      rerere.enabled = "true";
-      merge.conflictstyle = "diff3";
-      pull.ff = "only";
-    };
-    lfs.enable = true;
-  };
   # Automatic garbage collection (user profiles)
   # TODO: compare with home-manager-auto-expire
   nix.gc = {

@@ -84,21 +84,47 @@
         packages = {
           keyboard = self.legacyPackages.${system}.callPackage ./qmk { };
           iso-minimal = packageISO (mkSystem {
-            inherit system inputs;
-            nixpkgs = stable;
-            modules = [ (import ./machines/iso-minimal/configuration.nix) ];
-          });
-          iso = packageISO (mkSystem {
-            inherit system inputs;
+            inherit inputs;
             nixpkgs = stable;
             modules = [
-              (import ./machines/iso/configuration.nix)
-              self.nixosModules.home-jonas
+              (import ./configurations/machines/iso-minimal/configuration.nix)
+              (
+                { lib, ... }:
+                {
+                  nixpkgs.hostPlatform = lib.mkDefault system;
+                }
+              )
+            ];
+          });
+          iso = packageISO (mkSystem {
+            inherit inputs;
+            nixpkgs = stable;
+            modules = [
+              (import ./configurations/machines/iso/configuration.nix)
+              self.nixosModules.home-unknown
+              (
+                { lib, ... }:
+                {
+                  # The `nixos` user is used for the ISO.
+                  home-manager.users.nixos = {
+                    imports = [
+                      ./home/jonas/home.nix
+                    ];
+                  };
+                  nixpkgs.config.allowUnfreePredicate =
+                    pkg:
+                    builtins.elem (lib.getName pkg) [
+                      "firefox-bin"
+                      "firefox-bin-unwrapped"
+                    ];
+                  nixpkgs.hostPlatform = lib.mkDefault system;
+                }
+              )
             ];
           });
           sd-rpi2 = packageSD self.nixosConfigurations.rpi2;
           vm-alpha128 = packageVM (mkSystem {
-            inherit system inputs;
+            inherit inputs;
             nixpkgs = stable;
             modules = [
               self.nixosModules.alpha128
@@ -106,7 +132,7 @@
             ];
           });
           vm-gamma64 = packageVM (mkSystem {
-            inherit system inputs;
+            inherit inputs;
             nixpkgs = stable;
             modules = [
               self.nixosModules.gamma64
@@ -137,11 +163,11 @@
           inherit inputs;
           nixpkgs = unstable;
           modules = [
-            ./machines/rpi2b/configuration.nix
+            ./configurations/machines/rpi2b/base.nix
             (
               { lib, ... }:
               {
-                nixpkgs.system = lib.systems.examples.armv7l-hf-multiplatform;
+                nixpkgs.hostPlatform = lib.systems.examples.armv7l-hf-multiplatform;
                 # target = "armv7l-hf-multiplatform";
                 # system = "armv7l-linux";
               }
@@ -164,10 +190,11 @@
             };
             home-manager.sharedModules = [
               nix-index-database.homeModules.nix-index
+              ./modules/home-manager
             ];
           }
         );
-        home-jonas = (
+        user-jonas = (
           { ... }:
           {
             imports = [
@@ -177,37 +204,6 @@
             home-manager.users.jonas = {
               imports = [
                 ./home/jonas/home.nix
-                ./home/jonas/emacs
-              ];
-            };
-          }
-        );
-        home-jonas-yubikey = (
-          { ... }:
-          {
-            home-manager.users.jonas = {
-              imports = [
-                ./home/jonas/yubikey
-              ];
-            };
-          }
-        );
-        home-jonas-desktop-minimal = (
-          { ... }:
-          {
-            home-manager.users.jonas = {
-              imports = [
-                ./home/jonas/desktop/minimal.nix
-              ];
-            };
-          }
-        );
-        home-jonas-desktop-non-virtual = (
-          { ... }:
-          {
-            home-manager.users.jonas = {
-              imports = [
-                ./home/jonas/desktop/non-virtual.nix
               ];
             };
           }
@@ -217,7 +213,7 @@
           {
             imports = [
               "${stable}/nixos/modules/virtualisation/qemu-vm.nix"
-              ./configurations/qemu-vm.nix
+              ./configurations/machines/qemu-vm.nix
 
             ];
           };
@@ -225,28 +221,23 @@
           { ... }:
           {
             imports = [
-              ./machines/gamma64/configuration.nix
+              ./configurations/machines/gamma64/configuration.nix
               hardware.nixosModules.lenovo-thinkpad-e495
               hardware.nixosModules.common-pc-laptop-ssd
-              self.nixosModules.home-jonas
-              self.nixosModules.home-jonas-yubikey
-              self.nixosModules.home-jonas-desktop-non-virtual
+              self.nixosModules.user-jonas
             ];
           };
         alpha128 =
           { ... }:
           {
             imports = [
-              ./machines/alpha128/configuration.nix
-              # ./configurations/vbox.nix
+              ./configurations/machines/alpha128/configuration.nix
               hardware.nixosModules.common-pc
               hardware.nixosModules.common-pc-ssd
               hardware.nixosModules.common-cpu-amd
               hardware.nixosModules.common-cpu-amd-pstate
               hardware.nixosModules.common-gpu-amd
-              self.nixosModules.home-jonas
-              self.nixosModules.home-jonas-yubikey
-              self.nixosModules.home-jonas-desktop-non-virtual
+              self.nixosModules.user-jonas
             ];
           };
       };

@@ -55,6 +55,7 @@ rec {
       modules = [
         nixpkgs.nixosModules.notDetected
         (defaultConfig nixpkgs)
+        ./modules/nixos
       ]
       ++ modules;
     }

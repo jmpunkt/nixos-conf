@@ -109,7 +109,6 @@ in
             jmpunktPkgs.reader
             jmpunktPkgs.typst-ts-mode
             jmpunktPkgs.copilot
-            jmpunktPkgs.jj-mode
             jmpunktPkgs.nix-update-el
           ]
           ++ [

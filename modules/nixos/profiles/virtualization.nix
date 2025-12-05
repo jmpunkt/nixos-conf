@@ -6,10 +6,10 @@
 }:
 
 let
-  cfg = config.profiles.virtualisation;
+  cfg = config.profiles.virtualization;
 in
 {
-  options.profiles.virtualisation = {
+  options.profiles.virtualization = {
     enable = lib.mkEnableOption "virtualization support";
   };
 
@@ -17,9 +17,7 @@ in
     virtualisation.virtualbox.host.enable = true;
     boot.kernelParams = [ "kvm.enable_virt_at_load=0" ];
     virtualisation.libvirtd.enable = true;
-    environment.systemPackages = with pkgs; [
-      virt-manager-qt
-    ];
+    programs.virt-manager.enable = true;
     virtualisation = {
       podman = {
         enable = true;

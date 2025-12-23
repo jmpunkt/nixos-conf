@@ -196,7 +196,7 @@
             imports = [
               home-manager.nixosModules.home-manager
             ];
-            home-manager.useGlobalPkgs = true;
+            home-manager.useGlobalPkgs = false;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = {
               inherit inputs;
@@ -205,6 +205,18 @@
             home-manager.sharedModules = [
               nix-index-database.homeModules.nix-index
               ./modules/home-manager
+              (
+                { lib, systemConfig, ... }:
+                {
+                  # NOTE: Disable home-manager.useGlobalPkgs.
+                  # See: https://github.com/nix-community/home-manager/pull/6172#issuecomment-2672688785
+                  nixpkgs = {
+                    config = lib.mapAttrs (n: v: lib.mkDefault v) systemConfig.nixpkgs.config;
+                    # mkOrder 900 is after mkBefore but before default order
+                    overlays = lib.mkOrder 900 systemConfig.nixpkgs.overlays;
+                  };
+                }
+              )
             ];
           }
         );

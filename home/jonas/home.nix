@@ -11,6 +11,10 @@
     ./profiles
   ];
 
+  # Required by greetd to start wayfire with correct environment.
+  programs.bash.enable = true;
+  home.shell.enableBashIntegration = true;
+
   manual.manpages.enable = false;
   home.language = {
     base = "en_IE.UTF-8";
@@ -41,11 +45,5 @@
   programs.nix-index.enable = true;
   # Automatic garbage collection (user profiles)
   # TODO: compare with home-manager-auto-expire
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 14d";
-    randomizedDelaySec = "5min";
-  };
   home.stateVersion = systemConfig.system.stateVersion;
 }

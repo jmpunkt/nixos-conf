@@ -1,0 +1,108 @@
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+
+let
+  cfg = config.profiles.desktop.wwm;
+  wpctlBin = "${lib.getBin config.services.pipewire.wireplumber.package}/bin/wpctl";
+in
+{
+  imports = [
+    ./wayfire.nix
+    # ./hyprland.nix
+  ];
+
+  options.profiles.desktop.wwm = {
+    enable = lib.mkEnableOption "Wayland Windows Manager support";
+    loginSession = lib.mkOption {
+      type = lib.types.path;
+      description = "Command used to start the default login session. Specifically set by the window manager configuration.";
+    };
+    windowManager = lib.mkOption {
+      type = lib.types.enum [
+        "hyprland"
+        "wayfire"
+      ];
+      description = "Windows manager used.";
+    };
+    idleManagement = lib.mkOption {
+      type = lib.types.bool;
+      default = !config.profiles.desktop.virtual;
+      description = "Use idle timers and enable auto-locking and auto-suspense.";
+    };
+    brightness = {
+      up = lib.mkOption {
+        type = lib.types.str;
+        default = "${lib.getExe pkgs.brightnessctl} set 5%+ -q";
+        description = "Windows manager used.";
+      };
+      down = lib.mkOption {
+        type = lib.types.str;
+        default = "${lib.getExe pkgs.brightnessctl} set 5%- -q";
+        description = "Windows manager used.";
+      };
+    };
+    audio = {
+      volumeUp = lib.mkOption {
+        type = lib.types.str;
+        default = "${wpctlBin} set-volume @DEFAULT_AUDIO_SINK@ 5%+";
+        description = "Increase volume on the default audio source.";
+      };
+      volumeDown = lib.mkOption {
+        type = lib.types.str;
+        default = "${wpctlBin} set-volume @DEFAULT_AUDIO_SINK@ 5%-";
+        description = "Decrease volume on the default audio source.";
+      };
+      microphoneToggle = lib.mkOption {
+        type = lib.types.str;
+        default = "${wpctlBin} set-mute @DEFAULT_AUDIO_SOURCE@ toggle";
+        description = "Toggle mute on default audio source.";
+      };
+      volumeToggle = lib.mkOption {
+        type = lib.types.str;
+        default = "${wpctlBin} set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        description = "Toggle mute on default audio sink.";
+      };
+    };
+
+    fileExplorer = lib.mkOption {
+      type = lib.types.path;
+      default = lib.getExe pkgs.xfce.thunar;
+      description = "Default command to open file explorer.";
+    };
+  };
+
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      profiles.desktop.enable = true;
+
+      security.polkit.enable = true;
+      security.soteria.enable = true;
+      services.gnome.gnome-keyring.enable = true;
+      services.upower.enable = true;
+      services.blueman.enable = config.hardware.bluetooth.enable or false;
+      programs.thunar.enable = true;
+      services.pipewire.wireplumber.enable = true;
+
+      # Required for stylix
+      programs.dconf.enable = true;
+
+      services.greetd = {
+        enable = true;
+        settings = rec {
+          initial_session = {
+            user = config.services.displayManager.autoLogin.user;
+            command = config.profiles.desktop.wwm.loginSession;
+          };
+          default_session = initial_session;
+        };
+      };
+    })
+    (lib.mkIf (cfg.enable && cfg.idleManagement) {
+      security.pam.services.swaylock = { };
+    })
+  ];
+}

@@ -12,8 +12,8 @@ in
   imports = [
     ./kde.nix
     ./cosmic.nix
-    ./hyprland.nix
     ./xfce.nix
+    ./wwm
   ];
 
   options.profiles.desktop = {
@@ -24,7 +24,6 @@ in
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       profiles.minimal.enable = true;
-
       boot = {
         kernelPackages = pkgs.linuxPackages_latest;
         supportedFilesystems = [
@@ -40,6 +39,15 @@ in
 
       hardware.graphics.enable = true;
       hardware.bluetooth.enable = true;
+
+      services.libinput = {
+        enable = true;
+        touchpad = {
+          accelProfile = "flat";
+          naturalScrolling = true;
+          tapping = true;
+        };
+      };
 
       programs.nh = {
         enable = true;
@@ -72,6 +80,7 @@ in
           noto-fonts-color-emoji
           # Monospace
           fantasque-sans-mono
+          nerd-fonts.symbols-only
         ];
       };
       networking.networkmanager.enable = true;

@@ -2,6 +2,7 @@
   systemConfig,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 
@@ -11,8 +12,8 @@ in
 {
   imports = [
     ./cosmic.nix
-    # ./hyprland
     ./kde.nix
+    ./wwm
   ];
 
   config = lib.mkMerge [
@@ -34,6 +35,7 @@ in
         hunspellDicts.en-us-large
         jmpunkt.hunspellDicts.de-de
       ];
+      programs.fuzzel.enable = true;
       programs.firefox = {
         enable = true;
         package = pkgs.firefox-bin;

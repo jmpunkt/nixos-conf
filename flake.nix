@@ -29,6 +29,10 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "stable";
     };
+    stylix = {
+      url = "github:nix-community/stylix/release-25.11";
+      inputs.nixpkgs.follows = "stable";
+    };
   };
   outputs =
     {
@@ -41,6 +45,7 @@
       emacs-overlay,
       utils,
       nix-index-database,
+      stylix,
       ...
     }@inputs:
     let

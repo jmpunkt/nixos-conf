@@ -4,6 +4,8 @@
     stable.url = "github:NixOS/nixpkgs/nixos-25.11";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
+    disko.url = "github:nix-community/disko/latest";
+    disko.inputs.nixpkgs.follows = "stable";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "stable";
@@ -46,6 +48,7 @@
       utils,
       nix-index-database,
       stylix,
+      disko,
       ...
     }@inputs:
     let
@@ -64,6 +67,7 @@
           self
           unstable
           stable
+          disko
           home-manager
           ;
         minimumOverlays = [
@@ -164,6 +168,11 @@
           nixpkgs = stable;
           modules = [ self.nixosModules.gamma64 ];
         };
+        saturn256 = mkSystem {
+          inherit inputs;
+          nixpkgs = stable;
+          modules = [ self.nixosModules.saturn256 ];
+        };
         rpi2 = mkSystem {
           inherit inputs;
           nixpkgs = unstable;
@@ -237,6 +246,20 @@
           {
             imports = [
               ./configurations/machines/alpha128/configuration.nix
+              hardware.nixosModules.common-pc
+              hardware.nixosModules.common-pc-ssd
+              hardware.nixosModules.common-cpu-amd
+              hardware.nixosModules.common-cpu-amd-pstate
+              hardware.nixosModules.common-gpu-amd
+              self.nixosModules.user-jonas
+            ];
+          };
+        saturn256 =
+          { ... }:
+          {
+            imports = [
+              ./configurations/machines/saturn256/configuration.nix
+              ./configurations/disko/desktop-standalone.nix
               hardware.nixosModules.common-pc
               hardware.nixosModules.common-pc-ssd
               hardware.nixosModules.common-cpu-amd

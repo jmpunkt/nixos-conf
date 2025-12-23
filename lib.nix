@@ -4,6 +4,7 @@
   stable,
   # unstable version nixpkgs
   home-manager,
+  disko,
   unstable,
   minimumOverlays,
 }:
@@ -55,6 +56,7 @@ rec {
       modules = [
         nixpkgs.nixosModules.notDetected
         (defaultConfig nixpkgs)
+        disko.nixosModules.disko
         ./modules/nixos
       ]
       ++ modules;

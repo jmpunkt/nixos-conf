@@ -43,7 +43,12 @@
     };
   };
   programs.nix-index.enable = true;
-  # Automatic garbage collection (user profiles)
-  # TODO: compare with home-manager-auto-expire
+  # Automatic garbage collection (home manager generations)
+  # NOTE: The actual GC of the Nix store is handled in the NixOS module.
+  services.home-manager.autoExpire = {
+    enable = true;
+    frequency = "weekly";
+    timestamp = "-14 days";
+  };
   home.stateVersion = systemConfig.system.stateVersion;
 }

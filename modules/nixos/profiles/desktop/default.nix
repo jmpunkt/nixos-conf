@@ -64,9 +64,9 @@ in
       # Automatic garbage collection (system profiles)
       nix.gc = {
         automatic = true;
-        dates = "daily";
+        dates = "weekly";
         options = "--delete-older-than 14d";
-        randomizedDelaySec = "5min";
+        randomizedDelaySec = "15min";
       };
 
       fonts = {

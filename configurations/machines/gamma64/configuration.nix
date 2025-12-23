@@ -13,7 +13,9 @@
   nixpkgs.config.allowUnfree = true;
 
   profiles = {
-    desktop.kde.enable = true;
+    desktop.wwm.enable = true;
+    desktop.wwm.windowManager = "wayfire";
+    # desktop.kde.enable = true;
     yubikey.enable = true;
     games.enable = true;
     development.enable = true;

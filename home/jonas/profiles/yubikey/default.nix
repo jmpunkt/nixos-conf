@@ -21,12 +21,20 @@ in
     programs.git = {
       settings.user.email = "jmpunkt@outlook.com";
       signing = {
-        key = "4D78720A4358CC504F3EB45B26CDFB2E4DB6B136";
+        key = "26CDFB2E4DB6B136";
         signByDefault = true;
       };
     };
 
-    programs.gpg.enable = true;
+    programs.gpg = {
+      enable = true;
+      publicKeys = [
+        {
+          source = ./yubico.pub;
+          trust = 5; # highest possible trust, its my key :^)
+        }
+      ];
+    };
 
     services.gpg-agent = {
       enable = true;

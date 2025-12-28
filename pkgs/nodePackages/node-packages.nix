@@ -34,13 +34,13 @@ let
   };
 in
 {
-  "@github/copilot-language-server-1.364.0" = nodeEnv.buildNodePackage {
+  "@github/copilot-language-server-1.406.0" = nodeEnv.buildNodePackage {
     name = "_at_github_slash_copilot-language-server";
     packageName = "@github/copilot-language-server";
-    version = "1.364.0";
+    version = "1.406.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/@github/copilot-language-server/-/copilot-language-server-1.364.0.tgz";
-      sha512 = "nwOpEeOYySWvLwvesK9P/Sh+3jEosWqLRx7j1Gaug4n5MNnQEgGJ7Kbn2TmQZGSDIkQK+eKK6ekwbRw5T+xOrA==";
+      url = "https://registry.npmjs.org/@github/copilot-language-server/-/copilot-language-server-1.406.0.tgz";
+      sha512 = "yzWayzR707xuAMGS77c3G7jv0z1F1hx7Aesvp0+qBbxUJHVsrSMjUImJMIL/vWJ+kfo49rfjiTTksaxjUk1ujw==";
     };
     dependencies = [
       sources."vscode-jsonrpc-8.2.0"

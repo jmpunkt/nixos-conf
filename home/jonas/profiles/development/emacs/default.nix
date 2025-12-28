@@ -120,7 +120,7 @@ in
 
       variables =
         let
-          copilot = pkgs.nodePackages.jmpunkt."@github/copilot-language-server-1.364.0";
+          copilot = pkgs.nodePackages.jmpunkt."@github/copilot-language-server-1.406.0";
           copilot-run = pkgs.writeShellScriptBin "copilot-run" ''
             "${pkgs.nodejs}/bin/node" "${copilot}/lib/node_modules/@github/copilot-language-server/dist/language-server.js" "$@"
           '';

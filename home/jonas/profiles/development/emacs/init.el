@@ -751,10 +751,6 @@ If the cursor is on the last prompt, then we want to insert at the current posit
          (comint-mode . envrc-mode)
          (compilation-mode . envrc-mode)))
 
-;;;; * Which-Key
-(use-package which-key
-  :hook (after-init . which-key-mode))
-
 ;;;; * xref/jumping
 (use-package citre
   :bind (("C-c m b" . citre-jump-back)

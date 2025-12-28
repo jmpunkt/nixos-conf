@@ -8,7 +8,7 @@
   pkg-config,
 }:
 let
-  rev = "1d3a15d2d1fb8e0946e0c6154bcc9476f61cbec5";
+  rev = "6f0a11009435fbe62077a452f8b2bfeabb2806cc";
   ename = "reader";
   pname = "emacs-reader";
   owner = "divyaranjan";
@@ -24,7 +24,7 @@ melpaBuild {
     inherit rev owner;
     domain = "codeberg.org";
     repo = pname;
-    sha256 = "sha256-JsIIIR8K3GNyhZUR6L4ZRgJqlxQetoDiFUTFgZvV8CI=";
+    sha256 = "sha256-AxYaH9HZo7iF1IZc5suJDrSmKSelDcJaOHwdaoBsb0k=";
   };
 
   files = ''(:defaults "render-core.so")'';

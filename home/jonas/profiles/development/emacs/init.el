@@ -1101,7 +1101,7 @@ paths, it will fallback to the project root path."
   :config
   (consult-customize consult-clock-in
                      :prompt "Clock in: "
-                     :preview-key "M-.")
+                     :preview-key "C-.")
   (consult-customize
    consult-ripgrep consult-git-grep consult-grep
    consult-bookmark consult-recent-file consult-xref

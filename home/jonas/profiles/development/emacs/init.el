@@ -181,14 +181,17 @@ The DWIM behaviour of this command is as follows:
       (abort-recursive-edit))
      (t
       (keyboard-quit))))
-  (defun xdg-open-file ()
-    "In dired or buffer, open the file named on this line."
+  (defun jmpunkt/xdg-open-file ()
+    "Dwim opening with xdg-open."
     (interactive)
-    (call-process "xdg-open" nil 0 nil (or
-                                        (when (eq major-mode 'dired-mode)
-                                          (dired-get-filename nil t)
-                                          (dired-current-directory))
-                                        buffer-file-name)))
+    (let ((target (or (thing-at-point 'existing-filename)
+                      (thing-at-point 'url)
+                      (when (eq major-mode 'dired-mode)
+                        (dired-current-directory))
+                      buffer-file-name)))
+      (if target
+          (call-process "xdg-open" nil 0 nil target)
+        (message "Could not determine useful file path. Nothing to do."))))
   (defun jmpunkt/join-line ()
     (interactive)
     (next-line)

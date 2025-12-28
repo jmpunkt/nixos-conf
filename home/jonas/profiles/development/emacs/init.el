@@ -156,6 +156,7 @@ eglot (if available)."
               ("C-j" . jmpunkt/join-line)
               ("M-N" . shell-command)
               ("M-S-<up>" . async-shell-command)
+              ("C-S-s" . jmpunkt/transient-search-dwim)
               ("C-g" . prot/keyboard-quit-dwim))
   :init
   (defun prot/keyboard-quit-dwim ()
@@ -1006,6 +1007,46 @@ paths, it will fallback to the project root path."
   (eww-search-prefix "https://duckduckgo.com/html?q="))
 
 ;;;; Search/Find
+(require 'transient)
+(defun jmpunkt/search-region-or-default (&optional default)
+  (or (when (use-region-p) (buffer-substring-no-properties (region-beginning) (region-end)))
+      (read-string "Search: ")))
+(defun jmpunkt/transient-search-in-web (&optional args)
+  "Handle web search with ARGS (opening in external browser)."
+  (interactive (list (transient-args transient-current-command)))
+  (browse-url-firefox (format "https://duckduckgo.com/html?q=%s" (jmpunkt/search-region-or-default))))
+(defun jmpunkt/transient-search-in-file (&optional args)
+  "Handle file content search with ARGS (opening in consult)."
+  (interactive (list (transient-args transient-current-command)))
+  (let ((query (when (use-region-p) (buffer-substring-no-properties (region-beginning) (region-end)))))
+    (consult-line query)))
+(transient-define-prefix jmpunkt/transient-search-dwim ()
+  "Search Locations"
+  ["Actions"
+   ("s" "search in file" jmpunkt/transient-search-in-file)
+   ("w" "search web" jmpunkt/transient-search-in-web)
+   ("n" "search nix" jmpunkt/transient-search-nix)
+   ("x" "XDG open" jmpunkt/xdg-open-file)])
+
+(defun jmpunkt/transient-search-nix-nixos-options (&optional args)
+  "Search for QUERY in NixOS options (opening in external browser)."
+  (interactive (list (transient-args transient-current-command)))
+  (browse-url-firefox (format "https://search.nixos.org/options?query=%s" (jmpunkt/search-region-or-default))))
+(defun jmpunkt/transient-search-nix-nixos-packages (&optional args)
+  "Search for QUERY in NixOS packages (opening in external browser)."
+  (interactive (list (transient-args transient-current-command)))
+  (browse-url-firefox (format "https://search.nixos.org/packages?query=%s" (jmpunkt/search-region-or-default))))
+(defun jmpunkt/transient-search-nix-home-manager-options (&optional args)
+  "Search for QUERY in Home-Manager options (opening in external browser)."
+  (interactive (list (transient-args transient-current-command)))
+  (browse-url-firefox (format "https://home-manager-options.extranix.com/?query=%s" (jmpunkt/search-region-or-default))))
+(transient-define-prefix jmpunkt/transient-search-nix ()
+  "Nix Search Locations"
+  ["Commands"
+   ("p" "search NixOS packages" jmpunkt/transient-search-nix-nixos-packages)
+   ("n" "search NixOS options" jmpunkt/transient-search-nix-nixos-options)
+   ("h" "search home-manager options" jmpunkt/transient-search-nix-home-manager-options)])
+
 (use-package minibuffer
   :hook ((minibuffer-setup . cursor-intangible-mode)
          (minibuffer-setup . minibuffer-depth-indicate-mode)

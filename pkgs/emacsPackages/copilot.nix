@@ -1,5 +1,4 @@
 {
-  lib,
   fetchFromGitHub,
   melpaBuild,
   writeText,
@@ -37,7 +36,7 @@ melpaBuild {
     (copilot :repo "${owner}/${pname}" :fetcher github)
   '';
 
-  meta = with lib; {
+  meta = {
     description = "An unofficial Copilot plugin for Emacs.";
   };
 }

@@ -1,5 +1,4 @@
 {
-  lib,
   fetchFromGitHub,
   melpaBuild,
   writeText,
@@ -25,7 +24,7 @@ melpaBuild {
     (${pname} :repo "${owner}/${pname}-el" :fetcher github)
   '';
 
-  meta = with lib; {
+  meta = {
     description = "An Emacs command for updating fetch declarations in place";
   };
 }

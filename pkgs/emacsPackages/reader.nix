@@ -43,8 +43,8 @@ melpaBuild {
     unstable.mupdf
   ];
 
-  meta = with lib; {
+  meta = {
     description = "An all-in-one document reader for all formats in Emacs, backed by MuPDF.";
-    license = licenses.gpl3;
+    license = lib.licenses.gpl3;
   };
 }

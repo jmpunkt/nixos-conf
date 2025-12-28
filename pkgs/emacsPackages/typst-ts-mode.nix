@@ -26,8 +26,8 @@ melpaBuild {
     (${pname} :repo "${owner}/emacs-${pname}" :fetcher codeberg)
   '';
 
-  meta = with lib; {
-    description = "Typst tree sitter major mode for Emacs. ";
-    license = licenses.gpl3;
+  meta = {
+    description = "Typst tree sitter major mode for Emacs.";
+    license = lib.licenses.gpl3;
   };
 }

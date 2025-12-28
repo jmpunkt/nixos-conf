@@ -11,7 +11,7 @@ let
 in
 melpaBuild {
   inherit pname;
-  version = "20241207.0";
+  version = "20251026.0";
 
   commit = rev;
 

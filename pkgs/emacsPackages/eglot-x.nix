@@ -5,20 +5,20 @@
   writeText,
 }:
 let
-  rev = "8e872efd3d0b7779bde5b1e1d75c8e646a1f729f";
+  rev = "b92c44e6b34f8df0539d3c8ab5992c5a7eb815d5";
   pname = "eglot-x";
   owner = "nemethf";
 in
 melpaBuild {
   inherit pname;
-  version = "20250216.0";
+  version = "20251219.0";
 
   commit = rev;
 
   src = fetchFromGitHub {
     inherit rev owner;
     repo = pname;
-    sha256 = "sha256-a2qkitikqGZBXI4aVdn8c7P4HFwep9RPWkOVBbgQV2g=";
+    sha256 = "sha256-VvamDqZ3NowM6XfRlC2exsM6ssRBqWUw6ziKgqdphwM=";
   };
 
   recipe = writeText "recipe" ''

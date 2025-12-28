@@ -1090,9 +1090,11 @@ paths, it will fallback to the project root path."
   (defun consult-clock-in ()
     "Clock into an Org heading."
     (interactive)
-    (save-window-excursion
-      (consult-org-heading)
-      (org-clock-in)))
+    (if (eq major-mode 'org-mode)
+        (save-window-excursion
+          (consult-org-heading)
+          (org-clock-in))
+      (message "Currently not in org-mode. Nothing to do.")))
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)

@@ -48,6 +48,11 @@ in
         };
       };
 
+      console = {
+        earlySetup = true;
+        font = "Lat2-Terminus16";
+      };
+
       programs.nh = {
         enable = true;
         package = pkgs.unstable.nh;

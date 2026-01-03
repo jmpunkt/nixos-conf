@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -25,9 +24,7 @@ in
       };
     };
     console = {
-      earlySetup = true;
-      font = "Lat2-Terminus16";
-      keyMap = "de";
+      keyMap = lib.mkDefault "de";
     };
     location = {
       latitude = 50.11;

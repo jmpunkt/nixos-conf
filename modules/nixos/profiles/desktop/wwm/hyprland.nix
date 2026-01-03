@@ -11,5 +11,13 @@ in
   config = lib.mkIf (cfg.enable && cfg.windowManager == "hyprland") {
     programs.hyprland.enable = true;
     profiles.desktop.wwm.loginSession = lib.mkDefault "${config.programs.hyprland.package}/bin/Hyprland";
+
+    xdg.portal = {
+      enable = true;
+      config.common.default = "*";
+      extraPortals = [
+        pkgs.lxqt.xdg-desktop-portal-hyprland
+      ];
+    };
   };
 }

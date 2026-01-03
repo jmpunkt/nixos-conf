@@ -35,9 +35,8 @@ in
         in
         {
           bind = [
-            "${mainMod}, L, exec, swaylock -f -c 000000"
-            "${mainMod}, E, exec, dolphin"
-            "${mainMod}, P, exec, shotman"
+            "${mainMod}, ${mainMod}_L, exec, ${cfg.finder}"
+            "${mainMod}, E, exec, ${cfg.fileExplorer}"
             "${mainMod}, R, exec, emacs"
             "${mainMod}, O, exec, ${scripts.keyboard-switch}"
 
@@ -65,48 +64,24 @@ in
             "${mainMod} CTRL, up, resizeactive, 0 -20"
             "${mainMod} CTRL, down, resizeactive, 0 20"
 
-            # workspace
-            "${mainMod}, 1,  workspace, 1"
-            "${mainMod}, 2,  workspace, 2"
-            "${mainMod}, 3,  workspace, 3"
-            "${mainMod}, 4,  workspace, 4"
-            "${mainMod}, 5,  workspace, 5"
-            "${mainMod}, 6,  workspace, 6"
+            "ALT, tab, cycle next window, cyclenext"
+            "ALT, tab, bring active to top, bringactivetotop"
+          ]
+          ++ (lib.optionals cfg.brightness.enable [
+            ", XF86MonBrightnessUp,     exec, ${cfg.brightness.up}"
+            ", XF86KbdBrightnessUp,     exec, ${cfg.brightness.up}"
+            ", XF86MonBrightnessDown,   exec, ${cfg.brightness.down}"
+            ", XF86KbdBrightnessDown,   exec, ${cfg.brightness.down}"
+          ])
+          ++ (lib.optionals cfg.idleManagement.enable [
+            "${mainMod}, L, exec, ${lib.getExe config.programs.swaylock.package}"
+          ]);
 
-            "${mainMod} SHIFT, 1,  movetoworkspace, 1"
-            "${mainMod} SHIFT, 2,  movetoworkspace, 2"
-            "${mainMod} SHIFT, 3,  movetoworkspace, 3"
-            "${mainMod} SHIFT, 4,  movetoworkspace, 4"
-            "${mainMod} SHIFT, 5,  movetoworkspace, 5"
-            "${mainMod} SHIFT, 6,  movetoworkspace, 6"
-
-            # workspace special
-            "${mainMod} SHIFT, S,   movetoworkspace, special"
-            "${mainMod} SHIFT, F1,  movetoworkspace, special:1"
-            "${mainMod} SHIFT, F2,  movetoworkspace, special:2"
-            "${mainMod} SHIFT, F3,  movetoworkspace, special:3"
-            "${mainMod} SHIFT, F4,  movetoworkspace, special:4"
-            "${mainMod} SHIFT, F5,  movetoworkspace, special:5"
-            "${mainMod} SHIFT, F6,  movetoworkspace, special:6"
-
-            "${mainMod}, escape, execr, hyprctl dispatch togglespecialworkspace $specialWorkspaceId"
-            "${mainMod}, F1,  togglespecialworkspace, 1"
-            "${mainMod}, F2,  togglespecialworkspace, 2"
-            "${mainMod}, F3,  togglespecialworkspace, 3"
-            "${mainMod}, F4,  togglespecialworkspace, 4"
-            "${mainMod}, F5,  togglespecialworkspace, 5"
-            "${mainMod}, F6,  togglespecialworkspace, 6"
-          ];
-
-          bindle = [
+          bindle = lib.optionals cfg.audio.enable [
             ", XF86AudioRaiseVolume,    exec, ${cfg.audio.volumeUp}"
             ", XF86AudioLowerVolume,    exec, ${cfg.audio.volumeDown}"
             ", XF86AudioMute,           exec, ${cfg.audio.volumeToggle}"
             ", XF86AudioMicMute,        exec, ${cfg.audio.microphoneToggle}"
-            ", XF86MonBrightnessUp,     exec, ${cfg.brightness.up}"
-            ", XF86MonBrightnessDown,   exec, ${cfg.brightness.down}"
-            ", XF86KbdBrightnessUp,     exec, ${cfg.brightness.up}"
-            ", XF86KbdBrightnessDown,   exec, ${cfg.brightness.down}"
           ];
 
           env = [
@@ -191,7 +166,7 @@ in
           };
 
           windowrule = [
-            "float, pavucontrol"
+            "float"
           ];
 
           xwayland.force_zero_scaling = true;

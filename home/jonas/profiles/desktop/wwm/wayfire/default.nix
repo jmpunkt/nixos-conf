@@ -52,21 +52,25 @@ in
             "xdg-activation"
           ];
         };
+        # TODO: audio keys
         command = {
           binding_launcher = "<super>";
-          command_launcher = lib.getExe config.programs.fuzzel.package;
-
-          binding_lock = "<super> KEY_L";
-          command_lock = lib.getExe config.programs.swaylock.package;
+          command_launcher = cfg.finder;
 
           binding_files = "<super> KEY_E";
           command_files = cfg.fileExplorer;
-
+        }
+        // (lib.optionalAttrs cfg.idleManagement.enable {
+          binding_lock = "<super> KEY_L";
+          command_lock = lib.getExe config.programs.swaylock.package;
+        })
+        // (lib.optionalAttrs cfg.brightness.enable {
           binding_brightness_down = "KEY_BRIGHTNESSDOWN";
-          command_brightness_down = "brightnessctl set 5%-";
+          command_brightness_down = cfg.brightness.down;
+
           binding_brightness_up = "KEY_BRIGHTNESSUP";
-          command_brightness_up = "brightnessctl set +5%";
-        };
+          command_brightness_up = cfg.brightness.up;
+        });
         place = {
           mode = "center";
         };

@@ -161,9 +161,17 @@ in
 
             modules-right = [
               "tray"
+            ]
+            ++ (lib.optionals cfg.audio.enable [
               "pulseaudio"
+            ])
+            ++ [
               "battery"
+            ]
+            ++ (lib.optionals cfg.idleManagement.enable [
               "idle_inhibitor"
+            ])
+            ++ [
               "custom/notification"
               "clock"
               "custom/logout"
@@ -172,13 +180,6 @@ in
             tray = {
               icon-size = 24;
               spacing = 4;
-            };
-            idle_inhibitor = {
-              format = "{icon}";
-              format-icons = {
-                activated = "";
-                deactivated = "";
-              };
             };
             clock = {
               interval = 1;
@@ -227,6 +228,17 @@ in
                 ""
               ];
             };
+          }
+          // (lib.optionalAttrs cfg.audio.enable {
+            idle_inhibitor = {
+              format = "{icon}";
+              format-icons = {
+                activated = "";
+                deactivated = "";
+              };
+            };
+          })
+          // (lib.optionalAttrs cfg.audio.enable {
             pulseaudio = {
               format = "{icon} {format_source}";
               format-bluetooth = "{icon} {format_source}";
@@ -249,11 +261,11 @@ in
               };
               on-click = "${pkgs.pavucontrol}/bin/pavucontrol";
             };
-          };
+          });
         };
       };
     })
-    (lib.mkIf (cfg.enable && systemConfig.profiles.desktop.wwm.idleManagement) {
+    (lib.mkIf (cfg.enable && cfg.idleManagement.enable) {
       programs.swaylock.enable = true;
       stylix.targets.swaylock.enable = true;
       services.swayidle = {

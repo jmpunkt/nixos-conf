@@ -12,7 +12,7 @@ in
 {
   imports = [
     ./wayfire.nix
-    # ./hyprland.nix
+    ./hyprland.nix
   ];
 
   options.profiles.desktop.wwm = {
@@ -28,12 +28,19 @@ in
       ];
       description = "Windows manager used.";
     };
-    idleManagement = lib.mkOption {
-      type = lib.types.bool;
-      default = !config.profiles.desktop.virtual;
-      description = "Use idle timers and enable auto-locking and auto-suspense.";
+    idleManagement = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = !config.profiles.desktop.virtual;
+        description = "Use idle timers and enable auto-locking and auto-suspense.";
+      };
     };
     brightness = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = !config.profiles.desktop.virtual;
+        description = "Use idle timers and enable auto-locking and auto-suspense.";
+      };
       up = lib.mkOption {
         type = lib.types.str;
         default = "${lib.getExe pkgs.brightnessctl} set 5%+ -q";
@@ -46,6 +53,11 @@ in
       };
     };
     audio = {
+      enable = lib.mkOption {
+        type = lib.types.bool;
+        default = !config.profiles.desktop.virtual;
+        description = "Use idle timers and enable auto-locking and auto-suspense.";
+      };
       volumeUp = lib.mkOption {
         type = lib.types.str;
         default = "${wpctlBin} set-volume @DEFAULT_AUDIO_SINK@ 5%+";
@@ -67,7 +79,11 @@ in
         description = "Toggle mute on default audio sink.";
       };
     };
-
+    finder = lib.mkOption {
+      type = lib.types.path;
+      default = lib.getExe pkgs.fuzzel;
+      description = "Finder tool.";
+    };
     fileExplorer = lib.mkOption {
       type = lib.types.path;
       default = lib.getExe pkgs.xfce.thunar;
@@ -101,7 +117,7 @@ in
         };
       };
     })
-    (lib.mkIf (cfg.enable && cfg.idleManagement) {
+    (lib.mkIf (cfg.enable && cfg.idleManagement.enable) {
       security.pam.services.swaylock = { };
     })
   ];

@@ -38,7 +38,6 @@ in
       };
 
       hardware.graphics.enable = true;
-      hardware.bluetooth.enable = true;
 
       services.libinput = {
         enable = true;
@@ -101,6 +100,8 @@ in
           "emacs-ci.cachix.org-1:B5FVOrxhXXrOL0S+tQ7USrhjMT5iOPH+QN9q0NItom4="
         ];
       };
+
+      hardware.bluetooth.enable = true;
 
       # scanner
       hardware = {

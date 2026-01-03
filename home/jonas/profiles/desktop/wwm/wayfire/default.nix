@@ -30,10 +30,15 @@ in
         wayfire-plugins-extra
       ];
       settings = {
-        input = {
-          xkb_layout = "de,us(intl)";
-          xkb_options = "ctrl:nocaps";
-        };
+        input =
+          let
+            defaultLayout = builtins.head (builtins.filter (l: l.default) cfg.keyboardLayouts);
+          in
+          {
+            xkb_layout = defaultLayout.layout;
+            xkb_variant = defaultLayout.variant;
+            xkb_options = defaultLayout.options;
+          };
         core = {
           plugins = builtins.concatStringsSep " " [
             "command"

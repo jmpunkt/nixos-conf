@@ -8,7 +8,35 @@
 let
   cfg = config.profiles.desktop.wwm;
   wpctlBin = "${lib.getBin config.services.pipewire.wireplumber.package}/bin/wpctl";
+
+  layoutOptions = lib.types.submodule {
+    options = {
+      default = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+        description = "Indicate whether this layout is the default one. There can only be a single layout with default set to true.";
+      };
+      layout = lib.mkOption {
+        type = lib.types.str;
+        example = "us";
+        description = "";
+      };
+      options = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        example = "ctrl:nocaps";
+        description = "";
+      };
+      variant = lib.mkOption {
+        type = lib.types.str;
+        default = "";
+        example = "intl";
+        description = "";
+      };
+    };
+  };
 in
+
 {
   imports = [
     ./wayfire.nix
@@ -89,7 +117,17 @@ in
       default = lib.getExe pkgs.xfce.thunar;
       description = "Default command to open file explorer.";
     };
+    keyboardLayouts = lib.mkOption {
+      type = lib.types.listOf layoutOptions;
+      description = "List of available keyboard XKB layouts.";
+    };
   };
+
+  # TODO: Set console.keyMap with default
+  # TODO: Set in hyprland
+  # TODO: Set in wayfire
+  # assert builtins.any (layout: layout.default) cfg.keyboardLayouts;
+  # assert (builtins.length (builtins.filter (layout: layout.default) cfg.keyboardLayouts)) == 1;
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {

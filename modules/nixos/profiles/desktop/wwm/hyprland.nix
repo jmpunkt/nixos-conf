@@ -16,7 +16,7 @@ in
       enable = true;
       config.common.default = "*";
       extraPortals = [
-        pkgs.lxqt.xdg-desktop-portal-hyprland
+        pkgs.xdg-desktop-portal-hyprland
       ];
     };
   };

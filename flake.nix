@@ -35,6 +35,10 @@
       url = "github:nix-community/stylix/release-25.11";
       inputs.nixpkgs.follows = "stable";
     };
+    flake-registry = {
+      url = "github:nixos/flake-registry";
+      flake = false;
+    };
   };
   outputs =
     {
@@ -48,6 +52,7 @@
       utils,
       nix-index-database,
       stylix,
+      flake-registry,
       disko,
       ...
     }@inputs:
@@ -69,6 +74,7 @@
           stable
           disko
           home-manager
+          flake-registry
           ;
         minimumOverlays = [
           rust-overlay.overlays.default

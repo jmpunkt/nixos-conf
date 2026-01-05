@@ -5,6 +5,7 @@
   # unstable version nixpkgs
   home-manager,
   disko,
+  flake-registry,
   unstable,
   minimumOverlays,
 }:
@@ -25,22 +26,33 @@ rec {
           "nix-command"
           "flakes"
         ];
-        # disable default flake registry entries
-        nix.settings.flake-registry = "";
-        # disable channels, since we are using flakes
-        nix.channel.enable = lib.mkForce false;
-        # Pins nixpkgs of system to `inputs.nixpkgs`.
-        nixpkgs.flake.setNixPath = true;
+        # NOTE: Do not unset this due to system or user flakes registry are not
+        # being used during lock generation
+        # (https://nix.dev/manual/nix/2.29/release-notes/rl-2.26.html#:~:text=Flake%20lock%20file%20generation%20now%20ignores%20local%20registries%20%2312019).
+        # pin global registry, to prevent refetching
+        nix.settings.flake-registry = "${flake-registry}/flake-registry.json";
+        # NOTE: use `<name>.flake` syntax to refer to flake inputs due to
+        # https://github.com/NixOS/nixpkgs/pull/388090 ?
+        # NOTE: Use `nixpkgs` instead of the `self` to ensure the packages do
+        # not contain custom fixes.
+        nix.registry.nixpkgs.flake = nixpkgs;
+        nix.registry.home-manager.flake = home-manager;
         # Allows commands like `nix shell self#jmpunkt.emacs`
         nix.registry.self.flake = self;
+
         nixpkgs.overlays = minimumOverlays ++ [ mkUnstableOverlay ];
+
+        # disable channels, but set nix-path
+        nix.channel.enable = lib.mkForce false;
+        # NOTE: use references instead of URLs to prevent unnecessary fetching,
+        # not sure if that works properly.
         nix.settings.nix-path = lib.mkForce [
-          "nixpkgs=${nixpkgs}"
-          "home-manager=${home-manager}"
+          "nixpkgs=flake:nixpkgs"
+          "home-manager=flake:home-manager"
         ];
         nix.nixPath = lib.mkForce [
-          "nixpkgs=${nixpkgs}"
-          "home-manager=${home-manager}"
+          "nixpkgs=flake:nixpkgs"
+          "home-manager=flake:home-manager"
         ];
       }
     );

@@ -30,6 +30,7 @@ in
       stylix.targets.font-packages.enable = true;
       stylix.targets.fontconfig.enable = true;
 
+      programs.fuzzel.enable = true;
       stylix.targets.fuzzel.enable = true;
 
       gtk.gtk2.force = true;

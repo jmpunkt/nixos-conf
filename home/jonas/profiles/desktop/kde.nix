@@ -10,18 +10,6 @@ let
 in
 {
   config = lib.mkIf cfg.enable {
-    # gtk = {
-    #   enable = true;
-    #   font.name = "Noto Sans";
-    #   iconTheme = {
-    #     package = pkgs.kdePackages.breeze-icons;
-    #     name = "breeze";
-    #   };
-    #   theme = {
-    #     package = pkgs.kdePackages.breeze-gtk;
-    #     name = "Breeze";
-    #   };
-    # };
     qt = {
       enable = true;
       platformTheme.name = "kde";
@@ -30,5 +18,8 @@ in
     services.gpg-agent = {
       pinentry.package = pkgs.pinentry-qt;
     };
+
+    programs.fuzzel.enable = true;
+    stylix.targets.fuzzel.enable = true;
   };
 }

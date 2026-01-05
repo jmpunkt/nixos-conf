@@ -35,7 +35,6 @@ in
         hunspellDicts.en-us-large
         jmpunkt.hunspellDicts.de-de
       ];
-      programs.fuzzel.enable = true;
       programs.firefox = {
         enable = true;
         package = pkgs.firefox-bin;

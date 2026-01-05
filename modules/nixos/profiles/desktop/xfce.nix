@@ -20,6 +20,10 @@ in
       desktopManager.xfce.enable = true;
     };
 
+    environment.systemPackages = with pkgs; [
+      rofi
+    ];
+
     services.displayManager = {
       defaultSession = "xfce";
     };

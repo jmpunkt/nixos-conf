@@ -6,4 +6,5 @@
   copilot = callPackage ./copilot.nix { };
   reader = callPackage ./reader.nix { };
   nix-update-el = callPackage ./nix-update-el.nix { };
+  eglot-booster = callPackage ./eglot-booster.nix { };
 }

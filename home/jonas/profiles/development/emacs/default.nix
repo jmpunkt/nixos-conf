@@ -103,6 +103,7 @@ in
             jmpunktPkgs.typst-ts-mode
             jmpunktPkgs.copilot
             jmpunktPkgs.nix-update-el
+            jmpunktPkgs.eglot-booster
           ]
           ++ [
             (treesit-grammars.with-grammars (
@@ -160,6 +161,7 @@ in
             unstable.basedpyright
             taplo # Toml
             unstable.typespec
+            emacs-lsp-booster
           ];
           org = with pkgs; [
             # graphs

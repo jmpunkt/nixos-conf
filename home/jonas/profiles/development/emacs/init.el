@@ -958,6 +958,14 @@ paths, it will fallback to the project root path."
   :demand t
   :after eglot)
 
+(use-package eglot-booster
+	:after eglot
+  :custom
+  ;; My Emacs version has the improved JSON parser.
+  (eglot-booster-io-only t)
+	:config
+  (eglot-booster-mode))
+
 ;;;; * Flymake
 (use-package flymake
   :after consult

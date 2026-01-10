@@ -1666,6 +1666,8 @@ block, then the whole buffer is indented."
   :mode ("\\.pdf\\'" . reader-mode))
 
 ;;; * Misc
+(use-package jira)
+
 (use-package devdocs
   :commands devdocs-lookup
   :bind (:map global-map ("C-h D" . devdocs-lookup)))

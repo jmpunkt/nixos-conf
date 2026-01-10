@@ -85,6 +85,7 @@ in
           flymake-ruff
           d2-mode
           typespec-ts-mode
+          jira
         ]
         ++ (with epkgs.elpaPackages; [
           so-long

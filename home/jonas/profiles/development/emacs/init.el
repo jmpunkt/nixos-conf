@@ -1148,14 +1148,22 @@ paths, it will fallback to the project root path."
         xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
   :config
-  (consult-customize consult-clock-in
-                     :prompt "Clock in: "
-                     :preview-key "C-.")
   (consult-customize
-   consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-recent-file
-   consult--source-project-recent-file
+   consult-clock-in
+   :prompt "Clock in: "
+   :preview-key "C-.")
+  (consult-customize
+   consult-ripgrep
+   consult-git-grep
+   consult-grep
+   consult-man
+   consult-bookmark
+   consult-recent-file
+   consult-xref
+   consult-source-bookmark
+   consult-source-file-register
+   consult-source-recent-file
+   consult-source-project-recent-file
    :preview-key "C-."))
 
 (use-package kind-icon)

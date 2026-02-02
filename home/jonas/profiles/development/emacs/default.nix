@@ -34,7 +34,6 @@ in
           envrc
           helpful
           xterm-color
-          editorconfig
           reformatter
           biome
           casual
@@ -90,7 +89,6 @@ in
         ++ (with epkgs.elpaPackages; [
           so-long
           undo-tree
-          org
           breadcrumb
           svg-lib
           kind-icon

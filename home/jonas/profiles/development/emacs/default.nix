@@ -23,6 +23,18 @@ in
     programs.emacs = {
       enable = true;
       package = pkgs.jmpunkt.emacs;
+      # NOTE: Prefer the builtin version for these packages. Some builtin
+      # packages might be newer than their external counter part.
+      overrides = self: super: {
+        jsonrpc = null;
+        eglot = null;
+        org = null;
+        xref = null;
+        seq = null;
+        editorconfig = null;
+        let-alist = null;
+        transient = null;
+      };
       extraPackages =
         epkgs:
         with epkgs.melpaPackages;

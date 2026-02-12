@@ -947,9 +947,11 @@ paths, it will fallback to the project root path."
     (lambda (snippet) (tempel-insert (jmpunkt/lsp-snippet-to-tempel snippet))))
   :custom-face
   (eglot-highlight-symbol-face ((t (:inherit eldoc-highlight-function-argument))))
+  :config
+  ;; This is not a custom variable.
+  (setq eglot-stay-out-of '(company imenu))
   :custom
   (eglot-extend-to-xref t)
-  (eglot-stay-out-of '(company))
   (eglot-events-buffer-config '(:size 0))
   (eglot-code-action-indications nil)
   (eglot-confirm-server-edits nil))

@@ -54,7 +54,6 @@ in
           rg
           titlecase
           caser
-          # docker
           citre
           # Org
           ob-async

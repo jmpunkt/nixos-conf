@@ -1636,9 +1636,6 @@ block, then the whole buffer is indented."
   :init
   (add-to-list 'major-mode-remap-alist '(dockerfile-mode . dockerfile-ts-mode)))
 
-(use-package docker
-  :bind ("C-c C-d" . docker))
-
 ;;; * PDF
 (use-package reader
   :mode ("\\.pdf\\'" . reader-mode))

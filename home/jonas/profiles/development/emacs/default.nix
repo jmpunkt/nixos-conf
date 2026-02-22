@@ -77,7 +77,6 @@ in
           embark-consult
           marginalia
           cape
-          tempel
           # Spelling
           jinx
           languagetool

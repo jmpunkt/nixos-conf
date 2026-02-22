@@ -321,10 +321,6 @@ The DWIM behaviour of this command is as follows:
 (use-package so-long
   :hook (after-init . global-so-long-mode))
 
-(use-package tempel
-  :bind (:map tempel-map
-              ("M-n" . tempel-next)))
-
 (use-package eldoc
   :commands eldoc-mode
   :bind (:map global-map
@@ -912,20 +908,6 @@ paths, it will fallback to the project root path."
               ("C-c k r" . jmpunkt/eglot-rename)
               ("C-c k h" . jmpunkt/eglot-code-actions))
   :init
-  (defun jmpunkt/lsp-snippet-to-tempel (snippet)
-    "Convert Language Server Protocol snippet into Tempel snippet."
-    (let ((regex (rx (or
-                      (and (group-n 10 "$") (group (+ digit)))
-                      (and (group-n 10 "${") (group (+ digit)) ":" (+? anychar) "}")))))
-      (save-match-data
-        (setq last-match 0
-              template '())
-        (while (string-match regex snippet last-match)
-          (setq template (append template `(,(substring snippet last-match (or (when (match-beginning 1) (1- (match-beginning 1))) (match-beginning 10)))
-                                            p)))
-          (setq last-match (match-end 0)))
-        (add-to-list 'template (substring snippet last-match (length snippet)) 1)
-        template)))
   (defun jmpunkt/eglot-rename ()
     (interactive)
     (meow--cancel-selection)
@@ -934,10 +916,6 @@ paths, it will fallback to the project root path."
     (interactive)
     (meow--cancel-selection)
     (call-interactively 'eglot-code-actions))
-  (define-advice eglot--snippet-expansion-fn
-      (:override (&rest args) tempel-advice)
-    (require 'tempel)
-    (lambda (snippet) (tempel-insert (jmpunkt/lsp-snippet-to-tempel snippet))))
   :custom-face
   (eglot-highlight-symbol-face ((t (:inherit eldoc-highlight-function-argument))))
   :config

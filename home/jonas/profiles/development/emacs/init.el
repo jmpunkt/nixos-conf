@@ -1462,14 +1462,12 @@ block, then the whole buffer is indented."
 (use-package yaml-ts-mode
   :mode ("\\.ya?ml\\'" . yaml-ts-mode)
   ;; NOTE: YAML is a text-mode, thus we have to enable formatting manually.
-  :hook ((yaml-ts-mode . fmt-mode)
-         (yaml-ts-mode . eglot-ensure))
+  :hook ((yaml-ts-mode . fmt-mode))
   :fmt (yaml-ts-mode . fmt/prettier-buffer))
 
 ;;;; * TOML
 (use-package toml-ts-mode
-  :hook ((toml-ts-mode . fmt-mode)
-         (toml-ts-mode . eglot-ensure))
+  :hook ((toml-ts-mode . fmt-mode))
   :init
   (add-to-list 'major-mode-remap-alist '(conf-toml-mode . toml-ts-mode))
   :config
@@ -1510,8 +1508,7 @@ block, then the whole buffer is indented."
 (use-package typst-ts-mode
   :mode "\\.typ\\'"
   ;; NOTE: Typst is a text mode, thus we have to enable formatting manually.
-  :hook ((typst-ts-mode . fmt-mode)
-         (typst-ts-mode . eglot-ensure))
+  :hook ((typst-ts-mode . fmt-mode))
   :fmt (typst-ts-mode . fmt/typstyle-buffer)
   :custom
   (typst-ts-indent-offset 2)
@@ -1526,7 +1523,6 @@ block, then the whole buffer is indented."
 ;;;; * Nix
 (use-package nix-ts-mode
   :mode "\\.nix\\'"
-  :hook ((nix-ts-mode . eglot-ensure))
   :fmt (nix-ts-mode . fmt/nixfmt-buffer)
   :init
   (add-to-list 'major-mode-remap-alist '(nix-mode . nix-ts-mode))
@@ -1548,7 +1544,6 @@ block, then the whole buffer is indented."
 
 ;;;; * Python
 (use-package python
-  :hook (python-base-mode . eglot-ensure)
   :fmt (python-mode . fmt/ruff-buffer)
   :init
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
@@ -1569,7 +1564,6 @@ block, then the whole buffer is indented."
 ;;;; * Rust
 (use-package rust-ts-mode
   :mode ("\\.rs\\'" . rust-ts-mode)
-  :hook (rust-ts-mode . eglot-ensure)
   :init
   (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
   :config
@@ -1594,15 +1588,12 @@ block, then the whole buffer is indented."
 (use-package mhtml-ts-mode
   :init
   (add-to-list 'major-mode-remap-alist '(mhtml-mode . mhtml-ts-mode))
-  :hook ((mhtml-ts-mode . eglot-ensure))
   :fmt (mhtml-ts-mode . fmt/biome-buffer))
 
 (use-package css-mode
   :init
   (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
   :mode (("\\.scss\\'" . scss-mode))
-  :hook ((css-base-mode . eglot-ensure)
-         (scss-base-mode . eglot-ensure))
   :fmt (css-base-mode . fmt/biome-buffer)
   :custom
   (css-indent-offset 2))
@@ -1610,7 +1601,6 @@ block, then the whole buffer is indented."
 (use-package typescript-ts-mode
   :mode (("\\.ts\\'" . typescript-ts-mode)
          ("\\.tsx\\'" . tsx-ts-mode))
-  :hook ((typescript-ts-base-mode . eglot-ensure))
   :fmt (typescript-ts-base-mode . fmt/biome-buffer)
   :init
   (add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode)))
@@ -1625,14 +1615,12 @@ block, then the whole buffer is indented."
   :init
   (add-to-list 'major-mode-remap-alist '(js-mode . js-ts-mode))
   (add-to-list 'major-mode-remap-alist '(javascript-mode . js-ts-mode))
-  :hook ((js-base-mode . eglot-ensure))
   :fmt (js-base-mode . fmt/biome-buffer)
   :custom
   (js-indent-level 2))
 
 ;;;; * Typespec
 (use-package typespec-ts-mode
-  :hook ((typespec-ts-mode . eglot-ensure))
   :config
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs

@@ -223,12 +223,6 @@ The DWIM behaviour of this command is as follows:
                  (2 "CR  ")))
           (encoding (coding-system-type buffer-file-coding-system)))
       (format " %s/%s " encoding eol)))
-  (defun jmpunkt/mode-line-vc ()
-    (when-let* ((backend (vc-backend (buffer-file-name))))
-      (format " %s " (replace-regexp-in-string
-                      (format "^ %s:" backend)
-                      " "
-                      vc-mode))))
   (defun jmpunkt/mode-line-buffer-name ()
     (if (and (not buffer-read-only) (buffer-modified-p (current-buffer)))
         (propertize " %b " 'face 'error)
@@ -312,7 +306,6 @@ The DWIM behaviour of this command is as follows:
                            (:eval (jmpunkt/mode-line-region))))
                         (format-mode-line
                          '((:eval (jmpunkt/mode-line-file-info))
-                           (:eval (jmpunkt/mode-line-vc))
                            (:eval (jmpunkt/mode-line-flymake))
                            (:eval (jmpunkt/mode-line-major-mode))
                            (:eval mode-line-misc-info)))))))

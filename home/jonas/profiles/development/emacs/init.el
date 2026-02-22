@@ -800,6 +800,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
               ("s" . consult-ripgrep)
               ("?" . flymake-show-project-diagnostics))
   :custom
+  (project-vc-ignores '(".git/" ".direnv/" "node_modules/" "target/"))
   (project-switch-commands
         '((project-find-file "file")
           (consult-ripgrep "search")
@@ -921,8 +922,15 @@ paths, it will fallback to the project root path."
   :config
   ;; This is not a custom variable.
   (setq eglot-stay-out-of '(company imenu))
+  ;; Disable JSONRPC logging. We do not use the event buffer of eglot anyways.
+  (fset #'jsonrpc--log-event #'ignore)
   :custom
+  (eglot-autoreconnect nil)
+  (eglot-autoshutdown t)
+  ;; Connection is async in background
+  (eglot-sync-connect 0)
   (eglot-extend-to-xref t)
+  (eglot-send-changes-idle-time 1.0)
   (eglot-events-buffer-config '(:size 0))
   (eglot-code-action-indications nil)
   (eglot-confirm-server-edits nil))
@@ -951,6 +959,7 @@ paths, it will fallback to the project root path."
          (flymake-diagnostics-buffer-mode . visual-line-mode)
          (flymake-project-diagnostics-mode . visual-line-mode))
   :custom
+  (flymake-no-changes-timeout 3.0)
   (flymake-mode-line-counter-format
    '(" " flymake-mode-line-error-counter
      " " flymake-mode-line-warning-counter

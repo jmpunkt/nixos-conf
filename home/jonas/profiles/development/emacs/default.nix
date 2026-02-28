@@ -137,7 +137,7 @@ in
           languagetool-java-bin = "${pkgs.jre}/bin/java";
           copilot-install-dir = "${copilot}";
           copilot-server-executable = "${copilot-run}/bin/copilot-run";
-          copilot-version = copilot.version;
+          copilot-lsp-server-version = copilot.version;
           svg-lib-icon-collections = {
             "\"material\"" = "file://${
               pkgs.fetchFromGitHub {

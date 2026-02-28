@@ -956,8 +956,7 @@ paths, it will fallback to the project root path."
   :bind (:map flymake-mode-map
               ("C-c h f" . consult-flymake)
               ("C-c h d" . flymake-show-buffer-diagnostics))
-  :hook ((prog-mode . flymake-mode)
-         (text-mode . flymake-mode)
+  :hook ((eglot-managed-mode . flymake-mode)
          (flymake-diagnostics-buffer-mode . visual-line-mode)
          (flymake-project-diagnostics-mode . visual-line-mode))
   :custom

@@ -8,6 +8,7 @@
 
 ;;; * environment
 
+(require 'f)
 (defvar-local exec-environment--enabled-paths nil
   "List of enabled paths for the current buffer.")
 
@@ -810,6 +811,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
           (project-eshell "shell")
           (prot/keyboard-quit-dwim "quit" "C-g")))
   :init
+  (require 's)
   (defun jmpunkt/project-smylink-in-dir? (file)
     "Check if a given file is inside the project directory.
 

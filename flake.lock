@@ -92,16 +92,16 @@
     "emacs-igc-mirror": {
       "flake": false,
       "locked": {
-        "lastModified": 1770970216,
-        "narHash": "sha256-Kx9MuoWmPJCYRcCce3guiMGyeiGmmT5J+xVaeexHM9I=",
+        "lastModified": 1773515838,
+        "narHash": "sha256-0czhVztNMLpz04iKvwCUP3sZe+rfT1H1et2thpe5xkk=",
         "owner": "emacs-mirror",
         "repo": "emacs",
-        "rev": "91c9e9883488d715a30877dfd7641ef4b3c62658",
+        "rev": "06761970217ecb6ce038e364309e8e2866e2a3a6",
         "type": "github"
       },
       "original": {
         "owner": "emacs-mirror",
-        "ref": "feature/igc",
+        "ref": "feature/igc3",
         "repo": "emacs",
         "type": "github"
       }

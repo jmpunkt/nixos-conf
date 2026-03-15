@@ -23,7 +23,7 @@
       flake = false;
     };
     emacs-igc-mirror = {
-      url = "github:emacs-mirror/emacs/feature/igc";
+      url = "github:emacs-mirror/emacs/feature/igc3";
       flake = false;
     };
     utils.url = "github:numtide/flake-utils";

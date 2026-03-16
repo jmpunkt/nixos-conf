@@ -62,7 +62,6 @@ in
           # PDF
           pdf-tools
           # Git
-          magit
           diff-hl
           # UI
           modus-themes
@@ -103,7 +102,10 @@ in
           svg-lib
           kind-icon
         ])
-        ++ (with epkgs.nongnuPackages; [ eat ])
+        ++ (with epkgs.nongnuPackages; [
+          eat
+          magit
+        ])
         ++ (
           with epkgs.manualPackages;
           [

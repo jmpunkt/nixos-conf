@@ -77,6 +77,11 @@ rec {
   mkPkgs =
     system: nixpkgs: additionalOverlays:
     import nixpkgs {
+      config.allowUnfreePredicate =
+        pkg:
+        builtins.elem (nixpkgs.lib.getName pkg) [
+          "vscode"
+        ];
       inherit system;
       overlays = minimumOverlays ++ additionalOverlays;
     };

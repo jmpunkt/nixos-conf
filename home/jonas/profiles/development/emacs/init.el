@@ -1648,6 +1648,22 @@ block, then the whole buffer is indented."
   :commands devdocs-lookup
   :bind (:map global-map ("C-h D" . devdocs-lookup)))
 
+(use-package eca)
+
+(use-package gptel
+  :config
+  (setq
+   gptel-model   'model-name-does-not-matter
+   gptel-backend (gptel-make-openai "llama-cpp"
+                   :stream t
+                   :protocol "http"
+                   :host "localhost:8080"
+                   :models '(model-name-does-not-matter))
+   gptel-use-curl t
+   gptel-use-tools t
+   gptel-confirm-tool-calls 'always
+   gptel-include-tool-results 'auto))
+
 (use-package copilot
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-mode-map

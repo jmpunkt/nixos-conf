@@ -26,10 +26,15 @@ in
       enable = true;
       nixPackage = systemConfig.nix.package;
     };
+    home.packages = with pkgs; [
+      python3
+      nodejs
+    ];
     programs.direnv = {
       enable = true;
       nix-direnv.enable = true;
     };
+    programs.uv.enable = true;
     programs.mergiraf.enable = true;
     programs.difftastic.enable = true;
     programs.git = {

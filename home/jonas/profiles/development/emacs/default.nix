@@ -39,6 +39,9 @@ in
         epkgs:
         with epkgs.melpaPackages;
         [
+          # AI
+          gptel
+          eca
           # Core
           avy
           meow
@@ -163,6 +166,7 @@ in
             universal-ctags
             global
             d2 # d2lang
+            eca # AI
           ];
           lsp = with pkgs; [
             ccls

@@ -15,12 +15,13 @@ self: super:
   vscode-extensions = (super.vscode-extensions or { }) // {
     jmpunktPkgs = super.callPackage ../pkgs/vscode-extensions { };
   };
-  linuxPackages = (super.linuxPackages or { }) // {
-    jmpunkt = super.linuxPackages.callPackage ../pkgs/linuxPkgs { };
-  };
-  linuxPackages_latest = (super.linuxPackages_latest or { }) // {
-    jmpunkt = super.linuxPackages_latest.callPackage ../pkgs/linuxPkgs { };
-  };
+  linuxPackagesFor =
+    kernel_:
+    (super.linuxPackagesFor kernel_).extend (
+      lself: lsuper: {
+        jmpunkt = (lself.callPackage ../pkgs/linuxPkgs { });
+      }
+    );
   emacsPackagesFor =
     emacs:
     ((super.emacsPackagesFor emacs).overrideScope (

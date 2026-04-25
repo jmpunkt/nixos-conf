@@ -25,7 +25,7 @@ in
     (lib.mkIf cfg.enable {
       profiles.minimal.enable = true;
       boot = {
-        kernelPackages = pkgs.linuxPackages_latest;
+        kernelPackages = pkgs.linuxPackagesFor pkgs.linux_latest;
         supportedFilesystems = [
           "btrfs"
           "reiserfs"

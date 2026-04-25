@@ -28,8 +28,9 @@
   };
 
   boot.extraModulePackages = [
-    pkgs.linuxPackages_latest.jmpunkt.ec_su_axb35
+    config.boot.kernelPackages.jmpunkt.ec_su_axb35
   ];
+
   boot.kernelModules = [
     "ec_su_axb35"
     "ec_su_axb35_hwmon" # `sensors` will report the fan RPM

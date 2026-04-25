@@ -15,7 +15,17 @@
     ./hardware-configuration.nix
   ];
 
+  boot.kernelParams = [
+    "amd_iommu=off"
+    "amdgpu.vm_fragment_size=8"
+    "ttm.pages_limit=31457280" # 120 gb
+    "ttm.page_pool_size=25165824" # 96 gb
+  ];
+
+  boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.linux_6_19);
+
   nixpkgs.config.allowUnfree = true;
+  programs.nix-ld.enable = true;
 
   boot = {
     loader = {
@@ -24,7 +34,6 @@
     };
     initrd.systemd.enable = true;
     tmp.cleanOnBoot = true;
-    # iommu=pt
   };
 
   boot.extraModulePackages = [
@@ -57,8 +66,7 @@
     opencl.enable = true;
   };
   environment.systemPackages = with pkgs; [
-    razergenie
-    ollama-vulkan
+    unstable.pkgsRocm.llama-cpp
     nvtopPackages.amd
   ];
   system.stateVersion = "25.11";

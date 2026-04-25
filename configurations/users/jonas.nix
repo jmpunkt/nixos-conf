@@ -12,6 +12,8 @@
       config.users.groups.wheel.name
       config.users.groups.audio.name
       config.users.groups.users.name
+      "video"
+      "render"
     ]
     ++ (lib.optionals config.virtualisation.libvirtd.enable [
       config.users.groups.libvirtd.name

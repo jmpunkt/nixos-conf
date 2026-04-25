@@ -101,6 +101,7 @@ in
           breadcrumb
           svg-lib
           kind-icon
+          transient
         ])
         ++ (with epkgs.nongnuPackages; [
           eat

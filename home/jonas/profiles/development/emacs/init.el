@@ -799,6 +799,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
               ("r" . project-query-replace-regexp)
               ("g" . magit-project-status)
               ("s" . consult-ripgrep)
+              ("c" . jmpunkt/project-compile)
               ("?" . flymake-show-project-diagnostics))
   :custom
   (project-vc-ignores '(".git/" ".direnv/" "node_modules/" "target/"))
@@ -893,6 +894,19 @@ the project root. "
       (with-temp-buffer
         (cd dir)
         (nix-flake--init flake-ref template-name))))
+  (defun jmpunkt/project-compile ()
+    "Run compile command for a project.
+
+This also loads the Direnv (using envrc) environment, regarding of the current
+buffer. If envrc is not enabled globally, then not all buffers use the
+environment. This causes issues when invoking the compile command from a buffer
+that does not enable the enrvc mode. Causing the compile command to not find the
+environment and fail. Therefore, the environment of the project is loaded every
+time before executing the compilation command."
+    (interactive)
+    (let ((default-directory (project-root (project-current t))))
+      (envrc-mode)
+      (call-interactively #'compile)))
   (defun jmpunkt/project-compile-setup (proc)
     "Adds the project root directory to the `compilation-search-path'.
 

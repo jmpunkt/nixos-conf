@@ -34,13 +34,13 @@ let
   };
 in
 {
-  "@github/copilot-language-server-1.406.0" = nodeEnv.buildNodePackage {
+  "@github/copilot-language-server-1.485.0" = nodeEnv.buildNodePackage {
     name = "_at_github_slash_copilot-language-server";
     packageName = "@github/copilot-language-server";
-    version = "1.406.0";
+    version = "1.485.0";
     src = fetchurl {
-      url = "https://registry.npmjs.org/@github/copilot-language-server/-/copilot-language-server-1.406.0.tgz";
-      sha512 = "yzWayzR707xuAMGS77c3G7jv0z1F1hx7Aesvp0+qBbxUJHVsrSMjUImJMIL/vWJ+kfo49rfjiTTksaxjUk1ujw==";
+      url = "https://registry.npmjs.org/@github/copilot-language-server/-/copilot-language-server-1.485.0.tgz";
+      sha512 = "+hvXF4QsiUjfi3Xry7AQs30fCTaKALElxa4xO+f/W9xwKwZDU73nH8grW4u8MWneO/ejY9taieo3nTxoFhHc6Q==";
     };
     dependencies = [
       sources."vscode-jsonrpc-8.2.0"
@@ -52,6 +52,24 @@ in
       description = "Your AI pair programmer";
       homepage = "https://github.com/github/copilot-language-server-release";
       license = "MIT";
+    };
+    production = true;
+    bypassCache = true;
+    reconstructLock = true;
+  };
+  "@github/copilot-1.0.44" = nodeEnv.buildNodePackage {
+    name = "_at_github_slash_copilot";
+    packageName = "@github/copilot";
+    version = "1.0.44";
+    src = fetchurl {
+      url = "https://registry.npmjs.org/@github/copilot/-/copilot-1.0.44.tgz";
+      sha512 = "wr/GmNOUaJK/giJK5abyB1oTpEowgFKLi+NJnlyAymKiK/GKCaRlJqiX23H2RetM8vD2hDYUFUFm9lTCooGy0g==";
+    };
+    buildInputs = globalBuildInputs;
+    meta = {
+      description = "GitHub Copilot CLI brings the power of Copilot coding agent directly to your terminal.";
+      homepage = "https://github.com/github/copilot-cli/#readme";
+      license = "SEE LICENSE IN LICENSE.md";
     };
     production = true;
     bypassCache = true;

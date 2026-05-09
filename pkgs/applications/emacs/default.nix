@@ -23,7 +23,7 @@
     old:
     let
       patchesWithoutFix = builtins.filter (
-        e: !(builtins.isAttrs e) || (e.name != "?id=53a5dada413662389a17c551a00d215e51f5049f")
+        e: (!(builtins.isAttrs e) || (e.name != "fix-off-by-one-mistake-80851-CVE-2026-6861.patch"))
       ) old.patches;
     in
     {

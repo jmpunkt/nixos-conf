@@ -3,9 +3,11 @@ self: super:
 # dependencies immediately visible
 {
   jmpunkt = (super.jmpunkt or { }) // (super.callPackage ../pkgs { });
-  python3Packages = (super.python3Packages or { }) // {
-    jmpunktPkgs = super.callPackage ../pkgs/python3Packages { };
-  };
+  pythonPackagesExtensions = (super.pythonPackagesExtensions or [ ]) ++ [
+    (python-final: python-prev: {
+      jmpunkt = python-prev.callPackage ../pkgs/python3Packages { };
+    })
+  ];
   nodePackages = (super.nodePackages or { }) // {
     jmpunkt = super.callPackage ../pkgs/nodePackages { nodejs = super.nodePackages.nodejs; };
   };

@@ -22,7 +22,7 @@
     "ttm.page_pool_size=25165824" # 96 gb
   ];
 
-  boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.linux_6_19);
+  boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.linux_6_18);
 
   nixpkgs.config.allowUnfree = true;
   programs.nix-ld.enable = true;

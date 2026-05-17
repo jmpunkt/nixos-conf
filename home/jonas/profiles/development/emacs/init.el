@@ -340,13 +340,8 @@ The DWIM behaviour of this command is as follows:
 
 ;;;; Shell
 (use-package eat
-  :commands eat)
-
-(use-package term
-  :hook
-  (term-mode . (lambda ()
-                 (add-hook 'meow-insert-enter-hook #'term-char-mode nil t)
-                 (add-hook 'meow-insert-exit-hook #'term-line-mode nil t))))
+  :commands eat
+  :hook ((eshell-load . eat-eshell-char-mode)))
 
 (use-package comint
   :bind (:map comint-mode-map
@@ -385,42 +380,11 @@ Replicates the behavior of `jmpunkt/eshell-goto-end-or-here'."
   (eshell-mode . (lambda ()
                    (add-hook 'eshell-pre-command-hook #'buffer-disable-undo nil t)
                    (add-hook 'eshell-post-command-hook #'buffer-enable-undo nil t)))
-  (eshell-mode . (lambda ()
-                   (add-hook 'meow-insert-enter-hook #'jmpunkt/eshell-meow-reset nil t)
-                   (add-hook 'eshell-pre-command-hook #'jmpunkt/eshell-meow-save nil t)
-                   (add-hook 'eshell-post-command-hook #'jmpunkt/eshell-meow-restore nil t)))
-  (eshell-mode . (lambda ()
-                   (add-hook 'meow-insert-enter-hook #'jmpunkt/eshell-goto-end-or-here nil t)))
   (eshell-first-time-mode . (lambda ()
                               (setq-local process-environment (copy-sequence process-environment))
                               (setenv "PAGER" "cat")
                               (setenv "MANPAGER" "cat")))
-  (eshell-load-hook . eat-eshell-visual-command-mode)
-  (eshell-load-hook . eat-eshell-mode)
   :init
-  (defvar jmpunkt/eshell-last-meow-state nil
-    "State of Meow before running command in Eshell.")
-  (defun jmpunkt/eshell-meow-reset ()
-    "Reset the Meow state in Eshell."
-    (setq jmpunkt/eshell-last-meow-state nil))
-  (defun jmpunkt/eshell-meow-save ()
-    "Save the current meow state before running a command in Eshell."
-    (setq jmpunkt/eshell-last-meow-state
-          (if (meow-insert-mode-p)
-              'insert
-            'normal))
-    (when (not (meow-normal-mode-p))
-      (meow-normal-mode)))
-  (defun jmpunkt/eshell-meow-restore ()
-    "Restore the previous Meow state after running a command in Eshell."
-    (when (and jmpunkt/eshell-last-meow-state
-               ;; Only when on the prompt, we want to restore the meow state.
-               (>= (point) eshell-last-output-end))
-        (when (eq jmpunkt/eshell-last-meow-state 'insert)
-          (meow--cancel-selection)
-          (when (not (meow-insert-mode-p))
-            (meow-insert-mode))))
-    (setq jmpunkt/eshell-last-meow-state nil))
   (defun jmpunkt/eshell-goto-end-or-here ()
     "Smart Eshell goto prompt.
 
@@ -435,22 +399,6 @@ If the cursor is on the last prompt, then we want to insert at the current posit
             (setq pos (+ pos 1)))
           (when (not (eq (point) pos))
             (goto-char pos))))))
-  ;; Before history selection, goto the insertion line of the
-  ;; shell. This way the search string for history selection will not
-  ;; select anything in the previous output.
-  (define-advice eshell-next-matching-input-from-input
-      (:before (&rest args) eshell-advice)
-    (jmpunkt/eshell-goto-end-or-here))
-  (define-advice eshell-previous-matching-input-from-input
-      (:before (&rest args) eshell-advice)
-    (jmpunkt/eshell-goto-end-or-here))
-  (define-advice meow-yank
-      (:before (&rest args) eshell-advice)
-    (when (derived-mode-p 'eshell-mode)
-      (jmpunkt/eshell-goto-end-or-here)))
-  (define-advice eshell-send-input
-      (:before (&rest args) eshell-advice)
-    (jmpunkt/eshell-goto-end-or-here))
   :custom
   (eshell-history-size 1000)
   (eshell-history-append t)
@@ -553,6 +501,20 @@ If the cursor is on the last prompt, then we want to insert at the current posit
       (push search regexp-search-ring)
       (call-interactively #'meow-search)))
   (defun jmpunkt/meow-setup ()
+    (setq meow-insert-shell-keymap (make-keymap))
+    (meow-define-state insert-shell
+      ""
+      :lighter " [I!]"
+      :keymap meow-insert-shell-keymap)
+    (setq meow-cursor-type-insert-shell 'hollow)
+
+    (setq meow-motion-shell-keymap (make-keymap))
+    (meow-define-state motion-shell
+      ""
+      :lighter " [M!]"
+      :keymap meow-motion-shell-keymap)
+    (setq meow-cursor-type-motion-shell 'box)
+
     ;; add treesit function alias
     (add-to-list 'meow-char-thing-table '(?f . defun))
     ;; add thing-at-point url
@@ -566,11 +528,40 @@ If the cursor is on the last prompt, then we want to insert at the current posit
     ;; change display name of modes
     (setq meow-replace-state-name-list
           '((normal . "N")
+            (motion-shell . "M!")
             (motion . "M")
             (keypad . "K")
+            (insert-shell . "I!")
             (insert . "I")
             (beacon . "B")))
-    (add-to-list 'meow-mode-state-list '(compilation-mode . normal))
+    (add-to-list 'meow-mode-state-list '(compilation-mode . motion))
+    (add-to-list 'meow-mode-state-list '(term-mode . insert-shell))
+    (add-to-list 'meow-mode-state-list '(eshell-mode . insert-shell))
+    (add-to-list 'meow-mode-state-list '(eat-mode . insert-shell))
+    (defun jmpunkt/shell-motion()
+      (interactive)
+      (meow-motion-shell-mode)
+      (if (eq major-mode 'eshell-mode)
+          (eat-eshell-emacs-mode)
+        (if (derived-mode-p 'term-mode)
+            (progn
+              (term-line-mode)
+              (end-of-buffer))
+          (eat-emacs-mode))))
+    (defun jmpunkt/shell-insert ()
+      (interactive)
+      (meow-insert-shell-mode)
+      (if (eq major-mode 'eshell-mode)
+          (progn
+            (jmpunkt/eshell-goto-end-or-here)
+            (eat-eshell-semi-char-mode)
+            (read-only-mode -1))
+        (if (derived-mode-p 'term-mode)
+            (progn
+              (term-char-mode)
+              (end-of-buffer))
+          (eat-semi-char-mode))))
+
     ;; default meow setup
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
           meow-use-clipboard t
@@ -579,7 +570,23 @@ If the cursor is on the last prompt, then we want to insert at the current posit
                                            (meow-cancel-selection . keyboard-quit)
                                            (meow-pop-selection . meow-pop-grab)
                                            (meow-beacon-change . meow-beacon-change-char)))
-    (meow-motion-overwrite-define-key
+
+
+    (meow-define-keys 'insert-shell
+      '("C-c C-e" . jmpunkt/shell-motion))
+    (meow-define-keys 'motion-shell
+      '("j" . meow-next)
+      '("k" . meow-prev)
+      '("h" . meow-left)
+      '("l" . meow-right)
+      '("x" . meow-line)
+      '("y" . meow-save)
+      '("," . meow-inner-of-thing)
+      '("." . meow-bounds-of-thing)
+      '("(" . meow-beginning-of-thing)
+      '(")" . meow-end-of-thing)
+      '("<escape>" . ignore)
+      '("C-c C-j" . jmpunkt/shell-insert))
      '("j" . meow-next)
      '("k" . meow-prev)
      '("h" . meow-left)

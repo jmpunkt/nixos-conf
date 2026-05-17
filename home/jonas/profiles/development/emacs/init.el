@@ -587,6 +587,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
       '(")" . meow-end-of-thing)
       '("<escape>" . ignore)
       '("C-c C-j" . jmpunkt/shell-insert))
+    (meow-motion-define-key
      '("j" . meow-next)
      '("k" . meow-prev)
      '("h" . meow-left)

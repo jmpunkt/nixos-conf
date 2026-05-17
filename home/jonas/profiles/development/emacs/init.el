@@ -156,7 +156,7 @@ eglot (if available)."
               ("TAB" . completion-at-point)
               ("C-j" . jmpunkt/join-line)
               ("M-N" . shell-command)
-              ("M-S-<up>" . async-shell-command)
+              ("M-M" . async-shell-command)
               ("C-S-s" . jmpunkt/transient-search-dwim)
               ("C-g" . prot/keyboard-quit-dwim))
   :init

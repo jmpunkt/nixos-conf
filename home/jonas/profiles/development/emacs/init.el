@@ -871,8 +871,9 @@ environment and fail. Therefore, the environment of the project is loaded every
 time before executing the compilation command."
     (interactive)
     (let ((default-directory (project-root (project-current t))))
-      (envrc-mode)
-      (call-interactively #'compile)))
+      (with-temp-buffer
+        (envrc-mode)
+        (call-interactively #'compile))))
   (defun jmpunkt/project-compile-setup (proc)
     "Adds the project root directory to the `compilation-search-path'.
 

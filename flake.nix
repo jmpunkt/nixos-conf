@@ -39,9 +39,6 @@
       url = "github:nixos/flake-registry";
       flake = false;
     };
-    eca = {
-      url = "github:editor-code-assistant/eca";
-    };
   };
   outputs =
     {
@@ -57,7 +54,6 @@
       stylix,
       flake-registry,
       disko,
-      eca,
       ...
     }@inputs:
     let
@@ -67,7 +63,6 @@
             jmpunkt = lib;
           };
         })
-        eca.overlays.default
         (import ./overlays/00-patch.nix)
         (import ./overlays/10-pkgs.nix)
         (import ./overlays/emacs-overlay-glue.nix { flake-inputs = inputs; })

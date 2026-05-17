@@ -26,6 +26,34 @@
     MOZ_ENABLE_WAYLAND = 1;
     NIXOS_OZONE_WL = 1;
   };
+  programs.opencode = {
+    enable = true;
+    package = pkgs.unstable.opencode;
+    settings = {
+      permission = {
+        read = "allow";
+        edit = "allow";
+        bash = "ask";
+        webfetch = "allow";
+        skill = "allow";
+        question = "allow";
+      };
+      provider = {
+        ollama = {
+          npm = "@ai-sdk/openai-compatible";
+          name = "Ollama (local)";
+          options = {
+            baseURL = "http://localhost:11434/v1";
+          };
+          models = {
+            "lfm2.5-thinking=latest" = {
+              name = "LFM2 2.5 Thinking";
+            };
+          };
+        };
+      };
+    };
+  };
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;

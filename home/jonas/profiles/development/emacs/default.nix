@@ -41,7 +41,7 @@ in
         [
           # AI
           gptel
-          eca
+          agent-shell
           # Core
           avy
           meow
@@ -166,7 +166,6 @@ in
             universal-ctags
             global
             d2 # d2lang
-            eca # AI
           ];
           lsp = with pkgs; [
             ccls

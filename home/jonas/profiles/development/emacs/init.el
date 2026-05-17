@@ -1628,7 +1628,42 @@ block, then the whole buffer is indented."
   :commands devdocs-lookup
   :bind (:map global-map ("C-h D" . devdocs-lookup)))
 
-(use-package eca)
+(use-package agent-shell
+  :bind
+  (:map global-map
+        ("C-x _" . agent-shell-help-menu))
+  (:map agent-shell-mode-map
+              ("RET" . newline)
+              ("C-c C-c" . shell-maker-submit)
+              ("C-c C-k" . agent-shell-interrupt))
+  :custom
+  (agent-shell-tool-use-expand-by-default t)
+  :config
+  (setq agent-shell-mcp-servers
+      '(((name . "fetch")
+         (command . "uvx")
+         (args . ("mcp-server-fetch"))
+         (env . ()))
+
+        ((name . "duckduckgo")
+         (command . "uvx")
+         (args . ("duckduckgo-mcp-server"))
+         (env . ()))
+
+        ((name . "nixos")
+         (command . "nix")
+         (args . ("run" "github:utensils/mcp-nixos" "--"))
+         (env . ()))
+
+        ((name . "sequential-thinking")
+         (command . "npx")
+         (args . ("-y" "@modelcontextprotocol/server-sequential-thinking"))
+         (env . ()))
+
+        ((name . "memory")
+         (command . "npx")
+         (args . ("-y" "@modelcontextprotocol/server-memory"))
+         (env . ())))))
 
 (use-package gptel
   :config

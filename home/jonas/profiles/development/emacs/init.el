@@ -756,8 +756,8 @@ If the cursor is on the last prompt, then we want to insert at the current posit
          ("C-c m u" . citre-update-tags-file)
          ;; These keybindings are not citre related, but useful for my muscle
          ;; memory.
-         ("C-c m m" . set-mark-command)
-         ("C-c m g" . meow-pop-to-global-mark))
+         ("C-c m s" . set-mark-command)
+         ("C-c m p" . pop-to-mark-command))
   :custom
   (citre-default-create-tags-file-location 'global-cache)
   :init

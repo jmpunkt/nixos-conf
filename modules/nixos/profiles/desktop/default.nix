@@ -58,8 +58,6 @@ in
         package = pkgs.unstable.nh;
       };
 
-      system.rebuild.enableNg = true;
-
       # NOTE: Claims to have better performance.
       services.dbus.implementation = "broker";
 

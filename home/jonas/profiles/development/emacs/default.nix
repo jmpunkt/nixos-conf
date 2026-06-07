@@ -127,34 +127,45 @@ in
           ]
         );
 
-      variables =
-        let
-          copilot = pkgs.nodePackages.jmpunkt."@github/copilot-language-server-1.485.0";
-          copilot-run = pkgs.writeShellScriptBin "copilot-run" ''
-            "${pkgs.nodejs}/bin/node" "${copilot}/lib/node_modules/@github/copilot-language-server/dist/language-server.js" "$@"
+      variables = {
+        org-plantuml-jar-path = "${pkgs.plantuml}/lib/plantuml.jar";
+        ob-mermaid-cli-path = "${pkgs.mermaid-cli}/bin/mmdc";
+        mermaid-mmdc-location = "${pkgs.mermaid-cli}/bin/mmdc";
+        languagetool-server-command = "${pkgs.languagetool}/share/languagetool-server.jar";
+        languagetool-console-command = "${pkgs.languagetool}/share/languagetool-commandline.jar";
+        languagetool-java-bin = lib.getExe pkgs.jre;
+        copilot-install-dir =
+          let
+            pname = "@github/copilot-language-server";
+            version = pkgs.copilot-language-server.version;
+          in
+          pkgs.runCommand "copilot-language-server-${version}" { } ''
+            mkdir -p $out/lib/node_modules/${pname}
+            mkdir -p $out/lib64/node_modules/${pname}
+
+            cat > $out/lib/node_modules/${pname}/package.json <<EOF
+            {
+              "name": "${pname}",
+              "version": "${version}"
+            }
+            EOF
+
+            cp $out/lib/node_modules/${pname}/package.json \
+               $out/lib64/node_modules/${pname}/package.json
           '';
-        in
-        {
-          org-plantuml-jar-path = "${pkgs.plantuml}/lib/plantuml.jar";
-          ob-mermaid-cli-path = "${pkgs.nodePackages.mermaid-cli}/bin/mmdc";
-          mermaid-mmdc-location = "${pkgs.nodePackages.mermaid-cli}/bin/mmdc";
-          languagetool-server-command = "${pkgs.languagetool}/share/languagetool-server.jar";
-          languagetool-console-command = "${pkgs.languagetool}/share/languagetool-commandline.jar";
-          languagetool-java-bin = "${pkgs.jre}/bin/java";
-          copilot-install-dir = "${copilot}";
-          copilot-server-executable = "${copilot-run}/bin/copilot-run";
-          copilot-lsp-server-version = copilot.version;
-          svg-lib-icon-collections = {
-            "\"material\"" = "file://${
-              pkgs.fetchFromGitHub {
-                owner = "Templarian";
-                repo = "MaterialDesign";
-                rev = "2424e748e0cc63ab7b9c095a099b9fe239b737c0";
-                sha256 = "sha256-QMGl7soAhErrrnY3aKOZpt49yebkSNzy10p/v5OaqQ0=";
-              }
-            }/svg/%s.svg";
-          };
+        copilot-server-executable = lib.getExe pkgs.copilot-language-server;
+        copilot-lsp-server-version = pkgs.copilot-language-server.version;
+        svg-lib-icon-collections = {
+          "\"material\"" = "file://${
+            pkgs.fetchFromGitHub {
+              owner = "Templarian";
+              repo = "MaterialDesign";
+              rev = "2424e748e0cc63ab7b9c095a099b9fe239b737c0";
+              sha256 = "sha256-QMGl7soAhErrrnY3aKOZpt49yebkSNzy10p/v5OaqQ0=";
+            }
+          }/svg/%s.svg";
         };
+      };
       paths =
         let
           core = with pkgs; [
@@ -170,7 +181,7 @@ in
           lsp = with pkgs; [
             ccls
             yaml-language-server
-            nodePackages.typescript-language-server
+            typescript-language-server
             unstable.nixd
             unstable.tinymist # Typst
             unstable.basedpyright
@@ -183,7 +194,7 @@ in
             inkscape
             imagemagick
             graphviz-nox
-            pkgs.nodePackages.mermaid-cli
+            mermaid-cli
             ghostscript
             zip
             tectonic
@@ -192,8 +203,8 @@ in
           formatter = with pkgs; [
             nixpkgs-fmt
             pgformatter
-            nodePackages.prettier
-            nixfmt-rfc-style
+            prettier
+            nixfmt
             typstyle
             ruff
             biome

@@ -8,12 +8,6 @@ self: super:
       jmpunkt = python-prev.callPackage ../pkgs/python3Packages { };
     })
   ];
-  nodePackages = (super.nodePackages or { }) // {
-    jmpunkt = super.callPackage ../pkgs/nodePackages { nodejs = super.nodePackages.nodejs; };
-  };
-  nodePackages_latest = (super.nodePackages_latest or { }) // {
-    jmpunkt = super.callPackage ../pkgs/nodePackages { nodejs = super.nodePackages_latest.nodejs; };
-  };
   vscode-extensions = (super.vscode-extensions or { }) // {
     jmpunktPkgs = super.callPackage ../pkgs/vscode-extensions { };
   };

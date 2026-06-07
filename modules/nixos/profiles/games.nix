@@ -66,8 +66,8 @@ in
         #     ];
         # })
         proton-run
-        wineWowPackages.unstableFull
-        wineWowPackages.fonts
+        wineWow64Packages.unstableFull
+        wineWow64Packages.fonts
         winetricks
 
         # wine dependencies

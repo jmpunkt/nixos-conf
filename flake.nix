@@ -1,13 +1,13 @@
 {
   description = "My configuration as a flake";
   inputs = {
-    stable.url = "github:NixOS/nixpkgs/nixos-25.11";
+    stable.url = "github:NixOS/nixpkgs/nixos-26.05";
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     hardware.url = "github:NixOS/nixos-hardware";
     disko.url = "github:nix-community/disko/latest";
     disko.inputs.nixpkgs.follows = "stable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "stable";
     };
     rust-overlay = {
@@ -32,7 +32,7 @@
       inputs.nixpkgs.follows = "stable";
     };
     stylix = {
-      url = "github:nix-community/stylix/release-25.11";
+      url = "github:nix-community/stylix";
       inputs.nixpkgs.follows = "stable";
     };
     flake-registry = {

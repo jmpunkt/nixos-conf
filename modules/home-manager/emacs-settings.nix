@@ -40,7 +40,7 @@ let
           value:
           if (builtins.typeOf value) == "list" then
             "'(${builtins.concatStringsSep "\n" (builtins.map valueToElisp value)})"
-          else if (builtins.isString value) || (builtins.isPath value) then
+          else if (lib.isDerivation value) || (builtins.isString value) || (builtins.isPath value) then
             ''"${value}"''
           else if (builtins.isNull value) || ((builtins.isBool value) && value == false) then
             "nil"

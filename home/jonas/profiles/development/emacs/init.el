@@ -341,7 +341,7 @@ The DWIM behaviour of this command is as follows:
 ;;;; Shell
 (use-package eat
   :commands eat
-  :hook ((eshell-load . eat-eshell-char-mode)))
+  :hook ((eshell-load . eat-eshell-mode)))
 
 (use-package comint
   :bind (:map comint-mode-map
@@ -506,7 +506,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
       ""
       :lighter " [I!]"
       :keymap meow-insert-shell-keymap)
-    (setq meow-cursor-type-insert-shell 'hollow)
+    (setq meow-cursor-type-insert-shell 'box)
 
     (setq meow-motion-shell-keymap (make-keymap))
     (meow-define-state motion-shell
@@ -528,10 +528,10 @@ If the cursor is on the last prompt, then we want to insert at the current posit
     ;; change display name of modes
     (setq meow-replace-state-name-list
           '((normal . "N")
-            (motion-shell . "M!")
+            (motion-shell . "M")
             (motion . "M")
             (keypad . "K")
-            (insert-shell . "I!")
+            (insert-shell . "I")
             (insert . "I")
             (beacon . "B")))
     (add-to-list 'meow-mode-state-list '(compilation-mode . motion))
@@ -540,27 +540,27 @@ If the cursor is on the last prompt, then we want to insert at the current posit
     (add-to-list 'meow-mode-state-list '(eat-mode . insert-shell))
     (defun jmpunkt/shell-motion()
       (interactive)
-      (meow-motion-shell-mode)
       (if (eq major-mode 'eshell-mode)
-          (eat-eshell-emacs-mode)
+          (eat-eshell-emacs-mode 1)
         (if (derived-mode-p 'term-mode)
             (progn
-              (term-line-mode)
+              (term-line-mode 1)
               (end-of-buffer))
-          (eat-emacs-mode))))
+          (eat-emacs-mode)))
+      (meow-motion-shell-mode 1))
     (defun jmpunkt/shell-insert ()
       (interactive)
-      (meow-insert-shell-mode)
       (if (eq major-mode 'eshell-mode)
           (progn
             (jmpunkt/eshell-goto-end-or-here)
-            (eat-eshell-semi-char-mode)
+            (eat-eshell-semi-char-mode 1)
             (read-only-mode -1))
         (if (derived-mode-p 'term-mode)
             (progn
-              (term-char-mode)
+              (term-char-mode 1)
               (end-of-buffer))
-          (eat-semi-char-mode))))
+          (eat-semi-char-mode 1)))
+      (meow-insert-shell-mode 1))
 
     ;; default meow setup
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
@@ -573,8 +573,16 @@ If the cursor is on the last prompt, then we want to insert at the current posit
 
 
     (meow-define-keys 'insert-shell
-      '("C-c C-e" . jmpunkt/shell-motion))
+      '("C-c C-e" . jmpunkt/shell-motion)
+      '("C-c C-j" . jmpunkt/shell-insert))
     (meow-define-keys 'motion-shell
+      '("m" . meow-join)
+      '("g" . meow-till)
+      '("f" . meow-find)
+      '("e" . meow-next-word)
+      '("E" . meow-next-symbol)
+      '("b" . meow-back-word)
+      '("B" . meow-back-symbol)
       '("j" . meow-next)
       '("k" . meow-prev)
       '("h" . meow-left)
@@ -586,6 +594,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
       '("(" . meow-beginning-of-thing)
       '(")" . meow-end-of-thing)
       '("<escape>" . ignore)
+      '("C-c C-e" . jmpunkt/shell-motion)
       '("C-c C-j" . jmpunkt/shell-insert))
     (meow-motion-define-key
      '("j" . meow-next)

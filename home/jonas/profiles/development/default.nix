@@ -36,6 +36,7 @@ in
     };
     programs.uv.enable = true;
     programs.mergiraf.enable = true;
+    programs.mergiraf.enableGitIntegration = true;
     programs.difftastic.enable = true;
     programs.git = {
       enable = true;

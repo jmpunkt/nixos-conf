@@ -86,7 +86,6 @@ in
         ];
       };
       networking.networkmanager.enable = true;
-      networking.wireless.enable = lib.mkForce false;
       systemd.services.NetworkManager-wait-online.enable = false;
       # Remove logs older than 3 days.
       services.journald.extraConfig = ''
@@ -153,16 +152,18 @@ in
       ];
       services.resolved = {
         enable = true;
-        dnssec = "true";
-        dnsovertls = "opportunistic";
-        llmnr = "false";
-        fallbackDns = [
-          # Cloudflare
-          "1.1.1.1"
-          "1.0.0.1"
-          "2606:4700:4700::1111"
-          "2606:4700:4700::1001"
-        ];
+        settings.Resolve = {
+          DNSOverTLS = "opportunistic";
+          DNSSEC = "true";
+          LLMNR = "false";
+          FallbackDNS = [
+            # Cloudflare
+            "1.1.1.1"
+            "1.0.0.1"
+            "2606:4700:4700::1111"
+            "2606:4700:4700::1001"
+          ];
+        };
       };
       networking.networkmanager = {
         settings.connection = {

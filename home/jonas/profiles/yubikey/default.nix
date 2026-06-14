@@ -42,9 +42,9 @@ in
     };
 
     programs.ssh = {
-      matchBlocks = {
+      settings = {
         "*" = {
-          identityFile = "~/.ssh/id_rsa.pub";
+          IdentityFile = "~/.ssh/id_rsa.pub";
         };
       };
     };

@@ -57,29 +57,27 @@
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks = {
-      "*" = {
-        forwardAgent = false;
-        addKeysToAgent = "no";
-        compression = false;
-        serverAliveInterval = 0;
-        serverAliveCountMax = 3;
-        hashKnownHosts = false;
-        userKnownHostsFile = "~/.ssh/known_hosts";
-        controlMaster = "no";
-        controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "no";
+    settings = {
+      qemu = lib.hm.dag.entryBefore [ "*" ] {
+        ControlMaster = "auto";
+        ControlPersist = "10m";
+        HostName = "127.0.0.1";
+        Port = "11111";
+        User = "root";
+        StrictHostKeyChecking = "no";
+        UserKnownHostsFile = "/dev/null";
       };
-      "qemu" = {
-        controlPersist = "10m";
-        controlMaster = "auto";
-        hostname = "127.0.0.1";
-        port = 11111;
-        user = "root";
-        extraOptions = {
-          StrictHostKeyChecking = "no";
-          UserKnownHostsFile = "/dev/null";
-        };
+
+      "*" = {
+        AddKeysToAgent = "yes";
+        ForwardAgent = "no";
+        Compression = "no";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
+        ServerAliveCountMax = "3";
+        ServerAliveInterval = "0";
+        UserKnownHostsFile = "~/.ssh/known_hosts";
       };
     };
   };

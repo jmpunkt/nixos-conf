@@ -505,15 +505,41 @@ If the cursor is on the last prompt, then we want to insert at the current posit
     (meow-define-state insert-shell
       ""
       :lighter " [I!]"
-      :keymap meow-insert-shell-keymap)
-    (setq meow-cursor-type-insert-shell 'box)
+      :keymap meow-insert-shell-keymap
+      (when (meow-insert-shell-mode-p)
+        (cond
+         ((and (eq major-mode 'eshell-mode)
+               (member 'eat-eshell-mode minor-mode-list))
+          (progn
+            (message "insert: 1")
+            (jmpunkt/eshell-goto-end-or-here)
+            (eat-eshell-semi-char-mode)
+            (read-only-mode -1)))
+         ((derived-mode-p 'term-mode) (progn
+                                        (term-char-mode)
+                                        (end-of-buffer)
+                                        (read-only-mode -1)))
+         (((eq major-mode 'eat-mode) (progn
+                                        (eat-char-mode)))))))
+    (setq meow-cursor-type-insert-shell '(bar . 2))
 
     (setq meow-motion-shell-keymap (make-keymap))
     (meow-define-state motion-shell
       ""
       :lighter " [M!]"
-      :keymap meow-motion-shell-keymap)
-    (setq meow-cursor-type-motion-shell 'box)
+      :keymap meow-motion-shell-keymap
+      (when (meow-motion-shell-mode-p)
+        (cond
+         ((and (eq major-mode 'eshell-mode)
+               (member 'eat-eshell-mode minor-mode-list))
+          (progn
+            (eat-eshell-emacs-mode)))
+         ((derived-mode-p 'term-mode) (progn
+                                        (term-line-mode)
+                                        (read-only-mode 1)))
+         (((eq major-mode 'eat-mode) (progn
+                                        (eat-emacs-mode)))))))
+    (setq meow-cursor-type-motion-shell 'bx)
 
     ;; add treesit function alias
     (add-to-list 'meow-char-thing-table '(?f . defun))
@@ -538,30 +564,6 @@ If the cursor is on the last prompt, then we want to insert at the current posit
     (add-to-list 'meow-mode-state-list '(term-mode . insert-shell))
     (add-to-list 'meow-mode-state-list '(eshell-mode . insert-shell))
     (add-to-list 'meow-mode-state-list '(eat-mode . insert-shell))
-    (defun jmpunkt/shell-motion()
-      (interactive)
-      (if (eq major-mode 'eshell-mode)
-          (eat-eshell-emacs-mode 1)
-        (if (derived-mode-p 'term-mode)
-            (progn
-              (term-line-mode 1)
-              (end-of-buffer))
-          (eat-emacs-mode)))
-      (meow-motion-shell-mode 1))
-    (defun jmpunkt/shell-insert ()
-      (interactive)
-      (if (eq major-mode 'eshell-mode)
-          (progn
-            (jmpunkt/eshell-goto-end-or-here)
-            (eat-eshell-semi-char-mode 1)
-            (read-only-mode -1))
-        (if (derived-mode-p 'term-mode)
-            (progn
-              (term-char-mode 1)
-              (end-of-buffer))
-          (eat-semi-char-mode 1)))
-      (meow-insert-shell-mode 1))
-
     ;; default meow setup
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty
           meow-use-clipboard t
@@ -573,8 +575,8 @@ If the cursor is on the last prompt, then we want to insert at the current posit
 
 
     (meow-define-keys 'insert-shell
-      '("C-c C-e" . jmpunkt/shell-motion)
-      '("C-c C-j" . jmpunkt/shell-insert))
+      '("C-c C-e" . meow-motion-shell-mode)
+      '("C-c C-j" . ignore))
     (meow-define-keys 'motion-shell
       '("m" . meow-join)
       '("g" . meow-till)
@@ -594,8 +596,8 @@ If the cursor is on the last prompt, then we want to insert at the current posit
       '("(" . meow-beginning-of-thing)
       '(")" . meow-end-of-thing)
       '("<escape>" . ignore)
-      '("C-c C-e" . jmpunkt/shell-motion)
-      '("C-c C-j" . jmpunkt/shell-insert))
+      '("C-c C-e" . ignore)
+      '("C-c C-j" . meow-insert-shell-mode))
     (meow-motion-define-key
      '("j" . meow-next)
      '("k" . meow-prev)

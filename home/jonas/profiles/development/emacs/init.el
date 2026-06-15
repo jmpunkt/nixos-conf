@@ -576,6 +576,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
 
     (meow-define-keys 'insert-shell
       '("C-c C-e" . meow-motion-shell-mode)
+      '("C-y" . yank)
       '("C-c C-j" . ignore))
     (meow-define-keys 'motion-shell
       '("m" . meow-join)

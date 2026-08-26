@@ -848,6 +848,11 @@ paths, it will fallback to the project root path."
   (eglot-highlight-symbol-face ((t (:inherit eldoc-highlight-function-argument))))
   :config
   ;; This is not a custom variable.
+  ;; code lenses are not used by this emacs configuration.
+  (add-to-list 'eglot-ignored-server-capabilities :codelensprovider)
+  ;; not using lsp folding for anything.
+  (add-to-list 'eglot-ignored-server-capabilities :foldingrangeprovider)
+  (setq jsonrpc-event-hook nil)
   (setq eglot-stay-out-of '(company imenu))
   ;; Disable JSONRPC logging. We do not use the event buffer of eglot anyways.
   (fset #'jsonrpc--log-event #'ignore)
@@ -858,7 +863,8 @@ paths, it will fallback to the project root path."
   (eglot-sync-connect 0)
   (eglot-extend-to-xref t)
   (eglot-send-changes-idle-time 1.0)
-  (eglot-events-buffer-config '(:size 0))
+  (eglot-events-buffer-config '(:size 0 :short))
+  ;; code actions are always manually invoked.
   (eglot-code-action-indications nil)
   (eglot-confirm-server-edits nil))
 

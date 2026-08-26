@@ -276,6 +276,7 @@ The DWIM behaviour of this command is as follows:
   (variable-pitch ((t (:inherit default :family unspecified))))
   (fixed-pitch ((t (:inherit default :family unspecified))))
   :custom
+  (treesit-enabled-modes t)
   (treesit-font-lock-level 4)
   (indent-line-function 'indent-relative)
   (revert-without-query '(".+\.pdf" ".+\.png" ".+\.jpg"))
@@ -1392,7 +1393,6 @@ block, then the whole buffer is indented."
 
 ;;;; * YAML
 (use-package yaml-ts-mode
-  :mode ("\\.ya?ml\\'" . yaml-ts-mode)
   ;; NOTE: YAML is a text-mode, thus we have to enable formatting manually.
   :hook ((yaml-ts-mode . fmt-mode))
   :fmt (yaml-ts-mode . fmt/prettier-buffer))
@@ -1400,8 +1400,6 @@ block, then the whole buffer is indented."
 ;;;; * TOML
 (use-package toml-ts-mode
   :hook ((toml-ts-mode . fmt-mode))
-  :init
-  (add-to-list 'major-mode-remap-alist '(conf-toml-mode . toml-ts-mode))
   :config
   (with-eval-after-load 'eglot
       (add-to-list 'eglot-server-programs '(toml-ts-mode . ("taplo" "lsp" "stdio")))))
@@ -1410,17 +1408,8 @@ block, then the whole buffer is indented."
 (use-package graphql-mode
   :fmt (graphql-mode . fmt/biome-buffer))
 
-;;; * Text Files
-;;;; * reStructuredText
-(use-package rst
-  :mode (("\\.txt\\'" . rst-mode)
-         ("\\.rst\\'" . rst-mode)
-         ("\\.rest\\'" . rst-mode)))
-
 ;;;; * Markdown
 (use-package markdown-ts-mode
-  :init
-  (add-to-list 'major-mode-remap-alist '(markdown-mode . markdown-ts-mode))
   :fmt (markdown-ts-mode . fmt/prettier-buffer))
 
 ;;;; * Makefile
@@ -1462,30 +1451,12 @@ block, then the whole buffer is indented."
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs '(nix-ts-mode . ("nixd")))))
 
-;;;; * C/C++
-(use-package cmake-ts-mode
-  :mode ("\\(?:CMakeLists\\.txt\\|\\.cmake\\)\\'" . cmake-ts-mode)
-  :init
-  (add-to-list 'major-mode-remap-alist '(cmake-mode . cmake-ts-mode)))
-
-(use-package c-ts-mode
-  :init
-  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode)))
-
 ;;;; * Python
 (use-package python
   :fmt (python-mode . fmt/ruff-buffer)
-  :init
-  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   :custom
   (python-indent-offset 4)
   :config
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '((python-mode python-ts-mode)
-                   "basedpyright-langserver" "--stdio")))
   (push 'pyright compilation-error-regexp-alist)
   (push '(pyright "^\\ +\\(.+\\):\\([0-9]+\\):\\([0-9]+\\).+$" 1 2 3)
         compilation-error-regexp-alist-alist))
@@ -1495,9 +1466,6 @@ block, then the whole buffer is indented."
 
 ;;;; * Rust
 (use-package rust-ts-mode
-  :mode ("\\.rs\\'" . rust-ts-mode)
-  :init
-  (add-to-list 'major-mode-remap-alist '(rust-mode . rust-ts-mode))
   :config
   (add-to-list 'treesit-thing-settings
                '(rust (defun (or "function_item" "closure_expression"))
@@ -1510,43 +1478,22 @@ block, then the whole buffer is indented."
                       (comment "line_comment")
                       (number (or "integer_literal" "float_literal")))))
 
-;;;; * Lua
-(use-package lua-ts-mode
-  :mode (("\\.lua\\'" . lua-ts-mode))
-  :init
-  (add-to-list 'major-mode-remap-alist '(lua-mode . lua-ts-mode)))
-
 ;;;; * WEB
 (use-package mhtml-ts-mode
-  :init
-  (add-to-list 'major-mode-remap-alist '(mhtml-mode . mhtml-ts-mode))
   :fmt (mhtml-ts-mode . fmt/biome-buffer))
 
 (use-package css-mode
-  :init
-  (add-to-list 'major-mode-remap-alist '(css-mode . css-ts-mode))
-  :mode (("\\.scss\\'" . scss-mode))
   :fmt (css-base-mode . fmt/biome-buffer)
   :custom
   (css-indent-offset 2))
 
 (use-package typescript-ts-mode
-  :mode (("\\.ts\\'" . typescript-ts-mode)
-         ("\\.tsx\\'" . tsx-ts-mode))
-  :fmt (typescript-ts-base-mode . fmt/biome-buffer)
-  :init
-  (add-to-list 'major-mode-remap-alist '(typescript-mode . typescript-ts-mode)))
+  :fmt (typescript-ts-base-mode . fmt/biome-buffer))
 
 (use-package json-ts-mode
-  :init
-  (add-to-list 'major-mode-remap-alist '(js-json-mode . json-ts-mode))
-  :mode (("flake.lock\\'" . json-ts-mode))
   :fmt (json-ts-mode . fmt/biome-buffer))
 
 (use-package js
-  :init
-  (add-to-list 'major-mode-remap-alist '(js-mode . js-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(javascript-mode . js-ts-mode))
   :fmt (js-base-mode . fmt/biome-buffer)
   :custom
   (js-indent-level 2))
@@ -1557,16 +1504,6 @@ block, then the whole buffer is indented."
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  '(typespec-ts-mode . ("tsp-server" "--stdio")))))
-
-;;;; * LaTeX
-(use-package tex-mode
-  :mode ("\\.tex\\'" . latex-mode))
-
-;;;; * Docker
-(use-package dockerfile-ts-mode
-  :mode ("\\(?:Dockerfile\\(?:\\..*\\)?\\|\\.[Dd]ockerfile\\)\\'" . dockerfile-ts-mode)
-  :init
-  (add-to-list 'major-mode-remap-alist '(dockerfile-mode . dockerfile-ts-mode)))
 
 ;;; * PDF
 (use-package reader

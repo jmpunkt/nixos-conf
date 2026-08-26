@@ -50,7 +50,6 @@ in
           helpful
           xterm-color
           reformatter
-          biome
           casual
           casual-avy
           transient-dwim

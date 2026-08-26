@@ -1575,13 +1575,6 @@ block, then the whole buffer is indented."
   (copilot-indent-offset-warning-disable t)
   (copilot-max-char 500000))
 
-(use-package biome
-  :commands biome
-  :custom
-  (biome-query-coords
-   '(("Berlin, Germany" 52.52437 13.41053)
-     ("Darmstadt, Germany" 49.87167 8.65027))))
-
 (use-package proced
   :bind (:map proced-mode-map
               ("C-s" . jmpunkt/proced-search))

@@ -747,6 +747,7 @@ If the cursor is on the last prompt, then we want to insert at the current posit
               ("d" . project-find-dir)
               ("p" . project-switch-project)
               ("r" . project-query-replace-regexp)
+              ("l" . eglot)
               ("g" . magit-project-status)
               ("s" . consult-ripgrep)
               ("c" . jmpunkt/project-compile)

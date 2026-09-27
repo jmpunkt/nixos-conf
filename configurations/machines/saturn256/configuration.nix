@@ -69,6 +69,10 @@
     initrd.enable = true;
     opencl.enable = true;
   };
+
+  programs.ausweisapp.enable = true;
+  programs.ausweisapp.openFirewall = true;
+
   environment.systemPackages = with pkgs; [
     unstable.pkgsRocm.llama-cpp
     nvtopPackages.amd

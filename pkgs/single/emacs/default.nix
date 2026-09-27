@@ -28,6 +28,8 @@
           !(builtins.isAttrs e)
           || (
             (e.name != "fix-off-by-one-mistake-80851-CVE-2026-6861.patch")
+            && (e.name != "CVE-2024-53920.patch")
+            && (e.name != "nullify-read-symbol-shorthands-around-risky-intern-calls-80574.patch")
             && (e.name != "01_all_treesit-0.26.patch?id=d0f47979806d9be5a190fdb4ffa1bde439b2d616")
             && (e.name != "02_all_ts-query-pred.patch?id=86190bf195b3e17108372d8ad89eb57037180dd2")
             && (e.name != "CVE-2026-79992.patch")

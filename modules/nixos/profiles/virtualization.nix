@@ -24,5 +24,8 @@ in
         dockerCompat = true;
       };
     };
+    environment.systemPackages = with pkgs; [
+      docker-compose
+    ];
   };
 }

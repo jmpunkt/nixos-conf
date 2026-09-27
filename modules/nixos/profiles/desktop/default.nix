@@ -62,7 +62,7 @@ in
       services.dbus.implementation = "broker";
 
       services.scx.enable = true;
-      services.scx.scheduler = "scx_rusty";
+      services.scx.scheduler = "scx_bpfland";
       # Automatic garbage collection (system profiles)
       nix.gc = {
         automatic = true;

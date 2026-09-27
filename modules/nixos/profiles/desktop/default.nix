@@ -14,6 +14,7 @@ in
     ./cosmic.nix
     ./xfce.nix
     ./wwm
+    ./tether.nix
   ];
 
   options.profiles.desktop = {

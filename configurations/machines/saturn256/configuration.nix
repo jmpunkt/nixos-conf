@@ -58,6 +58,7 @@
 
   profiles = {
     desktop.kde.enable = true;
+    desktop.tether.enable = true;
     yubikey.enable = true;
     games.enable = true;
     development.enable = true;

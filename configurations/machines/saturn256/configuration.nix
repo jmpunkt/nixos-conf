@@ -15,6 +15,9 @@
     ./hardware-configuration.nix
   ];
 
+  programs.wireshark.enable = true;
+  programs.wireshark.package = pkgs.wireshark;
+
   boot.kernelParams = [
     "amd_iommu=off"
     "amdgpu.vm_fragment_size=8"

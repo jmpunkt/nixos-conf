@@ -12,6 +12,7 @@
       config.users.groups.wheel.name
       config.users.groups.audio.name
       config.users.groups.users.name
+      config.users.groups.wireshark.name
       "video"
       "render"
     ]

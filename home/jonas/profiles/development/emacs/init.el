@@ -1543,11 +1543,6 @@ block, then the whole buffer is indented."
          (args . ("run" "github:utensils/mcp-nixos" "--"))
          (env . ()))
 
-        ((name . "sequential-thinking")
-         (command . "npx")
-         (args . ("-y" "@modelcontextprotocol/server-sequential-thinking"))
-         (env . ()))
-
         ((name . "memory")
          (command . "npx")
          (args . ("-y" "@modelcontextprotocol/server-memory"))

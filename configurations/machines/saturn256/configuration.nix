@@ -19,14 +19,14 @@
   programs.wireshark.package = pkgs.wireshark;
 
   boot.kernelParams = [
-    "amd_iommu=off"
+    "amd_iommu=on"
+    "iommu=pt"
     "amdgpu.vm_fragment_size=8"
     "ttm.pages_limit=31457280" # 120 gb
     "ttm.page_pool_size=25165824" # 96 gb
   ];
 
-  boot.kernelPackages = lib.mkForce (pkgs.linuxPackagesFor pkgs.linux_6_18);
-
+  hardware.enableAllFirmware = true;
   nixpkgs.config.allowUnfree = true;
   programs.nix-ld.enable = true;
 

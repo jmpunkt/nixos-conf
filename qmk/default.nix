@@ -8,9 +8,9 @@ let
   src = fetchFromGitHub {
     repo = "qmk_firmware";
     owner = "qmk";
-    rev = "0.28.5";
+    rev = "0.34.3";
     fetchSubmodules = true;
-    sha256 = "sha256-pY8WFXGihltJrakjaQgePlDUlpJBsibjmxOhKLmFIbY=";
+    sha256 = "sha256-qaGQwpWDc4EJC3Yn8P4w3EeEa+IZ/krcYObKt5YEUmI=";
   };
 in
 stdenv.mkDerivation rec {

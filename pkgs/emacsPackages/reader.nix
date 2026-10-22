@@ -3,8 +3,8 @@
   fetchFromGitea,
   melpaBuild,
   gcc,
-  unstable,
   gnumake,
+  mupdf,
   pkg-config,
 }:
 let
@@ -40,7 +40,7 @@ melpaBuild {
   ];
 
   buildInputs = [
-    unstable.mupdf
+    mupdf
   ];
 
   meta = {

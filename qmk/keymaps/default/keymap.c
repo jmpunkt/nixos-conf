@@ -1,6 +1,7 @@
 #include QMK_KEYBOARD_H
 #include "keymap_us_international.h"
 #include "../../lib.h"
+#include "quantum/split_common/split_util.h"
 
 // Defines names for use in layer keycodes and the keymap
 enum layer_names {
@@ -13,6 +14,7 @@ enum layer_names {
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
+#define BOARD_LED GP17
 
 enum {
   KX_DQUOTE = SAFE_RANGE,
@@ -132,6 +134,59 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 layer_state_t layer_state_set_user(layer_state_t state) {
    return update_tri_layer_state(state, _LOWER, _RAISE, _FUNC);
+}
+
+void keyboard_post_init_user(void) {
+  // Enable GPIO pin for LED. Does not work without enabling this pin first.
+  gpio_set_pin_output(BOARD_LED);
+
+  // The first powered LED means, we have reached the internal logic the first
+  // time.
+  gpio_write_pin_high(BOARD_LED);
+}
+
+// Indiciate the current status of the connection. After the system is powered on the LED is lit. Then we blink once we are 
+void housekeeping_task_user(void) {
+  static bool     connected = false;
+  static bool     active    = false;
+  static uint8_t  phase     = 0;
+  static uint32_t prev      = 0;
+
+  if (!is_transport_connected()) {
+    connected = false;
+    active    = false;
+    phase     = 0;
+    gpio_write_pin_high(BOARD_LED);
+    return;
+  }
+
+  if (connected) return;
+
+  if (!active) {
+    active = true;
+    phase  = 0;
+    gpio_write_pin_high(BOARD_LED);
+    prev = timer_read32();
+    return;
+  }
+
+  if (timer_elapsed32(prev) < 150) return;
+
+  phase++;
+  prev = timer_read32();
+
+  switch (phase) {
+    case 1:
+      gpio_write_pin_low(BOARD_LED);
+      break;
+    case 2:
+      gpio_write_pin_high(BOARD_LED);
+      break;
+    case 3:
+      gpio_write_pin_low(BOARD_LED);
+      connected = true;
+      break;
+  }
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
